@@ -1,56 +1,40 @@
-import pytest
+import os
 
-from rick_db.conn.pg import PgConnection, PgThreadedConnectionPool, PgConnectionPool
-from tests.config import postgres_db
+import pytest
+from rick_db.conn.sqlite import Sqlite3Connection
 from rick_db import fieldmapper
 from rick_db.profiler import NullProfiler
 
+dbfile = '/tmp/rick_db_sqlite_test.db'
 
 @fieldmapper
 class Animal:
     legs = 'legs'
     name = 'name'
 
-
-def connectSimple() -> PgConnection:
-    return PgConnection(**postgres_db)
-
-
-def connectPool() -> PgConnectionPool:
-    cfg_pool = postgres_db.copy()
-    cfg_pool['minconn'] = 4
-    return PgConnectionPool(**postgres_db)
-
-
-def connectThreadedPool() -> PgThreadedConnectionPool:
-    cfg_pool = postgres_db.copy()
-    cfg_pool['minconn'] = 4
-    return PgThreadedConnectionPool(**postgres_db)
-
-
-class TestPGConnection:
+class TestSqlite3Connection:
     createTable = "create table if not exists animals(legs int, name varchar);"
-    dropTable = "drop table if exists animals"
-    insertTable = "insert into animals(legs, name) values(%s, %s)"
-    selectByLeg = "select * from animals where legs = %s"
+    truncateTable = "delete from animals"
+    insertTable = "insert into animals(legs, name) values(?, ?)"
+    selectByLeg = "select * from animals where legs = ?"
 
     rows = [(1, 'pirate'), (2, 'canary'), (3, 'maimed dog'), (4, 'cat'), (5, 'pirate ant')]
 
     def setup_method(self, test_method):
-        conn = connectSimple()
-        with conn.cursor() as qry:
-            qry.exec(self.createTable)
+        self.conn = Sqlite3Connection(dbfile)
+        with self.conn.cursor() as c:
+            c.exec(self.createTable)
+            c.exec(self.truncateTable)
             for r in self.rows:
-                qry.exec(self.insertTable, r)
+                c.exec(self.insertTable, r)
 
     def teardown_method(self, test_method):
-        conn = connectSimple()
-        with conn.cursor() as c:
-            c.exec(self.dropTable)
+        self.conn.close()
+        os.unlink(dbfile)
 
     @pytest.fixture()
     def conn(self):
-        return connectSimple()
+        return self.conn
 
     def test_connection(self, conn):
         assert isinstance(conn.profiler, NullProfiler) is True
@@ -174,17 +158,3 @@ class TestPGConnection:
         assert len(animal.asdict()) == 2
         assert animal.legs == 4
         assert animal.name == 'cat'
-
-
-class TestPGConnectionPool(TestPGConnection):
-
-    @pytest.fixture()
-    def conn(self):
-        return connectPool().getconn()
-
-
-class TestPGThreadedConnectionPool(TestPGConnection):
-
-    @pytest.fixture()
-    def conn(self):
-        return connectThreadedPool().getconn()

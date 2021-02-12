@@ -43,51 +43,68 @@ class Cursor:
         result = None
         cursor = self._cursor
         timer = self._timer()
-        cursor.execute(qry, params)
+        if params is not None:
+            cursor.execute(qry, params)
+        else:
+            cursor.execute(qry)
         if not self._in_transaction:
             self._conn.commit()
-
         if cursor.description:
-            result = cursor.fetchone()
-        self._profiler.add_event(qry, params, self._elapsed(timer))
-        if cls:
-            return cls().fromrecord(result)
-        return result
-
-    def fetchone(self, qry: str, params=None, cls=None):
-        result = {}
-        cursor = self._cursor
-        timer = self._timer()
-        cursor.execute(qry, params)
-        self._profiler.add_event(qry, params, self._elapsed(timer))
-
-        if cursor.rowcount > 0:
-            result = cursor.fetchone()
-
-        if cls is not None:
-            result = cls().fromrecord(result)
-
-        if not self._in_transaction:
-            self._conn.commit()
-
-        return result
-
-    def fetchall(self, qry: str, params=None, cls=None):
-        result = []
-        cursor = self._cursor
-        timer = self._timer()
-        cursor.execute(qry, params)
-        self._profiler.add_event(qry, params, self._elapsed(timer))
-
-        if cursor.rowcount > 0:
             result = cursor.fetchall()
+        self._profiler.add_event(qry, params, self._elapsed(timer))
+        if result is None:
+            if cls is not None:
+                return cls()
+            return []
 
         if cls is not None:
             tmp = []
             for r in result:
                 tmp.append(cls().fromrecord(r))
             return tmp
+        return result
 
+    def fetchone(self, qry: str, params=None, cls=None):
+        result = None
+        cursor = self._cursor
+        timer = self._timer()
+        if params is not None:
+            cursor.execute(qry, params)
+        else:
+            cursor.execute(qry)
+        if cursor.description:
+            result = cursor.fetchone()
+        self._profiler.add_event(qry, params, self._elapsed(timer))
+        if result is None:
+            if cls is not None:
+                return cls()
+            return {}
+
+        if cls is not None:
+            return cls().fromrecord(result)
+        return result
+
+    def fetchall(self, qry: str, params=None, cls=None):
+        result = None
+        cursor = self._cursor
+        timer = self._timer()
+        if params is not None:
+            cursor.execute(qry, params)
+        else:
+            cursor.execute(qry)
+        if cursor.description:
+            result = cursor.fetchall()
+        self._profiler.add_event(qry, params, self._elapsed(timer))
+        if result is None:
+            if cls is not None:
+                return cls()
+            return []
+
+        if cls is not None:
+            tmp = []
+            for r in result:
+                tmp.append(cls().fromrecord(r))
+            return tmp
         return result
 
 
