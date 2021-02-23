@@ -4,6 +4,7 @@ import pytest
 from rick_db.conn.sqlite import Sqlite3Connection
 from rick_db import fieldmapper
 from rick_db.profiler import NullProfiler
+from rick_db.sql import Sqlite3SqlDialect
 
 dbfile = '/tmp/rick_db_sqlite_test.db'
 
@@ -158,3 +159,6 @@ class TestSqlite3Connection:
         assert len(animal.asdict()) == 2
         assert animal.legs == 4
         assert animal.name == 'cat'
+
+    def test_sqldialect(self, conn):
+        assert isinstance(conn.dialect(), Sqlite3SqlDialect)

@@ -1,6 +1,8 @@
 from rick_db.profiler import Profiler, NullProfiler
 from timeit import default_timer
 
+from rick_db.sql import SqlDialect
+
 
 class ConnectionError(Exception):
     pass
@@ -116,6 +118,7 @@ class Connection:
         self._in_transaction = False
         self._profiler = NullProfiler()
         self._conn = db_connection
+        self._dialect = None
 
     @property
     def profiler(self):
@@ -124,6 +127,13 @@ class Connection:
     @profiler.setter
     def profiler(self, profiler: Profiler):
         self._profiler = profiler
+
+    def dialect(self) -> SqlDialect:
+        """
+        Retrieve connection SQL Dialect
+        :return: SqlDialect
+        """
+        return self._dialect
 
     def begin(self):
         if self.autocommit:

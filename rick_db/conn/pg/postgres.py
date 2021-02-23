@@ -1,19 +1,20 @@
 import psycopg2
 import psycopg2.extras
 from psycopg2.pool import SimpleConnectionPool, ThreadedConnectionPool
-from psycopg2.extras import RealDictCursor
 from rick_db.conn import Connection
 from rick_db.profiler import Profiler, NullProfiler
+from rick_db.sql.dialects import PgSqlDialect
 
 
 class PgConnection(Connection):
 
     def __init__(self, **kwargs):
         self._in_transaction = False
-        kwargs['cursor_factory'] = psycopg2.extras.RealDictCursor
+        kwargs['cursor_factory'] = psycopg2.extras.DictCursor
         conn = psycopg2.connect(**kwargs)
         conn.set_session(isolation_level=self.isolation_level, autocommit=self.autocommit)
         super().__init__(conn)
+        self._dialect = PgSqlDialect()
 
 
 class PgPooledConnection(Connection):
@@ -21,6 +22,7 @@ class PgPooledConnection(Connection):
     def __init__(self, pool_manager, db_connection):
         super().__init__(db_connection)
         self._pool = pool_manager
+        self._dialect = PgSqlDialect()
 
     def close(self):
         if self._conn is not None:
@@ -40,7 +42,7 @@ class PgConnectionPool:
     def __init__(self, **kwargs):
         minconn = self.default_min_conn
         maxconn = self.default_max_conn
-        kwargs['cursor_factory'] = RealDictCursor
+        kwargs['cursor_factory'] = psycopg2.extras.DictCursor
         if 'minconn' in kwargs:
             minconn = kwargs.pop('minconn')
         if 'maxconn' in kwargs:

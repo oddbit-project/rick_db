@@ -1,6 +1,7 @@
 import pytest
 
 from rick_db.conn.pg import PgConnection, PgThreadedConnectionPool, PgConnectionPool
+from rick_db.sql import PgSqlDialect
 from tests.config import postgres_db
 from rick_db import fieldmapper
 from rick_db.profiler import NullProfiler
@@ -174,6 +175,9 @@ class TestPGConnection:
         assert len(animal.asdict()) == 2
         assert animal.legs == 4
         assert animal.name == 'cat'
+
+    def test_sqldialect(self, conn):
+        assert isinstance(conn.dialect(), PgSqlDialect)
 
 
 class TestPGConnectionPool(TestPGConnection):

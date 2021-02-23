@@ -1,5 +1,6 @@
 import sqlite3
 from rick_db.conn import Connection
+from rick_db.sql.dialects import Sqlite3SqlDialect
 
 
 class Sqlite3Connection(Connection):
@@ -15,3 +16,4 @@ class Sqlite3Connection(Connection):
         conn = sqlite3.connect(file_name, **kwargs)
         conn.row_factory = sqlite3.Row
         super().__init__(conn)
+        self._dialect = Sqlite3SqlDialect()

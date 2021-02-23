@@ -1,6 +1,6 @@
 import pytest
 
-from rick_db.record import Record, fieldmapper, ATTR_FIELDS, ATTR_TABLE, ATTR_SCHEMA, ATTR_PRIMARY_KEY, \
+from rick_db.mapper import Record, fieldmapper, ATTR_FIELDS, ATTR_TABLE, ATTR_SCHEMA, ATTR_PRIMARY_KEY, \
     ATTR_RECORD_MAGIC, ATTR_ROW
 
 FIELD_USER_ID = 'id_user'
