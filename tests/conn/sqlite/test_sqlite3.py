@@ -77,7 +77,7 @@ class TestSqlite3Connection:
         # transaction rollback, no animal should be found
         with conn.cursor() as c:
             animal = c.fetchone(self.selectByLeg, [8])
-            assert len(animal) == 0
+            assert animal is None
 
     def test_transaction_rollback_multi(self, conn):
         # test rollback of multiple cursors
@@ -100,24 +100,20 @@ class TestSqlite3Connection:
         # transaction rollback, no animal should be found
         with conn.cursor() as c:
             animal = c.fetchone(self.selectByLeg, [8])
-            assert len(animal) == 0
+            assert animal is None
             animal = c.fetchone(self.selectByLeg, [7])
-            assert len(animal) == 0
+            assert animal is None
 
     def test_fetchone(self, conn):
         c = conn.cursor()
 
         # non-existing record
         animal = c.fetchone(self.selectByLeg, [16])
-        assert type(animal) is dict
-        assert len(animal) == 0
+        assert animal is None
 
         # non-existing record with class
         animal = c.fetchone(self.selectByLeg, [16], cls=Animal)
-        assert type(animal) is Animal
-        assert len(animal.fields()) == 0
-        assert animal.legs is None
-        assert animal.name is None
+        assert animal is None
 
         # simple record
         animal = c.fetchone(self.selectByLeg, [4])

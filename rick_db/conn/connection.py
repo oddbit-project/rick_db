@@ -78,9 +78,7 @@ class Cursor:
             result = cursor.fetchone()
         self._profiler.add_event(qry, params, self._elapsed(timer))
         if result is None:
-            if cls is not None:
-                return cls()
-            return {}
+            return result
 
         if cls is not None:
             return cls().fromrecord(result)
@@ -98,8 +96,6 @@ class Cursor:
             result = cursor.fetchall()
         self._profiler.add_event(qry, params, self._elapsed(timer))
         if result is None:
-            if cls is not None:
-                return cls()
             return []
 
         if cls is not None:
