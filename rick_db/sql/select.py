@@ -631,6 +631,8 @@ class Select(SqlStatement):
 
     def _where(self, field, operator=None, value=None, is_and=True, table=None):
         """
+        Internal WHERE handler
+
         :param field: expression
         :param operator: clause operator
         :param value: optional value
@@ -674,9 +676,17 @@ class Select(SqlStatement):
             if operator is None:
                 expression = "{fld} {ph}".format(fld=field, ph=self._dialect.placeholder)
             else:
-                expression = "{fld} {op} {ph}".format(fld=field, op=operator, ph=self._dialect.placeholder)
+                if isinstance(value, Select):
+                    sql, value = value.assemble()
+                    expression = "{fld} {op} ({query})".format(fld=field, op=operator, query=sql)
+                    for v in value:
+                        self._query_values[Sql.WHERE].append(v)
+                    value = None
+                else:
+                    expression = "{fld} {op} {ph}".format(fld=field, op=operator, ph=self._dialect.placeholder)
             self._parts_where.append([expression, concat_with])
-            self._query_values[Sql.WHERE].append(value)
+            if value is not None:
+                self._query_values[Sql.WHERE].append(value)
 
         return self
 
@@ -860,7 +870,7 @@ class Select(SqlStatement):
                 fields = [str(fields)]
             elif isinstance(fields, collections.abc.Mapping):
                 fields = [fields]
-            elif type(fields) not in [list,tuple]:
+            elif type(fields) not in [list, tuple]:
                 raise SqlError("Invalid column type: %s" % str(type(fields)))
 
             if alias is True and tbl_alias != Sql.ANONYMOUS:  # masks anonymous expressions

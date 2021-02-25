@@ -257,6 +257,8 @@ def test_join_natural(table, cols, schema, result):
 
 # Select:where() -------------------------------------------------------------------------------------------------------
 
+sample_qry = Select().from_("test", ['id']).where(Literal('SUM(total)'), '>', 0)
+
 where_simple = [
     # field names
     ["field1", "=", 32, 'SELECT "test_table".* FROM "test_table" WHERE ("field1" = %s)'],
@@ -271,6 +273,8 @@ where_simple = [
     [Literal("TOP(field1)"), 'is null', None, 'SELECT "test_table".* FROM "test_table" WHERE (TOP(field1) is null)'],
     [Literal(SomeTable.field + " is null or field > 0"), None, None,
      'SELECT "test_table".* FROM "test_table" WHERE (field is null or field > 0)'],
+    [SomeTable.field, 'in', sample_qry,
+     'SELECT "test_table".* FROM "test_table" WHERE ("field" in (SELECT "id" FROM "test" WHERE (SUM(total) > ?)))'],
 ]
 
 where_and = [
