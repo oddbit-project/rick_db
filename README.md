@@ -89,6 +89,12 @@ print(customer.id_country) # outputs 'None'
 ```
 ### Query Builder 
 
+Features:
+- support for Select, Insert, Delete, Update queries;
+- join support;
+- schema support, including cross-schema operations;
+- integration with fieldmapper; 
+
 The query builder provides SQL generation using a fluent interface, suitable for most cases. Different database support
 is handled via dialect objects (extending from SqlDialect). The query builder itself will only generate a SQL string
 and a parameter list; its up to the developer to use the generated SQL in the appropriate database context.
@@ -96,7 +102,7 @@ and a parameter list; its up to the developer to use the generated SQL in the ap
 The query builder supports Object Mapper classes as table and schema identifiers in most cases; however it can also be
 used without any Object Mapper reference. See examples below:
 
-Query Builder examples:
+Select Query Builder examples:
 ```python
 from rick_db.sql import Select, PgSqlDialect, Literal
 
@@ -157,7 +163,56 @@ qry, values = Select(PgSqlDialect()).from_('customers') \
 # output: SELECT "customers".*,"sales"."document_total" AS "total" FROM "customers" INNER JOIN "orders" ON "customers"."id"="orders"."fk_customer" INNER JOIN "sales" ON "orders"."id"="sales"."fk_order"
 print(qry)
 ```
-Using Object Mapper:
+
+Insert Query Builder examples:
+```python
+from rick_db.sql import Insert
+
+record = {
+    'field1': 'value1',
+    'field2': 12,
+}
+qry, values = Insert().into('mytable').values(record).assemble()
+# INSERT INTO "mytable" ("field1", "field2") VALUES (?, ?)
+print(qry)
+# ['value1', 12]
+print(values)
+
+qry, values = Insert().into('mytable').values(record).returning(['id']).assemble()
+# INSERT INTO "mytable" ("field1", "field2") VALUES (?, ?) RETURNING "id"
+print(qry)
+# ['value1', 12]
+print(values)
+``` 
+
+Delete Query Builder examples:
+
+```python
+from rick_db.sql import Delete
+
+qry, values = Delete().from_('mytable').assemble()
+# output: DELETE FROM "mytable"
+print(qry)
+# output: []
+print(values)
+
+qry, values = Delete().from_('mytable').where('id', '=', 16).assemble()
+# output: DELETE FROM "mytable" WHERE "id" = ?
+print(qry)
+# output: [16]
+print(values)
+
+qry, values = Delete().from_('mytable') \
+    .where('id', '=', 16) \
+    .orwhere('name', 'LIKE', '%John%') \
+    .assemble()
+# output: DELETE FROM "mytable" WHERE "id" = ? OR "name" LIKE ?
+print(qry)
+# [16, '%John%']
+print(values)
+```
+
+Select using Object Mapper:
 
 ```python
 from rick_db import fieldmapper
@@ -195,6 +250,84 @@ qry = Select().from_(Customer, [Customer.name, Customer.city]) \
 
 # output: ('SELECT "name","city","s"."sale_total" FROM "customers" INNER JOIN "orders" AS "o" ON "customers"."id_customer"="o"."fk_customer" INNER JOIN "sales" AS "s" ON "o"."id_order"="s"."fk_order" WHERE ("sale_total" > ?)', [100])
 print(qry.assemble())
+```
+
+Insert using Object Mapper:
+
+```python
+from rick_db import fieldmapper
+from rick_db.sql import Insert
+
+
+@fieldmapper(tablename='customers', pk='id_customer')
+class Customer:
+    id = 'id_customer'
+    name = 'name'
+    address = 'address'
+    city = 'city'
+    id_country = 'fk_country'
+
+
+record = Customer(id=1, name='John', city='Dallas')
+
+qry, values = Insert().into(Customer).values(record).assemble()
+# output: INSERT INTO "customers" ("id_customer", "name", "city") VALUES (?, ?, ?)
+print(qry)
+# output: [1, 'John', 'Dallas']
+print(values)
+
+# Insert() - compact form with Records
+# into() will detect its a valid record, and parse everything from there
+qry, values = Insert().into(record).assemble()
+# output: INSERT INTO "customers" ("id_customer", "name", "city") VALUES (?, ?, ?)
+print(qry)
+# output: [1, 'John', 'Dallas']
+print(values)
+
+qry, values = Insert().into(record).returning([Customer.id]).assemble()
+# output: INSERT INTO "customers" ("id_customer", "name", "city") VALUES (?, ?, ?) RETURNING "id_customer"
+print(qry)
+# output: [1, 'John', 'Dallas']
+print(values)
+```
+Delete using Object Mapper:
+
+```python
+from rick_db import fieldmapper
+from rick_db.sql import Delete
+
+
+@fieldmapper(tablename='customers', pk='id_customer')
+class Customer:
+    id = 'id_customer'
+    name = 'name'
+    address = 'address'
+    city = 'city'
+    id_country = 'fk_country'
+
+
+record = Customer(id=1, name='John', city='Dallas')
+
+qry, values = Delete().from_(Customer).assemble()
+# output: DELETE FROM "customers"
+print(qry)
+# output: []
+print(values)
+
+qry, values = Delete().from_(Customer).where(Customer.id, '=', record.id).assemble()
+# output: DELETE FROM "customers" WHERE "id_customer" = ?
+print(qry)
+# output: [1]
+print(values)
+
+qry, values = Delete().from_(Customer) \
+    .where(Customer.id, '=', record.id) \
+    .orwhere(Customer.name, 'LIKE', '%John%') \
+    .assemble()
+# output: DELETE FROM "customers" WHERE "id_customer" = ? OR "name" LIKE ?
+print(qry)
+# [1, '%John%']
+print(values)
 ```
 
 ### Repository

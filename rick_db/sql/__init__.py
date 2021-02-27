@@ -3,3 +3,4 @@ from .dialects import SqlDialect, Sqlite3SqlDialect, PgSqlDialect, DefaultSqlDia
 from .select import Select
 from .insert import Insert
 from .delete import Delete
+from .update import Update

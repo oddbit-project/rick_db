@@ -9,7 +9,11 @@ class SqlDialect:
     """
 
     def __init__(self):
+        # public properties
         self.placeholder = "?"
+        self.insert_returning = True        # if true, INSERT...RETURNING syntax is supported
+
+        # internal properties
         self._quote_table = '"{table}"'
         self._quote_field = '"{field}"'
         self._quote_schema = '"{schema}"'
@@ -157,6 +161,7 @@ class Sqlite3SqlDialect(SqlDialect):
     def __init__(self):
         super(Sqlite3SqlDialect, self).__init__()
         self.placeholder = "?"
+        self.insert_returning = False
 
 
 class DefaultSqlDialect(SqlDialect):

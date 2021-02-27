@@ -1,5 +1,3 @@
-import inspect
-
 import pytest
 from rick_db import fieldmapper
 from rick_db.sql import Delete, Select, Literal

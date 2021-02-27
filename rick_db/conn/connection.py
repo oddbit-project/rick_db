@@ -55,8 +55,6 @@ class Cursor:
             result = cursor.fetchall()
         self._profiler.add_event(qry, params, self._elapsed(timer))
         if result is None:
-            if cls is not None:
-                return cls()
             return []
 
         if cls is not None:
@@ -104,6 +102,9 @@ class Cursor:
                 tmp.append(cls().fromrecord(r))
             return tmp
         return result
+
+    def get_cursor(self):
+        return self._cursor
 
 
 class Connection:
