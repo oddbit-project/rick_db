@@ -6,7 +6,7 @@ from rick_db import Record
 from rick_db.cache import StrCache
 from rick_db.conn import Connection
 from rick_db.mapper import ATTR_RECORD_MAGIC, ATTR_TABLE, ATTR_SCHEMA, ATTR_PRIMARY_KEY
-from rick_db.sql import SqlDialect, Select, Insert, Delete, Update
+from rick_db.sql import SqlDialect, Select, Insert, Delete, Update, Literal
 
 
 class RepositoryError(Exception):
@@ -85,19 +85,37 @@ class Repository(BaseRepository):
             sql, values = qry.limit(1).assemble()
             return c.fetchone(sql, values, cls=self._record)
 
-    def fetch(self, qry: Select) -> Union[list, None]:
+    def fetch(self, qry: Select, cls=None) -> Union[list, None]:
         """
         Fetch a list of rows
 
         :param qry: query to execute
+        :param cls: optional record class (useful for joins that may return different record structures)
         :return: list of record object or empty list
 
         Example:
-            r.fetch_one(r.select().where('name', 'like', 'gandal%'))     # fetch records that match query
+            r.fetch(r.select().where('name', 'like', 'gandalf%'))     # fetch records that match query
         """
         with self._db.cursor() as c:
             sql, values = qry.assemble()
-            return c.fetchall(sql, values, cls=self._record)
+            if cls is None:
+                cls = self._record
+            return c.fetchall(sql, values, cls=cls)
+
+    def fetch_raw(self, qry: Select) -> Union[list, None]:
+        """
+        Fetch a list of rows
+        Result is not serialized to record, instead it returns a list of dict-like records directly from the DB driver
+
+        :param qry: query to execute
+        :return: list of dict-like result
+
+        Example:
+            r.fetch_raw(r.select().where('name', 'like', 'gandalf%'))     # fetch records that match query
+        """
+        with self._db.cursor() as c:
+            sql, values = qry.assemble()
+            return c.fetchall(sql, values)
 
     def fetch_by_field(self, field, value, cols=None):
         """
@@ -132,7 +150,7 @@ class Repository(BaseRepository):
 
         for clause in where_clauses:
             if len(clause) != 3:
-               raise RepositoryError("fetch_where(): invalid length for where clause")
+                raise RepositoryError("fetch_where(): invalid length for where clause")
             qry.where(clause[0], clause[1], clause[2])
 
         qry, values = qry.assemble()
@@ -215,7 +233,7 @@ class Repository(BaseRepository):
         with self._db.cursor() as c:
             result = c.exec(sql, values, self._record)
             if not self._dialect.insert_returning:
-                record = self._record().fromrecord({self._pk:c.get_cursor().lastrowid})
+                record = self._record().fromrecord({self._pk: c.get_cursor().lastrowid})
                 return record
 
             if len(result) > 0:
@@ -298,16 +316,20 @@ class Repository(BaseRepository):
             result = c.fetchone(sql, values, cls=self._record)
             return result is not None
 
-    def exec(self, sql, values):
+    def exec(self, sql, values=None, cls=None, useCls=True):
         """
-        DB exec() proxy
+        Execute a raw SQL query
 
         :param sql: query to execute
         :param values:values for the query
+        :param cls: optional record-type to use for result deserialization
+        :param useCls: if false, no record deserialization will be attempted
         :return: list
         """
         with self._db.cursor() as c:
-            return c.exec(sql, values, cls=self._record)
+            if cls is None and useCls:
+                cls = self._record
+            return c.exec(sql, values, cls=cls)
 
     def exists(self, field, value, pk_to_skip) -> bool:
         """
@@ -379,7 +401,7 @@ class Repository(BaseRepository):
                 raise RepositoryError("update_where(): invalid item in where clause list")
             lc = len(cond)
             if lc == 2:
-                qry.where(cond[0], value=cond[1])
+                qry.where(cond[0], operator='=', value=cond[1])
             elif lc == 3:
                 qry.where(cond[0], operator=cond[1], value=cond[2])
             else:
@@ -388,6 +410,55 @@ class Repository(BaseRepository):
         sql, values = qry.assemble()
         with self._db.cursor() as c:
             c.exec(sql, values)
+
+    def count(self) -> int:
+        """
+        Retrieve number of records in the table
+
+        :return: int
+        """
+        values = None
+        sql = self._cache_get('count')
+        if sql is None:
+            sql, values = self.select(cols={Literal('COUNT(*)'): 'total'}).assemble()
+            self._cache_set('count', sql)
+        result = self._db.cursor().fetchone(sql, values)
+        if result is not None:
+            return result['total']
+        return 0
+
+    def count_where(self, where_list: list):
+        """
+        Retrieve record count using WHERE clause
+
+        Each where condition must be in the form (fieldname, value) or (fieldname, operator, value)
+
+        :param where_list: list of where conditions
+        :return:
+        """
+        if type(where_list) not in [list, tuple]:
+            raise RepositoryError("count_where(): invalid type for where clause list")
+        if len(where_list) == 0:
+            raise RepositoryError("count_where(): where clause list cannot be empty")
+
+        qry = self.select(cols={Literal('COUNT(*)'): 'total'})
+        for cond in where_list:
+            if type(cond) not in [list, tuple]:
+                raise RepositoryError("count_where(): invalid item in where clause list")
+            lc = len(cond)
+            if lc == 2:
+                qry.where(cond[0], operator='=', value=cond[1])
+            elif lc == 3:
+                qry.where(cond[0], operator=cond[1], value=cond[2])
+            else:
+                raise RepositoryError("count_where(): invalid item in where clause list")
+
+        sql, values = qry.assemble()
+        with self._db.cursor() as c:
+            result = c.fetchone(sql, values)
+            if result is not None:
+                return result['total']
+            return 0
 
     def _cache_get(self, key) -> Union[str, None]:
         return self._query_cache.get(self._key_prefix + key)

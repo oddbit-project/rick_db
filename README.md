@@ -331,5 +331,59 @@ print(values)
 ```
 
 ### Repository
-TBD
+
+The **Repository** class provides a simple wrapper for **Record** read, insert, update and delete operations. Most operations
+require that the **Record** has both tablename and primary key information available.
+ 
+A repository object requires a database connection and a **Record** class:
+
+ ```python
+from rick_db import fieldmapper, Repository
+from rick_db.conn.pg import PgConnection
+
+
+@fieldmapper(tablename='users', pk='id_user')
+class User:
+    id = 'id_user'
+    name = 'name'
+    age = 'age'
+
+
+conn = PgConnection(dbname='tests', user='postgres', password='some_password')
+
+# create a repository for User class
+user_repository = Repository(conn, User)
+
+# iterate all records
+for user in user_repository.fetch_all():
+    print("Name: ", user.name)
+
+```
+
+**Repository** available methods:
+
+|Method|Description|
+|---|---|
+|backend()| Retrieve Connection instance|
+|dialect()| Retrieve SqlDialect instance|
+|select() | New Select() instance for the current table|
+|fetch_pk(pk_value)| Get one record by primary key value|
+|fetch_one(qry)| Get one record using the specified query|
+|fetch(qry)| Get list of records using the specified query|
+|fetch_raw(qry) | Get result using the specified query; no record serialization is done|
+|fetch_by_field(field, value, cols)| Get a list of records where field==value|
+|fetch_where(where_clauses, cols)| Get a list of records using a where clause list (AND only)|
+|fetch_all() | Get all records|
+|insert(record, cols)| Insert a record, optionally returning values|
+|insert_pk(record)| Insert a record and return the primary key value|
+|delete_pk(pk_value)| Delete a record by primary key value|
+|delete_where(where_clauses)| Delete records by where clause list (AND only)|
+|map_result_id(result) | Return a dict from a result list, where the key is the primary key|
+|valid_pk(pk_value)| Check if a given pk exists|
+|exec(sql, values, cls, useCls) | Execute a raw query and return the result|
+|exists(field, value, pk_to_skip)| Check if a field has a given value other than in the record specified by primary key|
+|update(record, pk_value) | Updates a record|
+|update_where(record, where_list)|Updates one or more records using a where clause list|
+|count()| Get number of rows|
+|count_where(where_list)| Count rows using a where clause list|
 
