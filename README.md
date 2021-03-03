@@ -16,12 +16,82 @@ rick_db was built to cater to a schema-first approach: Database schema is built 
 and the application layer has no responsibility on the structure of the database.
 
 
-### Installation
+## Installation
+```
+$ pip3 install rick_db
+```
 
-### Connection
-TBD
+## Connection
 
-### Object Mapper
+### PostgreSQL
+
+There are several PostgreSQL connectors available. However, it is recommended to use PgConnection with pgpool, instead of
+the available connection pool classes.
+
+Using PgConnection:
+
+```python
+from rick_db.conn.pg import PgConnection
+
+config = {
+    'dbname': 'my_database',
+    'user': '<some_user>',
+    'password': '<some_password>',
+    'host': 'localhost',
+    'port': 5432,
+}
+
+# create connection
+conn = PgConnection(**config)
+```
+
+Using PgConnectionPool:
+
+```python
+from rick_db.conn.pg import PgConnectionPool
+
+config = {
+    'dbname': 'my_database',
+    'user': '<some_user>',
+    'password': '<some_password>',
+    'host': 'localhost',
+    'port': 5432,
+    'min_conn': 4,
+}
+
+# create connection
+conn = PgConnectionPool(**config)
+```
+
+Using PgThreadedConnectionPool:
+
+```python
+from rick_db.conn.pg import PgThreadedConnectionPool
+
+config = {
+    'dbname': 'my_database',
+    'user': '<some_user>',
+    'password': '<some_password>',
+    'host': 'localhost',
+    'port': 5432,
+    'min_conn': 4,
+}
+
+# create connection
+conn = PgThreadedConnectionPool(**config)
+```
+
+
+### SqlLite
+
+```python
+from rick_db.conn.sqlite import Sqlite3Connection
+
+# create or open a sqlite database
+conn = Sqlite3Connection('my_database.db')
+```
+
+## Object Mapper
 
 The object mapper converts query results into object attributes. These data objects are generically known as **Records**.
 A Record contains a set of attributes for the desired fields, as well as optional table, schema and primary key information.
@@ -87,7 +157,7 @@ customer = Customer(id=3, name="John Doe", address="Obere Str.", city="Berlin")
 print(customer.name)  # outputs 'John Doe'
 print(customer.id_country) # outputs 'None' 
 ```
-### Query Builder 
+## Query Builder 
 
 Features:
 - support for Select, Insert, Delete, Update queries;
@@ -330,7 +400,7 @@ print(qry)
 print(values)
 ```
 
-### Repository
+## Repository
 
 The **Repository** class provides a simple wrapper for **Record** read, insert, update and delete operations. Most operations
 require that the **Record** has both tablename and primary key information available.
@@ -387,3 +457,12 @@ for user in user_repository.fetch_all():
 |count()| Get number of rows|
 |count_where(where_list)| Count rows using a where clause list|
 
+
+## Running tests
+
+To run the tests, you should have both tox and tox-docker, as well as a local docker daemon. Make sure the current user has
+access to the docker daemon.
+```python
+$ pip3 install tox tox-docker
+$ tox 
+```

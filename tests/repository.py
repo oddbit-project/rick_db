@@ -1,13 +1,5 @@
-import collections
-import os
-
 import pytest
-from rick_db.conn.sqlite import Sqlite3Connection
 from rick_db import fieldmapper, Repository, RepositoryError
-from rick_db.profiler import NullProfiler
-from rick_db.sql import Sqlite3SqlDialect
-
-dbfile = '/tmp/rick_db_sqlite_test.db'
 
 
 @fieldmapper(tablename='users', pk='id_user')
@@ -59,32 +51,7 @@ rows_users = [
 ]
 
 
-class TestSqlite3Connection:
-    createTable = """
-        create table if not exists users(
-        id_user integer primary key autoincrement,
-        name text default '',
-        email text default '',
-        login text default null,
-        active boolean default true
-        );
-        """
-    insertTable = "insert into users(name, email, login, active) values(?,?,?,?)"
-
-    def setup_method(self, test_method):
-        self.conn = Sqlite3Connection(dbfile)
-        with self.conn.cursor() as c:
-            c.exec(self.createTable)
-            for r in rows_users:
-                c.exec(self.insertTable, list(r.values()))
-
-    def teardown_method(self, test_method):
-        self.conn.close()
-        os.unlink(dbfile)
-
-    @pytest.fixture()
-    def conn(self):
-        return self.conn
+class RepositoryTest:
 
     def test_create_repository(self, conn):
         repo = Repository(conn, User)
@@ -295,8 +262,8 @@ class TestSqlite3Connection:
         assert type(users) is list
         assert len(users) == len(rows_users)
         for r in users:
-            assert repo.valid_pk(r.id) == True
-        assert repo.valid_pk(-1) == False
+            assert repo.valid_pk(r.id) is True
+        assert repo.valid_pk(-1) is False
 
     def test_exists(self, conn):
         repo = Repository(conn, User)

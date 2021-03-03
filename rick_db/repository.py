@@ -1,4 +1,3 @@
-import collections
 import inspect
 from typing import Union, Any
 

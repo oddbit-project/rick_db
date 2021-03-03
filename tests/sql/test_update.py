@@ -76,7 +76,7 @@ def test_update(table, fields, where_list, schema, result):
 
 
 @pytest.mark.parametrize("table, fields, where_list, schema, result", update_cases_or)
-def test_update(table, fields, where_list, schema, result):
+def test_update_or(table, fields, where_list, schema, result):
     qry = Update().table(table, schema)
     if fields:
         qry.values(fields)

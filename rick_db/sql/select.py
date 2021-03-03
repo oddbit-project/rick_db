@@ -754,7 +754,7 @@ class Select(SqlStatement):
             # build expression
             if self._parts_from[expr_alias]['tableName'] != expr_alias:
                 # if match is alias.field, ignore schema, as table is already aliased
-                expr_schema = None
+                from_schema = None
 
             left_part = self._dialect.field(from_field, None, expr_alias, from_schema)
             expression = left_part + operator + self._dialect.field(expr_or_field, table=alias)

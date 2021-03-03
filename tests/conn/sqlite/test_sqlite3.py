@@ -8,10 +8,12 @@ from rick_db.sql import Sqlite3SqlDialect
 
 dbfile = '/tmp/rick_db_sqlite_test.db'
 
+
 @fieldmapper
 class Animal:
     legs = 'legs'
     name = 'name'
+
 
 class TestSqlite3Connection:
     createTable = "create table if not exists animals(legs int, name varchar);"

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
-import sys
 
 try:
     from setuptools import setup, find_packages
@@ -16,7 +15,7 @@ with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     description = f.read()
 
 setup(
-    name='rick',
+    name='rick_db',
     version=version,
     author="Joao Pinheiro",
     author_email="",
@@ -24,6 +23,7 @@ setup(
     description='SQL database layer',
     license='MIT',
     long_description=description,
+    long_description_content_type="text/markdown",
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -31,21 +31,17 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
-        'Topic :: Internet :: WWW/HTTP',
+        'Programming Language :: SQL',
+        'Topic :: Database',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-    long_description_content_type='text/markdown',
     packages=find_packages(),
     include_package_data=True,
     python_requires=">=3.7",
     extras_require={},
-    install_requires=[],
-    zip_safe=False,
-    tests_require=[
-        "flake8>=2.1.0",
-        "tox>=1.7.0",
-        "codecov>=2.0.0",
-        "pytest-cov>=2.8.1",
+    install_requires=[
+        "psycopg2>=2.8.6",
     ],
+    zip_safe=False,
 )

@@ -1,6 +1,3 @@
-import collections
-from inspect import isclass
-
 from rick_db.mapper import ATTR_TABLE, ATTR_SCHEMA
 from rick_db.sql import SqlStatement, SqlDialect, SqlError, Sql, Literal, DefaultSqlDialect, Select
 

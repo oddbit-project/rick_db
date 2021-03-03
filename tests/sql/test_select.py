@@ -123,7 +123,7 @@ join_alias_cases = [
     # note: since "FROM" clause does not have a schema, the result query is not completely valid
     [{"table2": "t"}, "table2_id", {"TABLE_NAME": "t1"}, TABLE_NAME + "_id", '>', ['t_field_1', 't_field_2'], 'schema',
      'other_schema',
-     'SELECT "t1".*,"t"."t_field_1","t"."t_field_2" FROM "test_table" AS "t1" INNER JOIN "schema"."table2" AS "t" ON "other_schema"."t1"."test_table_id">"t"."table2_id"'],
+     'SELECT "t1".*,"t"."t_field_1","t"."t_field_2" FROM "test_table" AS "t1" INNER JOIN "schema"."table2" AS "t" ON "t1"."test_table_id">"t"."table2_id"'],
 ]
 
 
@@ -439,7 +439,7 @@ having = [
 
 
 @pytest.mark.parametrize("field, operator, value, schema, result", having)
-def test_group(field, operator, value, schema, result):
+def test_having(field, operator, value, schema, result):
     sql, _ = Select(PgSqlDialect()).from_(TABLE_NAME, "*").having(field, operator, value, schema).assemble()
     assert sql == result
 

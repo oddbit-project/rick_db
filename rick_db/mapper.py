@@ -16,23 +16,32 @@ class RecordError(Exception):
 
 class Record:
 
-    def load(self, **kwargs): pass
+    def load(self, **kwargs):
+        pass
 
-    def fromrecord(self, record): pass
+    def fromrecord(self, record):
+        pass
 
-    def has_pk(self): pass
+    def has_pk(self):
+        pass
 
-    def pk(self): pass
+    def pk(self):
+        pass
 
-    def asdict(self): pass
+    def asdict(self):
+        pass
 
-    def asrecord(self): pass
+    def asrecord(self):
+        pass
 
-    def fields(self): pass
+    def fields(self):
+        pass
 
-    def items(self): pass
+    def items(self):
+        pass
 
-    def values(self): pass
+    def values(self):
+        pass
 
 
 class BaseRecord(Record):

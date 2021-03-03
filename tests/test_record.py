@@ -75,7 +75,7 @@ def test_fieldmapper_address():
 
 def check_user(u: User, id, name):
     # pk
-    assert u.has_pk() == True
+    assert u.has_pk() is True
     # read attributes
     if id is None:
         assert u.id is None
