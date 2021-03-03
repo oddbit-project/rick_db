@@ -15,7 +15,7 @@ with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     description = f.read()
 
 setup(
-    name='rick_db',
+    name='rick-db',
     version=version,
     author="Joao Pinheiro",
     author_email="",
@@ -37,7 +37,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     packages=find_packages(),
-    include_package_data=True,
+    include_package_data=False,
     python_requires=">=3.7",
     extras_require={},
     install_requires=[
