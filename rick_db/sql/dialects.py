@@ -97,7 +97,10 @@ class PgSqlDialect(SqlDialect):
     """
 
     def __init__(self):
+        # public properties
         self.placeholder = "%s"
+        self.insert_returning = True        # if true, INSERT...RETURNING syntax is supported
+
         self._quote_table = '"{table}"'
         self._quote_field = '"{field}"'
         self._quote_schema = '"{schema}"'
