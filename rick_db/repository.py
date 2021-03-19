@@ -1,3 +1,4 @@
+import copy
 import inspect
 from typing import Union, Any
 
@@ -35,7 +36,7 @@ class Repository(BaseRepository):
             raise RepositoryError("__init__(): record_type must be a valid Record class")
         self._record = record_type  # type: Record
         self._query_cache = query_cache  # use global query cache
-        self._key_prefix = "{0}.{1}:".format(self.__class__.__module__, self.__class__.__name__)
+        self._key_prefix = "{0}:{1}.{2}:".format(type(db).__name__, self.__class__.__module__, self.__class__.__name__)
 
         super().__init__(db,
                          getattr(record_type, ATTR_TABLE),
@@ -215,7 +216,7 @@ class Repository(BaseRepository):
         Insert a record returning the primary key value
 
         :param record: record object to insert
-        :return: record or None
+        :return: record id or None
         """
         pk = self._pk
         if pk is None:
@@ -230,13 +231,11 @@ class Repository(BaseRepository):
             sql, values = qry.assemble()
 
         with self._db.cursor() as c:
-            result = c.exec(sql, values, self._record)
+            result = c.exec(sql, values, cls=self._record)
             if not self._dialect.insert_returning:
-                record = self._record().fromrecord({self._pk: c.get_cursor().lastrowid})
-                return record
+                return c.get_cursor().lastrowid
 
             if len(result) > 0:
-                # return only primary key value
                 return result.pop(0).pk()
             return None
 
@@ -458,6 +457,37 @@ class Repository(BaseRepository):
             if result is not None:
                 return result['total']
             return 0
+
+    def list(self, qry: Select, limit=None, offset=None, cls=None):
+        """
+        Performs a query with offset and limit
+        Returns a tuple with total record count for the query, and the rows returned by applying offset and limit
+
+        The original query object is left intact
+
+        :param qry: query to use
+        :param limit:
+        :param offset:
+        :param cls: optional Record class to use for rows
+        :return: (total_rows, selected_row_list)
+        """
+        total = 0
+        qry = copy.deepcopy(qry)
+        sql, values = qry.assemble()
+        qry_count = Select(self._dialect).from_({Literal(sql): "qry"}, cols={Literal('COUNT(*)'): 'total'})
+        if limit:
+            qry.limit(limit, offset)
+
+        with self._db.cursor() as c:
+            # count total rows
+            sql, _ = qry_count.assemble()
+            count_record = c.fetchone(sql, values)
+            if count_record:
+                total = count_record['total']
+
+        # fetch rows
+        rows = self.fetch(qry, cls=cls)
+        return total, rows
 
     def _cache_get(self, key) -> Union[str, None]:
         return self._query_cache.get(self._key_prefix + key)

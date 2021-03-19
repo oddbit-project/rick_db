@@ -99,7 +99,7 @@ class Insert(SqlStatement):
         :return: self
         """
         if type(fields) is str:
-            self._returning = [fields]
+            fields = [fields]
 
         if type(fields) not in [list, tuple]:
             raise SqlError("returning(): invalid return field type: %s" % str(type(fields)))

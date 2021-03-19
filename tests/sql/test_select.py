@@ -48,6 +48,10 @@ from_cases = [
     [SomeTable, SomeTable.field, None, 'SELECT "field" FROM "test_table"'],
     [SomeTable, [SomeTable.field], None, 'SELECT "field" FROM "test_table"'],
     [SomeTable, [SomeTable.field, "field2"], None, 'SELECT "field","field2" FROM "test_table"'],
+    [{Literal('select a,b,c from abc where x>7'): 'tbl1'}, ['a', 'c'], None,
+     'SELECT "tbl1"."a","tbl1"."c" FROM (select a,b,c from abc where x>7) AS "tbl1"'],
+    [{Literal('select id from abc where x>7'): 'tbl1'}, {Literal('COUNT(*)'): 'total'}, None,
+     'SELECT COUNT(*) AS "total" FROM (select id from abc where x>7) AS "tbl1"']
 ]
 
 from_cases_except = [

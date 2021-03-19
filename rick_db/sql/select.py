@@ -800,7 +800,6 @@ class Select(SqlStatement):
 
             # if select or Literal, convert to string
             if isinstance(table, Select) or isinstance(table, Literal):
-                table = str(table)
                 if alias is None:
                     alias = self._alias('t')
 
@@ -816,7 +815,7 @@ class Select(SqlStatement):
                 raise SqlError("_join(): invalid table type: %s" % str(type(table)))
 
         # name cannot be empty
-        if len(table) == 0:
+        if not table:
             raise SqlError("_join(): empty name")
 
         # if alias is still missing, build one
