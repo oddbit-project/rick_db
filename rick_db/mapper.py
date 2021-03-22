@@ -92,6 +92,13 @@ class BaseRecord(Record):
         """
         return self._pk is not None
 
+    def dbfields(self):
+        """
+        Return the db field list from the fieldmap
+        :return: list
+        """
+        return list(self._fieldmap.values())
+
     def pk(self):
         """
         Return the current pk value, if defined

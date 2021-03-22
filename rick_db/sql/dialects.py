@@ -11,7 +11,8 @@ class SqlDialect:
     def __init__(self):
         # public properties
         self.placeholder = "?"
-        self.insert_returning = True        # if true, INSERT...RETURNING syntax is supported
+        self.insert_returning = True  # if true, INSERT...RETURNING syntax is supported
+        self.ilike = True  # if true, ILIKE is supported
 
         # internal properties
         self._quote_table = '"{table}"'
@@ -33,9 +34,15 @@ class SqlDialect:
             table('tbl', None, None) -> "tbl"
             table('tbl', 'alias', 'schema') -> "schema"."tbl" AS "alias"
         """
-        table_name = self._quote_table.format(table=table_name)
-        if schema is not None:
-            table_name = self._quote_schema.format(schema=schema) + self._separator + table_name
+        if not isinstance(table_name, Literal):
+            # table is a string to be quoted and schema-prefixed
+            table_name = self._quote_table.format(table=table_name)
+
+            if schema is not None:
+                table_name = self._quote_schema.format(schema=schema) + self._separator + table_name
+        else:
+            # table_name is actually a Literal expression, just add parenthesis
+            table_name = "({table})".format(table=table_name)
 
         if alias is None:
             return table_name
@@ -99,7 +106,8 @@ class PgSqlDialect(SqlDialect):
     def __init__(self):
         # public properties
         self.placeholder = "%s"
-        self.insert_returning = True        # if true, INSERT...RETURNING syntax is supported
+        self.insert_returning = True  # if true, INSERT...RETURNING syntax is supported
+        self.ilike = True  # if true, ILIKE is supported
 
         self._quote_table = '"{table}"'
         self._quote_field = '"{field}"'
@@ -165,6 +173,7 @@ class Sqlite3SqlDialect(SqlDialect):
         super(Sqlite3SqlDialect, self).__init__()
         self.placeholder = "?"
         self.insert_returning = False
+        self.ilike = False
 
 
 class DefaultSqlDialect(SqlDialect):

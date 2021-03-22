@@ -48,6 +48,10 @@ from_cases = [
     [SomeTable, SomeTable.field, None, 'SELECT "field" FROM "test_table"'],
     [SomeTable, [SomeTable.field], None, 'SELECT "field" FROM "test_table"'],
     [SomeTable, [SomeTable.field, "field2"], None, 'SELECT "field","field2" FROM "test_table"'],
+    [{Literal('select a,b,c from abc where x>7'): 'tbl1'}, ['a', 'c'], None,
+     'SELECT "tbl1"."a","tbl1"."c" FROM (select a,b,c from abc where x>7) AS "tbl1"'],
+    [{Literal('select id from abc where x>7'): 'tbl1'}, {Literal('COUNT(*)'): 'total'}, None,
+     'SELECT COUNT(*) AS "total" FROM (select id from abc where x>7) AS "tbl1"']
 ]
 
 from_cases_except = [
@@ -304,7 +308,7 @@ def test_where_simple(field, operator, value, result):
 
 
 @pytest.mark.parametrize("field, operator, value,field1, operator1, value1, result", where_and)
-def test_where_and(field, operator, value, field1, operator1, value1, result):
+def test_where(field, operator, value, field1, operator1, value1, result):
     sql, _ = Select(PgSqlDialect()).from_(TABLE_NAME, "*") \
         .where(field, operator, value) \
         .where(field1, operator1, value1) \
@@ -313,7 +317,7 @@ def test_where_and(field, operator, value, field1, operator1, value1, result):
 
 
 @pytest.mark.parametrize("field, operator, value,field1, operator1, value1, result", where_or)
-def test_where_or(field, operator, value, field1, operator1, value1, result):
+def test_orwhere(field, operator, value, field1, operator1, value1, result):
     sql, _ = Select(PgSqlDialect()).from_(TABLE_NAME, "*") \
         .where(field, operator, value) \
         .orwhere(field1, operator1, value1) \
@@ -453,3 +457,169 @@ def test_union():
     ])
     sql, _ = qry_union.assemble()
     assert sql == 'SELECT "test_table".* FROM "test_table" UNION SELECT "other_table".* FROM "public"."other_table"'
+
+
+# Select:where_and() -----------------------------------------------------------------------------------------------
+
+def test_where_and():
+    # test with AND group in the beginning
+    qry = Select(PgSqlDialect()).from_(SomeTable) \
+        .where_and() \
+        .where('field1', '=', 1) \
+        .where('field2', '=', 2) \
+        .where_end()
+
+    sql, values = qry.assemble()
+    assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) )'
+    assert values == [1, 2]
+
+    # AND group and parameter
+    qry = Select(PgSqlDialect()).from_(SomeTable) \
+        .where('field3', '=', 3) \
+        .where_and() \
+        .where('field1', '=', 1) \
+        .where('field2', '=', 2) \
+        .where_end()
+
+    sql, values = qry.assemble()
+    assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) AND ( ("field1" = %s) AND ("field2" ' \
+                  '= %s) )'
+    assert values == [3, 1, 2]
+
+    # AND group and two parameters
+    qry = Select(PgSqlDialect()).from_(SomeTable) \
+        .where('field3', '=', 3) \
+        .where_and() \
+        .where('field1', '=', 1) \
+        .where('field2', '=', 2) \
+        .where_end() \
+        .where('field4', '=', 4)
+
+    sql, values = qry.assemble()
+    assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) AND ( ("field1" = %s) AND ("field2" ' \
+                  '= %s) ) AND ("field4" = %s)'
+    assert values == [3, 1, 2, 4]
+
+    # nested AND group
+    qry = Select(PgSqlDialect()).from_(SomeTable) \
+        .where_and() \
+        .where('field1', '=', 1) \
+        .where_and() \
+        .where('field2', '=', 2) \
+        .orwhere('field3', '=', 3) \
+        .where_end() \
+        .where('field4', '=', 4) \
+        .where_end() \
+        .where('field5', '=', 5)
+
+    sql, values = qry.assemble()
+    assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ( ("field2" = %s) OR ("field3" ' \
+                  '= %s) ) AND ("field4" = %s) ) AND ("field5" = %s)'
+    assert values == [1, 2, 3, 4, 5]
+
+    # Two AND groups
+    qry = Select(PgSqlDialect()).from_(SomeTable) \
+        .where_and() \
+        .where('field1', '=', 1) \
+        .where('field2', '=', 2) \
+        .where_end() \
+        .where_and() \
+        .where('field3', '=', 3) \
+        .orwhere('field4', '=', 4) \
+        .where_end()
+
+    sql, values = qry.assemble()
+    assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) ) AND ( (' \
+                  '"field3" = %s) OR ("field4" = %s) )'
+    assert values == [1, 2, 3, 4]
+
+
+def test_where_or():
+    # test with OR group in the beginning
+    qry = Select(PgSqlDialect()).from_(SomeTable) \
+        .where_or() \
+        .where('field1', '=', 1) \
+        .where('field2', '=', 2) \
+        .where_end()
+
+    sql, values = qry.assemble()
+    assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) )'
+    assert values == [1, 2]
+
+    # OR group and parameter
+    qry = Select(PgSqlDialect()).from_(SomeTable) \
+        .where('field3', '=', 3) \
+        .where_or() \
+        .where('field1', '=', 1) \
+        .where('field2', '=', 2) \
+        .where_end()
+
+    sql, values = qry.assemble()
+    assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) OR ( ("field1" = %s) AND ("field2" = ' \
+                  '%s) )'
+    assert values == [3, 1, 2]
+
+    # OR group and two parameters
+    qry = Select(PgSqlDialect()).from_(SomeTable) \
+        .where('field3', '=', 3) \
+        .where_or() \
+        .where('field1', '=', 1) \
+        .where('field2', '=', 2) \
+        .where_end() \
+        .where('field4', '=', 4)
+
+    sql, values = qry.assemble()
+    assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) OR ( ("field1" = %s) AND ("field2" = ' \
+                  '%s) ) AND ("field4" = %s)'
+    assert values == [3, 1, 2, 4]
+
+    # nested OR group
+    qry = Select(PgSqlDialect()).from_(SomeTable) \
+        .where_or() \
+        .where('field1', '=', 1) \
+        .where_or() \
+        .where('field2', '=', 2) \
+        .orwhere('field3', '=', 3) \
+        .where_end() \
+        .where('field4', '=', 4) \
+        .where_end() \
+        .where('field5', '=', 5)
+
+    sql, values = qry.assemble()
+    assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) OR ( ("field2" = %s) OR ("field3" ' \
+                  '= %s) ) AND ("field4" = %s) ) AND ("field5" = %s)'
+    assert values == [1, 2, 3, 4, 5]
+
+    # Two OR groups
+    qry = Select(PgSqlDialect()).from_(SomeTable) \
+        .where_or() \
+        .where('field1', '=', 1) \
+        .where('field2', '=', 2) \
+        .where_end() \
+        .where_or() \
+        .where('field3', '=', 3) \
+        .orwhere('field4', '=', 4) \
+        .where_end()
+
+    sql, values = qry.assemble()
+    assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) ) OR ( (' \
+                  '"field3" = %s) OR ("field4" = %s) )'
+    assert values == [1, 2, 3, 4]
+
+
+def test_where_and_or():
+    # test with both AND and OR groups
+    qry = Select(PgSqlDialect()).from_(SomeTable) \
+        .where_and() \
+        .where('field1', '=', 1) \
+        .where('field2', '=', 2) \
+        .where_end() \
+        .where_or() \
+        .where('field3', '=', 3) \
+        .where('field4', '=', 4) \
+        .where_end()
+
+    sql, values = qry.assemble()
+    assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) ) OR ( (' \
+                  '"field3" = %s) AND ("field4" = %s) )'
+    assert values == [1, 2, 3, 4]

@@ -1,5 +1,7 @@
 import pytest
 from rick_db import fieldmapper, Repository, RepositoryError
+from rick_db.conn.pg import PgConnection
+from rick_db.conn.sqlite import Sqlite3Connection
 
 
 @fieldmapper(tablename='users', pk='id_user')
@@ -68,7 +70,11 @@ class RepositoryTest:
             assert r.id is not None and type(r.id) is int
             assert r.name is not None and type(r.name) is str and len(r.name) > 0
             assert r.email is not None and type(r.email) is str and len(r.email) > 0
-            assert r.active is not None and type(r.active) is int  # bools are mapped as ints
+            assert r.active is not None
+            if isinstance(conn, PgConnection):
+                assert type(r.active) is bool
+            elif isinstance(conn, Sqlite3Connection):
+                assert type(r.active) is int
 
     def test_fetch_pk(self, conn):
         repo = Repository(conn, User)
@@ -213,40 +219,40 @@ class RepositoryTest:
     def test_insert_pk(self, conn):
         repo = Repository(conn, User)
         result = repo.insert_pk(User(name="Sarah", email="sarah.connor@skynet"))
-        assert isinstance(result, User)
-        assert result.id > 0
-        record = repo.fetch_pk(result.id)
+        assert isinstance(result, int)
+        assert result > 0
+        record = repo.fetch_pk(result)
         assert record.name == "Sarah"
 
     def test_delete_pk(self, conn):
         repo = Repository(conn, User)
         result = repo.insert_pk(User(name="Sarah", email="sarah.connor@skynet"))
-        assert isinstance(result, User)
-        assert result.id > 0
-        record = repo.fetch_pk(result.id)
+        assert isinstance(result, int)
+        assert result > 0
+        record = repo.fetch_pk(result)
         assert record.name == "Sarah"
 
-        repo.delete_pk(result.id)
-        record = repo.fetch_pk(result.id)
+        repo.delete_pk(result)
+        record = repo.fetch_pk(result)
         assert record is None
 
     def test_delete_where(self, conn):
         repo = Repository(conn, User)
         result = repo.insert_pk(User(name="Sarah", email="sarah.connor@skynet"))
-        assert isinstance(result, User)
-        assert result.id > 0
-        record = repo.fetch_pk(result.id)
+        assert isinstance(result, int)
+        assert result > 0
+        record = repo.fetch_pk(result)
         assert record.name == "Sarah"
 
         # failed delete, as where doesn't match
-        repo.delete_where([(User.id, '=', result.id), (User.name, '=', 'John')])
-        record = repo.fetch_pk(result.id)
+        repo.delete_where([(User.id, '=', result), (User.name, '=', 'John')])
+        record = repo.fetch_pk(result)
         assert record is not None
-        assert record.id == result.id
+        assert record.id == result
 
         # proper delete
-        repo.delete_where([(User.id, '=', result.id), (User.name, '=', 'Sarah')])
-        record = repo.fetch_pk(result.id)
+        repo.delete_where([(User.id, '=', result), (User.name, '=', 'Sarah')])
+        record = repo.fetch_pk(result)
         assert record is None
 
     def test_map_result_id(self, conn):
@@ -332,3 +338,25 @@ class RepositoryTest:
 
         assert repo.count_where([(User.name, 'bilbo')]) == 1
         assert repo.count_where([(User.name, 'John')]) == 0
+
+    def test_list(self, conn):
+        repo = Repository(conn, User)
+        users = repo.fetch_all()
+
+        qry = repo.select().order(User.id)
+        total, rows = repo.list(qry, 1)
+        assert total == len(users)
+        assert len(rows) == 1
+        assert rows[0].name == 'aragorn'
+
+        total, rows = repo.list(qry, 1, 1)
+        assert total == len(users)
+        assert len(rows) == 1
+        assert rows[0].name == 'bilbo'
+
+        qry = repo.select().order(User.id)
+        total, rows = repo.list(qry, 2, 2)
+        assert total == len(users)
+        assert len(rows) == 2
+        assert rows[0].name == 'samwise'
+        assert rows[1].name == 'gandalf'
