@@ -21,6 +21,10 @@ class Select(SqlStatement):
     UNION = Sql.SQL_UNION
     UNION_ALL = Sql.SQL_UNION_ALL
 
+    WHERE_AND = 1
+    WHERE_OR = 2
+    WHERE_CLOSE = 3
+
     # validation rules
     _valid_joins = [
         Sql.INNER_JOIN,
@@ -61,6 +65,8 @@ class Select(SqlStatement):
         self._parts_group = []
         self._parts_having = []
         self._parts_order = []
+
+        self._where_blocks = 0
 
         # SQL dialect options
         if dialect is None:
@@ -231,6 +237,33 @@ class Select(SqlStatement):
                     raise SqlError("order(): Invalid order direction: %s" % v)
 
         self._parts_order.append([fields, order])
+        return self
+
+    def where_and(self):
+        """
+        Starts a parenthesis AND block in the where clause
+        :return: self
+        """
+        self._parts_where.append([self.WHERE_AND])
+        self._where_blocks += 1
+        return self
+
+    def where_or(self):
+        """
+        Starts a parenthesis ORblock in the where clause
+        :return: self
+        """
+        self._parts_where.append([self.WHERE_OR])
+        self._where_blocks += 1
+        return self
+
+    def where_end(self):
+        """
+        Closes a parenthesis AND/OR block in the where clause
+        :return: self
+        """
+        self._parts_where.append([self.WHERE_CLOSE])
+        self._where_blocks -= 1
         return self
 
     def where(self, field, operator=None, value=None):
@@ -1029,11 +1062,26 @@ class Select(SqlStatement):
         parts = [Sql.SQL_WHERE]
         i = 0
         for row in clauses:
-            expr, glue = row
-            if i > 0:
-                parts.append(glue)
-            parts.append(Sql.SQL_LIST_DELIMITER_LEFT + expr + Sql.SQL_LIST_DELIMITER_RIGHT)
-            i += 1
+            if len(row) == 1:
+                # if len == 1, it is a marker token
+                token = row[0]
+                if token == self.WHERE_CLOSE:
+                    parts.append(Sql.SQL_LIST_DELIMITER_RIGHT)
+                else:
+                    if token == self.WHERE_AND:
+                        statement = Sql.SQL_AND
+                    else:
+                        statement = Sql.SQL_OR
+                    if i > 0:
+                        parts.append(statement)
+                    parts.append(Sql.SQL_LIST_DELIMITER_LEFT)
+                    i = 0
+            else:
+                expr, glue = row
+                if i > 0:
+                    parts.append(glue)
+                parts.append(Sql.SQL_LIST_DELIMITER_LEFT + expr + Sql.SQL_LIST_DELIMITER_RIGHT)
+                i += 1
 
         # copy values so they match the rendering sequence
         for v in self._query_values[Sql.WHERE]:
@@ -1099,6 +1147,8 @@ class Select(SqlStatement):
             parts.append(self._render_from())
 
         if len(self._parts_where) > 0:
+            if self._where_blocks != 0:
+                raise RuntimeError("assemble(): where block count mismatch; did you forget to close a AND/OR block?")
             parts.append(self._render_where())
 
         if len(self._parts_group) > 0:
