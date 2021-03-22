@@ -1,12 +1,8 @@
-import os
-
 import pytest
 
 from rick_db.conn.pg import PgConnection
 from tests.config import postgres_db
 from tests.repository import RepositoryTest, rows_users
-
-dbfile = '/tmp/rick_db_sqlite_test.db'
 
 
 class TestPgRepository(RepositoryTest):

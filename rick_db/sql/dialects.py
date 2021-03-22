@@ -12,6 +12,7 @@ class SqlDialect:
         # public properties
         self.placeholder = "?"
         self.insert_returning = True  # if true, INSERT...RETURNING syntax is supported
+        self.ilike = True  # if true, ILIKE is supported
 
         # internal properties
         self._quote_table = '"{table}"'
@@ -106,6 +107,7 @@ class PgSqlDialect(SqlDialect):
         # public properties
         self.placeholder = "%s"
         self.insert_returning = True  # if true, INSERT...RETURNING syntax is supported
+        self.ilike = True  # if true, ILIKE is supported
 
         self._quote_table = '"{table}"'
         self._quote_field = '"{field}"'
@@ -171,6 +173,7 @@ class Sqlite3SqlDialect(SqlDialect):
         super(Sqlite3SqlDialect, self).__init__()
         self.placeholder = "?"
         self.insert_returning = False
+        self.ilike = False
 
 
 class DefaultSqlDialect(SqlDialect):

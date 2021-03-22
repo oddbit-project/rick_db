@@ -308,7 +308,7 @@ def test_where_simple(field, operator, value, result):
 
 
 @pytest.mark.parametrize("field, operator, value,field1, operator1, value1, result", where_and)
-def test_where_and(field, operator, value, field1, operator1, value1, result):
+def test_where(field, operator, value, field1, operator1, value1, result):
     sql, _ = Select(PgSqlDialect()).from_(TABLE_NAME, "*") \
         .where(field, operator, value) \
         .where(field1, operator1, value1) \
@@ -317,7 +317,7 @@ def test_where_and(field, operator, value, field1, operator1, value1, result):
 
 
 @pytest.mark.parametrize("field, operator, value,field1, operator1, value1, result", where_or)
-def test_where_or(field, operator, value, field1, operator1, value1, result):
+def test_orwhere(field, operator, value, field1, operator1, value1, result):
     sql, _ = Select(PgSqlDialect()).from_(TABLE_NAME, "*") \
         .where(field, operator, value) \
         .orwhere(field1, operator1, value1) \
@@ -483,7 +483,7 @@ def test_where_and():
 
     sql, values = qry.assemble()
     assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) AND ( ("field1" = %s) AND ("field2" ' \
-                  '= %s) ) '
+                  '= %s) )'
     assert values == [3, 1, 2]
 
     # AND group and two parameters
@@ -497,7 +497,7 @@ def test_where_and():
 
     sql, values = qry.assemble()
     assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) AND ( ("field1" = %s) AND ("field2" ' \
-                  '= %s) ) AND ("field4" = %s) '
+                  '= %s) ) AND ("field4" = %s)'
     assert values == [3, 1, 2, 4]
 
     # nested AND group
@@ -514,7 +514,7 @@ def test_where_and():
 
     sql, values = qry.assemble()
     assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ( ("field2" = %s) OR ("field3" ' \
-                  '= %s) ) AND ("field4" = %s) ) AND ("field5" = %s) '
+                  '= %s) ) AND ("field4" = %s) ) AND ("field5" = %s)'
     assert values == [1, 2, 3, 4, 5]
 
     # Two AND groups
@@ -530,7 +530,7 @@ def test_where_and():
 
     sql, values = qry.assemble()
     assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) ) AND ( (' \
-                  '"field3" = %s) OR ("field4" = %s) ) '
+                  '"field3" = %s) OR ("field4" = %s) )'
     assert values == [1, 2, 3, 4]
 
 
@@ -556,7 +556,7 @@ def test_where_or():
 
     sql, values = qry.assemble()
     assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) OR ( ("field1" = %s) AND ("field2" = ' \
-                  '%s) ) '
+                  '%s) )'
     assert values == [3, 1, 2]
 
     # OR group and two parameters
@@ -570,7 +570,7 @@ def test_where_or():
 
     sql, values = qry.assemble()
     assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) OR ( ("field1" = %s) AND ("field2" = ' \
-                  '%s) ) AND ("field4" = %s) '
+                  '%s) ) AND ("field4" = %s)'
     assert values == [3, 1, 2, 4]
 
     # nested OR group
@@ -587,7 +587,7 @@ def test_where_or():
 
     sql, values = qry.assemble()
     assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) OR ( ("field2" = %s) OR ("field3" ' \
-                  '= %s) ) AND ("field4" = %s) ) AND ("field5" = %s) '
+                  '= %s) ) AND ("field4" = %s) ) AND ("field5" = %s)'
     assert values == [1, 2, 3, 4, 5]
 
     # Two OR groups
@@ -603,7 +603,7 @@ def test_where_or():
 
     sql, values = qry.assemble()
     assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) ) OR ( (' \
-                  '"field3" = %s) OR ("field4" = %s) ) '
+                  '"field3" = %s) OR ("field4" = %s) )'
     assert values == [1, 2, 3, 4]
 
 
@@ -621,5 +621,5 @@ def test_where_and_or():
 
     sql, values = qry.assemble()
     assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) ) OR ( (' \
-                  '"field3" = %s) AND ("field4" = %s) ) '
+                  '"field3" = %s) AND ("field4" = %s) )'
     assert values == [1, 2, 3, 4]
