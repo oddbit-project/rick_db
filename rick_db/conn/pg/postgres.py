@@ -9,6 +9,7 @@ from rick_db.sql.dialects import PgSqlDialect
 class PgConnection(Connection):
 
     def __init__(self, **kwargs):
+        self._conn = None
         self._in_transaction = False
         kwargs['cursor_factory'] = psycopg2.extras.DictCursor
         conn = psycopg2.connect(**kwargs)
