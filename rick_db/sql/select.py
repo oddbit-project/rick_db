@@ -715,6 +715,13 @@ class Select(SqlStatement):
                     for v in value:
                         self._query_values[Sql.WHERE].append(v)
                     value = None
+                if isinstance(value, collections.abc.Mapping):
+                    if len(value) != 1:
+                        raise SqlError("_where(): value collection must have exactly 1 record")
+                    tgt_tbl, tgt_field = list(value.items()).pop()
+                    tmp_field_expr = self._dialect.field(tgt_field, None, tgt_tbl)
+                    expression = "{fld} {op} {to_fld}".format(fld=field, op=operator, to_fld=tmp_field_expr)
+                    value = None
                 else:
                     expression = "{fld} {op} {ph}".format(fld=field, op=operator, ph=self._dialect.placeholder)
             self._parts_where.append([expression, concat_with])
@@ -1165,6 +1172,12 @@ class Select(SqlStatement):
 
         if self._for_update is True:
             parts.append(Sql.SQL_FOR_UPDATE)
+
+        # convert Literal() to str in values
+        for k,v in enumerate(self._values):
+            print(k,v)
+            if isinstance(v, Literal):
+                self._values[k] = str(v)
 
         return " ".join(parts).strip(), self._values
 
