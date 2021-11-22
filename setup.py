@@ -31,6 +31,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Programming Language :: SQL',
         'Topic :: Database',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
@@ -44,4 +45,9 @@ setup(
         "psycopg2>=2.8.6",
     ],
     zip_safe=False,
+    entry_points={
+        'console_scripts': [
+            'rickdb=rickdb.cli.console:main',
+        ],
+    }
 )
