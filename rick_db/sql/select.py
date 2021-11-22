@@ -7,7 +7,7 @@
 import collections
 
 from .common import SqlStatement, Sql, Literal, SqlError
-from .dialects import SqlDialect, DefaultSqlDialect
+from .dialect import SqlDialect, DefaultSqlDialect
 from ..mapper import ATTR_TABLE, ATTR_SCHEMA
 
 
@@ -72,6 +72,8 @@ class Select(SqlStatement):
         if dialect is None:
             self._dialect = DefaultSqlDialect()
         else:
+            if not isinstance(dialect, SqlDialect):
+                raise RuntimeError("dialect must be a SqlDialect instance, not '{}'".format(type(dialect).__name__))
             self._dialect = dialect
 
     def distinct(self, flag=True):
@@ -715,12 +717,15 @@ class Select(SqlStatement):
                     for v in value:
                         self._query_values[Sql.WHERE].append(v)
                     value = None
-                if isinstance(value, collections.abc.Mapping):
+                elif isinstance(value, collections.abc.Mapping):
                     if len(value) != 1:
                         raise SqlError("_where(): value collection must have exactly 1 record")
                     tgt_tbl, tgt_field = list(value.items()).pop()
                     tmp_field_expr = self._dialect.field(tgt_field, None, tgt_tbl)
                     expression = "{fld} {op} {to_fld}".format(fld=field, op=operator, to_fld=tmp_field_expr)
+                    value = None
+                elif isinstance(value, Literal):
+                    expression = "{fld} {op} {lit}".format(fld=field, op=operator, lit=str(value))
                     value = None
                 else:
                     expression = "{fld} {op} {ph}".format(fld=field, op=operator, ph=self._dialect.placeholder)
@@ -1174,8 +1179,7 @@ class Select(SqlStatement):
             parts.append(Sql.SQL_FOR_UPDATE)
 
         # convert Literal() to str in values
-        for k,v in enumerate(self._values):
-            print(k,v)
+        for k, v in enumerate(self._values):
             if isinstance(v, Literal):
                 self._values[k] = str(v)
 

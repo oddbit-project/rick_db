@@ -1,6 +1,6 @@
 import sqlite3
 from rick_db.conn import Connection
-from rick_db.sql.dialects import Sqlite3SqlDialect
+from rick_db.sql.dialect import Sqlite3SqlDialect
 
 
 class Sqlite3Connection(Connection):

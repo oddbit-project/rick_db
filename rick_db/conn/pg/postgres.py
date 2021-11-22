@@ -1,9 +1,10 @@
 import psycopg2
 import psycopg2.extras
+from psycopg2.extensions import quote_ident
 from psycopg2.pool import SimpleConnectionPool, ThreadedConnectionPool
 from rick_db.conn import Connection
 from rick_db.profiler import Profiler, NullProfiler
-from rick_db.sql.dialects import PgSqlDialect
+from rick_db.sql.dialect import PgSqlDialect
 
 
 class PgConnection(Connection):
@@ -16,6 +17,9 @@ class PgConnection(Connection):
         conn.set_session(isolation_level=self.isolation_level, autocommit=self.autocommit)
         super().__init__(conn)
         self._dialect = PgSqlDialect()
+
+    def quote_identifier(self, value: str) -> str:
+        return quote_ident(value, self._conn)
 
 
 class PgPooledConnection(Connection):
