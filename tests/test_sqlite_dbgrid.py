@@ -4,8 +4,6 @@ import pytest
 from rick_db.conn.sqlite import Sqlite3Connection
 from tests.dbgrid import DbGridTest
 
-dbfile = '/tmp/rick_db_sqlite_test.db'
-
 
 class TestSqlite3Repository(DbGridTest):
     createTable = """
@@ -18,7 +16,7 @@ class TestSqlite3Repository(DbGridTest):
     insertTable = "insert into grid(label, odd) values(?,?)"
 
     def setup_method(self, test_method):
-        self.conn = Sqlite3Connection(dbfile)
+        self.conn = Sqlite3Connection(":memory:")
         with self.conn.cursor() as qry:
             qry.exec(self.createTable)
             for i in range(1, 100):
@@ -26,7 +24,6 @@ class TestSqlite3Repository(DbGridTest):
 
     def teardown_method(self, test_method):
         self.conn.close()
-        os.unlink(dbfile)
 
     @pytest.fixture()
     def conn(self):

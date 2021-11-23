@@ -4,8 +4,6 @@ import pytest
 from rick_db.conn.sqlite import Sqlite3Connection
 from tests.repository import RepositoryTest, rows_users
 
-dbfile = '/tmp/rick_db_sqlite_test.db'
-
 
 class TestSqlite3Repository(RepositoryTest):
     createTable = """
@@ -20,7 +18,7 @@ class TestSqlite3Repository(RepositoryTest):
     insertTable = "insert into users(name, email, login, active) values(?,?,?,?)"
 
     def setup_method(self, test_method):
-        self.conn = Sqlite3Connection(dbfile)
+        self.conn = Sqlite3Connection(":memory:")
         with self.conn.cursor() as c:
             c.exec(self.createTable)
             for r in rows_users:
@@ -28,7 +26,6 @@ class TestSqlite3Repository(RepositoryTest):
 
     def teardown_method(self, test_method):
         self.conn.close()
-        os.unlink(dbfile)
 
     @pytest.fixture()
     def conn(self):
