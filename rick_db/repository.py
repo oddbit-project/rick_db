@@ -31,21 +31,18 @@ class BaseRepository:
 
 class Repository(BaseRepository):
 
-    def __init__(self, db, record_type, table_name: str = None, primary_key=None, schema: str = None):
+    def __init__(self, db, record_type):
         if not inspect.isclass(record_type) or getattr(record_type, ATTR_RECORD_MAGIC, None) is not True:
             raise RepositoryError("__init__(): record_type must be a valid Record class")
         self._record = record_type  # type: Record
         self._query_cache = query_cache  # use global query cache
         self._key_prefix = "{0}:{1}.{2}:".format(type(db).__name__, self.__class__.__module__, self.__class__.__name__)
 
-        if table_name is None:
-            table_name = getattr(record_type, ATTR_TABLE)
-        if schema is None:
-            schema = getattr(record_type, ATTR_SCHEMA)
-        if primary_key is None:
-            primary_key = getattr(record_type, ATTR_PRIMARY_KEY)
-
-        super().__init__(db, table_name, schema, primary_key)
+        super().__init__(db,
+                         getattr(record_type, ATTR_TABLE),
+                         getattr(record_type, ATTR_SCHEMA),
+                         getattr(record_type, ATTR_PRIMARY_KEY)
+                         )
 
     def select(self, cols=None) -> Select:
         """

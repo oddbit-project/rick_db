@@ -214,3 +214,17 @@ def fieldmapper(cls=None, pk=None, tablename=None, schema=None, clsonly=False):
     if cls is None:
         return wrap
     return wrap(cls)
+
+
+def patch_record(obj=None, tablename=None, pk=None, schema=None):
+    """
+    Set/update internal attributes for Record obj
+    :param obj: Record object to update
+    :param tablename: table name
+    :param pk: primary key name
+    :param schema: schema name
+    :return:
+    """
+    setattr(obj, ATTR_TABLE, tablename)
+    setattr(obj, ATTR_PRIMARY_KEY, pk)
+    setattr(obj, ATTR_SCHEMA, schema)

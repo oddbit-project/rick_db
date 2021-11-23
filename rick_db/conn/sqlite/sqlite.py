@@ -18,6 +18,10 @@ class Sqlite3Connection(Connection):
         super().__init__(conn)
         self._dialect = Sqlite3SqlDialect()
 
+    def quote_identifier(self, value: str) -> str:
+        raise RuntimeError("sqlite3 does not provide driver-level quoting function")
+
+
     @staticmethod
     def _row_factory(cursor, row):
         """
