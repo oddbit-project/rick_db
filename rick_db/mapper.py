@@ -166,6 +166,11 @@ class BaseRecord(Record):
         fm = object.__getattribute__(self, ATTR_FIELDS)
         if key in fm:
             data = object.__getattribute__(self, ATTR_ROW)
+            if type(data) is not dict:
+                # unwrap dict from dict-like record objects, such as psycopg2 results
+                # this is only necessary when setting values, as original object is often read-only
+                data = dict(data)
+                object.__setattr__(self, ATTR_ROW, data)
             field = fm[key]
             data[field] = value
         else:
