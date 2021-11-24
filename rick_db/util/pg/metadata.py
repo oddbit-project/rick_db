@@ -1,5 +1,7 @@
+from typing import Optional
+
 from rick_db.util import Metadata
-from rick_db.sql import Select, PgSqlDialect
+from rick_db.sql import Select, PgSqlDialect, Literal
 from rick_db.util.metadata import FieldRecord, UserRecord
 
 
@@ -56,9 +58,9 @@ class PgMetadata(Metadata):
                 result.append(r['datname'])
             return result
 
-    def table_keys(self, table_name: str, schema=None) -> list[FieldRecord]:
+    def table_indexes(self, table_name: str, schema=None) -> list[FieldRecord]:
         """
-        List all keys on a given table
+        List all indexes on a given table
         :param table_name:
         :param schema:
         :return:
@@ -84,17 +86,55 @@ class PgMetadata(Metadata):
         with self._db.cursor() as c:
             return c.fetchall(sql, params, cls=FieldRecord)
 
-    def table_pk(self, table_name: str, schema=None) -> [FieldRecord, None]:
+    def table_pk(self, table_name: str, schema=None) -> Optional[FieldRecord]:
         """
         Get primary key from table
         :param table_name:
         :param schema:
         :return:
         """
-        for r in self.table_keys(table_name, schema):
+        for r in self.table_indexes(table_name, schema):
             if r.primary:
                 return r
         return None
+
+    def table_fields(self, table_name: str, schema=None) -> list[FieldRecord]:
+        """
+        Get fields of table
+        :param table_name:
+        :param schema:
+        :return:
+        """
+        if schema is None:
+            schema = self.SCHEMA_DEFAULT
+
+        columns = {
+            'column_name': 'field',
+            'data_type': 'type',
+            Literal('false'): 'primary'
+        }
+        qry = Select(PgSqlDialect()) \
+            .from_('columns', columns, schema='information_schema') \
+            .where('table_schema', '=', schema) \
+            .where('table_name', '=', table_name) \
+            .order('ordinal_position')
+        idx = self.table_pk(table_name, schema)
+        with self._db.cursor() as c:
+            fields = c.fetchall(*qry.assemble(), cls=FieldRecord)  # type:list[FieldRecord]
+            if idx is not None:
+                for f in fields:
+                    f.primary = f.field == idx.field
+            return fields
+
+    def view_fields(self, view_name: str, schema=None) -> list[FieldRecord]:
+        """
+        Get fields of view
+        :param view_name:
+        :param schema:
+        :return:
+        """
+        # table_fields() implementation actually doesn't distinguish between table and view
+        return self.table_fields(view_name, schema)
 
     def users(self) -> list[UserRecord]:
         """

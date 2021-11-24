@@ -132,6 +132,34 @@ class TestPgMetadata:
             qry.exec(self.dropSchemaTable)
             qry.exec(self.dropSchema)
 
+    def test_table_fields(self, conn):
+        pgmeta = PgMetadata(conn)
+        with conn.cursor() as qry:
+            qry.exec(self.createTable)
+            qry.exec(self.createView)
+
+        # test table fields
+        fields = pgmeta.table_fields('animals')
+        assert len(fields) == 2
+        field1, field2 = fields
+        assert field1.field == 'legs'
+        assert field1.primary is True
+        assert field2.field == 'name'
+        assert field2.primary is False
+
+        # test view fields
+        fields = pgmeta.view_fields('list_animals')
+        assert len(fields) == 2
+        field1, field2 = fields
+        assert field1.field == 'legs'
+        assert field1.primary is False # views don't have keys
+        assert field2.field == 'name'
+        assert field2.primary is False
+
+        with conn.cursor() as qry:
+            qry.exec(self.dropView)
+            qry.exec(self.dropTable)
+
     def test_table_keys(self, conn):
         pgmeta = PgMetadata(conn)
         # create one table
@@ -144,7 +172,7 @@ class TestPgMetadata:
         assert tables[0] == 'animals'
         assert pgmeta.table_exists('animals') is True
 
-        keys = pgmeta.table_keys('animals')
+        keys = pgmeta.table_indexes('animals')
         assert len(keys) == 1
         assert keys[0].field == 'legs'
         assert keys[0].primary is True
@@ -163,7 +191,7 @@ class TestPgMetadata:
             qry.exec(self.createSchema)
             qry.exec(self.createSchemaTable)
 
-        keys = pgmeta.table_keys('aliens', 'myschema')
+        keys = pgmeta.table_indexes('aliens', 'myschema')
         assert len(keys) == 1
         assert keys[0].field == 'legs'
         assert keys[0].primary is True

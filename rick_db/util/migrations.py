@@ -134,4 +134,4 @@ class MigrationManager:
         return self._repo
 
     def _migration_table_sql(self, table_name: str) -> str:
-        raise RuntimeError("calling method on abstract class")
+        raise NotImplementedError("abstract method")

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from rick_db import fieldmapper
 from rick_db.conn import Connection
 
@@ -27,7 +29,7 @@ class Metadata:
         :param schema: optional schema name
         :return: list of tablenames
         """
-        pass
+        raise NotImplementedError("abstract method")
 
     def views(self, schema=None) -> list:
         """
@@ -35,46 +37,64 @@ class Metadata:
         :param schema: optional schema name
         :return: list of tablenames
         """
-        pass
+        raise NotImplementedError("abstract method")
 
     def schemas(self) -> list:
         """
         List all available schemas
         :return: list of schema names
         """
-        pass
+        raise NotImplementedError("abstract method")
 
     def databases(self) -> list:
         """
         List all available databases
         :return: list of database names
         """
-        pass
+        raise NotImplementedError("abstract method")
 
-    def table_keys(self, table_name: str, schema=None) -> list[FieldRecord]:
+    def table_indexes(self, table_name: str, schema=None) -> list[FieldRecord]:
         """
-        List all keys on a given table
+        List all indexes on a given table
         :param table_name:
         :param schema:
         :return:
         """
-        pass
+        raise NotImplementedError("abstract method")
 
-    def table_pk(self, table_name: str, schema=None) -> [FieldRecord, None]:
+    def table_pk(self, table_name: str, schema=None) -> Optional[FieldRecord]:
         """
         Get primary key from table
         :param table_name:
         :param schema:
         :return:
         """
-        pass
+        raise NotImplementedError("abstract method")
+
+    def table_fields(self, table_name: str, schema=None) -> list[FieldRecord]:
+        """
+        Get fields of table
+        :param table_name:
+        :param schema:
+        :return:
+        """
+        raise NotImplementedError("abstract method")
+
+    def view_fields(self, view_name: str, schema=None) -> list[FieldRecord]:
+        """
+        Get fields of view
+        :param view_name:
+        :param schema:
+        :return:
+        """
+        raise NotImplementedError("abstract method")
 
     def users(self) -> list[UserRecord]:
         """
         List all available users
         :return:
         """
-        pass
+        raise NotImplementedError("abstract method")
 
     def user_groups(self, user_name: str) -> list[str]:
         """
@@ -82,7 +102,7 @@ class Metadata:
         :param user_name: user name to check
         :return: list of group names
         """
-        pass
+        raise NotImplementedError("abstract method")
 
     def table_exists(self, table_name: str, schema=None) -> bool:
         """
@@ -91,7 +111,7 @@ class Metadata:
         :param schema: optional schema
         :return:
         """
-        pass
+        raise NotImplementedError("abstract method")
 
     def view_exists(self, view_name: str, schema=None) -> bool:
         """
@@ -100,4 +120,4 @@ class Metadata:
         :param schema: optional schema
         :return:
         """
-        pass
+        raise NotImplementedError("abstract method")

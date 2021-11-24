@@ -1,3 +1,5 @@
+from typing import Optional
+
 from rick_db.sql import Sqlite3SqlDialect, Select
 from rick_db.util import Metadata
 from rick_db.util.metadata import FieldRecord, UserRecord
@@ -11,11 +13,14 @@ class Sqlite3Metadata(Metadata):
         :param schema: optional schema name
         :return: list of tablenames
         """
-        qry = Select(Sqlite3SqlDialect()).from_('sqlite_master').where('type', '=', 'table')
+        qry = Select(Sqlite3SqlDialect())\
+            .from_('sqlite_master')\
+            .where('type', '=', 'table')
         result = []
         with self._db.cursor() as c:
             for r in c.fetchall(*qry.assemble()):
-                result.append(r['name'])
+                if not r['name'].startswith('sqlite_'):
+                    result.append(r['name'])
         return result
 
     def views(self, schema=None) -> list:
@@ -28,7 +33,8 @@ class Sqlite3Metadata(Metadata):
         result = []
         with self._db.cursor() as c:
             for r in c.fetchall(*qry.assemble()):
-                result.append(r['name'])
+                if not r['name'].startswith('sqlite_'):
+                    result.append(r['name'])
         return result
 
     def schemas(self) -> list:
@@ -45,44 +51,75 @@ class Sqlite3Metadata(Metadata):
         """
         return []
 
-    def table_keys(self, table_name: str, schema=None) -> list[FieldRecord]:
+    def table_indexes(self, table_name: str, schema=None) -> list[FieldRecord]:
         """
-        List all keys on a given table
+        List all indexes on a given table
         :param table_name:
         :param schema:
         :return:
         """
         sql = """
         SELECT 
-            m.tbl_name as table_name,
             ii.name as field,
-            CASE il.origin when 'pk' then 1 else 0 END as primary
+            ti.type as 'type',
+            pk as 'primary'
         FROM sqlite_master AS m,
             pragma_index_list(m.name) AS il,
-            pragma_index_info(il.name) AS ii
+            pragma_index_info(il.name) AS ii,
+            pragma_table_info(m.name) AS ti
         WHERE 
             m.type = 'table'
-            and m.tbl_name = %s
+            and m.tbl_name = ?
+            and ti.name= ii.name
         GROUP BY
-            m.tbl_name,
             ii.name,
             il.seq
-        ORDER BY 1,3
+        ORDER BY 1,2;
         """
         with self._db.cursor() as c:
-            return c.fetchall(sql, (table_name,), FieldRecord)
+            result = c.fetchall(sql, (table_name,), cls=FieldRecord)
+            for r in result:
+                r.primary = r.primary == 1
+            return result
 
-    def table_pk(self, table_name: str, schema=None) -> [FieldRecord, None]:
+    def table_pk(self, table_name: str, schema=None) -> Optional[FieldRecord]:
         """
         Get primary key from table
         :param table_name:
         :param schema:
         :return:
         """
-        for r in self.table_keys(table_name, schema):
-            if r.primary:
-                return r
-        return None
+        sql = "select name as field, type, pk as 'primary' from pragma_table_info(?) where pk is true;"
+        with self._db.cursor() as c:
+            return c.fetchone(sql, (table_name,), cls=FieldRecord)
+
+    def table_fields(self, table_name: str, schema=None) -> list[FieldRecord]:
+        """
+        Return list of fields for table
+        :param table_name:
+        :param schema:
+        :return:
+        """
+        sql = "select name as field, type, pk as 'primary' from pragma_table_info(?);"
+        with self._db.cursor() as c:
+            result = c.fetchall(sql, (table_name,), cls=FieldRecord)
+            for r in result:
+                r.primary = r.primary == 1
+            return result
+
+    def view_fields(self, view_name: str, schema=None) -> list[FieldRecord]:
+        """
+        Return list of fields for view
+        :param view_name:
+        :param schema:
+        :return:
+        """
+        sql = "select name as field, type, false as 'primary' from pragma_table_info(?);"
+        with self._db.cursor() as c:
+            result = c.fetchall(sql, (view_name,), cls=FieldRecord)
+            for r in result:
+                r.primary = r.primary == 1
+            return result
 
     def users(self) -> list[UserRecord]:
         """
