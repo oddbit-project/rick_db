@@ -47,7 +47,7 @@ setup(
     zip_safe=False,
     entry_points={
         'console_scripts': [
-            'rickdb=rickdb.cli.console:main',
+            'rickdb=rickdb.cli.manage:main',
         ],
     }
 )
