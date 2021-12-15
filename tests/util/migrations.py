@@ -33,9 +33,9 @@ class BaseMigrationManager:
 
         m_list = mm.list()
         assert len(m_list) == 0
-        mig_1 = MigrationRecord(ctx='ctx1', name='migration1')
-        mig_2 = MigrationRecord(ctx='ctx1', name='migration2')
-        mig_3 = MigrationRecord(ctx='ctx2', name='migration3')
+        mig_1 = MigrationRecord(name='migration1')
+        mig_2 = MigrationRecord(name='migration2')
+        mig_3 = MigrationRecord(name='migration3')
         # insert records
         migs = [mig_1, mig_2, mig_3]
         for r in migs:
@@ -47,16 +47,9 @@ class BaseMigrationManager:
         m_list = mm.list()
         assert len(m_list) == 3
         for i in range(0, len(migs)):
-            assert migs[i].ctx == m_list[i].ctx
             assert migs[i].name == m_list[i].name
             assert len(str(m_list[i].applied)) > 0
             assert m_list[i].id > 0
-
-        # fetch all by context
-        m_list = mm.list('ctx1')
-        assert len(m_list) == 2
-        m_list = mm.list('ctx2')
-        assert len(m_list) == 1
 
         # try to insert duplicates
         for r in migs:
@@ -65,16 +58,13 @@ class BaseMigrationManager:
             assert len(result.error) > 0
 
         # flatten
-        flatten = MigrationRecord(ctx='default', name='flattened')
+        flatten = MigrationRecord(name='flattened')
         mm.flatten(flatten)
         # no old records
         m_list = mm.list()
         assert len(m_list) == 1
-        m_list = mm.list('ctx1')
-        assert len(m_list) == 0
 
         # fetch by name
         r = mm.fetch_by_name('flattened')
         assert r.name == flatten.name
-        assert r.ctx == flatten.ctx
         assert len(str(r.applied)) > 0

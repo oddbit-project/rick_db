@@ -1,6 +1,6 @@
 import pytest
 
-from rick_db.conn.pg import PgConnection
+from rick_db.conn import Connection
 from rick_db.conn.sqlite import Sqlite3Connection
 from rick_db.util.sqlite import Sqlite3Metadata
 
@@ -14,7 +14,7 @@ class TestSqlite3Metadata:
     dropView = "drop view list_animals"
 
     @pytest.fixture()
-    def conn(self) -> PgConnection:
+    def conn(self) -> Connection:
         return Sqlite3Connection(":memory:")
 
     def test_tables(self, conn):
