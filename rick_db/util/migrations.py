@@ -4,7 +4,6 @@ from typing import Optional
 
 from rick_db import Repository, fieldmapper
 from rick_db.conn import Connection
-from rick_db.mapper import patch_record
 from rick_db.util import Metadata
 
 MIGRATION_TABLE = '_migration'
@@ -13,7 +12,6 @@ MIGRATION_TABLE = '_migration'
 @fieldmapper(tablename=MIGRATION_TABLE, pk='id_migration')
 class MigrationRecord:
     id = 'id_migration'
-    ctx = 'context'
     name = 'name'
     applied = 'applied'
 
@@ -24,13 +22,30 @@ class MigrationResult:
     error: str
 
 
+class Migration:
+
+    def run(self, conn) -> bool:
+        """
+        Base class for code-based migrations
+        :param conn:
+        :return: bool
+        """
+        pass
+
+
 class MigrationManager:
-    CTX_DEFAULT = 'default'
 
     def __init__(self, db: Connection):
         self._db = db
         self._meta = None  # type: Metadata
         self._repo = None
+
+    def get_meta(self) -> Metadata:
+        """
+        Retrieve metadata manager
+        :return:
+        """
+        return self._meta
 
     def has_manager(self) -> bool:
         """
@@ -64,15 +79,12 @@ class MigrationManager:
             return result.pop(0)
         return None
 
-    def list(self, ctx: str = None) -> list[MigrationRecord]:
+    def list(self) -> list[MigrationRecord]:
         """
         Retrieve all registered migrations
-        :param ctx: context
         :return:
         """
         qry = self.get_repository().select().order(MigrationRecord.applied)
-        if ctx is not None:
-            qry.where(MigrationRecord.ctx, '=', ctx)
         return self.get_repository().fetch(qry)
 
     def flatten(self, record: MigrationRecord) -> MigrationResult:
@@ -121,9 +133,8 @@ class MigrationManager:
 
         try:
             # execute migration
-            with self._db.cursor() as c:
-                c.exec(content)
-                # update record
+            self._exec(content)
+            # update record
             return self.register(migration)
         except Exception as e:
             return MigrationResult(success=False, error=str(e))
@@ -135,3 +146,12 @@ class MigrationManager:
 
     def _migration_table_sql(self, table_name: str) -> str:
         raise NotImplementedError("abstract method")
+
+    def _exec(self, content):
+        """
+        Execute migration using a cursor
+        :param content: string
+        :return: none
+        """
+        with self._db.cursor() as c:
+            c.exec(content)

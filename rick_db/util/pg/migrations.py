@@ -20,7 +20,6 @@ class PgMigrationManager(MigrationManager):
         CREATE TABLE {name}(
             id_migration SERIAL NOT NULL PRIMARY KEY,
             applied TIMESTAMP WITH TIME ZONE,
-            context VARCHAR(255) NOT NULL DEFAULT '',
             name VARCHAR(255) NOT NULL UNIQUE
         );
         """.format(name=PgSqlDialect().table(table_name))

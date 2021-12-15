@@ -20,7 +20,17 @@ class Sqlite3MigrationManager(MigrationManager):
         CREATE TABLE {name}( 
             id_migration INTEGER PRIMARY KEY AUTOINCREMENT,
             applied TIMESTAMP WITH TIME ZONE,
-            context VARCHAR(255) NOT NULL DEFAULT '',
             name VARCHAR(255) NOT NULL UNIQUE
         );
         """.format(name=Sqlite3SqlDialect().table(table_name))
+
+    def _exec(self, content):
+        """
+        Execute migration using a cursor
+        :param content: string
+        :return: none
+        """
+        with self._db.cursor() as c:
+            # sqlite does not support multiple queries with exec()
+            # so we use the sqlite3 cursor executescript() instead
+            c.get_cursor().executescript(content)
