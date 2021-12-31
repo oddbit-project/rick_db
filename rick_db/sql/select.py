@@ -112,7 +112,7 @@ class Select(SqlStatement):
         Example:
             .expr("1")                  # SELECT 1
             .expr(["1","2","3"])        # SELECT 1,2,3
-            .expr({Expr("NEXTVAL('some_sequence_name')": "seq_next") # select NEXTVAL('some_sequence_name') AS "seq_next"
+            .expr({Literal("NEXTVAL('some_sequence_name')": "seq_next") # select NEXTVAL('some_sequence_name') AS "seq_next"
         """
         if not isinstance(cols, collections.abc.Mapping):
             if type(cols) in [list, tuple]:
@@ -408,7 +408,7 @@ class Select(SqlStatement):
         :return: self
 
         Examples:
-            Select().Union([Select().from_('table'), Select().from_('other_table')])  # SELECT "table".* FROM "table" UNION SELECT "other_table".* FROM "other_table"
+            Select().union([Select().from_('table'), Select().from_('other_table')])  # SELECT "table".* FROM "table" UNION SELECT "other_table".* FROM "other_table"
         """
         if union_type not in self._valid_unions:
             raise SqlError("Invalid union type %s" % union_type)
@@ -454,10 +454,9 @@ class Select(SqlStatement):
             'string' -> string with field name
 
         Examples:
-            .join('table1', 'table1_id', 'table2', 'table2_id')     # INNER JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join({'table1':'t1'}, 'table1_id', {'table2':'t2'})    # INNER JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join(RecordObject, RecordObject.Field,
-                PreviousObject, PreviousObject.Field)       # INNER JOIN "previousObject_table" ON ...
+            .join('table1', 'table1_id', 'table2', 'table2_id')
+            .join({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
+            .join(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
         return self.join_inner(table, field, expr_table, expr_field, operator, cols, schema, expr_schema)
 
@@ -495,10 +494,9 @@ class Select(SqlStatement):
             'string' -> string with field name
 
         Examples:
-            .join('table1', 'table1_id', 'table2', 'table2_id')     # INNER JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join({'table1':'t1'}, 'table1_id', {'table2':'t2'})    # INNER JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join(RecordObject, RecordObject.Field,
-                PreviousObject, PreviousObject.Field)       # INNER JOIN "previousObject_table" ON ...
+            .join('table1', 'table1_id', 'table2', 'table2_id')
+            .join({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
+            .join(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
         return self._join(Sql.INNER_JOIN, table, field, expr_table, expr_field, operator, cols, schema,
                           expr_schema)
@@ -537,10 +535,9 @@ class Select(SqlStatement):
             'string' -> string with field name
 
         Examples:
-            .join_left('table1', 'table1_id', 'table2', 'table2_id')     # LEFT JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join_left({'table1':'t1'}, 'table1_id', {'table2':'t2'})    # LEFT JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join_left(RecordObject, RecordObject.Field,
-                PreviousObject, PreviousObject.Field)       # LEFT JOIN "previousObject_table" ON ...
+            .join_left('table1', 'table1_id', 'table2', 'table2_id')
+            .join_left({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
+            .join_left(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
         return self._join(Sql.LEFT_JOIN, table, field, expr_table, expr_field, operator, cols, schema, expr_schema)
 
@@ -578,10 +575,9 @@ class Select(SqlStatement):
             'string' -> string with field name
 
         Examples:
-            .join_right('table1', 'table1_id', 'table2', 'table2_id')     # RIGHT JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join_right({'table1':'t1'}, 'table1_id', {'table2':'t2'})    # RIGHT JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join_right(RecordObject, RecordObject.Field,
-                PreviousObject, PreviousObject.Field)       # RIGHT JOIN "previousObject_table" ON ...
+            .join_right('table1', 'table1_id', 'table2', 'table2_id')
+            .join_right({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
+            .join_right(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
         return self._join(Sql.RIGHT_JOIN, table, field, expr_table, expr_field, operator, cols, schema,
                           expr_schema)
@@ -620,10 +616,9 @@ class Select(SqlStatement):
             'string' -> string with field name
 
         Examples:
-            .join_full('table1', 'table1_id', 'table2', 'table2_id')     # FULL JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join_full({'table1':'t1'}, 'table1_id', {'table2':'t2'})    # FULL JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join_full(RecordObject, RecordObject.Field,
-                PreviousObject, PreviousObject.Field)       # RIGHT JOIN "previousObject_table" ON ...
+            .join_full('table1', 'table1_id', 'table2', 'table2_id')
+            .join_full({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
+            .join_full(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
         return self._join(Sql.FULL_JOIN, table, field, expr_table, expr_field, operator, cols, schema,
                           expr_schema)
@@ -639,10 +634,11 @@ class Select(SqlStatement):
         :return: self
 
         Examples:
-            .join_cross('table2')               # CROSS JOIN "table2"
-            .join_cross({'table2':'alias'})     # CROSS JOIN "table2" AS "alias"
-            .join_cross('table2', 'field1')     # SELECT... "table2"."field1" ... CROSS JOIN "table2"
-            .join-cross('table2', ['field1', 'field2']) # SELECT ... "table2"."field1","table2"."field2" ... CROSS JOIN "table2"
+            .join_cross('table2')
+            .join_cross({'table2':'alias'})
+            .join_cross('table2', 'field1')
+            .join_cross('table2', ['field1', 'field2'])
+            .join_cross(JoinToRecordObject)
         """
         return self._join(Sql.CROSS_JOIN, table, None, None, None, None, cols, schema, None)
 
@@ -657,10 +653,11 @@ class Select(SqlStatement):
         :return: self
 
         Examples:
-            .join_cross('table2')               # CROSS JOIN "table2"
-            .join_cross({'table2':'alias'})     # CROSS JOIN "table2" AS "alias"
-            .join_cross('table2', 'field1')     # SELECT... "table2"."field1" ... NATURAL JOIN "table2"
-            .join-cross('table2', ['field1', 'field2']) # SELECT ... "table2"."field1","table2"."field2" ... NATURAL JOIN "table2"
+            .join_natural('table2')
+            .join_natural({'table2':'alias'})
+            .join_natural('table2', 'field1')
+            .join_natural('table2', ['field1', 'field2'])
+            .join_natural(JoinToRecordObject)
         """
         return self._join(Sql.NATURAL_JOIN, table, None, None, None, None, cols, schema, None)
 

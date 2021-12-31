@@ -6,12 +6,12 @@ from rick_db.util.metadata import FieldRecord
 
 
 class Command(BaseCommand):
-    command = "dao"
-    description = "generate a python data access object (DAO) for a given database object"
+    command = "dto"
+    description = "generate a python data transfer object (DTO) for a given database object"
 
     def help(self):
         self._tty.title(self.description)
-        self._tty.title("Usage: {name} [database] dao <[schema.]table_name> <output_file.py>".format(name=self._name))
+        self._tty.title("Usage: {name} [database] dto <[schema.]table_name> <output_file.py>".format(name=self._name))
 
     def run(self, mgr: MigrationManager, args: list, command_list: dict):
         if len(args) < 1:
@@ -99,4 +99,5 @@ class Command(BaseCommand):
                     attr_name = 'id'
             result.append("    {attr} = '{field}'".format(attr=attr_name, field=f.field))
 
+        result.append("")
         return "\n".join(result)

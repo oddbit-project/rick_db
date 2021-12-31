@@ -27,7 +27,9 @@ class CliManager:
         self._cfg = cfg
         self._tty = tty
         # load rick_db commands
-        self._cmds = self.discover('commands', Path(__file__) / Path('commands').resolve())
+        self._cmds = self.discover('rick_db.cli.commands', Path(__file__).parent / 'commands')
+        if len(self._cmds) == 0:
+            raise RuntimeError("could not detect commands, something went wrong")
 
     def dispatch(self, args: list) -> int:
         """
@@ -43,32 +45,35 @@ class CliManager:
 
         if cmd not in self._cmds.keys():
             # first argument is either a wrong command, or a database name
-            db_name = ConfigFile.KEY_PREFIX + cmd
-            if db_name not in self._cfg.keys():
-                self._tty.error("Error : configuration space for '{}' not found in the config file".format(cmd))
+            if len(args) == 0:
+                self._tty.error(
+                    "Error : invalid command '{cmd}'; try '{name} help'".format(cmd=cmd, name=self._prog_name))
                 return -1
 
-            # its a somewhat valid database, so next is a command
-            cmd = args.pop(0)
-            if cmd is None:
-                self._tty.error("Error : missing command")
+            db_name = ConfigFile.KEY_PREFIX + cmd
+            if db_name not in self._cfg.keys():
+                self._tty.error("Error : database '{db}' not found in the config file".format(db=cmd))
                 return -2
 
+            # first arg is a database, extract actual command
+            cmd = args.pop(0)
             if cmd not in self._cmds.keys():
-                self._tty.error("Error : invalid command '{}'".format(cmd))
-                return -3
+                self._tty.error(
+                    "Error : invalid command '{cmd}'; try '{name} help'".format(cmd=cmd, name=self._prog_name))
+                return -1
+
         else:
             if db_name not in self._cfg.keys():
                 self._tty.error("Error : default database configuration not found in the config file")
-                return -1
+                return -2
 
         # build database connection
         mgr = self._resolve_db(db_name)
         if mgr is None:
-            return -1
+            return -3
 
         if self._cmds[cmd].run(mgr, args, self._cmds):
-            return -1
+            return -4
         return 0
 
     def _resolve_db(self, db_name: str) -> Optional[MigrationManager]:
@@ -170,7 +175,7 @@ def main():
     if len(sys.argv) > 1:
         args = sys.argv[1:]
 
-    mgr = CliManager(sys.argv[0], tty, cfg)
+    mgr = CliManager(Path(sys.argv[0]).name, tty, cfg)
     exit(mgr.dispatch(args))
 
 

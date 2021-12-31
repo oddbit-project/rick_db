@@ -100,7 +100,7 @@ conn = Sqlite3Connection('my_database.db')
 The object mapper converts query results into object attributes. These data objects are generically known as **Records**.
 A Record contains a set of attributes for the desired fields, as well as optional table, schema and primary key information.
 
-Usually, Record objects should only contain attributes, as their primary goal is to act like DAO (data access objects). As
+Usually, Record objects should only contain attributes, as their primary goal is to act like DTO (data transfer objects). As
 such, Records don't need to map an underlying table or view; They are just a set of fields that may map to a query result.
 It is possible to create Record objects that map only specific fields from a query result; the additional fields are just
 ignored.
