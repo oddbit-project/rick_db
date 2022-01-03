@@ -56,6 +56,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://github.com/oddbit-project/rick_db/classes/dbgrid/</loc>
+         <lastmod>2022-01-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://github.com/oddbit-project/rick_db/classes/delete/</loc>
          <lastmod>2022-01-03</lastmod>
          <changefreq>daily</changefreq>
