@@ -31,7 +31,7 @@ class Update(SqlStatement):
         :param schema: optional string
         :return: self
         """
-        if type(table) is str:
+        if isinstance(table, str):
             pass
         elif isinstance(table, object):
             schema = getattr(table, ATTR_SCHEMA, schema)
@@ -44,7 +44,7 @@ class Update(SqlStatement):
         else:
             raise SqlError("table(): invalid type for table name")
 
-        if schema is not None and type(schema) is not str:
+        if schema is not None and not isinstance(schema, str):
             raise SqlError("table(): Invalid type for schema name: %s" % str(type(schema)))
 
         self._table = table
@@ -57,7 +57,7 @@ class Update(SqlStatement):
         :param fields: list of field names
         :return: self
         """
-        if type(fields) not in [list, tuple]:
+        if not isinstance(fields, (list, tuple)):
             raise SqlError("fields(): invalid type for fields parameter")
 
         self._fields = fields
@@ -74,7 +74,7 @@ class Update(SqlStatement):
         :return: self
         """
         # if list, replace values
-        if type(values) in [list, tuple]:
+        if isinstance(values, (list, tuple)):
             self._values = values
 
         elif isinstance(values, collections.abc.Mapping):
@@ -131,7 +131,7 @@ class Update(SqlStatement):
         if is_and is False:
             concat = Sql.SQL_OR
 
-        if type(field) is str:
+        if isinstance(field, str):
             field = self._dialect.field(field)
         elif isinstance(field, Literal):
             field = str(field)
@@ -146,7 +146,7 @@ class Update(SqlStatement):
             self._clauses.append([expression, concat])
         else:
             # sanity check, as we actually may have value list if subquery is in use
-            if type(value) in (list, tuple, dict):
+            if isinstance(value, (list, tuple, dict)):
                 raise SqlError("_where(): invalid value type: %s" % str(type(value)))
 
             if operator is None:
@@ -159,7 +159,7 @@ class Update(SqlStatement):
                     expression = "{fld} {op} {ph}".format(fld=field, op=operator, ph=self._dialect.placeholder)
 
             self._clauses.append([expression, concat])
-            if type(value) is list:
+            if isinstance(value, list):
                 self._clause_values.extend(value)
             else:
                 self._clause_values.append(value)

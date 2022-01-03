@@ -22,7 +22,6 @@ class Delete(SqlStatement):
     def from_(self, table, schema=None):
         """
         DELETE FROM table name and schema
-        if table is object, it will also set fields and values
         :param table: string or record object
         :param schema: optional string
         :return: self
@@ -31,7 +30,7 @@ class Delete(SqlStatement):
             'table' -> string with table name
             <object_or_class> -> record class or object
         """
-        if type(table) is str:
+        if isinstance(table, str):
             pass
         elif isinstance(table, object):
             schema = getattr(table, ATTR_SCHEMA, schema)
@@ -86,7 +85,7 @@ class Delete(SqlStatement):
         if is_and is False:
             concat = Sql.SQL_OR
 
-        if type(field) is str:
+        if isinstance(field, str):
             field = self._dialect.field(field)
         elif isinstance(field, Literal):
             field = str(field)
@@ -101,7 +100,7 @@ class Delete(SqlStatement):
             self._clauses.append([expression, concat])
         else:
             # sanity check, as we actually may have value list if subquery is in use
-            if type(value) in (list, tuple, dict):
+            if isinstance(value, (list, tuple, dict)):
                 raise SqlError("_where(): invalid value type: %s" % str(type(value)))
 
             if operator is None:
@@ -114,7 +113,7 @@ class Delete(SqlStatement):
                     expression = "{fld} {op} {ph}".format(fld=field, op=operator, ph=self._dialect.placeholder)
 
             self._clauses.append([expression, concat])
-            if type(value) is list:
+            if isinstance(value, list):
                 self._values.extend(value)
             else:
                 self._values.append(value)

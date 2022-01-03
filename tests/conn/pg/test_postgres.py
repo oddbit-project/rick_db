@@ -2,7 +2,7 @@ import pytest
 
 from rick_db.conn.pg import PgConnection, PgThreadedConnectionPool, PgConnectionPool
 from rick_db.sql import PgSqlDialect
-from tests.config import postgres_db
+from tests.config import postgres_db, connectSimple
 from rick_db import fieldmapper
 from rick_db.profiler import NullProfiler
 
@@ -11,10 +11,6 @@ from rick_db.profiler import NullProfiler
 class Animal:
     legs = 'legs'
     name = 'name'
-
-
-def connectSimple() -> PgConnection:
-    return PgConnection(**postgres_db)
 
 
 def connectPool() -> PgConnectionPool:

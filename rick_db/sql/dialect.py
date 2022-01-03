@@ -1,4 +1,4 @@
-from .common import SqlError, Literal
+from rick_db.sql import SqlError, Literal
 
 
 class SqlDialect:
@@ -46,8 +46,7 @@ class SqlDialect:
 
         if alias is None:
             return table_name
-        else:
-            return self._as.join([table_name, self._quote_table.format(table=alias)])
+        return self._as.join([table_name, self._quote_table.format(table=alias)])
 
     def field(self, field, field_alias=None, table=None, schema=None):
         """
@@ -83,9 +82,9 @@ class SqlDialect:
 
         if field_alias is None:
             return field
-        elif type(field_alias) is str:
+        elif isinstance(field_alias, str):
             return self._as.join([field, self._quote_field.format(field=field_alias)])
-        elif type(field_alias) in [list, tuple]:
+        elif isinstance(field_alias, (list, tuple)):
             _len = len(field_alias)
             if _len == 0:
                 raise SqlError("Alias for field %s cannot be empty" % field)
@@ -96,6 +95,13 @@ class SqlDialect:
                 return field
         else:
             raise SqlError("Cannot parse fields")
+
+
+class DefaultSqlDialect(SqlDialect):
+    """
+    Default SqlDialect
+    """
+    pass
 
 
 class PgSqlDialect(SqlDialect):
@@ -151,9 +157,9 @@ class PgSqlDialect(SqlDialect):
 
         if field_alias is None:
             return field
-        elif type(field_alias) is str:
+        elif isinstance(field_alias, str):
             return self._as.join([field, self._quote_field.format(field=field_alias)])
-        elif type(field_alias) in [list, tuple]:
+        elif isinstance(field_alias, (list, tuple)):
             _len = len(field_alias)
             if _len == 0:
                 raise SqlError("Alias for field %s cannot be empty" % field)
@@ -174,10 +180,3 @@ class Sqlite3SqlDialect(SqlDialect):
         self.placeholder = "?"
         self.insert_returning = False
         self.ilike = False
-
-
-class DefaultSqlDialect(SqlDialect):
-    """
-    Default SqlDialect
-    """
-    pass

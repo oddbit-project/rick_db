@@ -166,6 +166,11 @@ class BaseRecord(Record):
         fm = object.__getattribute__(self, ATTR_FIELDS)
         if key in fm:
             data = object.__getattribute__(self, ATTR_ROW)
+            if type(data) is not dict:
+                # unwrap dict from dict-like record objects, such as psycopg2 results
+                # this is only necessary when setting values, as original object is often read-only
+                data = dict(data)
+                object.__setattr__(self, ATTR_ROW, data)
             field = fm[key]
             data[field] = value
         else:
@@ -214,3 +219,17 @@ def fieldmapper(cls=None, pk=None, tablename=None, schema=None, clsonly=False):
     if cls is None:
         return wrap
     return wrap(cls)
+
+
+def patch_record(obj=None, tablename=None, pk=None, schema=None):
+    """
+    Set/update internal attributes for Record obj
+    :param obj: Record object to update
+    :param tablename: table name
+    :param pk: primary key name
+    :param schema: schema name
+    :return:
+    """
+    setattr(obj, ATTR_TABLE, tablename)
+    setattr(obj, ATTR_PRIMARY_KEY, pk)
+    setattr(obj, ATTR_SCHEMA, schema)

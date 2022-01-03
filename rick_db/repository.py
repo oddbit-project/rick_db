@@ -1,6 +1,6 @@
 import copy
 import inspect
-from typing import Union, Any
+from typing import Union, Any, Optional
 
 from rick_db import Record
 from rick_db.cache import StrCache
@@ -52,14 +52,14 @@ class Repository(BaseRepository):
         """
         return Select(self._dialect).from_(self._tablename, cols=cols, schema=self._schema)
 
-    def fetch_pk(self, pk_value) -> Union[object, None]:
+    def fetch_pk(self, pk_value) -> Optional[object]:
         """
         Retrieve a single row by primary key
         :param pk_value: primary key value
         :return: record object of self._record type or None
 
         Example:
-            .find_pk(32)    # search for record with id 32
+            .fetch_pk(32)    # search for record with id 32
         """
         if self._pk is None:
             raise RepositoryError("find_pk(): missing primary key in Record %s" % str(type(self._record)))
@@ -72,7 +72,7 @@ class Repository(BaseRepository):
         with self._db.cursor() as c:
             return c.fetchone(qry, values, self._record)
 
-    def fetch_one(self, qry: Select) -> Union[object, None]:
+    def fetch_one(self, qry: Select) -> Optional[object]:
         """
         Retrieve a single row
         :param qry: query to execute
@@ -85,7 +85,7 @@ class Repository(BaseRepository):
             sql, values = qry.limit(1).assemble()
             return c.fetchone(sql, values, cls=self._record)
 
-    def fetch(self, qry: Select, cls=None) -> Union[list, None]:
+    def fetch(self, qry: Select, cls=None) -> Optional[list]:
         """
         Fetch a list of rows
 
@@ -102,7 +102,7 @@ class Repository(BaseRepository):
                 cls = self._record
             return c.fetchall(sql, values, cls=cls)
 
-    def fetch_raw(self, qry: Select) -> Union[list, None]:
+    def fetch_raw(self, qry: Select) -> Optional[list]:
         """
         Fetch a list of rows
         Result is not serialized to record, instead it returns a list of dict-like records directly from the DB driver
@@ -157,7 +157,7 @@ class Repository(BaseRepository):
         with self._db.cursor() as c:
             return c.fetchall(qry, values, self._record)
 
-    def fetch_all(self):
+    def fetch_all(self) -> list:
         """
         Fetch all rows
 
@@ -172,7 +172,7 @@ class Repository(BaseRepository):
         with self._db.cursor() as c:
             return c.fetchall(qry, values, self._record)
 
-    def insert(self, record, cols=None) -> Union[object, None]:
+    def insert(self, record, cols=None) -> Optional[object]:
         """
         Insert a record, optionally returning values
 

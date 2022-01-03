@@ -1,7 +1,7 @@
 from rick_db.profiler import Profiler, NullProfiler
 from timeit import default_timer
 
-from rick_db.sql import SqlDialect
+from rick_db.sql.dialect import SqlDialect
 
 
 class ConnectionError(Exception):
@@ -158,6 +158,9 @@ class Connection:
 
     def transaction_status(self) -> bool:
         return self._in_transaction
+
+    def quote_identifier(self, value: str) -> str:
+        raise RuntimeError("virtual method, overriding required")
 
     def close(self):
         if self._conn is not None:

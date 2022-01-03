@@ -7,7 +7,7 @@
 import collections
 
 from .common import SqlStatement, Sql, Literal, SqlError
-from .dialects import SqlDialect, DefaultSqlDialect
+from .dialect import SqlDialect, DefaultSqlDialect
 from ..mapper import ATTR_TABLE, ATTR_SCHEMA
 
 
@@ -72,6 +72,8 @@ class Select(SqlStatement):
         if dialect is None:
             self._dialect = DefaultSqlDialect()
         else:
+            if not isinstance(dialect, SqlDialect):
+                raise RuntimeError("dialect must be a SqlDialect instance, not '{}'".format(type(dialect).__name__))
             self._dialect = dialect
 
     def distinct(self, flag=True):
@@ -110,7 +112,7 @@ class Select(SqlStatement):
         Example:
             .expr("1")                  # SELECT 1
             .expr(["1","2","3"])        # SELECT 1,2,3
-            .expr({Expr("NEXTVAL('some_sequence_name')": "seq_next") # select NEXTVAL('some_sequence_name') AS "seq_next"
+            .expr({Literal("NEXTVAL('some_sequence_name')": "seq_next") # select NEXTVAL('some_sequence_name') AS "seq_next"
         """
         if not isinstance(cols, collections.abc.Mapping):
             if type(cols) in [list, tuple]:
@@ -326,7 +328,7 @@ class Select(SqlStatement):
             fields = [fields]
 
         for field in fields:
-            if type(field) is str or isinstance(field, Literal):
+            if isinstance(field, (str, Literal)):
                 if field in self._parts_group:
                     raise SqlError(f"group(): duplicate field in group clause: {field}")
                 self._parts_group.append(field)
@@ -366,7 +368,7 @@ class Select(SqlStatement):
             table, field = list(field.items()).pop()
 
         if table is not None:
-            if type(table) is not str:
+            if not isinstance(table, str):
                 if isinstance(table, object):
                     schema = getattr(table, ATTR_SCHEMA, schema)
                     table = getattr(table, ATTR_TABLE, None)
@@ -375,7 +377,7 @@ class Select(SqlStatement):
                 else:
                     raise SqlError("having(): invalid table name type")
 
-        if type(field) is str:
+        if isinstance(field, str):
             field = self._dialect.field(field, None, table, schema)
         elif isinstance(field, Literal):
             field = str(field)
@@ -406,12 +408,12 @@ class Select(SqlStatement):
         :return: self
 
         Examples:
-            Select().Union([Select().from_('table'), Select().from_('other_table')])  # SELECT "table".* FROM "table" UNION SELECT "other_table".* FROM "other_table"
+            Select().union([Select().from_('table'), Select().from_('other_table')])  # SELECT "table".* FROM "table" UNION SELECT "other_table".* FROM "other_table"
         """
         if union_type not in self._valid_unions:
             raise SqlError("Invalid union type %s" % union_type)
 
-        if type(queries) is str or isinstance(queries, Select):
+        if isinstance(queries, (str, Select)):
             queries = [queries]
 
         for q in queries:
@@ -452,10 +454,9 @@ class Select(SqlStatement):
             'string' -> string with field name
 
         Examples:
-            .join('table1', 'table1_id', 'table2', 'table2_id')     # INNER JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join({'table1':'t1'}, 'table1_id', {'table2':'t2'})    # INNER JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join(RecordObject, RecordObject.Field,
-                PreviousObject, PreviousObject.Field)       # INNER JOIN "previousObject_table" ON ...
+            .join('table1', 'table1_id', 'table2', 'table2_id')
+            .join({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
+            .join(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
         return self.join_inner(table, field, expr_table, expr_field, operator, cols, schema, expr_schema)
 
@@ -493,10 +494,9 @@ class Select(SqlStatement):
             'string' -> string with field name
 
         Examples:
-            .join('table1', 'table1_id', 'table2', 'table2_id')     # INNER JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join({'table1':'t1'}, 'table1_id', {'table2':'t2'})    # INNER JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join(RecordObject, RecordObject.Field,
-                PreviousObject, PreviousObject.Field)       # INNER JOIN "previousObject_table" ON ...
+            .join('table1', 'table1_id', 'table2', 'table2_id')
+            .join({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
+            .join(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
         return self._join(Sql.INNER_JOIN, table, field, expr_table, expr_field, operator, cols, schema,
                           expr_schema)
@@ -535,10 +535,9 @@ class Select(SqlStatement):
             'string' -> string with field name
 
         Examples:
-            .join_left('table1', 'table1_id', 'table2', 'table2_id')     # LEFT JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join_left({'table1':'t1'}, 'table1_id', {'table2':'t2'})    # LEFT JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join_left(RecordObject, RecordObject.Field,
-                PreviousObject, PreviousObject.Field)       # LEFT JOIN "previousObject_table" ON ...
+            .join_left('table1', 'table1_id', 'table2', 'table2_id')
+            .join_left({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
+            .join_left(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
         return self._join(Sql.LEFT_JOIN, table, field, expr_table, expr_field, operator, cols, schema, expr_schema)
 
@@ -576,10 +575,9 @@ class Select(SqlStatement):
             'string' -> string with field name
 
         Examples:
-            .join_right('table1', 'table1_id', 'table2', 'table2_id')     # RIGHT JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join_right({'table1':'t1'}, 'table1_id', {'table2':'t2'})    # RIGHT JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join_right(RecordObject, RecordObject.Field,
-                PreviousObject, PreviousObject.Field)       # RIGHT JOIN "previousObject_table" ON ...
+            .join_right('table1', 'table1_id', 'table2', 'table2_id')
+            .join_right({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
+            .join_right(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
         return self._join(Sql.RIGHT_JOIN, table, field, expr_table, expr_field, operator, cols, schema,
                           expr_schema)
@@ -618,10 +616,9 @@ class Select(SqlStatement):
             'string' -> string with field name
 
         Examples:
-            .join_full('table1', 'table1_id', 'table2', 'table2_id')     # FULL JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join_full({'table1':'t1'}, 'table1_id', {'table2':'t2'})    # FULL JOIN "table1" ON "table2"."table2_id"="table1"."table1_id"
-            .join_full(RecordObject, RecordObject.Field,
-                PreviousObject, PreviousObject.Field)       # RIGHT JOIN "previousObject_table" ON ...
+            .join_full('table1', 'table1_id', 'table2', 'table2_id')
+            .join_full({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
+            .join_full(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
         return self._join(Sql.FULL_JOIN, table, field, expr_table, expr_field, operator, cols, schema,
                           expr_schema)
@@ -637,10 +634,11 @@ class Select(SqlStatement):
         :return: self
 
         Examples:
-            .join_cross('table2')               # CROSS JOIN "table2"
-            .join_cross({'table2':'alias'})     # CROSS JOIN "table2" AS "alias"
-            .join_cross('table2', 'field1')     # SELECT... "table2"."field1" ... CROSS JOIN "table2"
-            .join-cross('table2', ['field1', 'field2']) # SELECT ... "table2"."field1","table2"."field2" ... CROSS JOIN "table2"
+            .join_cross('table2')
+            .join_cross({'table2':'alias'})
+            .join_cross('table2', 'field1')
+            .join_cross('table2', ['field1', 'field2'])
+            .join_cross(JoinToRecordObject)
         """
         return self._join(Sql.CROSS_JOIN, table, None, None, None, None, cols, schema, None)
 
@@ -655,10 +653,11 @@ class Select(SqlStatement):
         :return: self
 
         Examples:
-            .join_cross('table2')               # CROSS JOIN "table2"
-            .join_cross({'table2':'alias'})     # CROSS JOIN "table2" AS "alias"
-            .join_cross('table2', 'field1')     # SELECT... "table2"."field1" ... NATURAL JOIN "table2"
-            .join-cross('table2', ['field1', 'field2']) # SELECT ... "table2"."field1","table2"."field2" ... NATURAL JOIN "table2"
+            .join_natural('table2')
+            .join_natural({'table2':'alias'})
+            .join_natural('table2', 'field1')
+            .join_natural('table2', ['field1', 'field2'])
+            .join_natural(JoinToRecordObject)
         """
         return self._join(Sql.NATURAL_JOIN, table, None, None, None, None, cols, schema, None)
 
@@ -684,7 +683,7 @@ class Select(SqlStatement):
             table, field = list(field.items()).pop()
 
         if table is not None:
-            if type(table) is not str:
+            if not isinstance(table, str):
                 if isinstance(table, object):
                     table = getattr(table, ATTR_TABLE, None)
                     if table is None:
@@ -692,7 +691,7 @@ class Select(SqlStatement):
                 else:
                     raise SqlError("_where(): invalid table name type")
 
-        if type(field) is str:
+        if isinstance(field, str):
             field = self._dialect.field(field, None, table)
         elif isinstance(field, Literal):
             field = str(field)
@@ -714,6 +713,16 @@ class Select(SqlStatement):
                     expression = "{fld} {op} ({query})".format(fld=field, op=operator, query=sql)
                     for v in value:
                         self._query_values[Sql.WHERE].append(v)
+                    value = None
+                elif isinstance(value, collections.abc.Mapping):
+                    if len(value) != 1:
+                        raise SqlError("_where(): value collection must have exactly 1 record")
+                    tgt_tbl, tgt_field = list(value.items()).pop()
+                    tmp_field_expr = self._dialect.field(tgt_field, None, tgt_tbl)
+                    expression = "{fld} {op} {to_fld}".format(fld=field, op=operator, to_fld=tmp_field_expr)
+                    value = None
+                elif isinstance(value, Literal):
+                    expression = "{fld} {op} {lit}".format(fld=field, op=operator, lit=str(value))
                     value = None
                 else:
                     expression = "{fld} {op} {ph}".format(fld=field, op=operator, ph=self._dialect.placeholder)
@@ -762,11 +771,11 @@ class Select(SqlStatement):
                 if len(from_table) != 1:
                     raise SqlError("_join(): atmost one name:alias mapping per call is required")
                 from_table, expr_alias = list(from_table.items()).pop()
-                if type(expr_alias) is not str:
+                if not isinstance(expr_alias, str):
                     raise SqlError("_join(): invalid alias type")
 
             # if name is not string, attempt to parse from type
-            if type(from_table) is not str:
+            if not isinstance(from_table, str):
                 # expr_table must be either a Mapping, fieldmapper object or a string
                 # as it references an already referenced table
                 if isinstance(from_table, object):
@@ -825,14 +834,14 @@ class Select(SqlStatement):
             if len(table) != 1:
                 raise SqlError("_join(): atmost one name:alias mapping per call is required")
             table, alias = list(table.items()).pop()
-            if type(alias) is not str:
+            if not isinstance(alias, str):
                 raise SqlError("_join(): invalid alias type")
 
         # if name is not string, attempt to parse from type
-        if type(table) is not str:
+        if not isinstance(table, str):
 
             # if select or Literal, convert to string
-            if isinstance(table, Select) or isinstance(table, Literal):
+            if isinstance(table, (Literal, Select)):
                 if alias is None:
                     alias = self._alias('t')
 
@@ -881,8 +890,7 @@ class Select(SqlStatement):
         if table_name in self._parts_columns.keys():
             if table_name == Sql.ANONYMOUS:
                 raise SqlError("Columns for anonymous expression table already exist")
-            else:
-                raise SqlError("Columns for table %s already exist" % table_name)
+            raise SqlError("Columns for table %s already exist" % table_name)
 
         self._parts_columns[table_name] = (columns, alias)
         return self
@@ -898,11 +906,11 @@ class Select(SqlStatement):
             if fields is None:
                 continue
 
-            if type(fields) is str or isinstance(fields, Literal):
+            if isinstance(fields, (str, Literal)):
                 fields = [str(fields)]
             elif isinstance(fields, collections.abc.Mapping):
                 fields = [fields]
-            elif type(fields) not in [list, tuple]:
+            elif not isinstance(fields, (list, tuple)):
                 raise SqlError("Invalid column type: %s" % str(type(fields)))
 
             if alias is True and tbl_alias != Sql.ANONYMOUS:  # masks anonymous expressions
@@ -916,12 +924,12 @@ class Select(SqlStatement):
             for f in fields:
                 if isinstance(f, collections.abc.Mapping):
                     for field, field_alias in f.items():
-                        if type(field) is str or isinstance(field, Literal):
+                        if isinstance(field, (str, Literal)):
                             cols.append(self._dialect.field(field, field_alias, alias))
                         else:
                             raise SqlError("Invalid column type: %s" % str(type(field)))
 
-                elif type(f) is str or isinstance(f, Literal):
+                elif isinstance(f, (str, Literal)):
                     cols.append(self._dialect.field(f, None, alias))
                 else:
                     raise SqlError("Invalid column type: %s" % str(type(f)))
@@ -1002,7 +1010,7 @@ class Select(SqlStatement):
             if isinstance(query, Select):
                 sql, values = query.assemble()
                 self._values.extend(values)
-            elif type(query) is str:
+            elif isinstance(query, str):
                 sql = query
             elif isinstance(query, Literal):
                 sql = str(query)
@@ -1034,14 +1042,14 @@ class Select(SqlStatement):
                         stmt.append(order)
                     else:
                         stmt.append(_order)
-            elif type(expr) in [list, tuple]:
+            elif isinstance(expr, (list, tuple)):
                 for field in expr:
                     stmt.append(self._dialect.field(field))
                     stmt.append(order)
             elif isinstance(expr, Literal):
                 stmt.append(str(expr))
                 stmt.append(order)
-            elif type(expr) is str:
+            elif isinstance(expr, str):
                 stmt.append(self._dialect.field(expr))
                 stmt.append(order)
             else:
@@ -1165,6 +1173,11 @@ class Select(SqlStatement):
 
         if self._for_update is True:
             parts.append(Sql.SQL_FOR_UPDATE)
+
+        # convert Literal() to str in values
+        for k, v in enumerate(self._values):
+            if isinstance(v, Literal):
+                self._values[k] = str(v)
 
         return " ".join(parts).strip(), self._values
 

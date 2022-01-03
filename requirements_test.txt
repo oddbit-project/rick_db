@@ -1,7 +1,0 @@
-pytest
-pytest-testdox
-pytest-pudb
-pytest-cov
-coverage
-flake8
-psycopg2-binary
