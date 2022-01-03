@@ -1,5 +1,3 @@
-import os
-
 import pytest
 
 from rick_db.conn.sqlite import Sqlite3Connection

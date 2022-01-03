@@ -328,7 +328,7 @@ class Select(SqlStatement):
             fields = [fields]
 
         for field in fields:
-            if type(field) is str or isinstance(field, Literal):
+            if isinstance(field, (str, Literal)):
                 if field in self._parts_group:
                     raise SqlError(f"group(): duplicate field in group clause: {field}")
                 self._parts_group.append(field)
@@ -368,7 +368,7 @@ class Select(SqlStatement):
             table, field = list(field.items()).pop()
 
         if table is not None:
-            if type(table) is not str:
+            if not isinstance(table, str):
                 if isinstance(table, object):
                     schema = getattr(table, ATTR_SCHEMA, schema)
                     table = getattr(table, ATTR_TABLE, None)
@@ -377,7 +377,7 @@ class Select(SqlStatement):
                 else:
                     raise SqlError("having(): invalid table name type")
 
-        if type(field) is str:
+        if isinstance(field, str):
             field = self._dialect.field(field, None, table, schema)
         elif isinstance(field, Literal):
             field = str(field)
@@ -413,7 +413,7 @@ class Select(SqlStatement):
         if union_type not in self._valid_unions:
             raise SqlError("Invalid union type %s" % union_type)
 
-        if type(queries) is str or isinstance(queries, Select):
+        if isinstance(queries, (str, Select)):
             queries = [queries]
 
         for q in queries:
@@ -683,7 +683,7 @@ class Select(SqlStatement):
             table, field = list(field.items()).pop()
 
         if table is not None:
-            if type(table) is not str:
+            if not isinstance(table, str):
                 if isinstance(table, object):
                     table = getattr(table, ATTR_TABLE, None)
                     if table is None:
@@ -691,7 +691,7 @@ class Select(SqlStatement):
                 else:
                     raise SqlError("_where(): invalid table name type")
 
-        if type(field) is str:
+        if isinstance(field, str):
             field = self._dialect.field(field, None, table)
         elif isinstance(field, Literal):
             field = str(field)
@@ -771,11 +771,11 @@ class Select(SqlStatement):
                 if len(from_table) != 1:
                     raise SqlError("_join(): atmost one name:alias mapping per call is required")
                 from_table, expr_alias = list(from_table.items()).pop()
-                if type(expr_alias) is not str:
+                if not isinstance(expr_alias, str):
                     raise SqlError("_join(): invalid alias type")
 
             # if name is not string, attempt to parse from type
-            if type(from_table) is not str:
+            if not isinstance(from_table, str):
                 # expr_table must be either a Mapping, fieldmapper object or a string
                 # as it references an already referenced table
                 if isinstance(from_table, object):
@@ -834,14 +834,14 @@ class Select(SqlStatement):
             if len(table) != 1:
                 raise SqlError("_join(): atmost one name:alias mapping per call is required")
             table, alias = list(table.items()).pop()
-            if type(alias) is not str:
+            if not isinstance(alias, str):
                 raise SqlError("_join(): invalid alias type")
 
         # if name is not string, attempt to parse from type
-        if type(table) is not str:
+        if not isinstance(table, str):
 
             # if select or Literal, convert to string
-            if isinstance(table, Select) or isinstance(table, Literal):
+            if isinstance(table, (Literal, Select)):
                 if alias is None:
                     alias = self._alias('t')
 
@@ -890,8 +890,7 @@ class Select(SqlStatement):
         if table_name in self._parts_columns.keys():
             if table_name == Sql.ANONYMOUS:
                 raise SqlError("Columns for anonymous expression table already exist")
-            else:
-                raise SqlError("Columns for table %s already exist" % table_name)
+            raise SqlError("Columns for table %s already exist" % table_name)
 
         self._parts_columns[table_name] = (columns, alias)
         return self
@@ -907,11 +906,11 @@ class Select(SqlStatement):
             if fields is None:
                 continue
 
-            if type(fields) is str or isinstance(fields, Literal):
+            if isinstance(fields, (str, Literal)):
                 fields = [str(fields)]
             elif isinstance(fields, collections.abc.Mapping):
                 fields = [fields]
-            elif type(fields) not in [list, tuple]:
+            elif not isinstance(fields, (list, tuple)):
                 raise SqlError("Invalid column type: %s" % str(type(fields)))
 
             if alias is True and tbl_alias != Sql.ANONYMOUS:  # masks anonymous expressions
@@ -925,12 +924,12 @@ class Select(SqlStatement):
             for f in fields:
                 if isinstance(f, collections.abc.Mapping):
                     for field, field_alias in f.items():
-                        if type(field) is str or isinstance(field, Literal):
+                        if isinstance(field, (str, Literal)):
                             cols.append(self._dialect.field(field, field_alias, alias))
                         else:
                             raise SqlError("Invalid column type: %s" % str(type(field)))
 
-                elif type(f) is str or isinstance(f, Literal):
+                elif isinstance(f, (str, Literal)):
                     cols.append(self._dialect.field(f, None, alias))
                 else:
                     raise SqlError("Invalid column type: %s" % str(type(f)))
@@ -1011,7 +1010,7 @@ class Select(SqlStatement):
             if isinstance(query, Select):
                 sql, values = query.assemble()
                 self._values.extend(values)
-            elif type(query) is str:
+            elif isinstance(query, str):
                 sql = query
             elif isinstance(query, Literal):
                 sql = str(query)
@@ -1043,14 +1042,14 @@ class Select(SqlStatement):
                         stmt.append(order)
                     else:
                         stmt.append(_order)
-            elif type(expr) in [list, tuple]:
+            elif isinstance(expr, (list, tuple)):
                 for field in expr:
                     stmt.append(self._dialect.field(field))
                     stmt.append(order)
             elif isinstance(expr, Literal):
                 stmt.append(str(expr))
                 stmt.append(order)
-            elif type(expr) is str:
+            elif isinstance(expr, str):
                 stmt.append(self._dialect.field(expr))
                 stmt.append(order)
             else:

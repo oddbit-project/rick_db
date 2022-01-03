@@ -1,5 +1,3 @@
-import datetime
-
 from rick_db.util import MigrationRecord
 from rick_db.util.migrations import MIGRATION_TABLE
 

@@ -30,7 +30,7 @@ class Insert(SqlStatement):
         :param schema: optional string
         :return: self
         """
-        if type(table) is str:
+        if isinstance(table, str):
             pass
         elif isinstance(table, object):
             schema = getattr(table, ATTR_SCHEMA, schema)
@@ -43,7 +43,7 @@ class Insert(SqlStatement):
         else:
             raise SqlError("into(): invalid type for table name")
 
-        if schema is not None and type(schema) is not str:
+        if schema is not None and not isinstance(schema, str):
             raise SqlError("into(): Invalid type for schema name: %s" % str(type(schema)))
 
         self._table = table
@@ -56,7 +56,7 @@ class Insert(SqlStatement):
         :param fields: list of field names
         :return: self
         """
-        if type(fields) not in [list, tuple]:
+        if not isinstance(fields, (list, tuple)):
             raise SqlError("fields(): invalid type for fields parameter")
 
         self._fields = fields
@@ -73,7 +73,7 @@ class Insert(SqlStatement):
         :return: self
         """
         # if list, replace values
-        if type(values) in [list, tuple]:
+        if isinstance(values, (list, tuple)):
             self._values = values
 
         elif isinstance(values, collections.abc.Mapping):
@@ -98,10 +98,10 @@ class Insert(SqlStatement):
         :param fields: str or list with fields to be returned
         :return: self
         """
-        if type(fields) is str:
+        if isinstance(fields, str):
             fields = [fields]
 
-        if type(fields) not in [list, tuple]:
+        if not isinstance(fields, (list, tuple)):
             raise SqlError("returning(): invalid return field type: %s" % str(type(fields)))
 
         if len(fields) == 0:
