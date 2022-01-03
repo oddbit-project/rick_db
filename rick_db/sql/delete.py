@@ -22,7 +22,6 @@ class Delete(SqlStatement):
     def from_(self, table, schema=None):
         """
         DELETE FROM table name and schema
-        if table is object, it will also set fields and values
         :param table: string or record object
         :param schema: optional string
         :return: self

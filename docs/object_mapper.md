@@ -7,8 +7,8 @@ record contains a set of attributes and their corresponding field names in the d
 details such as table name, schema and primary key information. The object mapper purpose is to manage the translation 
 of database fields to object attributes, and vice-versa.
 
-RickDb Records are pure data objects, as they don't depend or reference any database-specific resource; they only hold
-attributes and values representing a result row from a given database operation. Attribute names are also independent from
+RickDb Records are pure data objects, as they don't depend on or reference any database-specific resource; they only hold
+attributes and values representing a result row from a given database operation. Attribute names are also independent of
 their database representation - the mapping between an attribute and the underlying field name is explicit, and performed
 in the declaration of the class.
 
@@ -58,7 +58,7 @@ print(customer.asrecord())
 ```
 
 As mentioned previously, it is possible to also provide optional details, such as table or view name, schema and primary
-key name; these details are quite useful when using RickDb's [Repository](repository.md) or [Query Builder](sql/index.md) to
+key name; these details are quite useful when using RickDb's [Repository](repository.md) or [Query Builder](building_queries.md) to
 provide context for operations. This is probably the most common usage scenario, when designing a multi-tier application:
 
 ```python

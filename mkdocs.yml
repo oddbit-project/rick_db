@@ -13,7 +13,7 @@ nav:
 - install.md
 - connection.md
 - object_mapper.md
-- Query Builder: sql/index.md
+- Query Builder: building_queries.md
 - repository.md
 - grid.md
 - migrations.md
@@ -25,6 +25,9 @@ nav:
   - Repository: 'classes/repository.md'
   - SqlDialect: 'classes/sqldialect.md'
   - Select: 'classes/select.md'
+  - Insert: 'classes/insert.md'
+  - Update: 'classes/update.md'
+  - Delete: 'classes/delete.md'
   - Literal: 'classes/literal.md'
 plugins:
 - search

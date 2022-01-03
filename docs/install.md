@@ -33,7 +33,7 @@ $ pip install rick-db
 1. clone the repository to a folder:
 ```shell
 $ git clone https://github.com/oddbit-project/rick_db.git
-$  rick_db
+$ cd rick_db
 rick_db$
 ```
 
@@ -44,6 +44,5 @@ rick_db$ pip install -r requirements.txt
 
 3. run setuptools from the repository folder:
 ```shell
-$ cd rick_db
 rick_db$ python3 setup.py install
 ```

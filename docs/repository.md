@@ -10,7 +10,7 @@ For more details on all the available methods, check the [Repository](classes/re
 ## Declaring Repositories
 
 A Repository class can be instantiated directly, or declared via direct inheritance. Typically, direct inheritance
-has the advantage of resulting in a properly named class and be easily extendable by adding methods. Regardless, there
+has the advantage of resulting in a properly named class that can be easily extendable by adding methods. Regardless, there
 are usage scenarios where direct instantiation can be quite convenient:
 
 ```python

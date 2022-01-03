@@ -346,12 +346,6 @@ expression.
 
 *schema* and *expr_schema* can provide optional schema naming for both table to JOIN to and table to JOIN from.
 
-
-### Select.**join_inner(table, field, expr_table=None, expr_field=None, operator=None, cols=None, schema=None, expr_schema=None)**
-  
-Alias to [join()](#selectjointable-field-expr_tablenone-expr_fieldnone-operatornone-colsnone-schemanone-expr_schemanone).
-
-
 ### Select.**join_inner(table, field, expr_table=None, expr_field=None, operator=None, cols=None, schema=None, expr_schema=None)**
   
 Alias to [join()](#selectjointable-field-expr_tablenone-expr_fieldnone-operatornone-colsnone-schemanone-expr_schemanone).
