@@ -17,7 +17,7 @@ class Sqlite3MigrationManager(MigrationManager):
         :return:
         """
         return """
-        CREATE TABLE {name}( 
+        CREATE TABLE {name}(
             id_migration INTEGER PRIMARY KEY AUTOINCREMENT,
             applied TIMESTAMP WITH TIME ZONE,
             name VARCHAR(255) NOT NULL UNIQUE

@@ -152,7 +152,7 @@ class TestPgMetadata:
         assert len(fields) == 2
         field1, field2 = fields
         assert field1.field == 'legs'
-        assert field1.primary is False # views don't have keys
+        assert field1.primary is False  # views don't have keys
         assert field2.field == 'name'
         assert field2.primary is False
 

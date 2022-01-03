@@ -31,12 +31,12 @@ class ConsoleWriter:
 
     def _out(self, color: str, message: str, eol=True):
         if eol:
-            sys.stdout.write(color.format(content=message)+"\n")
+            sys.stdout.write(color.format(content=message) + "\n")
         else:
             sys.stdout.write(color.format(content=message))
 
     def _err(self, color: str, message: str, eol=True):
         if eol:
-            sys.stderr.write(color.format(content=message)+"\n")
+            sys.stderr.write(color.format(content=message) + "\n")
         else:
             sys.stderr.write(color.format(content=message))

@@ -21,7 +21,6 @@ class Sqlite3Connection(Connection):
     def quote_identifier(self, value: str) -> str:
         raise RuntimeError("sqlite3 does not provide driver-level quoting function")
 
-
     @staticmethod
     def _row_factory(cursor, row):
         """

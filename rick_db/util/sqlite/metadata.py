@@ -13,8 +13,8 @@ class Sqlite3Metadata(Metadata):
         :param schema: optional schema name
         :return: list of tablenames
         """
-        qry = Select(Sqlite3SqlDialect())\
-            .from_('sqlite_master')\
+        qry = Select(Sqlite3SqlDialect()) \
+            .from_('sqlite_master') \
             .where('type', '=', 'table')
         result = []
         with self._db.cursor() as c:
@@ -59,7 +59,7 @@ class Sqlite3Metadata(Metadata):
         :return:
         """
         sql = """
-        SELECT 
+        SELECT
             ii.name as field,
             ti.type as 'type',
             pk as 'primary'
@@ -67,7 +67,7 @@ class Sqlite3Metadata(Metadata):
             pragma_index_list(m.name) AS il,
             pragma_index_info(il.name) AS ii,
             pragma_table_info(m.name) AS ti
-        WHERE 
+        WHERE
             m.type = 'table'
             and m.tbl_name = ?
             and ti.name= ii.name

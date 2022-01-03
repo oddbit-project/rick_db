@@ -5,7 +5,6 @@ from rick_db.conn.sqlite import Sqlite3Connection
 from rick_db.util.sqlite import Sqlite3Metadata
 
 
-
 class TestSqlite3Metadata:
     createTable = "create table animals(legs integer primary key autoincrement, name varchar);"
     createIndex = "create index idx01 on animals(legs)"
