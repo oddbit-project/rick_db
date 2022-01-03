@@ -1,0 +1,816 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Simple SQL database layer">
+      
+      
+      
+        <link rel="canonical" href="https://github.com/oddbit-project/rick_db/">
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+    
+    
+      
+        <title>RickDb</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.f7951f6f.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#welcome-to-rickdb" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="RickDb" class="md-header__button md-logo" aria-label="RickDb" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RickDb
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/oddbit-project/rick_db/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    oddbit-project/rick_db
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="RickDb" class="md-nav__button md-logo" aria-label="RickDb" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    RickDb
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/oddbit-project/rick_db/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    oddbit-project/rick_db
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Overview
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        Overview
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    Purpose
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tldr-example" class="md-nav__link">
+    TL;DR; example
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="install/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="connection/" class="md-nav__link">
+        Connection
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="object_mapper/" class="md-nav__link">
+        Object Mapper
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="building_queries/" class="md-nav__link">
+        Query Builder
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="repository/" class="md-nav__link">
+        Repositories
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="grid/" class="md-nav__link">
+        Grid
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="migrations/" class="md-nav__link">
+        Migrations
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9">
+          Class List
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Class List" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Class List
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="classes/record/" class="md-nav__link">
+        Record
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="classes/connection/" class="md-nav__link">
+        Connection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="classes/cursor/" class="md-nav__link">
+        Cursor
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="classes/profiler/" class="md-nav__link">
+        Profiler
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="classes/repository/" class="md-nav__link">
+        Repository
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="classes/sqldialect/" class="md-nav__link">
+        SqlDialect
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="classes/select/" class="md-nav__link">
+        Select
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="classes/insert/" class="md-nav__link">
+        Insert
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="classes/update/" class="md-nav__link">
+        Update
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="classes/delete/" class="md-nav__link">
+        Delete
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="classes/literal/" class="md-nav__link">
+        Literal
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    Purpose
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tldr-example" class="md-nav__link">
+    TL;DR; example
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+<a href="https://github.com/oddbit-project/rick_db/edit/master/docs/index.md" title="Edit this page" class="md-content__button md-icon">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+</a>
+
+
+<h1 id="welcome-to-rickdb">Welcome to RickDb</h1>
+<p><a href="https://github.com/oddbit-project/rick_db/actions"><img alt="Tests" src="https://github.com/oddbit-project/rick_db/workflows/Tests/badge.svg?branch=master" /></a>
+<a href="https://pypi.org/project/rick-db/"><img alt="pypi" src="https://img.shields.io/pypi/v/rick-db.svg" /></a>
+<a href="https://github.com/oddbit-project/rick_db/blob/master/LICENSE"><img alt="license" src="https://img.shields.io/pypi/l/rick-db.svg" /></a></p>
+<p>RickDb is a SQL database layer for Python3. It includes connection management, Object Mapper, Query Builder,
+and a Repository pattern implementation.  </p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Object Mapper</li>
+<li>Fluent SQL Query builder with schema support</li>
+<li>High level connectors for PostgreSQL, SQLite</li>
+<li>Pluggable SQL query profiler</li>
+<li>Grid helper</li>
+<li>Migration Manager</li>
+</ul>
+<h2 id="purpose">Purpose</h2>
+<p>RickDb was designed to be used in schema-first scenarios: Database schema is built and managed directly with SQL DDL commands,
+and there is a clear segregation of concerns - the application layer has no responsibility on the structure of the database.</p>
+<p>This approach is the direct opposite of most available ORMS, but allows complete control over how the database is queried
+and how results are processed within the application, favoring cache-friendly multi-tier/service-oriented implementations.</p>
+<p>However, it can also be used to consume information from existing databases, implement lightweight middleware services, or
+to perform some quick application prototyping. </p>
+<p>Please note, RickDb does not implement any async functionality, and there are no plans to support it in the near future.</p>
+<h2 id="tldr-example">TL;DR; example</h2>
+<p>A simple bookstore DTO and Repository example, with a custom query via QueryBuilder:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">rick_db</span> <span class="kn">import</span> <span class="n">fieldmapper</span><span class="p">,</span> <span class="n">Repository</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="kn">from</span> <span class="nn">rick_db.conn.pg</span> <span class="kn">import</span> <span class="n">PgConnection</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Literal</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;publisher&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_publisher&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="k">class</span> <span class="nc">Publisher</span><span class="p">:</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_publisher&#39;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;book&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_book&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="k">class</span> <span class="nc">Book</span><span class="p">:</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_book&#39;</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a>    <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;title&#39;</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16"></a>    <span class="n">total_pages</span> <span class="o">=</span> <span class="s1">&#39;total_pages&#39;</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17"></a>    <span class="n">rating</span> <span class="o">=</span> <span class="s1">&#39;rating&#39;</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18"></a>    <span class="n">isbn</span> <span class="o">=</span> <span class="s1">&#39;isbn&#39;</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19"></a>    <span class="n">published</span> <span class="o">=</span> <span class="s1">&#39;published_date&#39;</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20"></a>    <span class="n">fk_publisher</span> <span class="o">=</span> <span class="s1">&#39;fk_publisher&#39;</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21"></a>
+<a id="__codelineno-0-22" name="__codelineno-0-22"></a>
+<a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_author&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="k">class</span> <span class="nc">Author</span><span class="p">:</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_author&#39;</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a>    <span class="n">first_name</span> <span class="o">=</span> <span class="s1">&#39;first_name&#39;</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27"></a>    <span class="n">middle_name</span> <span class="o">=</span> <span class="s1">&#39;middle_name&#39;</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a>    <span class="n">last_name</span> <span class="o">=</span> <span class="s1">&#39;last_name&#39;</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29"></a>
+<a id="__codelineno-0-30" name="__codelineno-0-30"></a>
+<a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;book_author&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_book_author&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="k">class</span> <span class="nc">BookAuthor</span><span class="p">:</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_book_author&#39;</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34"></a>    <span class="n">fk_book</span> <span class="o">=</span> <span class="s1">&#39;fk_book&#39;</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35"></a>    <span class="n">fk_author</span> <span class="o">=</span> <span class="s1">&#39;fk_author&#39;</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36"></a>
+<a id="__codelineno-0-37" name="__codelineno-0-37"></a>
+<a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="k">class</span> <span class="nc">AuthorRepository</span><span class="p">(</span><span class="n">Repository</span><span class="p">):</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39"></a>
+<a id="__codelineno-0-40" name="__codelineno-0-40"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">Author</span><span class="p">)</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42"></a>
+<a id="__codelineno-0-43" name="__codelineno-0-43"></a>    <span class="k">def</span> <span class="nf">calc_avg_rating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_author</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44"></a>        <span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="sd">        Calculate average rating for a given author</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="sd">        :param id_author: author id</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="sd">        :return: average rating, if any</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-49" name="__codelineno-0-49"></a>
+<a id="__codelineno-0-50" name="__codelineno-0-50"></a>        <span class="c1"># generated query:</span>
+<a id="__codelineno-0-51" name="__codelineno-0-51"></a>        <span class="c1"># SELECT avg(rating) AS &quot;rating&quot; FROM &quot;book&quot; INNER JOIN &quot;book_author&quot; ON </span>
+<a id="__codelineno-0-52" name="__codelineno-0-52"></a>        <span class="c1"># &quot;book&quot;.&quot;id_book&quot;=&quot;book_author&quot;.&quot;fk_book&quot; WHERE (&quot;fk_author&quot; = %s)</span>
+<a id="__codelineno-0-53" name="__codelineno-0-53"></a>        <span class="n">qry</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dialect</span><span class="p">)</span><span class="o">.</span> \
+<a id="__codelineno-0-54" name="__codelineno-0-54"></a>            <span class="n">from_</span><span class="p">(</span><span class="n">Book</span><span class="p">,</span> <span class="p">{</span><span class="n">Literal</span><span class="p">(</span><span class="s2">&quot;avg(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">rating</span><span class="p">)):</span> <span class="s1">&#39;rating&#39;</span><span class="p">})</span><span class="o">.</span> \
+<a id="__codelineno-0-55" name="__codelineno-0-55"></a>            <span class="n">join</span><span class="p">(</span><span class="n">BookAuthor</span><span class="p">,</span> <span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_book</span><span class="p">,</span> <span class="n">Book</span><span class="p">,</span> <span class="n">Book</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span> \
+<a id="__codelineno-0-56" name="__codelineno-0-56"></a>            <span class="n">where</span><span class="p">(</span><span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_author</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="n">id_author</span><span class="p">)</span>
+<a id="__codelineno-0-57" name="__codelineno-0-57"></a>
+<a id="__codelineno-0-58" name="__codelineno-0-58"></a>        <span class="c1"># retrieve result as list of type Book (to get the rating field)</span>
+<a id="__codelineno-0-59" name="__codelineno-0-59"></a>        <span class="n">rset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">qry</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">Book</span><span class="p">)</span>
+<a id="__codelineno-0-60" name="__codelineno-0-60"></a>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rset</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-0-61" name="__codelineno-0-61"></a>            <span class="k">return</span> <span class="n">rset</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rating</span>
+<a id="__codelineno-0-62" name="__codelineno-0-62"></a>        <span class="k">return</span> <span class="mi">0</span>
+<a id="__codelineno-0-63" name="__codelineno-0-63"></a>
+<a id="__codelineno-0-64" name="__codelineno-0-64"></a>    <span class="k">def</span> <span class="nf">books</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_author</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Book</span><span class="p">]:</span>
+<a id="__codelineno-0-65" name="__codelineno-0-65"></a>        <span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-66" name="__codelineno-0-66"></a><span class="sd">        Retrieve all books for the given author</span>
+<a id="__codelineno-0-67" name="__codelineno-0-67"></a><span class="sd">        :return: list[Book]</span>
+<a id="__codelineno-0-68" name="__codelineno-0-68"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-69" name="__codelineno-0-69"></a>
+<a id="__codelineno-0-70" name="__codelineno-0-70"></a>        <span class="n">qry</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dialect</span><span class="p">)</span><span class="o">.</span> \
+<a id="__codelineno-0-71" name="__codelineno-0-71"></a>            <span class="n">from_</span><span class="p">(</span><span class="n">Book</span><span class="p">)</span><span class="o">.</span> \
+<a id="__codelineno-0-72" name="__codelineno-0-72"></a>            <span class="n">join</span><span class="p">(</span><span class="n">BookAuthor</span><span class="p">,</span> <span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_book</span><span class="p">,</span> <span class="n">Book</span><span class="p">,</span> <span class="n">Book</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span> \
+<a id="__codelineno-0-73" name="__codelineno-0-73"></a>            <span class="n">where</span><span class="p">(</span><span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_author</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="n">id_author</span><span class="p">)</span>
+<a id="__codelineno-0-74" name="__codelineno-0-74"></a>
+<a id="__codelineno-0-75" name="__codelineno-0-75"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">qry</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">Book</span><span class="p">)</span>
+<a id="__codelineno-0-76" name="__codelineno-0-76"></a>
+<a id="__codelineno-0-77" name="__codelineno-0-77"></a>
+<a id="__codelineno-0-78" name="__codelineno-0-78"></a><span class="k">def</span> <span class="nf">dump_author_rating</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">AuthorRepository</span><span class="p">):</span>
+<a id="__codelineno-0-79" name="__codelineno-0-79"></a>    <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">():</span>
+<a id="__codelineno-0-80" name="__codelineno-0-80"></a>
+<a id="__codelineno-0-81" name="__codelineno-0-81"></a>        <span class="c1"># calculate average</span>
+<a id="__codelineno-0-82" name="__codelineno-0-82"></a>        <span class="n">rating</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">calc_avg_rating</span><span class="p">(</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<a id="__codelineno-0-83" name="__codelineno-0-83"></a>
+<a id="__codelineno-0-84" name="__codelineno-0-84"></a>        <span class="c1"># print book list</span>
+<a id="__codelineno-0-85" name="__codelineno-0-85"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Books by </span><span class="si">{firstname}</span><span class="s2"> </span><span class="si">{lastname}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="n">author</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="n">author</span><span class="o">.</span><span class="n">last_name</span><span class="p">))</span>
+<a id="__codelineno-0-86" name="__codelineno-0-86"></a>        <span class="k">for</span> <span class="n">book</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">books</span><span class="p">(</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p">):</span>
+<a id="__codelineno-0-87" name="__codelineno-0-87"></a>            <span class="nb">print</span><span class="p">(</span><span class="n">book</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+<a id="__codelineno-0-88" name="__codelineno-0-88"></a>
+<a id="__codelineno-0-89" name="__codelineno-0-89"></a>        <span class="c1"># print average rating           </span>
+<a id="__codelineno-0-90" name="__codelineno-0-90"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average rating for </span><span class="si">{firstname}</span><span class="s2"> </span><span class="si">{lastname}</span><span class="s2"> is </span><span class="si">{rating}</span><span class="s2">&quot;</span><span class="o">.</span>
+<a id="__codelineno-0-91" name="__codelineno-0-91"></a>              <span class="nb">format</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="n">author</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="n">author</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span> <span class="n">rating</span><span class="o">=</span><span class="n">rating</span><span class="p">))</span>
+<a id="__codelineno-0-92" name="__codelineno-0-92"></a>
+<a id="__codelineno-0-93" name="__codelineno-0-93"></a>
+<a id="__codelineno-0-94" name="__codelineno-0-94"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<a id="__codelineno-0-95" name="__codelineno-0-95"></a>    <span class="n">db_cfg</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-0-96" name="__codelineno-0-96"></a>        <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb-bookstore&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-97" name="__codelineno-0-97"></a>        <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_user&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-98" name="__codelineno-0-98"></a>        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_pass&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-99" name="__codelineno-0-99"></a>        <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-100" name="__codelineno-0-100"></a>        <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">,</span>
+<a id="__codelineno-0-101" name="__codelineno-0-101"></a>        <span class="s1">&#39;sslmode&#39;</span><span class="p">:</span> <span class="s1">&#39;require&#39;</span>        
+<a id="__codelineno-0-102" name="__codelineno-0-102"></a>    <span class="p">}</span>
+<a id="__codelineno-0-103" name="__codelineno-0-103"></a>
+<a id="__codelineno-0-104" name="__codelineno-0-104"></a>    <span class="n">conn</span> <span class="o">=</span> <span class="n">PgConnection</span><span class="p">(</span><span class="o">**</span><span class="n">db_cfg</span><span class="p">)</span>
+<a id="__codelineno-0-105" name="__codelineno-0-105"></a>    <span class="n">repo</span> <span class="o">=</span> <span class="n">AuthorRepository</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+<a id="__codelineno-0-106" name="__codelineno-0-106"></a>    <span class="n">dump_author_rating</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+</code></pre></div></p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+      
+        
+        <a href="install/" class="md-footer__link md-footer__link--next" aria-label="Next: Installation" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Installation
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    
+    
+      <script src="assets/javascripts/bundle.649a939e.min.js"></script>
+      
+    
+  </body>
+</html>
