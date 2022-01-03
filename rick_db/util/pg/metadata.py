@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from rick_db.util import Metadata
 from rick_db.sql import Select, PgSqlDialect, Literal
@@ -8,7 +8,7 @@ from rick_db.util.metadata import FieldRecord, UserRecord
 class PgMetadata(Metadata):
     SCHEMA_DEFAULT = 'public'
 
-    def tables(self, schema=None) -> list:
+    def tables(self, schema=None) -> List:
         """
         List all available tables on the indicated schema. If no schema is specified, assume public schema
         :param schema: optional schema name
@@ -24,7 +24,7 @@ class PgMetadata(Metadata):
                 result.append(r['tablename'])
             return result
 
-    def views(self, schema=None) -> list:
+    def views(self, schema=None) -> List:
         if schema is None:
             schema = self.SCHEMA_DEFAULT
 
@@ -35,7 +35,7 @@ class PgMetadata(Metadata):
                 result.append(r['viewname'])
             return result
 
-    def schemas(self) -> list:
+    def schemas(self) -> List:
         """
         List all available schemas
         :return: list of schema names
@@ -47,7 +47,7 @@ class PgMetadata(Metadata):
                 result.append(r['schema_name'])
             return result
 
-    def databases(self) -> list:
+    def databases(self) -> List:
         """
         List all available databases
         :return: list of database names
@@ -58,7 +58,7 @@ class PgMetadata(Metadata):
                 result.append(r['datname'])
             return result
 
-    def table_indexes(self, table_name: str, schema=None) -> list[FieldRecord]:
+    def table_indexes(self, table_name: str, schema=None) -> List[FieldRecord]:
         """
         List all indexes on a given table
         :param table_name:
@@ -98,7 +98,7 @@ class PgMetadata(Metadata):
                 return r
         return None
 
-    def table_fields(self, table_name: str, schema=None) -> list[FieldRecord]:
+    def table_fields(self, table_name: str, schema=None) -> List[FieldRecord]:
         """
         Get fields of table
         :param table_name:
@@ -126,7 +126,7 @@ class PgMetadata(Metadata):
                     f.primary = f.field == idx.field
             return fields
 
-    def view_fields(self, view_name: str, schema=None) -> list[FieldRecord]:
+    def view_fields(self, view_name: str, schema=None) -> List[FieldRecord]:
         """
         Get fields of view
         :param view_name:
@@ -136,7 +136,7 @@ class PgMetadata(Metadata):
         # table_fields() implementation actually doesn't distinguish between table and view
         return self.table_fields(view_name, schema)
 
-    def users(self) -> list[UserRecord]:
+    def users(self) -> List[UserRecord]:
         """
         List all available users
         :return:
@@ -149,7 +149,7 @@ class PgMetadata(Metadata):
         with self._db.cursor() as c:
             return c.fetchall(*Select(PgSqlDialect()).from_('pg_user', fields, 'pg_catalog').assemble(), UserRecord)
 
-    def user_groups(self, user_name: str) -> list[str]:
+    def user_groups(self, user_name: str) -> List[str]:
         """
         List all groups associated with a given user
         :param user_name: user name to check

@@ -1,5 +1,5 @@
 from typing import Optional
-
+from typing import List
 from rick_db.sql import Sqlite3SqlDialect, Select
 from rick_db.util import Metadata
 from rick_db.util.metadata import FieldRecord, UserRecord
@@ -7,7 +7,7 @@ from rick_db.util.metadata import FieldRecord, UserRecord
 
 class Sqlite3Metadata(Metadata):
 
-    def tables(self, schema=None) -> list:
+    def tables(self, schema=None) -> List:
         """
         List all available tables on the indicated schema. If no schema is specified, assume public schema
         :param schema: optional schema name
@@ -23,7 +23,7 @@ class Sqlite3Metadata(Metadata):
                     result.append(r['name'])
         return result
 
-    def views(self, schema=None) -> list:
+    def views(self, schema=None) -> List:
         """
         List all available views on the indicated schema. If no schema is specified, assume public schema
         :param schema: optional schema name
@@ -37,21 +37,21 @@ class Sqlite3Metadata(Metadata):
                     result.append(r['name'])
         return result
 
-    def schemas(self) -> list:
+    def schemas(self) -> List:
         """
         List all available schemas
         :return: list of schema names
         """
         return []
 
-    def databases(self) -> list:
+    def databases(self) -> List:
         """
         List all available databases
         :return: list of database names
         """
         return []
 
-    def table_indexes(self, table_name: str, schema=None) -> list[FieldRecord]:
+    def table_indexes(self, table_name: str, schema=None) -> List[FieldRecord]:
         """
         List all indexes on a given table
         :param table_name:
@@ -89,11 +89,11 @@ class Sqlite3Metadata(Metadata):
         :param schema:
         :return:
         """
-        sql = "select name as field, type, pk as 'primary' from pragma_table_info(?) where pk is true;"
+        sql = "select name as field, type, pk as 'primary' from pragma_table_info(?) where pk=1;"
         with self._db.cursor() as c:
             return c.fetchone(sql, (table_name,), cls=FieldRecord)
 
-    def table_fields(self, table_name: str, schema=None) -> list[FieldRecord]:
+    def table_fields(self, table_name: str, schema=None) -> List[FieldRecord]:
         """
         Return list of fields for table
         :param table_name:
@@ -107,28 +107,28 @@ class Sqlite3Metadata(Metadata):
                 r.primary = r.primary == 1
             return result
 
-    def view_fields(self, view_name: str, schema=None) -> list[FieldRecord]:
+    def view_fields(self, view_name: str, schema=None) -> List[FieldRecord]:
         """
         Return list of fields for view
         :param view_name:
         :param schema:
         :return:
         """
-        sql = "select name as field, type, false as 'primary' from pragma_table_info(?);"
+        sql = "select name as field, type from pragma_table_info(?);"
         with self._db.cursor() as c:
             result = c.fetchall(sql, (view_name,), cls=FieldRecord)
             for r in result:
                 r.primary = r.primary == 1
             return result
 
-    def users(self) -> list[UserRecord]:
+    def users(self) -> List[UserRecord]:
         """
         List all available users
         :return:
         """
         return []
 
-    def user_groups(self, user_name: str) -> list[str]:
+    def user_groups(self, user_name: str) -> List[str]:
         """
         List all groups associated with a given user
         :param user_name: user name to check

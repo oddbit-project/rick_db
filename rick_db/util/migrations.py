@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 from rick_db import Repository, fieldmapper
 from rick_db.conn import Connection
@@ -79,7 +79,7 @@ class MigrationManager:
             return result.pop(0)
         return None
 
-    def list(self) -> list[MigrationRecord]:
+    def list(self) -> List[MigrationRecord]:
         """
         Retrieve all registered migrations
         :return:
