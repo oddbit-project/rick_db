@@ -72,7 +72,7 @@ class CliManager:
         if mgr is None:
             return -3
 
-        if self._cmds[cmd].run(mgr, args, self._cmds):
+        if not self._cmds[cmd].run(mgr, args, self._cmds):
             return -4
         return 0
 
