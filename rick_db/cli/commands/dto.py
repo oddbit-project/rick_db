@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from typing import List
 from rick_db.cli.command import BaseCommand
 from rick_db.util import MigrationManager
 from rick_db.util.metadata import FieldRecord
@@ -60,7 +60,7 @@ class Command(BaseCommand):
             self._tty.error("Error : " + str(e))
             return False
 
-    def _code_gen(self, table_name: str, schema: str, fields: list[FieldRecord]) -> str:
+    def _code_gen(self, table_name: str, schema: str, fields: List[FieldRecord]) -> str:
         """
         Build Python class definition
         :param table_name: table name

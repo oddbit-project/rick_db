@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from typing import List
 from rick_db.cli.command import BaseCommand
 from rick_db.util import MigrationManager, MigrationRecord
 
@@ -54,7 +54,7 @@ class Command(BaseCommand):
             self._tty.error("Error : " + str(e))
             return False
 
-    def _load_migrations(self, path: Path) -> list[tuple]:
+    def _load_migrations(self, path: Path) -> List[tuple]:
         """
         Scan path for sql files and loads contents into a list
         :param path: path to scan
