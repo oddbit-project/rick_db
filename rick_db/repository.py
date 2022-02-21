@@ -36,8 +36,7 @@ class Repository(BaseRepository):
             raise RepositoryError("__init__(): record_type must be a valid Record class")
         self._record = record_type  # type: Record
         self._query_cache = query_cache  # use global query cache
-        self._key_prefix = "{0}:{1}.{2}:".format(type(db).__name__, self.__class__.__module__, self.__class__.__name__)
-
+        self._key_prefix = "{0}:{1}.{2}:".format(type(db).__name__, record_type.__module__, record_type.__name__)
         super().__init__(db,
                          getattr(record_type, ATTR_TABLE),
                          getattr(record_type, ATTR_SCHEMA),
@@ -166,11 +165,11 @@ class Repository(BaseRepository):
         qry = self._cache_get('fetch_all')
         if qry is None:
             qry = self.select()
+            qry, _ = qry.assemble()
             self._cache_set('fetch_all', qry)
 
-        qry, values = qry.assemble()
         with self._db.cursor() as c:
-            return c.fetchall(qry, values, self._record)
+            return c.fetchall(qry, (), self._record)
 
     def insert(self, record, cols=None) -> Optional[object]:
         """
