@@ -1,7 +1,0 @@
-
-bug:
-where(blabla, '=', {table:field}) was not supported
-where(blabla, '=', literal()) was not supported
-
-TODO check if works:
-where(field, '=', field)
