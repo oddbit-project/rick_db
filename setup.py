@@ -7,7 +7,11 @@ try:
 except ImportError:
     from distutils.core import setup
 
-version = __import__('rick_db').get_version()
+# parse/exec version straight from file
+# to avoid __init__.py and bootrsapping of unmet dependencies
+version = {}
+with open("rick_db/version.py") as fp:
+    exec(fp.read(), version)
 
 # read the contents of README.md
 this_directory = os.path.abspath(os.path.dirname(__file__))
@@ -16,7 +20,7 @@ with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='rick-db',
-    version=version,
+    version=version['__version__'],
     author="Joao Pinheiro",
     author_email="",
     url="https://github.com/oddbit-project/rick_db",
@@ -39,7 +43,7 @@ setup(
     ],
     packages=find_packages(),
     include_package_data=False,
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     extras_require={},
     install_requires=[
         "psycopg2>=2.8.6",
