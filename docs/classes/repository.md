@@ -122,6 +122,19 @@ for r in repo.fetch_all():
     print(r.name)
 ```
 
+### Repository.**fetch_all_ordered(col_name:str, order=Sql.SQL_ASC)**
+
+Fetch all rows ordered by col_name and order direction; equivalent to a **SELECT * FROM <record_type_table> ORDER BY col_name order**.
+It returns a record list, or an empty list if the table is empty.
+
+Example:
+```python
+(...)
+# fetch all records 
+for r in repo.fetch_all_ordered(Character.name,Sql.SQL_DESC):
+    print(r.name)
+```
+
 ### Repository.**insert(record, cols=None)**
 
 Insert a new record, optionally returning values. If the database does not support INSERT...RETURNING, *cols* can only

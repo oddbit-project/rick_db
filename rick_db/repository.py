@@ -6,7 +6,7 @@ from rick_db import Record
 from rick_db.cache import StrCache
 from rick_db.conn import Connection
 from rick_db.mapper import ATTR_RECORD_MAGIC, ATTR_TABLE, ATTR_SCHEMA, ATTR_PRIMARY_KEY
-from rick_db.sql import SqlDialect, Select, Insert, Delete, Update, Literal
+from rick_db.sql import SqlDialect, Select, Insert, Delete, Update, Literal, Sql
 
 
 class RepositoryError(Exception):
@@ -167,6 +167,18 @@ class Repository(BaseRepository):
             qry = self.select()
             qry, _ = qry.assemble()
             self._cache_set('fetch_all', qry)
+
+        with self._db.cursor() as c:
+            return c.fetchall(qry, (), self._record)
+
+    def fetch_all_ordered(self, col_name: str, order=Sql.SQL_ASC) -> list:
+        """
+        Fetch all rows sorted by a column
+        :param col_name: name of column to order by
+        :param order: sort direction
+        :return: list of record object
+        """
+        qry, _ = self.select().order(col_name, order).assemble()
 
         with self._db.cursor() as c:
             return c.fetchall(qry, (), self._record)

@@ -76,6 +76,30 @@ class RepositoryTest:
             elif isinstance(conn, Sqlite3Connection):
                 assert type(r.active) is int
 
+    def test_fetchall_ordered(self, conn):
+        repo = Repository(conn, User)
+        users = repo.fetch_all_ordered(User.email)
+        assert type(users) is list
+        assert len(users) == len(rows_users)
+        expected_list = []
+        for e in rows_users:
+            expected_list.append(e['email'])
+        expected_list.sort()
+
+        i = 0
+        for r in users:
+            assert isinstance(r, User)
+            assert r.id is not None and type(r.id) is int
+            assert r.name is not None and type(r.name) is str and len(r.name) > 0
+            assert r.email is not None and type(r.email) is str and len(r.email) > 0
+            assert r.email == expected_list[i]
+            i = i + 1
+            assert r.active is not None
+            if isinstance(conn, PgConnection):
+                assert type(r.active) is bool
+            elif isinstance(conn, Sqlite3Connection):
+                assert type(r.active) is int
+
     def test_fetch_pk(self, conn):
         repo = Repository(conn, User)
         users = repo.fetch_all()
