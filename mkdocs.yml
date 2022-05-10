@@ -1,0 +1,43 @@
+site_name: RickDb
+site_description: Simple SQL database layer
+strict: true
+site_url: https://github.com/oddbit-project/rick_db/
+repo_name: oddbit-project/rick_db
+repo_url: https://github.com/oddbit-project/rick_db/
+
+theme:
+  name: material
+
+nav:
+- Overview: index.md
+- install.md
+- connection.md
+- object_mapper.md
+- Query Builder: building_queries.md
+- repository.md
+- grid.md
+- migrations.md
+- Class List:
+  - Record: 'classes/record.md'
+  - Connection: 'classes/connection.md'
+  - Cursor: 'classes/cursor.md'
+  - Profiler: 'classes/profiler.md'
+  - Repository: 'classes/repository.md'
+  - SqlDialect: 'classes/sqldialect.md'
+  - Select: 'classes/select.md'
+  - Insert: 'classes/insert.md'
+  - Update: 'classes/update.md'
+  - Delete: 'classes/delete.md'
+  - Literal: 'classes/literal.md'
+plugins:
+- search
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+
+
