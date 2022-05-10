@@ -2,107 +2,107 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://github.com/oddbit-project/rick_db/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/building_queries/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/changelog/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/connection/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/grid/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/install/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/migrations/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/object_mapper/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/repository/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/classes/connection/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/classes/cursor/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/classes/dbgrid/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/classes/delete/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/classes/insert/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/classes/literal/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/classes/profiler/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/classes/record/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/classes/repository/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/classes/select/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/classes/sqldialect/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://github.com/oddbit-project/rick_db/classes/update/</loc>
-         <lastmod>2022-01-03</lastmod>
+         <lastmod>2022-05-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
