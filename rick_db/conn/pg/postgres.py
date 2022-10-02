@@ -5,6 +5,8 @@ from psycopg2.pool import SimpleConnectionPool, ThreadedConnectionPool
 from rick_db.conn import Connection
 from rick_db.profiler import Profiler, NullProfiler
 from rick_db.sql.dialect import PgSqlDialect
+from rick_db.util import Metadata, MigrationManager
+from rick_db.util.pg import PgMetadata, PgMigrationManager
 
 
 class PgConnection(Connection):
@@ -20,6 +22,12 @@ class PgConnection(Connection):
 
     def quote_identifier(self, value: str) -> str:
         return quote_ident(value, self._conn)
+
+    def migration_manager(self) -> MigrationManager:
+        return PgMigrationManager(self)
+
+    def metadata(self) -> Metadata:
+        return PgMetadata(self)
 
 
 class PgPooledConnection(Connection):

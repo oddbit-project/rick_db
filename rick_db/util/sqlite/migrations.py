@@ -6,10 +6,6 @@ from ...sql import Sqlite3SqlDialect
 
 class Sqlite3MigrationManager(MigrationManager):
 
-    def __init__(self, db: Connection):
-        super().__init__(db)
-        self._meta = Sqlite3Metadata(db)
-
     def _migration_table_sql(self, table_name: str) -> str:
         """
         SQL for migration table creation

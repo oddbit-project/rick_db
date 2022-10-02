@@ -1,6 +1,8 @@
 import sqlite3
 from rick_db.conn import Connection
 from rick_db.sql.dialect import Sqlite3SqlDialect
+from rick_db.util import Metadata, MigrationManager
+from rick_db.util.sqlite import Sqlite3Metadata, Sqlite3MigrationManager
 
 
 class Sqlite3Connection(Connection):
@@ -34,3 +36,9 @@ class Sqlite3Connection(Connection):
         for idx, col in enumerate(cursor.description):
             result[col[0]] = row[idx]
         return result
+
+    def migration_manager(self) -> MigrationManager:
+        return Sqlite3MigrationManager(self)
+
+    def metadata(self) -> Metadata:
+        return Sqlite3Metadata(self)

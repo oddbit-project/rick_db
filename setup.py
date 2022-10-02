@@ -46,7 +46,7 @@ setup(
     python_requires=">=3.8",
     extras_require={},
     install_requires=[
-        "psycopg2>=2.8.6",
+        "psycopg2>=2.9.2",
     ],
     zip_safe=False,
     entry_points={

@@ -6,10 +6,6 @@ from ...sql import PgSqlDialect
 
 class PgMigrationManager(MigrationManager):
 
-    def __init__(self, db: Connection):
-        super().__init__(db)
-        self._meta = PgMetadata(db)
-
     def _migration_table_sql(self, table_name: str) -> str:
         """
         SQL for migration table creation

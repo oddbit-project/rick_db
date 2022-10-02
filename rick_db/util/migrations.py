@@ -37,7 +37,7 @@ class MigrationManager:
 
     def __init__(self, db: Connection):
         self._db = db
-        self._meta = None  # type: Metadata
+        self._meta = db.metadata()  # type: Metadata
         self._repo = None
 
     def get_meta(self) -> Metadata:

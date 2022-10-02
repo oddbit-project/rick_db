@@ -9,4 +9,4 @@ class TestPgMigrationManager(BaseMigrationManager):
 
     @pytest.fixture()
     def mm(self) -> PgMigrationManager:
-        return PgMigrationManager(connectSimple())
+        return connectSimple().migration_manager()

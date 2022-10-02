@@ -4,13 +4,13 @@ Base connection class for all database connections.
 
 ### @property Connection.**profiler**
 
-Get or set the current profiler. By default, a connection is initialized with a [NullProfiler](profiler.md#class-rick_dbprofilernullprofiler). Check
+Get or set the current profiler. By default, a connection is initialized with
+a [NullProfiler](profiler.md#class-rick_dbprofilernullprofiler). Check
 [Profiler](profiler.md#rick_dbprofiler) for details on the return type.
 
 ### Connection.**dialect()**
 
 Retrieve connection dialect. Check [SqlDialect](sqldialect.md) for more details on the return type.
-
 
 ### Connection.**begin()**
 
@@ -33,10 +33,19 @@ Returns true if there is a started database transaction.
 
 Initializes and returns a new [Cursor](cursor.md) object.
 
-
 ### Connection.**backend()**
 
 Retrieve the underlying database connection object.
+
+### Connection.**migration_manager()**
+
+Retrieve the appropriate MigrationManager object instance for the current connection. The MigrationManager
+object can be used to manage database migrations.
+
+### Connection.**metadata()**
+
+Retrieve the appropriate Metadata object instance for the current connection. The Metadata object can be used
+to list internal database structures, such as tables, views, schemas and users.
 
 ### Connection.**close()**
 

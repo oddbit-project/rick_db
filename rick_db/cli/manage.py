@@ -104,10 +104,8 @@ class CliManager:
         """
         # imports are local to avoid direct dependency from drivers
         from rick_db.conn.pg import PgConnection
-        from rick_db.util.pg import PgMigrationManager
         try:
-            conn = PgConnection(**cfg)
-            return PgMigrationManager(conn)
+            return PgConnection(**cfg).migration_manager()
         except Exception as e:
             self._tty.error("Error: {}".format(str(e)))
             return None
@@ -119,10 +117,8 @@ class CliManager:
         :return: MigrationManager instance
         """
         from rick_db.conn.sqlite import Sqlite3Connection
-        from rick_db.util.sqlite import Sqlite3MigrationManager
         try:
-            conn = Sqlite3Connection(**cfg)
-            return Sqlite3MigrationManager(conn)
+            conn = Sqlite3Connection(**cfg).migration_manager()
         except Exception as e:
             self._tty.error("Error: {}".format(str(e)))
             return None

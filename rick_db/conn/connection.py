@@ -169,5 +169,11 @@ class Connection:
             self._conn.close()
             self._conn = None
 
+    def migration_manager(self):
+        raise RuntimeError("migration_manager(): not supported on the current backend")
+
+    def metadata(self):
+        raise RuntimeError("metadata(): not supported on the current backend")
+
     def __del__(self):
         self.close()
