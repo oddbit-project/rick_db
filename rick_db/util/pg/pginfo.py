@@ -244,7 +244,7 @@ class PgInfo:
             if len(result) > 0:
                 return result.pop()
             return None
-        
+
     def list_table_indexes(self, table_name: str, schema=None) -> List[FieldRecord]:
         """
         List all indexes on a given table
