@@ -154,7 +154,7 @@ class TestPgMetadata(PgCommon):
         pk = pgmeta.table_pk('animals')
         assert pk.field == keys[0].field
         assert pk.primary == keys[0].primary
-        assert pk.type == keys[0].type
+        assert pk.type == None # table_pk does not retrieve type
 
         # cleanup
         with conn.cursor() as qry:
@@ -173,7 +173,7 @@ class TestPgMetadata(PgCommon):
         pk = pgmeta.table_pk('aliens', 'myschema')
         assert pk.field == keys[0].field
         assert pk.primary == keys[0].primary
-        assert pk.type == keys[0].type
+        assert pk.type == None # table_pk does not retrieve type
 
         # cleanup
         self.cleanup(conn)
