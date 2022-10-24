@@ -1,14 +1,20 @@
 from typing import Optional, List
 
+from rick_db.conn import Connection
 from rick_db.util import Metadata
 from rick_db.sql import Select, PgSqlDialect, Literal
 from rick_db.util.metadata import FieldRecord, UserRecord
+from .pginfo import PgInfo
 
 
 class PgMetadata(Metadata):
     SCHEMA_DEFAULT = 'public'
 
-    def tables(self, schema=None) -> List:
+    def __init__(self, db: Connection):
+        self._db = db
+        self.pginfo = PgInfo(db)
+
+    def tables(self, schema=None) -> List[str]:
         """
         List all available tables on the indicated schema. If no schema is specified, assume public schema
         :param schema: optional schema name
@@ -17,46 +23,36 @@ class PgMetadata(Metadata):
         if schema is None:
             schema = self.SCHEMA_DEFAULT
 
-        result = []
-        qry = Select(PgSqlDialect()).from_('pg_tables', ['tablename']).where('schemaname', '=', schema)
-        with self._db.cursor() as c:
-            for r in c.fetchall(*qry.assemble()):
-                result.append(r['tablename'])
-            return result
+        result = [t.name for t in self.pginfo.list_database_tables(schema)]
+        return result
 
-    def views(self, schema=None) -> List:
+    def views(self, schema=None) -> List[str]:
+        """
+        List all available views on the indicated schema. If no schema is specified, assume public schema
+        :param schema: optional schema name
+        :return: list of tablenames
+        """
         if schema is None:
             schema = self.SCHEMA_DEFAULT
 
-        result = []
-        qry = Select(PgSqlDialect()).from_('pg_views', ['viewname']).where('schemaname', '=', schema)
-        with self._db.cursor() as c:
-            for r in c.fetchall(*qry.assemble()):
-                result.append(r['viewname'])
-            return result
+        result = [t.name for t in self.pginfo.list_database_views(schema)]
+        return result
 
-    def schemas(self) -> List:
+    def schemas(self) -> List[str]:
         """
         List all available schemas
         :return: list of schema names
         """
-        with self._db.cursor() as c:
-            result = []
-            for r in c.fetchall(
-                    *Select(PgSqlDialect()).from_('schemata', ['schema_name'], 'information_schema').assemble()):
-                result.append(r['schema_name'])
-            return result
+        result = [t.name for t in self.pginfo.list_database_schemas()]
+        return result
 
-    def databases(self) -> List:
+    def databases(self) -> List[str]:
         """
         List all available databases
         :return: list of database names
         """
-        with self._db.cursor() as c:
-            result = []
-            for r in c.fetchall(*Select(PgSqlDialect()).from_('pg_database', ['datname']).assemble()):
-                result.append(r['datname'])
-            return result
+        result = [t.name for t in self.pginfo.list_server_databases()]
+        return result
 
     def table_indexes(self, table_name: str, schema=None) -> List[FieldRecord]:
         """
@@ -65,26 +61,7 @@ class PgMetadata(Metadata):
         :param schema:
         :return:
         """
-        if schema is None:
-            schema = self.SCHEMA_DEFAULT
-
-        sql = """
-            SELECT
-              pg_attribute.attname AS field,
-              format_type(pg_attribute.atttypid, pg_attribute.atttypmod) AS type,
-              indisprimary AS primary
-            FROM pg_index, pg_class, pg_attribute, pg_namespace
-            WHERE
-              pg_class.relname = %s AND
-              indrelid = pg_class.oid AND
-              nspname = %s AND
-              pg_class.relnamespace = pg_namespace.oid AND
-              pg_attribute.attrelid = pg_class.oid AND
-              pg_attribute.attnum = any(pg_index.indkey)
-        """
-        params = (table_name, schema)
-        with self._db.cursor() as c:
-            return c.fetchall(sql, params, cls=FieldRecord)
+        return self.pginfo.list_table_indexes(table_name, schema)
 
     def table_pk(self, table_name: str, schema=None) -> Optional[FieldRecord]:
         """
@@ -93,10 +70,10 @@ class PgMetadata(Metadata):
         :param schema:
         :return:
         """
-        for r in self.table_indexes(table_name, schema):
-            if r.primary:
-                return r
-        return None
+        pk = self.pginfo.list_table_pk(table_name, schema)
+        if pk is None:
+            return None
+        return FieldRecord(field=pk.column, primary=True)
 
     def table_fields(self, table_name: str, schema=None) -> List[FieldRecord]:
         """
