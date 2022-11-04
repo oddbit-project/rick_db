@@ -977,14 +977,22 @@ class Select(SqlStatement):
             if details['joinCondition'] is not None:
                 stmt.append(Sql.SQL_ON)
                 stmt.append(details['joinCondition'])
-            names.append(" ".join(stmt))  # complete join statement
+
+            # convert possible literals to self-contained clauses
+            _stmt = []
+            for s in stmt:
+                if isinstance(s, Literal):
+                   _stmt.append("({})".format(str(s)))
+                else:
+                    _stmt.append(s)
+            names.append(" ".join(_stmt))  # complete join statement
         if len(names) > 0:
             parts.append(" ".join(names))  # combine all join statements
 
         # copy values that may have been passed by subqueries in joins
         for v in self._query_values[Sql.JOIN]:
             self._values.append(v)
-            
+
         return " ".join(parts)
 
     def _render_limitoffset(self):
