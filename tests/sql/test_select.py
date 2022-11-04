@@ -104,6 +104,10 @@ join_noalias_cases = [
     [{"table2": "t"}, "table2_id", TABLE_NAME, TABLE_NAME + "_id", '>', ['t_field_1', 't_field_2'], 'schema',
      'other_schema',
      'SELECT "test_table".*,"t"."t_field_1","t"."t_field_2" FROM "test_table" INNER JOIN "schema"."table2" AS "t" ON "other_schema"."test_table"."test_table_id">"t"."table2_id"'],
+    # join select expression as table
+    [Select(PgSqlDialect()).from_('table_foo', ['id', 'name']), "id", TABLE_NAME, TABLE_NAME + "_id", None, None, None, None,
+     'SELECT "test_table".* FROM "test_table" INNER JOIN (SELECT "id","name" FROM "table_foo") AS "t" ON "test_table"."test_table_id"="t"."id"'],
+
 ]
 
 join_alias_cases = [

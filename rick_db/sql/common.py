@@ -28,6 +28,7 @@ class Sql:
     FOR_UPDATE = 'forupdate'
     ANONYMOUS = '_'
 
+    JOIN = 'JOIN'
     INNER_JOIN = 'INNER JOIN'
     LEFT_JOIN = 'LEFT JOIN'
     RIGHT_JOIN = 'RIGHT JOIN'

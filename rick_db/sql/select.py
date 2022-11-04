@@ -50,6 +50,7 @@ class Select(SqlStatement):
         """
         self._values = []
         self._query_values = {
+            Sql.JOIN: [],
             Sql.WHERE: [],
             Sql.HAVING: []
         }
@@ -734,7 +735,7 @@ class Select(SqlStatement):
 
     def _join(self, join_type, join_table, expr_or_field, from_table, from_field, operator, cols, schema, from_schema):
         """
-        :param join_type: one of of self._valid_joins
+        :param join_type: one of self._valid_joins
         :param join_table: table name expression
         :param expr_or_field: field expression
         :param from_table: existing table
@@ -844,6 +845,11 @@ class Select(SqlStatement):
             if isinstance(table, (Literal, Select)):
                 if alias is None:
                     alias = self._alias('t')
+                if isinstance(table, Select):
+                    sql, values = table.assemble()
+                    table = Literal(sql)
+                    if len(values) > 0:
+                       self._query_values[Sql.JOIN].extend(values)
 
             # if object, try to access fieldmapper info
             elif isinstance(table, object):
@@ -975,6 +981,10 @@ class Select(SqlStatement):
         if len(names) > 0:
             parts.append(" ".join(names))  # combine all join statements
 
+        # copy values that may have been passed by subqueries in joins
+        for v in self._query_values[Sql.JOIN]:
+            self._values.append(v)
+            
         return " ".join(parts)
 
     def _render_limitoffset(self):
