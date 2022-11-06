@@ -4,7 +4,8 @@ from rick_db.conn import Connection
 from rick_db.sql import Select, PgSqlDialect, Literal
 from rick_db.util.metadata import FieldRecord
 from rick_db.util.pg.records import DatabaseRecord, RoleRecord, TableSpaceRecord, SettingRecord, NamespaceRecord, \
-    TableRecord, ColumnRecord, ConstraintRecord, KeyColumnUsageRecord, UserRecord, GroupRecord
+    TableRecord, ColumnRecord, ConstraintRecord, KeyColumnUsageRecord, UserRecord, GroupRecord, ForeignKeyRecord, \
+    IdentityRecord
 
 
 class PgInfo:
@@ -273,6 +274,41 @@ class PgInfo:
         with self.db.cursor() as c:
             return c.fetchall(sql, params, cls=FieldRecord)
 
+    def list_table_foreign_keys(self, table_name, schema: str = None) -> List[ForeignKeyRecord]:
+        """
+        List foreign keys for a given table
+
+        Query from bob217 on https://stackoverflow.com/questions/1152260/how-to-list-table-foreign-keys
+
+        :param table_name:
+        :param schema:
+        :return:
+        """
+        sql = """
+            SELECT sh.nspname AS table_schema,
+              tbl.relname AS table_name,
+              col.attname AS column_name,
+              referenced_sh.nspname AS foreign_table_schema,
+              referenced_tbl.relname AS foreign_table_name,
+              referenced_field.attname AS foreign_column_name
+            FROM pg_constraint c
+                INNER JOIN pg_namespace AS sh ON sh.oid = c.connamespace
+                INNER JOIN (SELECT oid, unnest(conkey) as conkey FROM pg_constraint) con ON c.oid = con.oid
+                INNER JOIN pg_class tbl ON tbl.oid = c.conrelid
+                INNER JOIN pg_attribute col ON (col.attrelid = tbl.oid AND col.attnum = con.conkey)
+                INNER JOIN pg_class referenced_tbl ON c.confrelid = referenced_tbl.oid
+                INNER JOIN pg_namespace AS referenced_sh ON referenced_sh.oid = referenced_tbl.relnamespace
+                INNER JOIN (SELECT oid, unnest(confkey) as confkey FROM pg_constraint) conf ON c.oid = conf.oid
+                INNER JOIN pg_attribute referenced_field ON 
+                    (referenced_field.attrelid = c.confrelid AND referenced_field.attnum = conf.confkey)
+            WHERE c.contype = 'f' AND sh.nspname = %s AND tbl.relname = %s
+        """
+        if not schema:
+            schema = self.SCHEMA_DEFAULT
+
+        with self.db.cursor() as c:
+            return c.fetchall(sql, [schema, table_name], cls=ForeignKeyRecord)
+
     def table_exists(self, table_name: str, table_type: str = None, schema: str = None) -> bool:
         """
         Returns true if the specified table exists
@@ -296,3 +332,30 @@ class PgInfo:
 
         with self.db.cursor() as c:
             return len(c.exec(sql, values)) > 0
+
+    def list_identity_columns(self, table, schema: str = None) -> List[IdentityRecord]:
+        """
+        List IDENTITY columns (if any)
+        :param table: table name
+        :param schema: optional schema name
+        :return: List[IdentityRecord]
+        """
+        if not schema:
+            schema = self.SCHEMA_DEFAULT
+
+        sql, values = Select(self.db.dialect()) \
+            .from_(IdentityRecord,
+                   cols=[IdentityRecord.column, IdentityRecord.identity, IdentityRecord.generated]) \
+            .join({'pg_class': 'c'}, 'oid', IdentityRecord, 'attrelid') \
+            .join({'pg_namespace': 'n'}, 'oid', 'c', 'relnamespace') \
+            .where('attnum', '>', 0) \
+            .where({'c': 'relname'}, '=', table) \
+            .where({'n': 'nspname'}, '=', schema) \
+            .where_and() \
+            .where(IdentityRecord.identity, '!=', '') \
+            .orwhere(IdentityRecord.generated, '!=', '') \
+            .where_end() \
+            .assemble()
+
+        with self.db.cursor() as c:
+            return c.exec(sql, values, cls=IdentityRecord)
