@@ -25,6 +25,10 @@ and the application layer has no responsibility on the structure of the database
 ```
 $ pip3 install rick-db
 ```
+## Documentation
+
+Project documentation can be found on the [Documentation](https://oddbit-project.github.io/rick_db/) website.
+
 
 ## TL;DR; example
 
@@ -138,12 +142,6 @@ if __name__ == '__main__':
     repo = AuthorRepository(conn)
     dump_author_rating(repo)
 ```
-
-
-## Documentation
-
-Project documentation can be found on the [Documentation](https://oddbit-project.github.io/rick_db/) website.
-
 
 ## Running tests
 
