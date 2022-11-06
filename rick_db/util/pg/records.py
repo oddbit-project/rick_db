@@ -109,6 +109,7 @@ class ColumnRecord:
     column = 'column_name'  # " Name of the column
     position = 'ordinal_position'  # Ordinal position of the column within the table (count starts at 1)
     default_value = 'column_default'  # Default expression of the column
+    is_identity = 'is_identity'  # YES if the column is possibly nullable, NO if it is known not nullable. A not-null constraint is one way a column can be known not nullable, but there can be others.
     is_nullable = 'is_nullable'  # YES if the column is possibly nullable, NO if it is known not nullable. A not-null constraint is one way a column can be known not nullable, but there can be others.
     data_type = 'data_type'  # Data type of the column, if it is a built-in type, or ARRAY if it is some array (in that case, see the view element_types), else USER-DEFINED (in that case, the type is identified in udt_name and associated columns). If the column is based on a domain, this column refers to the type underlying the domain (and the domain is identified in domain_name and associated columns).
     maxlen = 'character_maximum_length'  # If data_type identifies a character or bit string type, the declared maximum length; null for all other data types or if no maximum length was declared.
