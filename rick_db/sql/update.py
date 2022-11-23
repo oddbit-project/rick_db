@@ -176,7 +176,7 @@ class Update(SqlStatement):
             self._returning.extend(fields)
             return self
 
-        if isinstance(fields, str):
+        if isinstance(fields, (str, Literal)):
             self._returning.append(fields)
             return self
 
