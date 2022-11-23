@@ -38,8 +38,20 @@ update_cases = [
      'UPDATE "public"."other_table" SET "field"=? WHERE "id" = ?'],
     [SchemaTestTable, {SchemaTestTable.field: 'value1'}, [('id', '=', '5')], 'public',
      'UPDATE "public"."other_table" SET "field"=? WHERE "id" = ?'],
+]
+
+return_cases = [
+    ['table1', {'field1': 'value1'}, None, ['*'], None, 'UPDATE "table1" SET "field1"=? RETURNING *'],
+    ['table1', {'f1': 'v1', 'f2': 2}, None, ['*'], 'public', 'UPDATE "public"."table1" SET "f1"=?, "f2"=? RETURNING *'],
+    [SomeTable, sample_record, [('id', '=', '5')], [['*']], None,
+     'UPDATE "test_table" SET "field"=?, "other_field"=? WHERE "id" = ? RETURNING *'],
+
+    ['table1', {'field1': 'value1'}, None, [['field1', 'field2']], None, 'UPDATE "table1" SET "field1"=? RETURNING "field1", "field2"'],
+    [SomeTable, sample_record, [('id', '=', '5')], [['field1', 'field2']], None,
+     'UPDATE "test_table" SET "field"=?, "other_field"=? WHERE "id" = ? RETURNING "field1", "field2"'],
 
 ]
+
 update_cases_or = [
     ['table1', {'field1': 'value1'}, [('id', 'in', sample_query)], None,
      'UPDATE "table1" SET "field1"=? WHERE "id" in (SELECT "id" FROM "test" WHERE ("field" = ?))'],
@@ -98,5 +110,24 @@ def test_update_and_or(table, fields, and_where_list, or_where_list, schema, res
     for item in or_where_list:
         field, operator, value = item
         qry.orwhere(field, operator, value)
+    sql, _ = qry.assemble()
+    assert sql == result
+
+
+@pytest.mark.parametrize("table, fields, where_list, returning_list, schema, result", return_cases)
+def test_update_returning(table, fields, where_list, returning_list, schema, result):
+    qry = Update().table(table, schema)
+    if fields:
+        qry.values(fields)
+
+    if returning_list:
+        for item in returning_list:
+            qry.returning(item)
+
+    if where_list:
+        for item in where_list:
+            field, operator, value = item
+            qry.where(field, operator, value)
+
     sql, _ = qry.assemble()
     assert sql == result
