@@ -18,6 +18,7 @@ class Update(SqlStatement):
         self._values = []
         self._clauses = []
         self._clause_values = []
+        self._returning = []
 
         if dialect is None:
             dialect = DefaultSqlDialect()
@@ -165,6 +166,22 @@ class Update(SqlStatement):
                 self._clause_values.append(value)
         return self
 
+    def returning(self, fields: Union[list, str] = Literal(Sql.SQL_ALL)):
+        """
+        Return a set of fields
+        :param fields: list of field names or '*'
+        :return: self
+        """
+        if isinstance(fields, (list, tuple)):
+            self._returning.extend(fields)
+            return self
+
+        if isinstance(fields, str):
+            self._returning.append(fields)
+            return self
+
+        raise SqlError("returning(): invalid type for returning parameter")
+
     def assemble(self):
         """
         Assemble the UPDATE statement
@@ -202,5 +219,14 @@ class Update(SqlStatement):
                     parts.append(concat)
                 parts.append(expr)
                 c += 1
+
+        # return clause
+        if len(self._returning) > 0:
+            parts.append(Sql.SQL_RETURNING)
+
+            fields = []
+            for name in self._returning:
+                fields.append("{field}".format(field=self._dialect.field(name)))
+            parts.append(", ".join(fields))
 
         return " ".join(parts), values

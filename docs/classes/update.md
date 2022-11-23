@@ -114,6 +114,24 @@ qry = Update(PgSqlDialect()).table('table').\
 print(qry.assemble())
 ```
 
+### Update.**returning(fields: Union[list, str] = Sql.SQL_ALL)**
+
+Adds a **RETURNING** clause to the **UPDATE** clause with a list of field names. If *fields* is empty, '*' is used. 
+Example:
+
+```python
+qry = Update(PgSqlDialect())\
+    .table('table') \
+    .values({'field':'value'}) \
+    .where('id', '=', 7) \
+    .orwhere('name', 'ILIKE', 'john%') \
+    .returning()
+
+# output: ('UPDATE "table" SET "field"=%s WHERE "id" = %s OR "name" ILIKE %s RETURNING *', ['value', 7, 'john%'])
+print(qry.assemble())
+```
+
+
 ### Update.**assemble()**
 
 Assembles **UPDATE** SQL string and returns a tuple with (sql_string, list_of_values). If an error occurs, *SqlError* is raised.
