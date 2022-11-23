@@ -166,17 +166,21 @@ class Update(SqlStatement):
                 self._clause_values.append(value)
         return self
 
-    def returning(self, fields: Union[list, str] = Literal(Sql.SQL_ALL)):
+    def returning(self, fields: Union[list, str] = None):
         """
         Return a set of fields
         :param fields: list of field names or '*'
         :return: self
         """
+        if fields is None:
+            self._returning.append(Literal('*'))
+            return self
+
         if isinstance(fields, (list, tuple)):
             self._returning.extend(fields)
             return self
 
-        if isinstance(fields, (str, Literal)):
+        if isinstance(fields, str):
             self._returning.append(fields)
             return self
 
