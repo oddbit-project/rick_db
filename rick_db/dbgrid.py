@@ -64,25 +64,22 @@ class DbGrid:
             return {self._field_pk: 'ASC'}
         return {}
 
-    def run(self, qry: Select = None, search_text: str = None, match_fields: dict = None, limit: int = None,
-            offset: int = None, sort_fields: dict = None) -> tuple:
+    def _assemble(self, qry: Select = None, search_text: str = None, match_fields: dict = None,
+                  sort_fields: dict = None, search_fields: list = None) -> Select:
         """
-        Executes a query and returns the total row count matching the query, as well as the records within the specified
-        range.
+        Assembles a query for a run() operation
 
-        If no query specified, a default query is built; If no sort dict specified, the default sort is used;
-        If limit is omitted, all results are returned
+        search_text is applied by default to all fields  present in search_fields and are OR'ed; this list can be reduced
+        by specifying search_fields
 
-        search_text is applied to all fields present in search_fields and are OR'ed;
         match_fields contains fieldnames and values to be matched for equality; they are AND'ed;
 
         :param qry: optional Select query
         :param search_text: optional search string
         :param match_fields: optional field filter
-        :param limit: optional limit
-        :param offset: optional offset (ignored if no limit)
         :param sort_fields: optional sort fields in the format {field_name: order}
-        :return: tuple(total_row_count, filtered_rows)
+        :param search_fields: optional search fields
+        :return: Select
         """
 
         if not qry:
@@ -106,6 +103,18 @@ class DbGrid:
             if len(self._search_fields) == 0:
                 raise RuntimeError("no available fields are mapped as searchable")
 
+            if search_fields:
+                # ensure search_fields only has allowed field names
+                tmp = []
+                for field in search_fields:
+                    if field in self._search_fields:
+                        tmp.append(field)
+                search_fields = tmp
+
+            if not search_fields:
+                # either search_fields was not passed as parameter, or had invalid fields
+                search_fields = self._search_fields
+
             mask = self.search_map[self._search_type].format(str(search_text))
 
             operand = 'LIKE'
@@ -118,11 +127,14 @@ class DbGrid:
                 psql_mode = True
 
             if psql_mode:
-                for field in self._search_fields:
+                for field in search_fields:
                     qry.orwhere(field, operand, mask.format(str(search_text)))
             else:
                 mask = mask.upper()
-                for field in self._search_fields:
+                dialect = self._repo.dialect()
+                for field in search_fields:
+                    # note: assuming non-pg operation does NOT support schemas or is referencing ambiguous fields
+                    field = dialect.field(field)
                     qry.orwhere(Literal('UPPER({})'.format(field)), operand, mask)
             qry.where_end()
 
@@ -135,5 +147,33 @@ class DbGrid:
                 else:
                     raise ValueError("field '%s' used for sorting does not exist on Record" % field)
 
-        # perform queries
+        return qry
+
+    def run(self, qry: Select = None, search_text: str = None, match_fields: dict = None, limit: int = None,
+            offset: int = None, sort_fields: dict = None, search_fields: list = None) -> tuple:
+        """
+        Executes a query and returns the total row count matching the query, as well as the records within the specified
+        range.
+
+        If no query specified, a default query is built; If no sort dict specified, the default sort is used;
+        If limit is omitted, all results are returned
+
+        search_text is applied to all fields present in search_fields and are OR'ed;
+        match_fields contains fieldnames and values to be matched for equality; they are AND'ed;
+
+        :param qry: optional Select query
+        :param search_text: optional search string
+        :param match_fields: optional field filter
+        :param limit: optional limit
+        :param offset: optional offset (ignored if no limit)
+        :param sort_fields: optional sort fields in the format {field_name: order}
+        :param search_fields: optional search fields
+        :return: tuple(total_row_count, filtered_rows)
+        """
+
+        # assemble query
+        qry = self._assemble(qry=qry, search_text=search_text, match_fields=match_fields, sort_fields=sort_fields,
+                             search_fields=search_fields)
+
+        # execute query
         return self._repo.list(qry, limit=limit, offset=offset)

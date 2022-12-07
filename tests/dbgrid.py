@@ -7,6 +7,7 @@ from rick_db import Repository, fieldmapper, DbGrid
 class GridRecord:
     id = 'id_grid'
     label = 'label'
+    content = 'content'
     odd = 'odd'
 
 
