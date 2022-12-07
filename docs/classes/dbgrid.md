@@ -27,14 +27,15 @@ Build and returns the Select() object to be used internally for DbGrid. This met
 
 Build and returns the default sort dictionary. It can be overridden for specific implementations.
 
-### DbGrid.**run(qry: Select = None, search_text: str = None, match_fields: dict = None, limit: int = None, offset: int = None, sort_fields: dict = None)**:
+### DbGrid.**run(qry: Select = None, search_text: str = None, match_fields: dict = None, limit: int = None, offset: int = None, sort_fields: dict = None, search_fields: list = None)**:
 
 Executes a query and returns a tuple with the total row count matching the query, and the records within the specified range 
 defined by *offset* and *limit*, sorted by *sort_fields*.
 
 If *qry* is None, [DbGrid.default_query()](#dbgriddefault_query) is used. If *search_text* is specified, a **LIKE/ILIKE**
-search is performed in the searchable fields defined in the constructor. *match_fields* is an optional {field_name:value}
-dict to perform exact match (field=value).
+search is performed in the searchable fields defined in the constructor. Specific search fields can be specified, within
+the set of fields specified in the constructor. *match_fields* is an optional {field_name:value} dict to perform exact 
+match (field=value).
 
 Example:
 ```python
