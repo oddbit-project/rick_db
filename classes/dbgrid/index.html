@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://github.com/oddbit-project/rick_db/classes/dbgrid/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.1.2">
     
     
       
@@ -581,8 +581,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#dbgridrunqry-select-none-search_text-str-none-match_fields-dict-none-limit-int-none-offset-int-none-sort_fields-dict-none" class="md-nav__link">
-    DbGrid.run(qry: Select = None, search_text: str = None, match_fields: dict = None, limit: int = None, offset: int = None, sort_fields: dict = None):
+  <a href="#dbgridrunqry-select-none-search_text-str-none-match_fields-dict-none-limit-int-none-offset-int-none-sort_fields-dict-none-search_fields-list-none" class="md-nav__link">
+    DbGrid.run(qry: Select = None, search_text: str = None, match_fields: dict = None, limit: int = None, offset: int = None, sort_fields: dict = None, search_fields: list = None):
   </a>
   
 </li>
@@ -622,12 +622,13 @@ a case-sensitive search is performed.</p>
 <p>Build and returns the Select() object to be used internally for DbGrid. This method can be overridden for specific implementations.</p>
 <h3 id="dbgriddefault_sort">DbGrid.<strong>default_sort()</strong>:</h3>
 <p>Build and returns the default sort dictionary. It can be overridden for specific implementations.</p>
-<h3 id="dbgridrunqry-select-none-search_text-str-none-match_fields-dict-none-limit-int-none-offset-int-none-sort_fields-dict-none">DbGrid.<strong>run(qry: Select = None, search_text: str = None, match_fields: dict = None, limit: int = None, offset: int = None, sort_fields: dict = None)</strong>:</h3>
+<h3 id="dbgridrunqry-select-none-search_text-str-none-match_fields-dict-none-limit-int-none-offset-int-none-sort_fields-dict-none-search_fields-list-none">DbGrid.<strong>run(qry: Select = None, search_text: str = None, match_fields: dict = None, limit: int = None, offset: int = None, sort_fields: dict = None, search_fields: list = None)</strong>:</h3>
 <p>Executes a query and returns a tuple with the total row count matching the query, and the records within the specified range 
 defined by <em>offset</em> and <em>limit</em>, sorted by <em>sort_fields</em>.</p>
 <p>If <em>qry</em> is None, <a href="#dbgriddefault_query">DbGrid.default_query()</a> is used. If <em>search_text</em> is specified, a <strong>LIKE/ILIKE</strong>
-search is performed in the searchable fields defined in the constructor. <em>match_fields</em> is an optional {field_name:value}
-dict to perform exact match (field=value).</p>
+search is performed in the searchable fields defined in the constructor. Specific search fields can be specified, within
+the set of fields specified in the constructor. <em>match_fields</em> is an optional {field_name:value} dict to perform exact 
+match (field=value).</p>
 <p>Example:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">rick_db</span> <span class="kn">import</span> <span class="n">fieldmapper</span><span class="p">,</span> <span class="n">Repository</span><span class="p">,</span> <span class="n">DbGrid</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span> <span class="nn">rick_db.conn.pg</span> <span class="kn">import</span> <span class="n">PgConnection</span>
