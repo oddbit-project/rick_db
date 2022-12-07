@@ -7,11 +7,17 @@ from rick_db.util.metadata import FieldRecord
 
 class Command(BaseCommand):
     command = "dto"
-    description = "generate a python data transfer object (DTO) for a given database object"
+    description = (
+        "generate a python data transfer object (DTO) for a given database object"
+    )
 
     def help(self):
         self._tty.title(self.description)
-        self._tty.title("Usage: {name} [database] dto <[schema.]table_name> <output_file.py>".format(name=self._name))
+        self._tty.title(
+            "Usage: {name} [database] dto <[schema.]table_name> <output_file.py>".format(
+                name=self._name
+            )
+        )
 
     def run(self, mgr: MigrationManager, args: list, command_list: dict):
         if len(args) < 1:
@@ -23,7 +29,7 @@ class Command(BaseCommand):
             return False
 
         view = False
-        table_name = args[0].split('.', 1)
+        table_name = args[0].split(".", 1)
         schema = None
         output_file = Path(args[1])
 
@@ -41,7 +47,9 @@ class Command(BaseCommand):
         if not meta.table_exists(table_name, schema):
             view = True
             if not meta.view_exists(table_name, schema):
-                self._tty.error("Error : Database object '{}' not found".format(args[0]))
+                self._tty.error(
+                    "Error : Database object '{}' not found".format(args[0])
+                )
                 return False
 
         if view:
@@ -72,7 +80,7 @@ class Command(BaseCommand):
         pk = None
         has_id = False
         for f in fields:
-            if f.field == 'id':
+            if f.field == "id":
                 has_id = True
             if f.primary:
                 pk = f.field
@@ -96,8 +104,10 @@ class Command(BaseCommand):
             attr_name = f.field
             if f.primary:
                 if not has_id:
-                    attr_name = 'id'
-            result.append("    {attr} = '{field}'".format(attr=attr_name, field=f.field))
+                    attr_name = "id"
+            result.append(
+                "    {attr} = '{field}'".format(attr=attr_name, field=f.field)
+            )
 
         result.append("")
         return "\n".join(result)

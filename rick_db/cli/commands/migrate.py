@@ -10,7 +10,11 @@ class Command(BaseCommand):
 
     def help(self):
         self._tty.title(self.description)
-        self._tty.title("Usage: {name} [database] migrate <path_to_sql_files>".format(name=self._name))
+        self._tty.title(
+            "Usage: {name} [database] migrate <path_to_sql_files>".format(
+                name=self._name
+            )
+        )
 
     def run(self, mgr: MigrationManager, args: list, command_list: dict):
         if not mgr.has_manager():
@@ -33,10 +37,14 @@ class Command(BaseCommand):
                 # check if migration is duplicated
                 record = mgr.fetch_by_name(mig.name)
                 if record is not None:
-                    self._tty.write(self._tty.AMBAR.format(content="skipping, already applied"))
+                    self._tty.write(
+                        self._tty.AMBAR.format(content="skipping, already applied")
+                    )
                 # check if migration is obviously empty
                 elif content.strip() == "":
-                    self._tty.write(self._tty.AMBAR.format(content="skipping, empty migration"))
+                    self._tty.write(
+                        self._tty.AMBAR.format(content="skipping, empty migration")
+                    )
                 else:
                     # seems good, ty to execute
                     result = mgr.execute(mig, content)
@@ -61,7 +69,7 @@ class Command(BaseCommand):
         :return: list of (MigrationRecord, content)
         """
         mig_dict = {}
-        for entry in sorted(path.glob('*.sql')):
+        for entry in sorted(path.glob("*.sql")):
             if entry.is_file():
                 with open(entry, encoding="utf-8") as f:
                     mig_dict[entry.name] = f.read()

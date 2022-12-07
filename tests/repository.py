@@ -4,61 +4,59 @@ from rick_db.conn.pg import PgConnection
 from rick_db.conn.sqlite import Sqlite3Connection
 
 
-@fieldmapper(tablename='users', pk='id_user')
+@fieldmapper(tablename="users", pk="id_user")
 class User:
-    id = 'id_user'
-    name = 'name'
-    email = 'email'
-    login = 'login'
-    active = 'active'
+    id = "id_user"
+    name = "name"
+    email = "email"
+    login = "login"
+    active = "active"
 
 
 @fieldmapper
 class UserName:
-    name = 'name'
+    name = "name"
 
 
 rows_users = [
     {
-        'name': 'aragorn',
-        'email': 'aragorn@lotr',
-        'login': 'aragorn',
-        'active': True,
+        "name": "aragorn",
+        "email": "aragorn@lotr",
+        "login": "aragorn",
+        "active": True,
     },
     {
-        'name': 'bilbo',
-        'email': 'bilbo@lotr',
-        'login': 'bilbo',
-        'active': True,
+        "name": "bilbo",
+        "email": "bilbo@lotr",
+        "login": "bilbo",
+        "active": True,
     },
     {
-        'name': 'samwise',
-        'email': 'samwise@lotr',
-        'login': 'samwise',
-        'active': True,
+        "name": "samwise",
+        "email": "samwise@lotr",
+        "login": "samwise",
+        "active": True,
     },
     {
-        'name': 'gandalf',
-        'email': 'gandalf@lotr',
-        'login': 'gandalf',
-        'active': True,
+        "name": "gandalf",
+        "email": "gandalf@lotr",
+        "login": "gandalf",
+        "active": True,
     },
     {
-        'name': 'gollum',
-        'email': 'gollum@lotr',
-        'login': 'gollum',
-        'active': True,
+        "name": "gollum",
+        "email": "gollum@lotr",
+        "login": "gollum",
+        "active": True,
     },
-
 ]
 
 
 class RepositoryTest:
-
     def test_create_repository(self, conn):
         repo = Repository(conn, User)
-        assert repo._pk == 'id_user'
-        assert repo._tablename == 'users'
+        assert repo._pk == "id_user"
+        assert repo._tablename == "users"
 
     def test_fetchall(self, conn):
         repo = Repository(conn, User)
@@ -83,7 +81,7 @@ class RepositoryTest:
         assert len(users) == len(rows_users)
         expected_list = []
         for e in rows_users:
-            expected_list.append(e['email'])
+            expected_list.append(e["email"])
         expected_list.sort()
 
         i = 0
@@ -117,12 +115,12 @@ class RepositoryTest:
         users = repo.fetch_all()
         assert len(users) == len(rows_users)
         for u in users:
-            record = repo.fetch_one(repo.select().where(User.id, '=', u.id))
+            record = repo.fetch_one(repo.select().where(User.id, "=", u.id))
             assert record is not None
             assert record.asdict() == u.asdict()
 
         # if not found, returns None
-        record = repo.fetch_one(repo.select().where(User.id, '=', -1))
+        record = repo.fetch_one(repo.select().where(User.id, "=", -1))
         assert record is None
 
     def test_fetch(self, conn):
@@ -135,19 +133,19 @@ class RepositoryTest:
             ids.append(u.id)
             names.append(u.name)
 
-        users = repo.fetch(repo.select().where(User.id, '>', -1))
+        users = repo.fetch(repo.select().where(User.id, ">", -1))
         assert users is not None
         assert len(users) == len(ids)
         for u in users:
             assert u.id in ids
 
         # test empty result query
-        users = repo.fetch(repo.select().where(User.id, '=', -1))
+        users = repo.fetch(repo.select().where(User.id, "=", -1))
         assert type(users) is list
         assert len(users) == 0
 
         # test different record class
-        users = repo.fetch(repo.select().where(User.id, '>', -1), cls=UserName)
+        users = repo.fetch(repo.select().where(User.id, ">", -1), cls=UserName)
         assert users is not None
         assert len(users) == len(ids)
         for u in users:
@@ -156,10 +154,10 @@ class RepositoryTest:
 
     def test_fetch_raw(self, conn):
         repo = Repository(conn, User)
-        users = repo.fetch_raw(repo.select().where(User.id, '>', 0))
+        users = repo.fetch_raw(repo.select().where(User.id, ">", 0))
         assert len(users) == len(rows_users)
         for u in users:
-            assert len(u['name']) > 0
+            assert len(u["name"]) > 0
 
     def test_fetch_by_field(self, conn):
         repo = Repository(conn, User)
@@ -176,7 +174,7 @@ class RepositoryTest:
             assert len(records) == 1
             record = records.pop().asdict()
             assert len(record) == 1
-            assert record['name'] == u.name
+            assert record["name"] == u.name
 
         # fetch non-existing record
         records = repo.fetch_by_field(User.id, -1)
@@ -185,35 +183,39 @@ class RepositoryTest:
     def test_fetch_where(self, conn):
         repo = Repository(conn, User)
         # fetch with one condition
-        records = repo.fetch_where([(User.name, '=', 'gandalf')])
+        records = repo.fetch_where([(User.name, "=", "gandalf")])
         assert len(records) == 1
         record = records.pop()
-        assert record.name == 'gandalf'
+        assert record.name == "gandalf"
 
         # fetch with 2 conditions
-        records = repo.fetch_where([(User.name, '=', 'gandalf'), (User.id, 'is not null', None)])
+        records = repo.fetch_where(
+            [(User.name, "=", "gandalf"), (User.id, "is not null", None)]
+        )
         assert len(records) == 1
         record = records.pop()
-        assert record.name == 'gandalf'
+        assert record.name == "gandalf"
 
         # fetch only some columns
-        records = repo.fetch_where([(User.name, '=', 'gandalf')], cols=[User.id, User.name])
+        records = repo.fetch_where(
+            [(User.name, "=", "gandalf")], cols=[User.id, User.name]
+        )
         record = records.pop()
-        assert record.name == 'gandalf'
+        assert record.name == "gandalf"
         assert record.id > 0
         assert len(record.asdict()) == 2
 
         # fetch non-existing record
-        records = repo.fetch_where([(User.name, 'like', '%john%')])
+        records = repo.fetch_where([(User.name, "like", "%john%")])
         assert len(records) == 0
 
         # incomplete
         with pytest.raises(RepositoryError):
-            repo.fetch_where([(User.name, 'like')])
+            repo.fetch_where([(User.name, "like")])
 
         # wrong type
         with pytest.raises(RepositoryError):
-            repo.fetch_where([({}, 'like')])
+            repo.fetch_where([({}, "like")])
 
         # empty where_list
         with pytest.raises(RepositoryError):
@@ -225,16 +227,18 @@ class RepositoryTest:
         assert result is None
 
         # try to read inserted record
-        records = repo.fetch_by_field(User.name, 'John')
+        records = repo.fetch_by_field(User.name, "John")
         assert len(records) == 1
         record = records.pop()
-        assert record.name == 'John'
-        assert record.email == 'john.connor@skynet'
+        assert record.name == "John"
+        assert record.email == "john.connor@skynet"
         assert record.login is None
 
         # note: sqlite does not support returning multiple columns
         # it will always return a record with the inserted primary key
-        result = repo.insert(User(name="Sarah", email="sarah.connor@skynet"), cols=[User.id])
+        result = repo.insert(
+            User(name="Sarah", email="sarah.connor@skynet"), cols=[User.id]
+        )
         assert isinstance(result, User)
         assert result.id > 0
         record = repo.fetch_pk(result.id)
@@ -269,13 +273,13 @@ class RepositoryTest:
         assert record.name == "Sarah"
 
         # failed delete, as where doesn't match
-        repo.delete_where([(User.id, '=', result), (User.name, '=', 'John')])
+        repo.delete_where([(User.id, "=", result), (User.name, "=", "John")])
         record = repo.fetch_pk(result)
         assert record is not None
         assert record.id == result
 
         # proper delete
-        repo.delete_where([(User.id, '=', result), (User.name, '=', 'Sarah')])
+        repo.delete_where([(User.id, "=", result), (User.name, "=", "Sarah")])
         record = repo.fetch_pk(result)
         assert record is None
 
@@ -311,7 +315,7 @@ class RepositoryTest:
     def test_update(self, conn):
         repo = Repository(conn, User)
 
-        record = User(name='John', email='john.connor@skynet')
+        record = User(name="John", email="john.connor@skynet")
         record = repo.insert(record, cols=[User.id])
         assert isinstance(record, User) is True
         id = record.id
@@ -319,20 +323,20 @@ class RepositoryTest:
         # read inserted record
         record = repo.fetch_pk(id)
         # simple update - pk is in the record
-        record.name = 'Sarah'
+        record.name = "Sarah"
         repo.update(record)
         record = repo.fetch_pk(id)
-        assert record.name == 'Sarah'
-        assert record.email == 'john.connor@skynet'
+        assert record.name == "Sarah"
+        assert record.email == "john.connor@skynet"
 
         # try to update without pk
         with pytest.raises(RepositoryError):
-            repo.update(User(name='John'))
+            repo.update(User(name="John"))
         # correct update procedure
-        repo.update(User(name='John'), pk_value=id)
+        repo.update(User(name="John"), pk_value=id)
         record = repo.fetch_pk(id)
-        assert record.name == 'John'
-        assert record.email == 'john.connor@skynet'
+        assert record.name == "John"
+        assert record.email == "john.connor@skynet"
 
     def test_update_where(self, conn):
         repo = Repository(conn, User)
@@ -341,13 +345,13 @@ class RepositoryTest:
 
         # test exception on empty where clauses
         with pytest.raises(RepositoryError):
-            repo.update_where(User(name='Pocoyo'), [])
+            repo.update_where(User(name="Pocoyo"), [])
         with pytest.raises(RepositoryError):
-            repo.update_where(User(name='Pocoyo'), [()])
+            repo.update_where(User(name="Pocoyo"), [()])
 
-        repo.update_where(User(name='Pocoyo'), [(User.login, '=', u.login)])
+        repo.update_where(User(name="Pocoyo"), [(User.login, "=", u.login)])
         record = repo.fetch_pk(u.id)
-        assert record.name == 'Pocoyo'
+        assert record.name == "Pocoyo"
         assert record.login == u.login
 
     def test_count(self, conn):
@@ -358,10 +362,10 @@ class RepositoryTest:
     def test_count_where(self, conn):
         repo = Repository(conn, User)
         users = repo.fetch_all()
-        assert len(users) == repo.count_where([(User.id, '>', 0)])
+        assert len(users) == repo.count_where([(User.id, ">", 0)])
 
-        assert repo.count_where([(User.name, 'bilbo')]) == 1
-        assert repo.count_where([(User.name, 'John')]) == 0
+        assert repo.count_where([(User.name, "bilbo")]) == 1
+        assert repo.count_where([(User.name, "John")]) == 0
 
     def test_list(self, conn):
         repo = Repository(conn, User)
@@ -371,16 +375,16 @@ class RepositoryTest:
         total, rows = repo.list(qry, 1)
         assert total == len(users)
         assert len(rows) == 1
-        assert rows[0].name == 'aragorn'
+        assert rows[0].name == "aragorn"
 
         total, rows = repo.list(qry, 1, 1)
         assert total == len(users)
         assert len(rows) == 1
-        assert rows[0].name == 'bilbo'
+        assert rows[0].name == "bilbo"
 
         qry = repo.select().order(User.id)
         total, rows = repo.list(qry, 2, 2)
         assert total == len(users)
         assert len(rows) == 2
-        assert rows[0].name == 'samwise'
-        assert rows[1].name == 'gandalf'
+        assert rows[0].name == "samwise"
+        assert rows[1].name == "gandalf"

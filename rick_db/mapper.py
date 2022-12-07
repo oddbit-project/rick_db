@@ -2,12 +2,12 @@ from functools import lru_cache
 import inspect
 
 # Record class attribute names
-ATTR_RECORD_MAGIC = '__PatchedRecordClass__'
-ATTR_FIELDS = '_fieldmap'
-ATTR_TABLE = '_tablename'
-ATTR_SCHEMA = '_schema'
-ATTR_PRIMARY_KEY = '_pk'
-ATTR_ROW = '_row'
+ATTR_RECORD_MAGIC = "__PatchedRecordClass__"
+ATTR_FIELDS = "_fieldmap"
+ATTR_TABLE = "_tablename"
+ATTR_SCHEMA = "_schema"
+ATTR_PRIMARY_KEY = "_pk"
+ATTR_ROW = "_row"
 
 
 class RecordError(Exception):
@@ -15,7 +15,6 @@ class RecordError(Exception):
 
 
 class Record:
-
     def load(self, **kwargs):
         pass
 
@@ -193,11 +192,14 @@ def fieldmapper(cls=None, pk=None, tablename=None, schema=None, clsonly=False):
         if clsonly:
             # build fieldmap for current class attributes only
             fieldmap = dict(
-                (field, value) for field, value in cls.__dict__.items() if field[0] != '_' and not callable(value))
+                (field, value)
+                for field, value in cls.__dict__.items()
+                if field[0] != "_" and not callable(value)
+            )
         else:
             # build fieldmap for all available class attributes
             for item in dir(cls):
-                if item[0] != '_':
+                if item[0] != "_":
                     value = getattr(cls, item)
                     if not callable(value):
                         fieldmap[item] = value

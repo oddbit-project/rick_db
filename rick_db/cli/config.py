@@ -40,10 +40,15 @@ class ConfigFile:
                 if type(config[k]) is dict:
                     if self.KEY_ENGINE not in config[k].keys():
                         raise RuntimeError(
-                            "missing 'engine' parameter in database configuration key '{}' in {}".format(k, self._file))
+                            "missing 'engine' parameter in database configuration key '{}' in {}".format(
+                                k, self._file
+                            )
+                        )
                     result[k] = config[k]
                     if self.KEY_PASSFILE in config[k].keys():
-                        result[self.KEY_PASSWORD] = self._load_pass(config[k][self.KEY_PASSFILE])
+                        result[self.KEY_PASSWORD] = self._load_pass(
+                            config[k][self.KEY_PASSFILE]
+                        )
                         del result[self.KEY_PASSFILE]
         return result
 

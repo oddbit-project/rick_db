@@ -3,7 +3,7 @@ import pytest
 from rick_db.sql import PgSqlDialect, SqlDialect
 from rick_db.sql.common import Literal
 
-TABLE_NAME = 'test_table'
+TABLE_NAME = "test_table"
 
 # SqlDialect -----------------------------------------------------------------------------------------------------------
 sql_dialect_table = [
@@ -26,16 +26,34 @@ sql_dialect_field = [
     ["field", "alias", "table", None, '"table"."field" AS "alias"'],
     ["field", "alias", "table", "schema", '"schema"."table"."field" AS "alias"'],
     # field literals
-    [Literal("TOP(field)"), None, None, None, 'TOP(field)'],
+    [Literal("TOP(field)"), None, None, None, "TOP(field)"],
     [Literal("TOP(field)"), "alias", None, None, 'TOP(field) AS "alias"'],
-    [Literal("TOP(field)"), "alias", "table", "schema", 'TOP(field) AS "alias"'],  # table and schema are ignored
+    [
+        Literal("TOP(field)"),
+        "alias",
+        "table",
+        "schema",
+        'TOP(field) AS "alias"',
+    ],  # table and schema are ignored
     # field alias and casting
     ["field", ["text"], None, None, 'CAST("field" AS text)'],
     ["field", ["text"], "table", None, 'CAST("table"."field" AS text)'],
     ["field", ["text"], "table", "schema", 'CAST("schema"."table"."field" AS text)'],
     ["field", ["text", "alias"], None, None, 'CAST("field" AS text) AS "alias"'],
-    ["field", ["text", "alias"], "table", None, 'CAST("table"."field" AS text) AS "alias"'],
-    ["field", ["text", "alias"], "table", "schema", 'CAST("schema"."table"."field" AS text) AS "alias"'],
+    [
+        "field",
+        ["text", "alias"],
+        "table",
+        None,
+        'CAST("table"."field" AS text) AS "alias"',
+    ],
+    [
+        "field",
+        ["text", "alias"],
+        "table",
+        "schema",
+        'CAST("schema"."table"."field" AS text) AS "alias"',
+    ],
 ]
 
 
@@ -65,16 +83,28 @@ pg_dialect_field = [
     ["field", "alias", "table", None, '"table"."field" AS "alias"'],
     ["field", "alias", "table", "schema", '"schema"."table"."field" AS "alias"'],
     # field literals
-    [Literal("TOP(field)"), None, None, None, 'TOP(field)'],
+    [Literal("TOP(field)"), None, None, None, "TOP(field)"],
     [Literal("TOP(field)"), "alias", None, None, 'TOP(field) AS "alias"'],
-    [Literal("TOP(field)"), "alias", "table", "schema", 'TOP(field) AS "alias"'],  # table and schema are ignored
+    [
+        Literal("TOP(field)"),
+        "alias",
+        "table",
+        "schema",
+        'TOP(field) AS "alias"',
+    ],  # table and schema are ignored
     # field alias and casting
     ["field", ["text"], None, None, '"field"::text'],
     ["field", ["text"], "table", None, '"table"."field"::text'],
     ["field", ["text"], "table", "schema", '"schema"."table"."field"::text'],
     ["field", ["text", "alias"], None, None, '"field"::text AS "alias"'],
     ["field", ["text", "alias"], "table", None, '"table"."field"::text AS "alias"'],
-    ["field", ["text", "alias"], "table", "schema", '"schema"."table"."field"::text AS "alias"'],
+    [
+        "field",
+        ["text", "alias"],
+        "table",
+        "schema",
+        '"schema"."table"."field"::text AS "alias"',
+    ],
 ]
 
 

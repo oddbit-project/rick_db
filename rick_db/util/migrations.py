@@ -6,14 +6,14 @@ from rick_db import Repository, fieldmapper
 from rick_db.conn import Connection
 from rick_db.util import Metadata
 
-MIGRATION_TABLE = '_migration'
+MIGRATION_TABLE = "_migration"
 
 
-@fieldmapper(tablename=MIGRATION_TABLE, pk='id_migration')
+@fieldmapper(tablename=MIGRATION_TABLE, pk="id_migration")
 class MigrationRecord:
-    id = 'id_migration'
-    name = 'name'
-    applied = 'applied'
+    id = "id_migration"
+    name = "name"
+    applied = "applied"
 
 
 @dataclass
@@ -23,7 +23,6 @@ class MigrationResult:
 
 
 class Migration:
-
     def run(self, conn) -> bool:
         """
         Base class for code-based migrations
@@ -34,7 +33,6 @@ class Migration:
 
 
 class MigrationManager:
-
     def __init__(self, db: Connection):
         self._db = db
         self._meta = db.metadata()  # type: Metadata
@@ -60,7 +58,10 @@ class MigrationManager:
         :return:
         """
         if self._meta.table_exists(MIGRATION_TABLE):
-            return MigrationResult(success=False, error="migration table '{}' already exists".format(MIGRATION_TABLE))
+            return MigrationResult(
+                success=False,
+                error="migration table '{}' already exists".format(MIGRATION_TABLE),
+            )
         try:
             with self._db.cursor() as c:
                 c.exec(self._migration_table_sql(MIGRATION_TABLE))
@@ -94,7 +95,7 @@ class MigrationManager:
         :return:
         """
         try:
-            self.get_repository().delete_where([(MigrationRecord.id, '>', 0)])
+            self.get_repository().delete_where([(MigrationRecord.id, ">", 0)])
             record.applied = datetime.now().isoformat()
             self.get_repository().insert(record)
             return MigrationResult(success=True, error="")

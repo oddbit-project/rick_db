@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
         for migration in mgr.list():
             if isinstance(migration.applied, datetime):
-                dt = migration.applied.strftime('%d/%m/%Y %H:%M:%S')
+                dt = migration.applied.strftime("%d/%m/%Y %H:%M:%S")
             else:
                 dt = str(migration.applied)
             self._tty.write(dt + "\t", False)

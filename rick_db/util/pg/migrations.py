@@ -5,7 +5,6 @@ from ...sql import PgSqlDialect
 
 
 class PgMigrationManager(MigrationManager):
-
     def _migration_table_sql(self, table_name: str) -> str:
         """
         SQL for migration table creation
@@ -18,4 +17,6 @@ class PgMigrationManager(MigrationManager):
             applied TIMESTAMP WITH TIME ZONE,
             name VARCHAR(255) NOT NULL UNIQUE
         );
-        """.format(name=PgSqlDialect().table(table_name))
+        """.format(
+            name=PgSqlDialect().table(table_name)
+        )

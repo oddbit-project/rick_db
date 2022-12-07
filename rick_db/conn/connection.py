@@ -9,7 +9,6 @@ class ConnectionError(Exception):
 
 
 class Cursor:
-
     def __init__(self, conn, profiler, cursor, in_transaction=False):
         super().__init__()
         self._conn = conn
@@ -134,7 +133,9 @@ class Connection:
 
     def begin(self):
         if self.autocommit:
-            raise ConnectionError("begin(): autocommit enabled, transactions are implicit")
+            raise ConnectionError(
+                "begin(): autocommit enabled, transactions are implicit"
+            )
         if not self._in_transaction:
             self._in_transaction = True
         else:
@@ -151,7 +152,9 @@ class Connection:
             self._in_transaction = False
 
     def cursor(self) -> Cursor:
-        return Cursor(self._conn, self._profiler, self._conn.cursor(), self._in_transaction)
+        return Cursor(
+            self._conn, self._profiler, self._conn.cursor(), self._in_transaction
+        )
 
     def backend(self):
         return self._conn

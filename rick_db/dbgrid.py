@@ -10,13 +10,15 @@ class DbGrid:
     SEARCH_START = 2
     SEARCH_END = 3
 
-    search_map = {
-        SEARCH_START: '{}%',
-        SEARCH_ANY: '%{}%',
-        SEARCH_END: '%{}'
-    }
+    search_map = {SEARCH_START: "{}%", SEARCH_ANY: "%{}%", SEARCH_END: "%{}"}
 
-    def __init__(self, repo: Repository, search_fields: list = None, search_type: int = None, case_sensitive=False):
+    def __init__(
+        self,
+        repo: Repository,
+        search_fields: list = None,
+        search_type: int = None,
+        case_sensitive=False,
+    ):
         """
         Constructor
         :param repo: Repository to use
@@ -36,11 +38,13 @@ class DbGrid:
         self._repo = repo
         record = repo._record()
         self._fields = record.dbfields()
-        self._field_pk = getattr(record, '_pk', None)
+        self._field_pk = getattr(record, "_pk", None)
 
         for field in search_fields:
             if field not in self._fields:
-                raise ValueError("search field '%s' does not exist in the Record" % field)
+                raise ValueError(
+                    "search field '%s' does not exist in the Record" % field
+                )
 
         self._search_type = search_type
         self._search_fields = search_fields
@@ -61,11 +65,115 @@ class DbGrid:
         :return: dict
         """
         if self._field_pk:
-            return {self._field_pk: 'ASC'}
+            return {self._field_pk: "ASC"}
         return {}
 
-    def run(self, qry: Select = None, search_text: str = None, match_fields: dict = None, limit: int = None,
-            offset: int = None, sort_fields: dict = None) -> tuple:
+    def _assemble(
+        self,
+        qry: Select = None,
+        search_text: str = None,
+        match_fields: dict = None,
+        sort_fields: dict = None,
+        search_fields: list = None,
+    ) -> Select:
+        """
+        Assembles a query for a run() operation
+
+        search_text is applied by default to all fields  present in search_fields and are OR'ed; this list can be reduced
+        by specifying search_fields
+
+        match_fields contains fieldnames and values to be matched for equality; they are AND'ed;
+
+        :param qry: optional Select query
+        :param search_text: optional search string
+        :param match_fields: optional field filter
+        :param sort_fields: optional sort fields in the format {field_name: order}
+        :param search_fields: optional search fields
+        :return: Select
+        """
+
+        if not qry:
+            qry = self.default_query()
+        if not sort_fields:
+            sort_fields = self.default_sort()
+
+        if match_fields:
+            qry.where_and()
+            for field, value in match_fields.items():
+                if field not in self._fields:
+                    raise ValueError(
+                        "field '%s' used in match_field does not exist on Record"
+                        % field
+                    )
+                qry.where(field, "=", value)
+            qry.where_end()
+
+        if search_text:
+            qry.where_and()
+            if self._search_type == self.SEARCH_NONE:
+                raise RuntimeError("search is not allowed")
+
+            if len(self._search_fields) == 0:
+                raise RuntimeError("no available fields are mapped as searchable")
+
+            if search_fields:
+                # ensure search_fields only has allowed field names
+                tmp = []
+                for field in search_fields:
+                    if field in self._search_fields:
+                        tmp.append(field)
+                search_fields = tmp
+
+            if not search_fields:
+                # either search_fields was not passed as parameter, or had invalid fields
+                search_fields = self._search_fields
+
+            mask = self.search_map[self._search_type].format(str(search_text))
+
+            operand = "LIKE"
+            psql_mode = False
+            if not self._case_sensitive:
+                if self._ilike:
+                    operand = "ILIKE"
+                    psql_mode = True
+            else:
+                psql_mode = True
+
+            if psql_mode:
+                for field in search_fields:
+                    qry.orwhere(field, operand, mask.format(str(search_text)))
+            else:
+                mask = mask.upper()
+                dialect = self._repo.dialect()
+                for field in search_fields:
+                    # note: assuming non-pg operation does NOT support schemas or is referencing ambiguous fields
+                    field = dialect.field(field)
+                    qry.orwhere(Literal("UPPER({})".format(field)), operand, mask)
+            qry.where_end()
+
+        if sort_fields:
+            if not isinstance(sort_fields, Mapping):
+                raise ValueError("'sort_fields' parameter must be a dict")
+            for field, order in sort_fields.items():
+                if field in self._fields:
+                    qry.order(field, order.upper())
+                else:
+                    raise ValueError(
+                        "field '%s' used for sorting does not exist on Record" % field
+                    )
+
+        return qry
+
+    def run(
+        self,
+        qry: Select = None,
+        search_text: str = None,
+        match_fields: dict = None,
+        limit: int = None,
+        offset: int = None,
+        sort_fields: dict = None,
+        search_fields: list = None,
+    ) -> tuple:
         """
         Executes a query and returns the total row count matching the query, as well as the records within the specified
         range.
@@ -82,58 +190,18 @@ class DbGrid:
         :param limit: optional limit
         :param offset: optional offset (ignored if no limit)
         :param sort_fields: optional sort fields in the format {field_name: order}
+        :param search_fields: optional search fields
         :return: tuple(total_row_count, filtered_rows)
         """
 
-        if not qry:
-            qry = self.default_query()
-        if not sort_fields:
-            sort_fields = self.default_sort()
+        # assemble query
+        qry = self._assemble(
+            qry=qry,
+            search_text=search_text,
+            match_fields=match_fields,
+            sort_fields=sort_fields,
+            search_fields=search_fields,
+        )
 
-        if match_fields:
-            qry.where_and()
-            for field, value in match_fields.items():
-                if field not in self._fields:
-                    raise ValueError("field '%s' used in match_field does not exist on Record" % field)
-                qry.where(field, '=', value)
-            qry.where_end()
-
-        if search_text:
-            qry.where_and()
-            if self._search_type == self.SEARCH_NONE:
-                raise RuntimeError('search is not allowed')
-
-            if len(self._search_fields) == 0:
-                raise RuntimeError("no available fields are mapped as searchable")
-
-            mask = self.search_map[self._search_type].format(str(search_text))
-
-            operand = 'LIKE'
-            psql_mode = False
-            if not self._case_sensitive:
-                if self._ilike:
-                    operand = 'ILIKE'
-                    psql_mode = True
-            else:
-                psql_mode = True
-
-            if psql_mode:
-                for field in self._search_fields:
-                    qry.orwhere(field, operand, mask.format(str(search_text)))
-            else:
-                mask = mask.upper()
-                for field in self._search_fields:
-                    qry.orwhere(Literal('UPPER({})'.format(field)), operand, mask)
-            qry.where_end()
-
-        if sort_fields:
-            if not isinstance(sort_fields, Mapping):
-                raise ValueError("'sort_fields' parameter must be a dict")
-            for field, order in sort_fields.items():
-                if field in self._fields:
-                    qry.order(field, order.upper())
-                else:
-                    raise ValueError("field '%s' used for sorting does not exist on Record" % field)
-
-        # perform queries
+        # execute query
         return self._repo.list(qry, limit=limit, offset=offset)

@@ -7,7 +7,6 @@ from tests.util.migrations import BaseMigrationManager
 
 
 class TestSqliteMigrationManager(BaseMigrationManager):
-
     @pytest.fixture()
     def mm(self) -> MigrationManager:
         return Sqlite3MigrationManager(self.conn)

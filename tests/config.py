@@ -8,9 +8,9 @@ def connectSimple() -> PgConnection:
 
 
 postgres_db = {
-    'dbname': os.getenv('POSTGRES_DB', 'testdb'),
-    'user': os.getenv('POSTGRES_USER', 'some_user'),
-    'password': os.getenv('POSTGRES_PASSWORD', 'somePassword'),
-    'host': os.getenv('PG_DB_HOST', ''),
-    'port': os.getenv('POSTGRES_PORT', 5432),
+    "dbname": os.getenv("POSTGRES_DB", "testdb"),
+    "user": os.getenv("POSTGRES_USER", "some_user"),
+    "password": os.getenv("POSTGRES_PASSWORD", "somePassword"),
+    "host": os.getenv("PG_DB_HOST", ""),
+    "port": os.getenv("POSTGRES_PORT", 5432),
 }

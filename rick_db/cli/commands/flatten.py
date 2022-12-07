@@ -8,7 +8,9 @@ class Command(BaseCommand):
 
     def help(self):
         self._tty.title(self.description)
-        self._tty.title("Usage: {name} [database] flatten <name_to_use>".format(name=self._name))
+        self._tty.title(
+            "Usage: {name} [database] flatten <name_to_use>".format(name=self._name)
+        )
 
     def run(self, mgr: MigrationManager, args: list, command_list: dict):
         if not mgr.has_manager():
@@ -16,7 +18,9 @@ class Command(BaseCommand):
             return False
 
         if len(args) == 0:
-            self._tty.error("Error : missing name for flattened migration to be inserted")
+            self._tty.error(
+                "Error : missing name for flattened migration to be inserted"
+            )
             return False
 
         if len(mgr.list()) == 0:
@@ -25,7 +29,9 @@ class Command(BaseCommand):
 
         try:
             mig = MigrationRecord(name=args.pop(0))
-            self._tty.write("Flattening all migrations to {name}... ".format(name=mig.name), False)
+            self._tty.write(
+                "Flattening all migrations to {name}... ".format(name=mig.name), False
+            )
             result = mgr.flatten(mig)
             if result.success:
                 self._tty.ok("success")

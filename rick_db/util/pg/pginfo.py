@@ -3,19 +3,31 @@ from typing import List, Optional
 from rick_db.conn import Connection
 from rick_db.sql import Select, PgSqlDialect, Literal
 from rick_db.util.metadata import FieldRecord
-from rick_db.util.pg.records import DatabaseRecord, RoleRecord, TableSpaceRecord, SettingRecord, NamespaceRecord, \
-    TableRecord, ColumnRecord, ConstraintRecord, KeyColumnUsageRecord, UserRecord, GroupRecord, ForeignKeyRecord, \
-    IdentityRecord
+from rick_db.util.pg.records import (
+    DatabaseRecord,
+    RoleRecord,
+    TableSpaceRecord,
+    SettingRecord,
+    NamespaceRecord,
+    TableRecord,
+    ColumnRecord,
+    ConstraintRecord,
+    KeyColumnUsageRecord,
+    UserRecord,
+    GroupRecord,
+    ForeignKeyRecord,
+    IdentityRecord,
+)
 
 
 class PgInfo:
-    SCHEMA_DEFAULT = 'public'
+    SCHEMA_DEFAULT = "public"
 
     # table types
-    TYPE_BASE = 'BASE TABLE'
-    TYPE_VIEW = 'VIEW'
-    TYPE_FOREIGN = 'FOREIGN TABLE'
-    TYPE_LOCAL = 'LOCAL TEMPORARY'
+    TYPE_BASE = "BASE TABLE"
+    TYPE_VIEW = "VIEW"
+    TYPE_FOREIGN = "FOREIGN TABLE"
+    TYPE_LOCAL = "LOCAL TEMPORARY"
 
     def __init__(self, db: Connection):
         self.db = db
@@ -27,7 +39,7 @@ class PgInfo:
         :return: str
         """
         with self.db.cursor() as c:
-            result = c.exec(' SELECT version()')
+            result = c.exec(" SELECT version()")
             return result.pop()[0]
 
     def list_server_databases(self) -> List[DatabaseRecord]:
@@ -35,11 +47,18 @@ class PgInfo:
         List existing databases, ordered by name
         :return: List[DatabaseRecord]
         """
-        sql, values = Select(self.dialect) \
-            .from_({DatabaseRecord: 'dr'},
-                   cols=['*', {Literal('pg_encoding_to_char(encoding)'): DatabaseRecord.encoding}]) \
-            .order(DatabaseRecord.name) \
+        sql, values = (
+            Select(self.dialect)
+            .from_(
+                {DatabaseRecord: "dr"},
+                cols=[
+                    "*",
+                    {Literal("pg_encoding_to_char(encoding)"): DatabaseRecord.encoding},
+                ],
+            )
+            .order(DatabaseRecord.name)
             .assemble()
+        )
 
         with self.db.cursor() as c:
             return c.exec(sql, values, cls=DatabaseRecord)
@@ -49,10 +68,9 @@ class PgInfo:
         List existing roles, ordered by name
         :return:
         """
-        sql, values = Select(self.dialect) \
-            .from_(RoleRecord) \
-            .order(RoleRecord.name) \
-            .assemble()
+        sql, values = (
+            Select(self.dialect).from_(RoleRecord).order(RoleRecord.name).assemble()
+        )
 
         with self.db.cursor() as c:
             return c.exec(sql, values, cls=RoleRecord)
@@ -62,10 +80,9 @@ class PgInfo:
         List existing users, ordered by name
         :return:
         """
-        sql, values = Select(self.dialect) \
-            .from_(UserRecord) \
-            .order(UserRecord.name) \
-            .assemble()
+        sql, values = (
+            Select(self.dialect).from_(UserRecord).order(UserRecord.name).assemble()
+        )
 
         with self.db.cursor() as c:
             return c.exec(sql, values, cls=UserRecord)
@@ -75,10 +92,9 @@ class PgInfo:
         List existing groups, ordered by name
         :return:
         """
-        sql, values = Select(self.dialect) \
-            .from_(GroupRecord) \
-            .order(GroupRecord.name) \
-            .assemble()
+        sql, values = (
+            Select(self.dialect).from_(GroupRecord).order(GroupRecord.name).assemble()
+        )
 
         with self.db.cursor() as c:
             return c.exec(sql, values, cls=GroupRecord)
@@ -105,10 +121,12 @@ class PgInfo:
         List existing tablespaces, ordered by name
         :return: List[TableSpaceRecord]
         """
-        sql, values = Select(self.dialect) \
-            .from_(TableSpaceRecord) \
-            .order(TableSpaceRecord.name) \
+        sql, values = (
+            Select(self.dialect)
+            .from_(TableSpaceRecord)
+            .order(TableSpaceRecord.name)
             .assemble()
+        )
 
         with self.db.cursor() as c:
             return c.exec(sql, values, cls=TableSpaceRecord)
@@ -118,10 +136,12 @@ class PgInfo:
         List existing server settings and current values
         :return: List[SettingRecord]
         """
-        sql, values = Select(self.dialect) \
-            .from_(SettingRecord) \
-            .order(SettingRecord.name) \
+        sql, values = (
+            Select(self.dialect)
+            .from_(SettingRecord)
+            .order(SettingRecord.name)
             .assemble()
+        )
 
         with self.db.cursor() as c:
             return c.exec(sql, values, cls=SettingRecord)
@@ -131,10 +151,12 @@ class PgInfo:
         List available namespaces on current database
         :return: List[TableRecord]
         """
-        sql, values = Select(self.dialect) \
-            .from_(NamespaceRecord) \
-            .order(NamespaceRecord.name) \
+        sql, values = (
+            Select(self.dialect)
+            .from_(NamespaceRecord)
+            .order(NamespaceRecord.name)
             .assemble()
+        )
 
         with self.db.cursor() as c:
             return c.exec(sql, values, cls=NamespaceRecord)
@@ -144,15 +166,19 @@ class PgInfo:
         List available namespaces on current database
         :return: List[TableRecord]
         """
-        sql, values = Select(self.dialect) \
-            .from_(NamespaceRecord) \
-            .order(NamespaceRecord.name) \
+        sql, values = (
+            Select(self.dialect)
+            .from_(NamespaceRecord)
+            .order(NamespaceRecord.name)
             .assemble()
+        )
 
         with self.db.cursor() as c:
             return c.exec(sql, values, cls=NamespaceRecord)
 
-    def list_database_tables_type(self, table_type: str, schema: str = None) -> List[TableRecord]:
+    def list_database_tables_type(
+        self, table_type: str, schema: str = None
+    ) -> List[TableRecord]:
         """
         List tables by type for the specified schema
         :param table_type: table type to filter
@@ -161,12 +187,14 @@ class PgInfo:
         """
         if not schema:
             schema = self.SCHEMA_DEFAULT
-        sql, values = Select(self.dialect) \
-            .from_(TableRecord) \
-            .where(TableRecord.schema, '=', schema) \
-            .where(TableRecord.table_type, '=', table_type) \
-            .order(TableRecord.name) \
+        sql, values = (
+            Select(self.dialect)
+            .from_(TableRecord)
+            .where(TableRecord.schema, "=", schema)
+            .where(TableRecord.table_type, "=", table_type)
+            .order(TableRecord.name)
             .assemble()
+        )
 
         with self.db.cursor() as c:
             return c.exec(sql, values, cls=TableRecord)
@@ -203,7 +231,9 @@ class PgInfo:
         """
         return self.list_database_tables_type(self.TYPE_FOREIGN, schema)
 
-    def list_table_columns(self, table_name: str, schema: str = None) -> List[ColumnRecord]:
+    def list_table_columns(
+        self, table_name: str, schema: str = None
+    ) -> List[ColumnRecord]:
         """
         List all table columns, sorted by numerical order
         :param table_name:
@@ -212,17 +242,21 @@ class PgInfo:
         """
         if not schema:
             schema = self.SCHEMA_DEFAULT
-        sql, values = Select(self.dialect) \
-            .from_(ColumnRecord) \
-            .where(ColumnRecord.schema, '=', schema) \
-            .where(ColumnRecord.table_name, '=', table_name) \
-            .order(ColumnRecord.position) \
+        sql, values = (
+            Select(self.dialect)
+            .from_(ColumnRecord)
+            .where(ColumnRecord.schema, "=", schema)
+            .where(ColumnRecord.table_name, "=", table_name)
+            .order(ColumnRecord.position)
             .assemble()
+        )
 
         with self.db.cursor() as c:
             return c.exec(sql, values, cls=ColumnRecord)
 
-    def list_table_pk(self, table_name: str, schema: str = None) -> Optional[ConstraintRecord]:
+    def list_table_pk(
+        self, table_name: str, schema: str = None
+    ) -> Optional[ConstraintRecord]:
         """
         List primary key of table
         :param table_name:
@@ -231,14 +265,22 @@ class PgInfo:
         """
         if not schema:
             schema = self.SCHEMA_DEFAULT
-        sql, values = Select(self.dialect) \
-            .from_({ConstraintRecord: 'cr'}) \
-            .join({KeyColumnUsageRecord: 'kc'}, KeyColumnUsageRecord.name, {ConstraintRecord: 'cr'},
-                  ConstraintRecord.const_name, '=', cols=[KeyColumnUsageRecord.column]) \
-            .where({'cr': ConstraintRecord.schema}, '=', schema) \
-            .where({'cr': ConstraintRecord.table_name}, '=', table_name) \
-            .where({'cr': ConstraintRecord.constraint_type}, '=', 'PRIMARY KEY') \
+        sql, values = (
+            Select(self.dialect)
+            .from_({ConstraintRecord: "cr"})
+            .join(
+                {KeyColumnUsageRecord: "kc"},
+                KeyColumnUsageRecord.name,
+                {ConstraintRecord: "cr"},
+                ConstraintRecord.const_name,
+                "=",
+                cols=[KeyColumnUsageRecord.column],
+            )
+            .where({"cr": ConstraintRecord.schema}, "=", schema)
+            .where({"cr": ConstraintRecord.table_name}, "=", table_name)
+            .where({"cr": ConstraintRecord.constraint_type}, "=", "PRIMARY KEY")
             .assemble()
+        )
 
         with self.db.cursor() as c:
             result = c.exec(sql, values, cls=ConstraintRecord)
@@ -274,7 +316,9 @@ class PgInfo:
         with self.db.cursor() as c:
             return c.fetchall(sql, params, cls=FieldRecord)
 
-    def list_table_foreign_keys(self, table_name, schema: str = None) -> List[ForeignKeyRecord]:
+    def list_table_foreign_keys(
+        self, table_name, schema: str = None
+    ) -> List[ForeignKeyRecord]:
         """
         List foreign keys for a given table
 
@@ -309,7 +353,9 @@ class PgInfo:
         with self.db.cursor() as c:
             return c.fetchall(sql, [schema, table_name], cls=ForeignKeyRecord)
 
-    def table_exists(self, table_name: str, table_type: str = None, schema: str = None) -> bool:
+    def table_exists(
+        self, table_name: str, table_type: str = None, schema: str = None
+    ) -> bool:
         """
         Returns true if the specified table exists
         :param table_name: table name to find
@@ -323,12 +369,14 @@ class PgInfo:
         if not schema:
             schema = self.SCHEMA_DEFAULT
 
-        sql, values = Select(self.dialect) \
-            .from_(TableRecord) \
-            .where(TableRecord.schema, '=', schema) \
-            .where(TableRecord.table_type, '=', table_type) \
-            .where(TableRecord.name, '=', table_name) \
+        sql, values = (
+            Select(self.dialect)
+            .from_(TableRecord)
+            .where(TableRecord.schema, "=", schema)
+            .where(TableRecord.table_type, "=", table_type)
+            .where(TableRecord.name, "=", table_name)
             .assemble()
+        )
 
         with self.db.cursor() as c:
             return len(c.exec(sql, values)) > 0
@@ -343,19 +391,27 @@ class PgInfo:
         if not schema:
             schema = self.SCHEMA_DEFAULT
 
-        sql, values = Select(self.db.dialect()) \
-            .from_(IdentityRecord,
-                   cols=[IdentityRecord.column, IdentityRecord.identity, IdentityRecord.generated]) \
-            .join({'pg_class': 'c'}, 'oid', IdentityRecord, 'attrelid') \
-            .join({'pg_namespace': 'n'}, 'oid', 'c', 'relnamespace') \
-            .where('attnum', '>', 0) \
-            .where({'c': 'relname'}, '=', table) \
-            .where({'n': 'nspname'}, '=', schema) \
-            .where_and() \
-            .where(IdentityRecord.identity, '!=', '') \
-            .orwhere(IdentityRecord.generated, '!=', '') \
-            .where_end() \
+        sql, values = (
+            Select(self.db.dialect())
+            .from_(
+                IdentityRecord,
+                cols=[
+                    IdentityRecord.column,
+                    IdentityRecord.identity,
+                    IdentityRecord.generated,
+                ],
+            )
+            .join({"pg_class": "c"}, "oid", IdentityRecord, "attrelid")
+            .join({"pg_namespace": "n"}, "oid", "c", "relnamespace")
+            .where("attnum", ">", 0)
+            .where({"c": "relname"}, "=", table)
+            .where({"n": "nspname"}, "=", schema)
+            .where_and()
+            .where(IdentityRecord.identity, "!=", "")
+            .orwhere(IdentityRecord.generated, "!=", "")
+            .where_end()
             .assemble()
+        )
 
         with self.db.cursor() as c:
             return c.exec(sql, values, cls=IdentityRecord)

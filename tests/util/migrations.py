@@ -3,7 +3,6 @@ from rick_db.util.migrations import MIGRATION_TABLE
 
 
 class BaseMigrationManager:
-
     def test_install_manager(self, mm):
         meta = mm._meta
 
@@ -31,9 +30,9 @@ class BaseMigrationManager:
 
         m_list = mm.list()
         assert len(m_list) == 0
-        mig_1 = MigrationRecord(name='migration1')
-        mig_2 = MigrationRecord(name='migration2')
-        mig_3 = MigrationRecord(name='migration3')
+        mig_1 = MigrationRecord(name="migration1")
+        mig_2 = MigrationRecord(name="migration2")
+        mig_3 = MigrationRecord(name="migration3")
         # insert records
         migs = [mig_1, mig_2, mig_3]
         for r in migs:
@@ -56,13 +55,13 @@ class BaseMigrationManager:
             assert len(result.error) > 0
 
         # flatten
-        flatten = MigrationRecord(name='flattened')
+        flatten = MigrationRecord(name="flattened")
         mm.flatten(flatten)
         # no old records
         m_list = mm.list()
         assert len(m_list) == 1
 
         # fetch by name
-        r = mm.fetch_by_name('flattened')
+        r = mm.fetch_by_name("flattened")
         assert r.name == flatten.name
         assert len(str(r.applied)) > 0

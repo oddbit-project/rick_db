@@ -5,7 +5,6 @@ from ...sql import Sqlite3SqlDialect
 
 
 class Sqlite3MigrationManager(MigrationManager):
-
     def _migration_table_sql(self, table_name: str) -> str:
         """
         SQL for migration table creation
@@ -18,7 +17,9 @@ class Sqlite3MigrationManager(MigrationManager):
             applied TIMESTAMP WITH TIME ZONE,
             name VARCHAR(255) NOT NULL UNIQUE
         );
-        """.format(name=Sqlite3SqlDialect().table(table_name))
+        """.format(
+            name=Sqlite3SqlDialect().table(table_name)
+        )
 
     def _exec(self, content):
         """
