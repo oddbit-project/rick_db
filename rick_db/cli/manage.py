@@ -12,8 +12,8 @@ class CliManager:
     ENV_NAME = "RICKDB_CONFIG"
     CMD_DEFAULT = "help"
     DB_FACTORIES = {
-        '_pgsql': ['pg', 'pgsql', 'postgres'],
-        '_sqlite': ['sqlite', 'sql3', 'sqlite3']
+        "_pgsql": ["pg", "pgsql", "postgres"],
+        "_sqlite": ["sqlite", "sql3", "sqlite3"],
     }
 
     def __init__(self, prog_name: str, tty: ConsoleWriter, cfg: dict):
@@ -27,7 +27,9 @@ class CliManager:
         self._cfg = cfg
         self._tty = tty
         # load rick_db commands
-        self._cmds = self.discover('rick_db.cli.commands', Path(__file__).parent / 'commands')
+        self._cmds = self.discover(
+            "rick_db.cli.commands", Path(__file__).parent / "commands"
+        )
         if len(self._cmds) == 0:
             raise RuntimeError("could not detect commands, something went wrong")
 
@@ -47,24 +49,36 @@ class CliManager:
             # first argument is either a wrong command, or a database name
             if len(args) == 0:
                 self._tty.error(
-                    "Error : invalid command '{cmd}'; try '{name} help'".format(cmd=cmd, name=self._prog_name))
+                    "Error : invalid command '{cmd}'; try '{name} help'".format(
+                        cmd=cmd, name=self._prog_name
+                    )
+                )
                 return -1
 
             db_name = ConfigFile.KEY_PREFIX + cmd
             if db_name not in self._cfg.keys():
-                self._tty.error("Error : database '{db}' not found in the config file".format(db=cmd))
+                self._tty.error(
+                    "Error : database '{db}' not found in the config file".format(
+                        db=cmd
+                    )
+                )
                 return -2
 
             # first arg is a database, extract actual command
             cmd = args.pop(0)
             if cmd not in self._cmds.keys():
                 self._tty.error(
-                    "Error : invalid command '{cmd}'; try '{name} help'".format(cmd=cmd, name=self._prog_name))
+                    "Error : invalid command '{cmd}'; try '{name} help'".format(
+                        cmd=cmd, name=self._prog_name
+                    )
+                )
                 return -1
 
         else:
             if db_name not in self._cfg.keys():
-                self._tty.error("Error : default database configuration not found in the config file")
+                self._tty.error(
+                    "Error : default database configuration not found in the config file"
+                )
                 return -2
 
         # build database connection
@@ -92,7 +106,9 @@ class CliManager:
                 factory = fname
 
         if factory is None:
-            self._tty.error("Error : engine '{}' is invalid or not supported".format(engine))
+            self._tty.error(
+                "Error : engine '{}' is invalid or not supported".format(engine)
+            )
             return None
         return getattr(self, factory)(cfg)
 
@@ -104,6 +120,7 @@ class CliManager:
         """
         # imports are local to avoid direct dependency from drivers
         from rick_db.conn.pg import PgConnection
+
         try:
             return PgConnection(**cfg).migration_manager()
         except Exception as e:
@@ -117,6 +134,7 @@ class CliManager:
         :return: MigrationManager instance
         """
         from rick_db.conn.sqlite import Sqlite3Connection
+
         try:
             conn = Sqlite3Connection(**cfg).migration_manager()
         except Exception as e:
@@ -131,9 +149,9 @@ class CliManager:
         :return: dict with command_name: object
         """
         cmds = {}
-        for p in path.glob('*.py'):
-            if p.is_file() and p.name[0] != '_':
-                command_ns = '{}.{}'.format(module_prefix, p.name.rsplit('.py')[0])
+        for p in path.glob("*.py"):
+            if p.is_file() and p.name[0] != "_":
+                command_ns = "{}.{}".format(module_prefix, p.name.rsplit(".py")[0])
                 loaded = command_ns in sys.modules
                 try:
                     module = importlib.import_module(command_ns)
@@ -143,12 +161,14 @@ class CliManager:
                     if loaded:
                         importlib.reload(module)
 
-                    command = getattr(module, 'Command', None)
+                    command = getattr(module, "Command", None)
                     if command is None:
                         raise RuntimeError("command class not found in '%s'" % p.name)
 
                     if not issubclass(command, BaseCommand):
-                        raise RuntimeError("Command class does not extend BaseCommand in '%s'" % p.name)
+                        raise RuntimeError(
+                            "Command class does not extend BaseCommand in '%s'" % p.name
+                        )
 
                     cmds[command.command] = command(self._prog_name, self._tty)
         return cmds
@@ -175,5 +195,5 @@ def main():
     exit(mgr.dispatch(args))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

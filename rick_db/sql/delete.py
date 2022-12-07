@@ -1,9 +1,16 @@
 from rick_db.mapper import ATTR_TABLE, ATTR_SCHEMA
-from rick_db.sql import SqlStatement, SqlDialect, SqlError, Sql, Literal, DefaultSqlDialect, Select
+from rick_db.sql import (
+    SqlStatement,
+    SqlDialect,
+    SqlError,
+    Sql,
+    Literal,
+    DefaultSqlDialect,
+    Select,
+)
 
 
 class Delete(SqlStatement):
-
     def __init__(self, dialect: SqlDialect = None):
         """
         DELETE constructor
@@ -41,7 +48,9 @@ class Delete(SqlStatement):
             raise SqlError("from_(): invalid type for table name")
 
         if schema is not None and type(schema) is not str:
-            raise SqlError("from_(): Invalid type for schema name: %s" % str(type(schema)))
+            raise SqlError(
+                "from_(): Invalid type for schema name: %s" % str(type(schema))
+            )
 
         self._table = table
         self._schema = schema
@@ -104,13 +113,19 @@ class Delete(SqlStatement):
                 raise SqlError("_where(): invalid value type: %s" % str(type(value)))
 
             if operator is None:
-                expression = "{fld} {ph}".format(fld=field, ph=self._dialect.placeholder)
+                expression = "{fld} {ph}".format(
+                    fld=field, ph=self._dialect.placeholder
+                )
             else:
                 if isinstance(value, Select):
                     sql, value = value.assemble()
-                    expression = "{fld} {op} ({query})".format(fld=field, op=operator, query=sql)
+                    expression = "{fld} {op} ({query})".format(
+                        fld=field, op=operator, query=sql
+                    )
                 else:
-                    expression = "{fld} {op} {ph}".format(fld=field, op=operator, ph=self._dialect.placeholder)
+                    expression = "{fld} {op} {ph}".format(
+                        fld=field, op=operator, ph=self._dialect.placeholder
+                    )
 
             self._clauses.append([expression, concat])
             if isinstance(value, list):

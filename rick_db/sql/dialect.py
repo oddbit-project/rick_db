@@ -39,7 +39,11 @@ class SqlDialect:
             table_name = self._quote_table.format(table=table_name)
 
             if schema is not None:
-                table_name = self._quote_schema.format(schema=schema) + self._separator + table_name
+                table_name = (
+                    self._quote_schema.format(schema=schema)
+                    + self._separator
+                    + table_name
+                )
         else:
             # table_name is actually a Literal expression, just add parenthesis
             table_name = "({table})".format(table=table_name)
@@ -69,7 +73,9 @@ class SqlDialect:
         if table is not None:
             table = self._quote_table.format(table=table) + self._separator
             if schema is not None:
-                table = self._quote_schema.format(schema=schema) + self._separator + table
+                table = (
+                    self._quote_schema.format(schema=schema) + self._separator + table
+                )
         else:
             table = ""
 
@@ -90,7 +96,9 @@ class SqlDialect:
                 raise SqlError("Alias for field %s cannot be empty" % field)
             field = self._cast.format(field=field, cast=field_alias[0])
             if _len > 1:
-                return self._as.join([field, self._quote_field.format(field=field_alias[1])])
+                return self._as.join(
+                    [field, self._quote_field.format(field=field_alias[1])]
+                )
             else:
                 return field
         else:
@@ -101,6 +109,7 @@ class DefaultSqlDialect(SqlDialect):
     """
     Default SqlDialect
     """
+
     pass
 
 
@@ -144,7 +153,9 @@ class PgSqlDialect(SqlDialect):
         if table is not None:
             table = self._quote_table.format(table=table) + self._separator
             if schema is not None:
-                table = self._quote_schema.format(schema=schema) + self._separator + table
+                table = (
+                    self._quote_schema.format(schema=schema) + self._separator + table
+                )
         else:
             table = ""
 
@@ -166,7 +177,9 @@ class PgSqlDialect(SqlDialect):
             # generate pg-style cast with ::<type>
             cast = self._cast + field_alias[0]
             if _len > 1:
-                return self._as.join([field + cast, self._quote_field.format(field=field_alias[1])])
+                return self._as.join(
+                    [field + cast, self._quote_field.format(field=field_alias[1])]
+                )
             else:
                 return field + cast
         else:
@@ -174,7 +187,6 @@ class PgSqlDialect(SqlDialect):
 
 
 class Sqlite3SqlDialect(SqlDialect):
-
     def __init__(self):
         super(Sqlite3SqlDialect, self).__init__()
         self.placeholder = "?"

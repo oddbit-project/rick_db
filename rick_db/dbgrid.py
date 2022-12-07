@@ -10,13 +10,15 @@ class DbGrid:
     SEARCH_START = 2
     SEARCH_END = 3
 
-    search_map = {
-        SEARCH_START: '{}%',
-        SEARCH_ANY: '%{}%',
-        SEARCH_END: '%{}'
-    }
+    search_map = {SEARCH_START: "{}%", SEARCH_ANY: "%{}%", SEARCH_END: "%{}"}
 
-    def __init__(self, repo: Repository, search_fields: list = None, search_type: int = None, case_sensitive=False):
+    def __init__(
+        self,
+        repo: Repository,
+        search_fields: list = None,
+        search_type: int = None,
+        case_sensitive=False,
+    ):
         """
         Constructor
         :param repo: Repository to use
@@ -36,11 +38,13 @@ class DbGrid:
         self._repo = repo
         record = repo._record()
         self._fields = record.dbfields()
-        self._field_pk = getattr(record, '_pk', None)
+        self._field_pk = getattr(record, "_pk", None)
 
         for field in search_fields:
             if field not in self._fields:
-                raise ValueError("search field '%s' does not exist in the Record" % field)
+                raise ValueError(
+                    "search field '%s' does not exist in the Record" % field
+                )
 
         self._search_type = search_type
         self._search_fields = search_fields
@@ -61,11 +65,17 @@ class DbGrid:
         :return: dict
         """
         if self._field_pk:
-            return {self._field_pk: 'ASC'}
+            return {self._field_pk: "ASC"}
         return {}
 
-    def _assemble(self, qry: Select = None, search_text: str = None, match_fields: dict = None,
-                  sort_fields: dict = None, search_fields: list = None) -> Select:
+    def _assemble(
+        self,
+        qry: Select = None,
+        search_text: str = None,
+        match_fields: dict = None,
+        sort_fields: dict = None,
+        search_fields: list = None,
+    ) -> Select:
         """
         Assembles a query for a run() operation
 
@@ -91,14 +101,17 @@ class DbGrid:
             qry.where_and()
             for field, value in match_fields.items():
                 if field not in self._fields:
-                    raise ValueError("field '%s' used in match_field does not exist on Record" % field)
-                qry.where(field, '=', value)
+                    raise ValueError(
+                        "field '%s' used in match_field does not exist on Record"
+                        % field
+                    )
+                qry.where(field, "=", value)
             qry.where_end()
 
         if search_text:
             qry.where_and()
             if self._search_type == self.SEARCH_NONE:
-                raise RuntimeError('search is not allowed')
+                raise RuntimeError("search is not allowed")
 
             if len(self._search_fields) == 0:
                 raise RuntimeError("no available fields are mapped as searchable")
@@ -117,11 +130,11 @@ class DbGrid:
 
             mask = self.search_map[self._search_type].format(str(search_text))
 
-            operand = 'LIKE'
+            operand = "LIKE"
             psql_mode = False
             if not self._case_sensitive:
                 if self._ilike:
-                    operand = 'ILIKE'
+                    operand = "ILIKE"
                     psql_mode = True
             else:
                 psql_mode = True
@@ -135,7 +148,7 @@ class DbGrid:
                 for field in search_fields:
                     # note: assuming non-pg operation does NOT support schemas or is referencing ambiguous fields
                     field = dialect.field(field)
-                    qry.orwhere(Literal('UPPER({})'.format(field)), operand, mask)
+                    qry.orwhere(Literal("UPPER({})".format(field)), operand, mask)
             qry.where_end()
 
         if sort_fields:
@@ -145,12 +158,22 @@ class DbGrid:
                 if field in self._fields:
                     qry.order(field, order.upper())
                 else:
-                    raise ValueError("field '%s' used for sorting does not exist on Record" % field)
+                    raise ValueError(
+                        "field '%s' used for sorting does not exist on Record" % field
+                    )
 
         return qry
 
-    def run(self, qry: Select = None, search_text: str = None, match_fields: dict = None, limit: int = None,
-            offset: int = None, sort_fields: dict = None, search_fields: list = None) -> tuple:
+    def run(
+        self,
+        qry: Select = None,
+        search_text: str = None,
+        match_fields: dict = None,
+        limit: int = None,
+        offset: int = None,
+        sort_fields: dict = None,
+        search_fields: list = None,
+    ) -> tuple:
         """
         Executes a query and returns the total row count matching the query, as well as the records within the specified
         range.
@@ -172,8 +195,13 @@ class DbGrid:
         """
 
         # assemble query
-        qry = self._assemble(qry=qry, search_text=search_text, match_fields=match_fields, sort_fields=sort_fields,
-                             search_fields=search_fields)
+        qry = self._assemble(
+            qry=qry,
+            search_text=search_text,
+            match_fields=match_fields,
+            sort_fields=sort_fields,
+            search_fields=search_fields,
+        )
 
         # execute query
         return self._repo.list(qry, limit=limit, offset=offset)

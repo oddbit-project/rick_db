@@ -11,7 +11,6 @@ class Event:
 
 
 class EventCollection(list):
-
     def filter_duration(self, duration: float) -> list:
         result = []
         for e in self:
@@ -21,7 +20,6 @@ class EventCollection(list):
 
 
 class Profiler:
-
     def add_event(self, query: str, parameters: dict, duration: float):
         pass
 
@@ -37,7 +35,6 @@ class NullProfiler(Profiler):
 
 
 class DefaultProfiler(Profiler):
-
     def __init__(self):
         self._events = EventCollection()
 

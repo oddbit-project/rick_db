@@ -6,13 +6,13 @@ from rick_db import fieldmapper
 from rick_db.profiler import NullProfiler
 from rick_db.sql import Sqlite3SqlDialect
 
-dbfile = '/tmp/rick_db_sqlite_test.db'
+dbfile = "/tmp/rick_db_sqlite_test.db"
 
 
 @fieldmapper
 class Animal:
-    legs = 'legs'
-    name = 'name'
+    legs = "legs"
+    name = "name"
 
 
 class TestSqlite3Connection:
@@ -21,7 +21,13 @@ class TestSqlite3Connection:
     insertTable = "insert into animals(legs, name) values(?, ?)"
     selectByLeg = "select * from animals where legs = ?"
 
-    rows = [(1, 'pirate'), (2, 'canary'), (3, 'maimed dog'), (4, 'cat'), (5, 'pirate ant')]
+    rows = [
+        (1, "pirate"),
+        (2, "canary"),
+        (3, "maimed dog"),
+        (4, "cat"),
+        (5, "pirate ant"),
+    ]
 
     def setup_method(self, test_method):
         self.conn = Sqlite3Connection(dbfile)
@@ -48,7 +54,7 @@ class TestSqlite3Connection:
         assert conn.autocommit is False
         with conn.cursor() as c:
             assert c._in_transaction is True
-            c.exec(self.insertTable, (7, 'squid'))
+            c.exec(self.insertTable, (7, "squid"))
 
         # still in transaction, now lets rollback
         assert conn.transaction_status() is True
@@ -59,8 +65,8 @@ class TestSqlite3Connection:
         with conn.cursor() as c:
             animal = c.fetchone(self.selectByLeg, [7])
             assert len(animal) == 2
-            assert animal['legs'] == 7
-            assert animal['name'] == 'squid'
+            assert animal["legs"] == 7
+            assert animal["name"] == "squid"
 
     def test_transaction_rollback(self, conn):
         # transaction control
@@ -69,7 +75,7 @@ class TestSqlite3Connection:
         assert conn.autocommit is False
         with conn.cursor() as c:
             assert c._in_transaction is True
-            c.exec(self.insertTable, (8, 'octopus'))
+            c.exec(self.insertTable, (8, "octopus"))
 
         # still in transaction, now lets rollback
         assert conn.transaction_status() is True
@@ -88,11 +94,11 @@ class TestSqlite3Connection:
         assert conn.autocommit is False
         with conn.cursor() as c:
             assert c._in_transaction is True
-            c.exec(self.insertTable, (8, 'octopus'))
+            c.exec(self.insertTable, (8, "octopus"))
 
         with conn.cursor() as c:
             assert c._in_transaction is True
-            c.exec(self.insertTable, (7, 'squid'))
+            c.exec(self.insertTable, (7, "squid"))
 
         # still in transaction, now lets rollback
         assert conn.transaction_status() is True
@@ -120,14 +126,14 @@ class TestSqlite3Connection:
         # simple record
         animal = c.fetchone(self.selectByLeg, [4])
         assert len(animal) == 2
-        assert animal['legs'] == 4
-        assert animal['name'] == 'cat'
+        assert animal["legs"] == 4
+        assert animal["name"] == "cat"
 
         # simple record as Class
         animal = c.fetchone(self.selectByLeg, [4], Animal)
         assert len(animal.asdict()) == 2
         assert animal.legs == 4
-        assert animal.name == 'cat'
+        assert animal.name == "cat"
 
     def test_fetchall(self, conn):
         c = conn.cursor()
@@ -146,8 +152,8 @@ class TestSqlite3Connection:
         animal = c.fetchall(self.selectByLeg, [4])
         assert type(animal) is list
         assert len(animal) == 1
-        assert animal[0]['legs'] == 4
-        assert animal[0]['name'] == 'cat'
+        assert animal[0]["legs"] == 4
+        assert animal[0]["name"] == "cat"
 
         # simple record as Class
         animal = c.fetchall(self.selectByLeg, [4], cls=Animal)
@@ -156,7 +162,7 @@ class TestSqlite3Connection:
         animal = animal.pop()
         assert len(animal.asdict()) == 2
         assert animal.legs == 4
-        assert animal.name == 'cat'
+        assert animal.name == "cat"
 
     def test_sqldialect(self, conn):
         assert isinstance(conn.dialect(), Sqlite3SqlDialect)

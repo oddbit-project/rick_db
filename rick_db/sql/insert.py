@@ -7,7 +7,6 @@ from rick_db.sql import SqlError, SqlDialect, DefaultSqlDialect, SqlStatement, S
 
 
 class Insert(SqlStatement):
-
     def __init__(self, dialect: SqlDialect = None):
         """
         INSERT constructor
@@ -44,7 +43,9 @@ class Insert(SqlStatement):
             raise SqlError("into(): invalid type for table name")
 
         if schema is not None and not isinstance(schema, str):
-            raise SqlError("into(): Invalid type for schema name: %s" % str(type(schema)))
+            raise SqlError(
+                "into(): Invalid type for schema name: %s" % str(type(schema))
+            )
 
         self._table = table
         self._schema = schema
@@ -82,7 +83,7 @@ class Insert(SqlStatement):
 
         elif isinstance(values, object):
             # support any object that has a method "asrecord"
-            if not callable(getattr(values, 'asrecord', None)):
+            if not callable(getattr(values, "asrecord", None)):
                 raise SqlError("values(): invalid object type for data parameter")
             values = values.asrecord()
             self._fields = values.keys()
@@ -102,7 +103,9 @@ class Insert(SqlStatement):
             fields = [fields]
 
         if not isinstance(fields, (list, tuple)):
-            raise SqlError("returning(): invalid return field type: %s" % str(type(fields)))
+            raise SqlError(
+                "returning(): invalid return field type: %s" % str(type(fields))
+            )
 
         if len(fields) == 0:
             raise SqlError("returning(): field list cannot be empty")
@@ -131,7 +134,7 @@ class Insert(SqlStatement):
 
         parts = [
             Sql.SQL_INSERT,
-            self._dialect.table(self._table, None, schema=self._schema)
+            self._dialect.table(self._table, None, schema=self._schema),
         ]
 
         # generate field list and placeholder list

@@ -3,11 +3,18 @@ from inspect import isclass
 from typing import Union
 
 from rick_db.mapper import ATTR_SCHEMA, ATTR_TABLE
-from rick_db.sql import SqlError, SqlDialect, DefaultSqlDialect, SqlStatement, Sql, Select, Literal
+from rick_db.sql import (
+    SqlError,
+    SqlDialect,
+    DefaultSqlDialect,
+    SqlStatement,
+    Sql,
+    Select,
+    Literal,
+)
 
 
 class Update(SqlStatement):
-
     def __init__(self, dialect: SqlDialect = None):
         """
         INSERT constructor
@@ -46,7 +53,9 @@ class Update(SqlStatement):
             raise SqlError("table(): invalid type for table name")
 
         if schema is not None and not isinstance(schema, str):
-            raise SqlError("table(): Invalid type for schema name: %s" % str(type(schema)))
+            raise SqlError(
+                "table(): Invalid type for schema name: %s" % str(type(schema))
+            )
 
         self._table = table
         self._schema = schema
@@ -84,7 +93,7 @@ class Update(SqlStatement):
 
         elif isinstance(values, object):
             # support any object that has a method "asrecord"
-            if not callable(getattr(values, 'asrecord', None)):
+            if not callable(getattr(values, "asrecord", None)):
                 raise SqlError("values(): invalid object type for data parameter")
             values = values.asrecord()
             self._fields = values.keys()
@@ -151,13 +160,19 @@ class Update(SqlStatement):
                 raise SqlError("_where(): invalid value type: %s" % str(type(value)))
 
             if operator is None:
-                expression = "{fld} {ph}".format(fld=field, ph=self._dialect.placeholder)
+                expression = "{fld} {ph}".format(
+                    fld=field, ph=self._dialect.placeholder
+                )
             else:
                 if isinstance(value, Select):
                     sql, value = value.assemble()
-                    expression = "{fld} {op} ({query})".format(fld=field, op=operator, query=sql)
+                    expression = "{fld} {op} ({query})".format(
+                        fld=field, op=operator, query=sql
+                    )
                 else:
-                    expression = "{fld} {op} {ph}".format(fld=field, op=operator, ph=self._dialect.placeholder)
+                    expression = "{fld} {op} {ph}".format(
+                        fld=field, op=operator, ph=self._dialect.placeholder
+                    )
 
             self._clauses.append([expression, concat])
             if isinstance(value, list):
@@ -173,7 +188,7 @@ class Update(SqlStatement):
         :return: self
         """
         if fields is None:
-            self._returning.append(Literal('*'))
+            self._returning.append(Literal("*"))
             return self
 
         if isinstance(fields, (list, tuple)):
@@ -207,7 +222,11 @@ class Update(SqlStatement):
         # generate field list and placeholder list
         fields = []
         for name in self._fields:
-            fields.append("{field}={ph}".format(field=self._dialect.field(name), ph=self._dialect.placeholder))
+            fields.append(
+                "{field}={ph}".format(
+                    field=self._dialect.field(name), ph=self._dialect.placeholder
+                )
+            )
         parts.append(", ".join(fields))
         values = self._values
 

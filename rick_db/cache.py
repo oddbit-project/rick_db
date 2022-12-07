@@ -4,7 +4,6 @@ from typing import Union
 
 
 class CacheInterface:
-
     def get(self, key):
         pass
 
@@ -22,7 +21,6 @@ class CacheInterface:
 
 
 class StrCache(collections.UserDict, CacheInterface):
-
     def get(self, key: str) -> Union[str, None]:
         with threading.Lock():
             if key in self.data.keys():

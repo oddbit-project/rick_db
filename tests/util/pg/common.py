@@ -14,7 +14,9 @@ class PgCommon:
     dropSchemaTable = "drop table if exists myschema.aliens;"
     createView = "create view list_animals as select * from animals;"
     dropView = "drop view if exists list_animals;"
-    createSchemaView = "create view myschema.list_aliens as select * from myschema.aliens;"
+    createSchemaView = (
+        "create view myschema.list_aliens as select * from myschema.aliens;"
+    )
     dropSchemaView = "drop view if exists myschema.list_aliens;"
     createGroup = "create group staff;"
     addGroup = "alter group staff add user {user}"

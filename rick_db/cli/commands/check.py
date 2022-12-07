@@ -6,11 +6,15 @@ from rick_db.util import MigrationManager
 
 class Command(MigrateCommand):
     command = "check"
-    description = "compares existing migrations with the applied migrations, and list new ones"
+    description = (
+        "compares existing migrations with the applied migrations, and list new ones"
+    )
 
     def help(self):
         self._tty.title(self.description)
-        self._tty.title("Usage: {name} [database] check <path_to_sql_files>".format(name=self._name))
+        self._tty.title(
+            "Usage: {name} [database] check <path_to_sql_files>".format(name=self._name)
+        )
 
     def run(self, mgr: MigrationManager, args: list, command_list: dict):
         if not mgr.has_manager():

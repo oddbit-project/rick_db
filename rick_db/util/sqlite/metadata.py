@@ -6,21 +6,22 @@ from rick_db.util.metadata import FieldRecord, UserRecord
 
 
 class Sqlite3Metadata(Metadata):
-
     def tables(self, schema=None) -> List:
         """
         List all available tables on the indicated schema. If no schema is specified, assume public schema
         :param schema: optional schema name
         :return: list of tablenames
         """
-        qry = Select(Sqlite3SqlDialect()) \
-            .from_('sqlite_master') \
-            .where('type', '=', 'table')
+        qry = (
+            Select(Sqlite3SqlDialect())
+            .from_("sqlite_master")
+            .where("type", "=", "table")
+        )
         result = []
         with self._db.cursor() as c:
             for r in c.fetchall(*qry.assemble()):
-                if not r['name'].startswith('sqlite_'):
-                    result.append(r['name'])
+                if not r["name"].startswith("sqlite_"):
+                    result.append(r["name"])
         return result
 
     def views(self, schema=None) -> List:
@@ -29,12 +30,16 @@ class Sqlite3Metadata(Metadata):
         :param schema: optional schema name
         :return: list of tablenames
         """
-        qry = Select(Sqlite3SqlDialect()).from_('sqlite_master').where('type', '=', 'view')
+        qry = (
+            Select(Sqlite3SqlDialect())
+            .from_("sqlite_master")
+            .where("type", "=", "view")
+        )
         result = []
         with self._db.cursor() as c:
             for r in c.fetchall(*qry.assemble()):
-                if not r['name'].startswith('sqlite_'):
-                    result.append(r['name'])
+                if not r["name"].startswith("sqlite_"):
+                    result.append(r["name"])
         return result
 
     def schemas(self) -> List:
@@ -143,10 +148,12 @@ class Sqlite3Metadata(Metadata):
         :param schema: optional schema
         :return:
         """
-        qry = Select(Sqlite3SqlDialect()) \
-            .from_('sqlite_master', ['name']) \
-            .where('name', '=', table_name) \
-            .where('type', '=', 'table')
+        qry = (
+            Select(Sqlite3SqlDialect())
+            .from_("sqlite_master", ["name"])
+            .where("name", "=", table_name)
+            .where("type", "=", "table")
+        )
         with self._db.cursor() as c:
             return len(c.fetchall(*qry.assemble())) > 0
 
@@ -157,9 +164,11 @@ class Sqlite3Metadata(Metadata):
         :param schema: optional schema
         :return:
         """
-        qry = Select(Sqlite3SqlDialect()) \
-            .from_('sqlite_master', ['name']) \
-            .where('name', '=', view_name) \
-            .where('type', '=', 'view')
+        qry = (
+            Select(Sqlite3SqlDialect())
+            .from_("sqlite_master", ["name"])
+            .where("name", "=", view_name)
+            .where("type", "=", "view")
+        )
         with self._db.cursor() as c:
             return len(c.fetchall(*qry.assemble())) > 0

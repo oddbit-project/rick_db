@@ -11,10 +11,10 @@ class Sqlite3Connection(Connection):
 
     def __init__(self, db_file: str, **kwargs):
         self._in_transaction = False
-        if 'isolation_level' not in kwargs:
-            kwargs['isolation_level'] = self.isolation_level
-        if 'timeout' not in kwargs:
-            kwargs['timeout'] = self.timeout
+        if "isolation_level" not in kwargs:
+            kwargs["isolation_level"] = self.isolation_level
+        if "timeout" not in kwargs:
+            kwargs["timeout"] = self.timeout
         conn = sqlite3.connect(db_file, **kwargs)
         conn.row_factory = self._row_factory
         super().__init__(conn)

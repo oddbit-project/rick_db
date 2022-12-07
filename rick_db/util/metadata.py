@@ -7,20 +7,19 @@ from rick_db.conn import Connection
 
 @fieldmapper
 class FieldRecord:
-    field = 'field'
-    type = 'type'
-    primary = 'primary'
+    field = "field"
+    type = "type"
+    primary = "primary"
 
 
 @fieldmapper()
 class UserRecord:
-    name = 'name'
-    superuser = 'superuser'
-    createdb = 'createdb'
+    name = "name"
+    superuser = "superuser"
+    createdb = "createdb"
 
 
 class Metadata:
-
     def __init__(self, db: Connection):
         self._db = db
 

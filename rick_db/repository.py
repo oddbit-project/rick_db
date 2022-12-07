@@ -14,7 +14,6 @@ class RepositoryError(Exception):
 
 
 class BaseRepository:
-
     def __init__(self, db: Connection, tablename: str, schema=None, pk=None):
         self._db = db
         self._tablename = tablename
@@ -30,18 +29,25 @@ class BaseRepository:
 
 
 class Repository(BaseRepository):
-
     def __init__(self, db, record_type):
-        if not inspect.isclass(record_type) or getattr(record_type, ATTR_RECORD_MAGIC, None) is not True:
-            raise RepositoryError("__init__(): record_type must be a valid Record class")
+        if (
+            not inspect.isclass(record_type)
+            or getattr(record_type, ATTR_RECORD_MAGIC, None) is not True
+        ):
+            raise RepositoryError(
+                "__init__(): record_type must be a valid Record class"
+            )
         self._record = record_type  # type: Record
         self._query_cache = query_cache  # use global query cache
-        self._key_prefix = "{0}:{1}.{2}:".format(type(db).__name__, record_type.__module__, record_type.__name__)
-        super().__init__(db,
-                         getattr(record_type, ATTR_TABLE),
-                         getattr(record_type, ATTR_SCHEMA),
-                         getattr(record_type, ATTR_PRIMARY_KEY)
-                         )
+        self._key_prefix = "{0}:{1}.{2}:".format(
+            type(db).__name__, record_type.__module__, record_type.__name__
+        )
+        super().__init__(
+            db,
+            getattr(record_type, ATTR_TABLE),
+            getattr(record_type, ATTR_SCHEMA),
+            getattr(record_type, ATTR_PRIMARY_KEY),
+        )
 
     def select(self, cols=None) -> Select:
         """
@@ -49,7 +55,9 @@ class Repository(BaseRepository):
         :param cols: optional columns
         :return: Select
         """
-        return Select(self._dialect).from_(self._tablename, cols=cols, schema=self._schema)
+        return Select(self._dialect).from_(
+            self._tablename, cols=cols, schema=self._schema
+        )
 
     def fetch_pk(self, pk_value) -> Optional[object]:
         """
@@ -61,11 +69,15 @@ class Repository(BaseRepository):
             .fetch_pk(32)    # search for record with id 32
         """
         if self._pk is None:
-            raise RepositoryError("find_pk(): missing primary key in Record %s" % str(type(self._record)))
-        qry = self._cache_get('find_pk')
+            raise RepositoryError(
+                "find_pk(): missing primary key in Record %s" % str(type(self._record))
+            )
+        qry = self._cache_get("find_pk")
         if qry is None:
-            qry, values = self.select().where(self._pk, '=', pk_value).limit(1).assemble()
-            self._cache_set('find_pk', qry)
+            qry, values = (
+                self.select().where(self._pk, "=", pk_value).limit(1).assemble()
+            )
+            self._cache_set("find_pk", qry)
         else:
             values = [pk_value]
         with self._db.cursor() as c:
@@ -125,7 +137,7 @@ class Repository(BaseRepository):
         :param cols: optional columns to return
         :return: list of record object or empty list
         """
-        qry, values = self.select(cols=cols).where(field, '=', value).assemble()
+        qry, values = self.select(cols=cols).where(field, "=", value).assemble()
         with self._db.cursor() as c:
             return c.fetchall(qry, values, self._record)
 
@@ -162,11 +174,11 @@ class Repository(BaseRepository):
 
         :return: list of record object
         """
-        qry = self._cache_get('fetch_all')
+        qry = self._cache_get("fetch_all")
         if qry is None:
             qry = self.select()
             qry, _ = qry.assemble()
-            self._cache_set('fetch_all', qry)
+            self._cache_set("fetch_all", qry)
 
         with self._db.cursor() as c:
             return c.fetchall(qry, (), self._record)
@@ -207,7 +219,9 @@ class Repository(BaseRepository):
                     qry.returning(cols)
             else:
                 if len(cols) != 1:
-                    raise RepositoryError("insert(): database does not support returning multiple columns")
+                    raise RepositoryError(
+                        "insert(): database does not support returning multiple columns"
+                    )
 
         sql, values = qry.assemble()
         with self._db.cursor() as c:
@@ -260,10 +274,15 @@ class Repository(BaseRepository):
         if self._pk is None:
             raise RepositoryError("delete_pk(): record has no primary key")
 
-        sql = self._cache_get('delete_pk')
+        sql = self._cache_get("delete_pk")
         if sql is None:
-            sql, values = Delete(self._dialect).from_(self._record).where(self._pk, '=', pk_value).assemble()
-            self._cache_set('delete_pk', sql)
+            sql, values = (
+                Delete(self._dialect)
+                .from_(self._record)
+                .where(self._pk, "=", pk_value)
+                .assemble()
+            )
+            self._cache_set("delete_pk", sql)
         else:
             values = [pk_value]
         with self._db.cursor() as c:
@@ -315,11 +334,13 @@ class Repository(BaseRepository):
         if self._pk is None:
             raise RepositoryError("valid_pk(): missing primary key")
 
-        sql = self._cache_get('valid_pk')
+        sql = self._cache_get("valid_pk")
         values = [pk_value]
         if sql is None:
-            sql, values = self.select(self._pk).where(self._pk, '=', pk_value).limit(1).assemble()
-            self._cache_set('valid_pk', sql)
+            sql, values = (
+                self.select(self._pk).where(self._pk, "=", pk_value).limit(1).assemble()
+            )
+            self._cache_set("valid_pk", sql)
 
         with self._db.cursor() as c:
             result = c.fetchone(sql, values, cls=self._record)
@@ -352,10 +373,13 @@ class Repository(BaseRepository):
         if self._pk is None:
             raise RepositoryError("exists(): missing primary key")
 
-        sql, values = self.select(self._pk).where(self._pk, '<>', pk_to_skip) \
-            .where(field, '=', value) \
-            .limit(1) \
+        sql, values = (
+            self.select(self._pk)
+            .where(self._pk, "<>", pk_to_skip)
+            .where(field, "=", value)
+            .limit(1)
             .assemble()
+        )
         with self._db.cursor() as c:
             result = c.fetchone(sql, values, cls=self._record)
             return result is not None
@@ -383,9 +407,13 @@ class Repository(BaseRepository):
 
         if value is None:
             raise RepositoryError("update(): missing primary key value")
-        sql, values = Update(self._dialect).table(self._tablename, self._schema) \
-            .values(data) \
-            .where(self._pk, '=', value).assemble()
+        sql, values = (
+            Update(self._dialect)
+            .table(self._tablename, self._schema)
+            .values(data)
+            .where(self._pk, "=", value)
+            .assemble()
+        )
         with self._db.cursor() as c:
             c.exec(sql, values)
 
@@ -407,14 +435,18 @@ class Repository(BaseRepository):
         qry = Update(self._dialect).table(self._tablename, self._schema).values(record)
         for cond in where_list:
             if type(cond) not in [list, tuple]:
-                raise RepositoryError("update_where(): invalid item in where clause list")
+                raise RepositoryError(
+                    "update_where(): invalid item in where clause list"
+                )
             lc = len(cond)
             if lc == 2:
-                qry.where(cond[0], operator='=', value=cond[1])
+                qry.where(cond[0], operator="=", value=cond[1])
             elif lc == 3:
                 qry.where(cond[0], operator=cond[1], value=cond[2])
             else:
-                raise RepositoryError("update_where(): invalid item in where clause list")
+                raise RepositoryError(
+                    "update_where(): invalid item in where clause list"
+                )
 
         sql, values = qry.assemble()
         with self._db.cursor() as c:
@@ -427,13 +459,13 @@ class Repository(BaseRepository):
         :return: int
         """
         values = None
-        sql = self._cache_get('count')
+        sql = self._cache_get("count")
         if sql is None:
-            sql, values = self.select(cols={Literal('COUNT(*)'): 'total'}).assemble()
-            self._cache_set('count', sql)
+            sql, values = self.select(cols={Literal("COUNT(*)"): "total"}).assemble()
+            self._cache_set("count", sql)
         result = self._db.cursor().fetchone(sql, values)
         if result is not None:
-            return result['total']
+            return result["total"]
         return 0
 
     def count_where(self, where_list: list):
@@ -450,23 +482,27 @@ class Repository(BaseRepository):
         if len(where_list) == 0:
             raise RepositoryError("count_where(): where clause list cannot be empty")
 
-        qry = self.select(cols={Literal('COUNT(*)'): 'total'})
+        qry = self.select(cols={Literal("COUNT(*)"): "total"})
         for cond in where_list:
             if type(cond) not in [list, tuple]:
-                raise RepositoryError("count_where(): invalid item in where clause list")
+                raise RepositoryError(
+                    "count_where(): invalid item in where clause list"
+                )
             lc = len(cond)
             if lc == 2:
-                qry.where(cond[0], operator='=', value=cond[1])
+                qry.where(cond[0], operator="=", value=cond[1])
             elif lc == 3:
                 qry.where(cond[0], operator=cond[1], value=cond[2])
             else:
-                raise RepositoryError("count_where(): invalid item in where clause list")
+                raise RepositoryError(
+                    "count_where(): invalid item in where clause list"
+                )
 
         sql, values = qry.assemble()
         with self._db.cursor() as c:
             result = c.fetchone(sql, values)
             if result is not None:
-                return result['total']
+                return result["total"]
             return 0
 
     def list(self, qry: Select, limit=None, offset=None, cls=None):
@@ -485,7 +521,9 @@ class Repository(BaseRepository):
         total = 0
         qry = copy.deepcopy(qry)
         sql, values = qry.assemble()
-        qry_count = Select(self._dialect).from_({Literal(sql): "qry"}, cols={Literal('COUNT(*)'): 'total'})
+        qry_count = Select(self._dialect).from_(
+            {Literal(sql): "qry"}, cols={Literal("COUNT(*)"): "total"}
+        )
         if limit:
             qry.limit(limit, offset)
 
@@ -494,7 +532,7 @@ class Repository(BaseRepository):
             sql, _ = qry_count.assemble()
             count_record = c.fetchone(sql, values)
             if count_record:
-                total = count_record['total']
+                total = count_record["total"]
 
         # fetch rows
         rows = self.fetch(qry, cls=cls)

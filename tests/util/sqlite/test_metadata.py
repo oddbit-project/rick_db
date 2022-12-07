@@ -6,7 +6,9 @@ from rick_db.util.sqlite import Sqlite3Metadata
 
 
 class TestSqlite3Metadata:
-    createTable = "create table animals(legs integer primary key autoincrement, name varchar);"
+    createTable = (
+        "create table animals(legs integer primary key autoincrement, name varchar);"
+    )
     createIndex = "create index idx01 on animals(legs)"
     dropTable = "drop table if exists animals"
     createView = "create view list_animals as select * from animals"
@@ -21,7 +23,7 @@ class TestSqlite3Metadata:
         # no tables created yet
         tables = meta.tables()
         assert len(tables) == 0
-        assert meta.table_exists('animals') is False
+        assert meta.table_exists("animals") is False
 
         # create one table
         with conn.cursor() as qry:
@@ -29,8 +31,8 @@ class TestSqlite3Metadata:
 
         tables = meta.tables()
         assert len(tables) == 1
-        assert tables[0] == 'animals'
-        assert meta.table_exists('animals') is True
+        assert tables[0] == "animals"
+        assert meta.table_exists("animals") is True
 
         # cleanup
         with conn.cursor() as c:
@@ -51,7 +53,7 @@ class TestSqlite3Metadata:
         # no views created yet
         views = meta.views()
         assert len(views) == 0
-        assert meta.view_exists('list_animals') is False
+        assert meta.view_exists("list_animals") is False
 
         # create one table
         with conn.cursor() as qry:
@@ -60,8 +62,8 @@ class TestSqlite3Metadata:
 
         views = meta.views()
         assert len(views) == 1
-        assert views[0] == 'list_animals'
-        assert meta.view_exists('list_animals') is True
+        assert views[0] == "list_animals"
+        assert meta.view_exists("list_animals") is True
 
         # cleanup
         with conn.cursor() as qry:
@@ -75,21 +77,21 @@ class TestSqlite3Metadata:
             qry.exec(self.createView)
 
         # test table fields
-        fields = meta.table_fields('animals')
+        fields = meta.table_fields("animals")
         assert len(fields) == 2
         field1, field2 = fields
-        assert field1.field == 'legs'
+        assert field1.field == "legs"
         assert field1.primary is True
-        assert field2.field == 'name'
+        assert field2.field == "name"
         assert field2.primary is False
 
         # test view fields
-        fields = meta.view_fields('list_animals')
+        fields = meta.view_fields("list_animals")
         assert len(fields) == 2
         field1, field2 = fields
-        assert field1.field == 'legs'
+        assert field1.field == "legs"
         assert field1.primary is False  # views don't have keys
-        assert field2.field == 'name'
+        assert field2.field == "name"
         assert field2.primary is False
 
         with conn.cursor() as qry:
@@ -106,15 +108,15 @@ class TestSqlite3Metadata:
         # create table
         tables = meta.tables()
         assert len(tables) == 1
-        assert tables[0] == 'animals'
-        assert meta.table_exists('animals') is True
+        assert tables[0] == "animals"
+        assert meta.table_exists("animals") is True
 
-        keys = meta.table_indexes('animals')
+        keys = meta.table_indexes("animals")
         assert len(keys) == 1
-        assert keys[0].field == 'legs'
+        assert keys[0].field == "legs"
         assert keys[0].primary is True
 
-        pk = meta.table_pk('animals')
+        pk = meta.table_pk("animals")
         assert pk.field == keys[0].field
         assert pk.primary == keys[0].primary
         assert pk.type == keys[0].type
@@ -129,4 +131,4 @@ class TestSqlite3Metadata:
 
     def test_user_groups(self, conn):
         meta = Sqlite3Metadata(conn)
-        assert len(meta.user_groups('someuser')) == 0
+        assert len(meta.user_groups("someuser")) == 0

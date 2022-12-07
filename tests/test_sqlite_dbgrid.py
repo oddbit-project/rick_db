@@ -23,7 +23,9 @@ class TestSqlite3Repository(DbGridTest):
         with self.conn.cursor() as qry:
             qry.exec(self.createTable)
             for i in range(1, 100):
-                qry.exec(self.insertTable, [self.label % i, 'mickey mouse', (i % 2) == 0])
+                qry.exec(
+                    self.insertTable, [self.label % i, "mickey mouse", (i % 2) == 0]
+                )
 
     def teardown_method(self, test_method):
         self.conn.close()
@@ -36,23 +38,37 @@ class TestSqlite3Repository(DbGridTest):
         repo = Repository(conn, GridRecord)
         grid = DbGrid(repo, [GridRecord.label])
         # should search default field
-        qry = grid._assemble(search_text='99', search_fields=[])
+        qry = grid._assemble(search_text="99", search_fields=[])
         sql, _ = qry.assemble()
-        assert sql == 'SELECT "grid".* FROM "grid" WHERE ( (UPPER("label") LIKE ?) ) ORDER BY "id_grid" ASC'
+        assert (
+            sql
+            == 'SELECT "grid".* FROM "grid" WHERE ( (UPPER("label") LIKE ?) ) ORDER BY "id_grid" ASC'
+        )
 
         # skipping non-valid search field
-        qry = grid._assemble(search_text='99', search_fields=[GridRecord.content])
+        qry = grid._assemble(search_text="99", search_fields=[GridRecord.content])
         sql, _ = qry.assemble()
-        assert sql == 'SELECT "grid".* FROM "grid" WHERE ( (UPPER("label") LIKE ?) ) ORDER BY "id_grid" ASC'
+        assert (
+            sql
+            == 'SELECT "grid".* FROM "grid" WHERE ( (UPPER("label") LIKE ?) ) ORDER BY "id_grid" ASC'
+        )
 
         # using specific search field
         grid = DbGrid(repo, [GridRecord.label, GridRecord.content])
-        qry = grid._assemble(search_text='99', search_fields=[GridRecord.content])
+        qry = grid._assemble(search_text="99", search_fields=[GridRecord.content])
         sql, _ = qry.assemble()
-        assert sql == 'SELECT "grid".* FROM "grid" WHERE ( (UPPER("content") LIKE ?) ) ORDER BY "id_grid" ASC'
+        assert (
+            sql
+            == 'SELECT "grid".* FROM "grid" WHERE ( (UPPER("content") LIKE ?) ) ORDER BY "id_grid" ASC'
+        )
 
         # using specific search field and invalid field
         grid = DbGrid(repo, [GridRecord.label, GridRecord.content])
-        qry = grid._assemble(search_text='99', search_fields=[GridRecord.content, GridRecord.odd])
+        qry = grid._assemble(
+            search_text="99", search_fields=[GridRecord.content, GridRecord.odd]
+        )
         sql, _ = qry.assemble()
-        assert sql == 'SELECT "grid".* FROM "grid" WHERE ( (UPPER("content") LIKE ?) ) ORDER BY "id_grid" ASC'
+        assert (
+            sql
+            == 'SELECT "grid".* FROM "grid" WHERE ( (UPPER("content") LIKE ?) ) ORDER BY "id_grid" ASC'
+        )

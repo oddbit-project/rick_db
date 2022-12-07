@@ -6,7 +6,6 @@ from tests.util.migrations import BaseMigrationManager
 
 
 class TestPgMigrationManager(BaseMigrationManager):
-
     @pytest.fixture()
     def mm(self) -> PgMigrationManager:
         return connectSimple().migration_manager()

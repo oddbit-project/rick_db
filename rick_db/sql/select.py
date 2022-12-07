@@ -15,6 +15,7 @@ class Select(SqlStatement):
     """
     SELECT query builder
     """
+
     ORDER_DESC = Sql.SQL_DESC
     ORDER_ASC = Sql.SQL_ASC
 
@@ -34,14 +35,8 @@ class Select(SqlStatement):
         Sql.CROSS_JOIN,
         Sql.NATURAL_JOIN,
     ]
-    _valid_unions = [
-        Sql.SQL_UNION,
-        Sql.SQL_UNION_ALL
-    ]
-    _valid_order = [
-        Sql.SQL_ASC,
-        Sql.SQL_DESC
-    ]
+    _valid_unions = [Sql.SQL_UNION, Sql.SQL_UNION_ALL]
+    _valid_order = [Sql.SQL_ASC, Sql.SQL_DESC]
 
     def __init__(self, dialect: SqlDialect = None):
         """
@@ -49,11 +44,7 @@ class Select(SqlStatement):
         :param dialect: optional SqlDialect object; if omitted, DefaultSqlDialect is used
         """
         self._values = []
-        self._query_values = {
-            Sql.JOIN: [],
-            Sql.WHERE: [],
-            Sql.HAVING: []
-        }
+        self._query_values = {Sql.JOIN: [], Sql.WHERE: [], Sql.HAVING: []}
         self._distinct = False
         self._for_update = False
         self._limit_offset = None
@@ -74,7 +65,11 @@ class Select(SqlStatement):
             self._dialect = DefaultSqlDialect()
         else:
             if not isinstance(dialect, SqlDialect):
-                raise RuntimeError("dialect must be a SqlDialect instance, not '{}'".format(type(dialect).__name__))
+                raise RuntimeError(
+                    "dialect must be a SqlDialect instance, not '{}'".format(
+                        type(dialect).__name__
+                    )
+                )
             self._dialect = dialect
 
     def distinct(self, flag=True):
@@ -374,7 +369,9 @@ class Select(SqlStatement):
                     schema = getattr(table, ATTR_SCHEMA, schema)
                     table = getattr(table, ATTR_TABLE, None)
                     if table is None:
-                        raise SqlError("having(): invalid _tablename attribute in class/object")
+                        raise SqlError(
+                            "having(): invalid _tablename attribute in class/object"
+                        )
                 else:
                     raise SqlError("having(): invalid table name type")
 
@@ -393,9 +390,13 @@ class Select(SqlStatement):
             self._parts_having.append(expression)
         else:
             if operator is None:
-                expression = "{fld} {ph}".format(fld=field, ph=self._dialect.placeholder)
+                expression = "{fld} {ph}".format(
+                    fld=field, ph=self._dialect.placeholder
+                )
             else:
-                expression = "{fld} {op} {ph}".format(fld=field, op=operator, ph=self._dialect.placeholder)
+                expression = "{fld} {op} {ph}".format(
+                    fld=field, op=operator, ph=self._dialect.placeholder
+                )
             self._parts_having.append(expression)
             self._query_values[Sql.HAVING].append(value)
         return self
@@ -421,8 +422,17 @@ class Select(SqlStatement):
             self._parts_union.append([q, union_type])
         return self
 
-    def join(self, table, field, expr_table=None, expr_field=None, operator=None, cols=None, schema=None,
-             expr_schema=None):
+    def join(
+        self,
+        table,
+        field,
+        expr_table=None,
+        expr_field=None,
+        operator=None,
+        cols=None,
+        schema=None,
+        expr_schema=None,
+    ):
         """
         INNER JOIN
 
@@ -459,10 +469,21 @@ class Select(SqlStatement):
             .join({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
             .join(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
-        return self.join_inner(table, field, expr_table, expr_field, operator, cols, schema, expr_schema)
+        return self.join_inner(
+            table, field, expr_table, expr_field, operator, cols, schema, expr_schema
+        )
 
-    def join_inner(self, table, field, expr_table=None, expr_field=None, operator=None, cols=None, schema=None,
-                   expr_schema=None):
+    def join_inner(
+        self,
+        table,
+        field,
+        expr_table=None,
+        expr_field=None,
+        operator=None,
+        cols=None,
+        schema=None,
+        expr_schema=None,
+    ):
         """
         INNER JOIN
 
@@ -499,11 +520,29 @@ class Select(SqlStatement):
             .join({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
             .join(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
-        return self._join(Sql.INNER_JOIN, table, field, expr_table, expr_field, operator, cols, schema,
-                          expr_schema)
+        return self._join(
+            Sql.INNER_JOIN,
+            table,
+            field,
+            expr_table,
+            expr_field,
+            operator,
+            cols,
+            schema,
+            expr_schema,
+        )
 
-    def join_left(self, table, field, expr_table=None, expr_field=None, operator=None, cols=None, schema=None,
-                  expr_schema=None):
+    def join_left(
+        self,
+        table,
+        field,
+        expr_table=None,
+        expr_field=None,
+        operator=None,
+        cols=None,
+        schema=None,
+        expr_schema=None,
+    ):
         """
         LEFT JOIN
 
@@ -540,10 +579,29 @@ class Select(SqlStatement):
             .join_left({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
             .join_left(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
-        return self._join(Sql.LEFT_JOIN, table, field, expr_table, expr_field, operator, cols, schema, expr_schema)
+        return self._join(
+            Sql.LEFT_JOIN,
+            table,
+            field,
+            expr_table,
+            expr_field,
+            operator,
+            cols,
+            schema,
+            expr_schema,
+        )
 
-    def join_right(self, table, field, expr_table=None, expr_field=None, operator=None, cols=None, schema=None,
-                   expr_schema=None):
+    def join_right(
+        self,
+        table,
+        field,
+        expr_table=None,
+        expr_field=None,
+        operator=None,
+        cols=None,
+        schema=None,
+        expr_schema=None,
+    ):
         """
         RIGHT JOIN
 
@@ -580,11 +638,29 @@ class Select(SqlStatement):
             .join_right({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
             .join_right(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
-        return self._join(Sql.RIGHT_JOIN, table, field, expr_table, expr_field, operator, cols, schema,
-                          expr_schema)
+        return self._join(
+            Sql.RIGHT_JOIN,
+            table,
+            field,
+            expr_table,
+            expr_field,
+            operator,
+            cols,
+            schema,
+            expr_schema,
+        )
 
-    def join_full(self, table, field, expr_table=None, expr_field=None, operator=None, cols=None, schema=None,
-                  expr_schema=None):
+    def join_full(
+        self,
+        table,
+        field,
+        expr_table=None,
+        expr_field=None,
+        operator=None,
+        cols=None,
+        schema=None,
+        expr_schema=None,
+    ):
         """
         FULL OUTER JOIN
 
@@ -621,8 +697,17 @@ class Select(SqlStatement):
             .join_full({'table1':'t1'}, 'table1_id', {'table2':'t2'}, 'table2_id')
             .join_full(JoinToRecordObject, JoinToRecordObject.Field, JoinFromRecordObject, JoinFromRecordObject.Field)
         """
-        return self._join(Sql.FULL_JOIN, table, field, expr_table, expr_field, operator, cols, schema,
-                          expr_schema)
+        return self._join(
+            Sql.FULL_JOIN,
+            table,
+            field,
+            expr_table,
+            expr_field,
+            operator,
+            cols,
+            schema,
+            expr_schema,
+        )
 
     def join_cross(self, table, cols=None, schema=None):
         """
@@ -641,7 +726,9 @@ class Select(SqlStatement):
             .join_cross('table2', ['field1', 'field2'])
             .join_cross(JoinToRecordObject)
         """
-        return self._join(Sql.CROSS_JOIN, table, None, None, None, None, cols, schema, None)
+        return self._join(
+            Sql.CROSS_JOIN, table, None, None, None, None, cols, schema, None
+        )
 
     def join_natural(self, table, cols=None, schema=None):
         """
@@ -660,7 +747,9 @@ class Select(SqlStatement):
             .join_natural('table2', ['field1', 'field2'])
             .join_natural(JoinToRecordObject)
         """
-        return self._join(Sql.NATURAL_JOIN, table, None, None, None, None, cols, schema, None)
+        return self._join(
+            Sql.NATURAL_JOIN, table, None, None, None, None, cols, schema, None
+        )
 
     def _where(self, field, operator=None, value=None, is_and=True, table=None):
         """
@@ -688,7 +777,9 @@ class Select(SqlStatement):
                 if isinstance(table, object):
                     table = getattr(table, ATTR_TABLE, None)
                     if table is None:
-                        raise SqlError("_where(): invalid _tablename attribute in class/object")
+                        raise SqlError(
+                            "_where(): invalid _tablename attribute in class/object"
+                        )
                 else:
                     raise SqlError("_where(): invalid table name type")
 
@@ -707,33 +798,56 @@ class Select(SqlStatement):
             self._parts_where.append([expression, concat_with])
         else:
             if operator is None:
-                expression = "{fld} {ph}".format(fld=field, ph=self._dialect.placeholder)
+                expression = "{fld} {ph}".format(
+                    fld=field, ph=self._dialect.placeholder
+                )
             else:
                 if isinstance(value, Select):
                     sql, value = value.assemble()
-                    expression = "{fld} {op} ({query})".format(fld=field, op=operator, query=sql)
+                    expression = "{fld} {op} ({query})".format(
+                        fld=field, op=operator, query=sql
+                    )
                     for v in value:
                         self._query_values[Sql.WHERE].append(v)
                     value = None
                 elif isinstance(value, collections.abc.Mapping):
                     if len(value) != 1:
-                        raise SqlError("_where(): value collection must have exactly 1 record")
+                        raise SqlError(
+                            "_where(): value collection must have exactly 1 record"
+                        )
                     tgt_tbl, tgt_field = list(value.items()).pop()
                     tmp_field_expr = self._dialect.field(tgt_field, None, tgt_tbl)
-                    expression = "{fld} {op} {to_fld}".format(fld=field, op=operator, to_fld=tmp_field_expr)
+                    expression = "{fld} {op} {to_fld}".format(
+                        fld=field, op=operator, to_fld=tmp_field_expr
+                    )
                     value = None
                 elif isinstance(value, Literal):
-                    expression = "{fld} {op} {lit}".format(fld=field, op=operator, lit=str(value))
+                    expression = "{fld} {op} {lit}".format(
+                        fld=field, op=operator, lit=str(value)
+                    )
                     value = None
                 else:
-                    expression = "{fld} {op} {ph}".format(fld=field, op=operator, ph=self._dialect.placeholder)
+                    expression = "{fld} {op} {ph}".format(
+                        fld=field, op=operator, ph=self._dialect.placeholder
+                    )
             self._parts_where.append([expression, concat_with])
             if value is not None:
                 self._query_values[Sql.WHERE].append(value)
 
         return self
 
-    def _join(self, join_type, join_table, expr_or_field, from_table, from_field, operator, cols, schema, from_schema):
+    def _join(
+        self,
+        join_type,
+        join_table,
+        expr_or_field,
+        from_table,
+        from_field,
+        operator,
+        cols,
+        schema,
+        from_schema,
+    ):
         """
         :param join_type: one of self._valid_joins
         :param join_table: table name expression
@@ -770,7 +884,9 @@ class Select(SqlStatement):
             if isinstance(from_table, collections.abc.Mapping):
                 # if dict, extract the first key:value pair
                 if len(from_table) != 1:
-                    raise SqlError("_join(): atmost one name:alias mapping per call is required")
+                    raise SqlError(
+                        "_join(): atmost one name:alias mapping per call is required"
+                    )
                 from_table, expr_alias = list(from_table.items()).pop()
                 if not isinstance(expr_alias, str):
                     raise SqlError("_join(): invalid alias type")
@@ -783,9 +899,13 @@ class Select(SqlStatement):
                     from_schema = getattr(from_table, ATTR_SCHEMA, from_schema)
                     from_table = getattr(from_table, ATTR_TABLE, None)
                     if from_table is None:
-                        raise SqlError("_join(): invalid _tablename attribute in class/object")
+                        raise SqlError(
+                            "_join(): invalid _tablename attribute in class/object"
+                        )
                 else:
-                    raise SqlError("_join(): invalid table type: %s" % str(type(from_table)))
+                    raise SqlError(
+                        "_join(): invalid table type: %s" % str(type(from_table))
+                    )
 
             if expr_alias is None:
                 expr_alias = from_table
@@ -795,18 +915,20 @@ class Select(SqlStatement):
             if operator is None:
                 operator = "="
             # build expression
-            if self._parts_from[expr_alias]['tableName'] != expr_alias:
+            if self._parts_from[expr_alias]["tableName"] != expr_alias:
                 # if match is alias.field, ignore schema, as table is already aliased
                 from_schema = None
 
             left_part = self._dialect.field(from_field, None, expr_alias, from_schema)
-            expression = left_part + operator + self._dialect.field(expr_or_field, table=alias)
+            expression = (
+                left_part + operator + self._dialect.field(expr_or_field, table=alias)
+            )
 
         self._parts_from[alias] = {
-            'joinType': join_type,
-            'tableName': join_table,
-            'joinCondition': expression,
-            'schema': schema,
+            "joinType": join_type,
+            "tableName": join_table,
+            "joinCondition": expression,
+            "schema": schema,
         }
 
         # always alias wildcard tables
@@ -833,7 +955,9 @@ class Select(SqlStatement):
         # if dict, extract the first key:value pair
         if isinstance(table, collections.abc.Mapping):
             if len(table) != 1:
-                raise SqlError("_join(): atmost one name:alias mapping per call is required")
+                raise SqlError(
+                    "_join(): atmost one name:alias mapping per call is required"
+                )
             table, alias = list(table.items()).pop()
             if not isinstance(alias, str):
                 raise SqlError("_join(): invalid alias type")
@@ -844,19 +968,21 @@ class Select(SqlStatement):
             # if select or Literal, convert to string
             if isinstance(table, (Literal, Select)):
                 if alias is None:
-                    alias = self._alias('t')
+                    alias = self._alias("t")
                 if isinstance(table, Select):
                     sql, values = table.assemble()
                     table = Literal(sql)
                     if len(values) > 0:
-                       self._query_values[Sql.JOIN].extend(values)
+                        self._query_values[Sql.JOIN].extend(values)
 
             # if object, try to access fieldmapper info
             elif isinstance(table, object):
                 schema = getattr(table, ATTR_SCHEMA, schema)
                 table = getattr(table, ATTR_TABLE, None)
                 if table is None:
-                    raise SqlError("_join(): invalid _tablename attribute in class/object")
+                    raise SqlError(
+                        "_join(): invalid _tablename attribute in class/object"
+                    )
 
             # if other type, abort
             else:
@@ -919,7 +1045,9 @@ class Select(SqlStatement):
             elif not isinstance(fields, (list, tuple)):
                 raise SqlError("Invalid column type: %s" % str(type(fields)))
 
-            if alias is True and tbl_alias != Sql.ANONYMOUS:  # masks anonymous expressions
+            if (
+                alias is True and tbl_alias != Sql.ANONYMOUS
+            ):  # masks anonymous expressions
                 alias = tbl_alias
             else:
                 alias = None
@@ -950,7 +1078,7 @@ class Select(SqlStatement):
         from_parts = {}
         join_parts = {}
         for alias, details in self._parts_from.items():
-            if details['joinType'] == Sql.FROM:
+            if details["joinType"] == Sql.FROM:
                 from_parts[alias] = details
             else:
                 join_parts[alias] = details
@@ -959,9 +1087,11 @@ class Select(SqlStatement):
         names = []
         for alias, details in from_parts.items():
             tbl_alias = None
-            if alias != details['tableName']:
+            if alias != details["tableName"]:
                 tbl_alias = alias
-            names.append(self._dialect.table(details['tableName'], tbl_alias, details['schema']))
+            names.append(
+                self._dialect.table(details["tableName"], tbl_alias, details["schema"])
+            )
         parts.append(", ".join(names))
 
         # JOIN clauses
@@ -969,20 +1099,22 @@ class Select(SqlStatement):
         for alias, details in join_parts.items():
             stmt = []
             tbl_alias = None
-            stmt.append(details['joinType'])
-            if alias != details['tableName']:
+            stmt.append(details["joinType"])
+            if alias != details["tableName"]:
                 tbl_alias = alias
-            stmt.append(self._dialect.table(details['tableName'], tbl_alias, details['schema']))
+            stmt.append(
+                self._dialect.table(details["tableName"], tbl_alias, details["schema"])
+            )
 
-            if details['joinCondition'] is not None:
+            if details["joinCondition"] is not None:
                 stmt.append(Sql.SQL_ON)
-                stmt.append(details['joinCondition'])
+                stmt.append(details["joinCondition"])
 
             # convert possible literals to self-contained clauses
             _stmt = []
             for s in stmt:
                 if isinstance(s, Literal):
-                   _stmt.append("({})".format(str(s)))
+                    _stmt.append("({})".format(str(s)))
                 else:
                     _stmt.append(s)
             names.append(" ".join(_stmt))  # complete join statement
@@ -1106,7 +1238,9 @@ class Select(SqlStatement):
                 expr, glue = row
                 if i > 0:
                     parts.append(glue)
-                parts.append(Sql.SQL_LIST_DELIMITER_LEFT + expr + Sql.SQL_LIST_DELIMITER_RIGHT)
+                parts.append(
+                    Sql.SQL_LIST_DELIMITER_LEFT + expr + Sql.SQL_LIST_DELIMITER_RIGHT
+                )
                 i += 1
 
         # copy values so they match the rendering sequence
@@ -1139,7 +1273,9 @@ class Select(SqlStatement):
 
         parts = []
         for row in having:
-            clause = Sql.SQL_LIST_DELIMITER_LEFT + str(row) + Sql.SQL_LIST_DELIMITER_RIGHT
+            clause = (
+                Sql.SQL_LIST_DELIMITER_LEFT + str(row) + Sql.SQL_LIST_DELIMITER_RIGHT
+            )
             parts.append(clause)
 
         for v in self._query_values[Sql.HAVING]:
@@ -1174,7 +1310,9 @@ class Select(SqlStatement):
 
         if len(self._parts_where) > 0:
             if self._where_blocks != 0:
-                raise RuntimeError("assemble(): where block count mismatch; did you forget to close a AND/OR block?")
+                raise RuntimeError(
+                    "assemble(): where block count mismatch; did you forget to close a AND/OR block?"
+                )
             parts.append(self._render_where())
 
         if len(self._parts_group) > 0:

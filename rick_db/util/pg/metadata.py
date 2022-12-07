@@ -8,7 +8,7 @@ from .pginfo import PgInfo
 
 
 class PgMetadata(Metadata):
-    SCHEMA_DEFAULT = 'public'
+    SCHEMA_DEFAULT = "public"
 
     def __init__(self, db: Connection):
         self._db = db
@@ -86,18 +86,22 @@ class PgMetadata(Metadata):
             schema = self.SCHEMA_DEFAULT
 
         columns = {
-            'column_name': 'field',
-            'data_type': 'type',
-            Literal('false'): 'primary'
+            "column_name": "field",
+            "data_type": "type",
+            Literal("false"): "primary",
         }
-        qry = Select(PgSqlDialect()) \
-            .from_('columns', columns, schema='information_schema') \
-            .where('table_schema', '=', schema) \
-            .where('table_name', '=', table_name) \
-            .order('ordinal_position')
+        qry = (
+            Select(PgSqlDialect())
+            .from_("columns", columns, schema="information_schema")
+            .where("table_schema", "=", schema)
+            .where("table_name", "=", table_name)
+            .order("ordinal_position")
+        )
         idx = self.table_pk(table_name, schema)
         with self._db.cursor() as c:
-            fields = c.fetchall(*qry.assemble(), cls=FieldRecord)  # type:list[FieldRecord]
+            fields = c.fetchall(
+                *qry.assemble(), cls=FieldRecord
+            )  # type:list[FieldRecord]
             if idx is not None:
                 for f in fields:
                     f.primary = f.field == idx.field
@@ -118,13 +122,14 @@ class PgMetadata(Metadata):
         List all available users
         :return:
         """
-        fields = {
-            'usename': 'name',
-            'usesuper': 'superuser',
-            'usecreatedb': 'createdb'
-        }
+        fields = {"usename": "name", "usesuper": "superuser", "usecreatedb": "createdb"}
         with self._db.cursor() as c:
-            return c.fetchall(*Select(PgSqlDialect()).from_('pg_user', fields, 'pg_catalog').assemble(), UserRecord)
+            return c.fetchall(
+                *Select(PgSqlDialect())
+                .from_("pg_user", fields, "pg_catalog")
+                .assemble(),
+                UserRecord
+            )
 
     def user_groups(self, user_name: str) -> List[str]:
         """
@@ -132,16 +137,18 @@ class PgMetadata(Metadata):
         :param user_name: user name to check
         :return: list of group names
         """
-        qry = Select(PgSqlDialect()) \
-            .from_('pg_user', {'rolname': 'name'}) \
-            .join('pg_auth_members', 'member', 'pg_user', 'usesysid') \
-            .join('pg_roles', 'oid', 'pg_auth_members', 'roleid') \
-            .where('usename', '=', user_name)
+        qry = (
+            Select(PgSqlDialect())
+            .from_("pg_user", {"rolname": "name"})
+            .join("pg_auth_members", "member", "pg_user", "usesysid")
+            .join("pg_roles", "oid", "pg_auth_members", "roleid")
+            .where("usename", "=", user_name)
+        )
 
         result = []
         with self._db.cursor() as c:
             for r in c.fetchall(*qry.assemble()):
-                result.append(r['name'])
+                result.append(r["name"])
         return result
 
     def table_exists(self, table_name: str, schema=None) -> bool:
@@ -154,9 +161,12 @@ class PgMetadata(Metadata):
         if schema is None:
             schema = self.SCHEMA_DEFAULT
 
-        qry = Select(PgSqlDialect()).from_('pg_tables', ['tablename']) \
-            .where('schemaname', '=', schema) \
-            .where('tablename', '=', table_name)
+        qry = (
+            Select(PgSqlDialect())
+            .from_("pg_tables", ["tablename"])
+            .where("schemaname", "=", schema)
+            .where("tablename", "=", table_name)
+        )
         with self._db.cursor() as c:
             return len(c.fetchall(*qry.assemble())) > 0
 
@@ -170,8 +180,11 @@ class PgMetadata(Metadata):
         if schema is None:
             schema = self.SCHEMA_DEFAULT
 
-        qry = Select(PgSqlDialect()).from_('pg_views', ['viewname']) \
-            .where('schemaname', '=', schema) \
-            .where('viewname', '=', view_name)
+        qry = (
+            Select(PgSqlDialect())
+            .from_("pg_views", ["viewname"])
+            .where("schemaname", "=", schema)
+            .where("viewname", "=", view_name)
+        )
         with self._db.cursor() as c:
             return len(c.fetchall(*qry.assemble())) > 0
