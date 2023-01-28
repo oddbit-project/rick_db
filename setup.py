@@ -23,7 +23,7 @@ setup(
     version=version['__version__'],
     author="Joao Pinheiro",
     author_email="",
-    url="https://github.com/oddbit-project/rick_db",
+    url="https://git.oddbit.org/OddBit/rick_db",
     description='SQL database layer',
     license='MIT',
     long_description=description,

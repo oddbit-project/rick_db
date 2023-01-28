@@ -1,8 +1,6 @@
 # Welcome to RickDb
 
-[![Tests](https://github.com/oddbit-project/rick_db/workflows/Tests/badge.svg?branch=master)](https://github.com/oddbit-project/rick_db/actions)
-[![pypi](https://img.shields.io/pypi/v/rick-db.svg)](https://pypi.org/project/rick-db/)
-[![license](https://img.shields.io/pypi/l/rick-db.svg)](https://github.com/oddbit-project/rick_db/blob/master/LICENSE)
+[![license](https://img.shields.io/pypi/l/rick-db.svg)](https://git.oddbit.org/OddBit/rick_db/src/branch/master/LICENSE)
 
 RickDb is a SQL database layer for Python3. It includes connection management, Object Mapper, Query Builder,
 and a Repository pattern implementation.  
