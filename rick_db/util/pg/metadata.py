@@ -2,7 +2,7 @@ from typing import Optional, List
 
 from rick_db.conn import Connection
 from rick_db.util import Metadata
-from rick_db.sql import Select, PgSqlDialect, Literal
+from rick_db.sql import Select, Literal
 from rick_db.util.metadata import FieldRecord, UserRecord
 from .pginfo import PgInfo
 
@@ -11,7 +11,7 @@ class PgMetadata(Metadata):
     SCHEMA_DEFAULT = "public"
 
     def __init__(self, db: Connection):
-        self._db = db
+        super().__init__(db)
         self.pginfo = PgInfo(db)
 
     def tables(self, schema=None) -> List[str]:
@@ -91,7 +91,7 @@ class PgMetadata(Metadata):
             Literal("false"): "primary",
         }
         qry = (
-            Select(PgSqlDialect())
+            Select(self._db.dialect())
             .from_("columns", columns, schema="information_schema")
             .where("table_schema", "=", schema)
             .where("table_name", "=", table_name)
@@ -125,7 +125,7 @@ class PgMetadata(Metadata):
         fields = {"usename": "name", "usesuper": "superuser", "usecreatedb": "createdb"}
         with self._db.cursor() as c:
             return c.fetchall(
-                *Select(PgSqlDialect())
+                *Select(self._db.dialect())
                 .from_("pg_user", fields, "pg_catalog")
                 .assemble(),
                 UserRecord
@@ -134,11 +134,11 @@ class PgMetadata(Metadata):
     def user_groups(self, user_name: str) -> List[str]:
         """
         List all groups associated with a given user
-        :param user_name: user name to check
+        :param user_name: username to check
         :return: list of group names
         """
         qry = (
-            Select(PgSqlDialect())
+            Select(self._db.dialect())
             .from_("pg_user", {"rolname": "name"})
             .join("pg_auth_members", "member", "pg_user", "usesysid")
             .join("pg_roles", "oid", "pg_auth_members", "roleid")
@@ -162,7 +162,7 @@ class PgMetadata(Metadata):
             schema = self.SCHEMA_DEFAULT
 
         qry = (
-            Select(PgSqlDialect())
+            Select(self._db.dialect())
             .from_("pg_tables", ["tablename"])
             .where("schemaname", "=", schema)
             .where("tablename", "=", table_name)
@@ -181,10 +181,106 @@ class PgMetadata(Metadata):
             schema = self.SCHEMA_DEFAULT
 
         qry = (
-            Select(PgSqlDialect())
+            Select(self._db.dialect())
             .from_("pg_views", ["viewname"])
             .where("schemaname", "=", schema)
             .where("viewname", "=", view_name)
         )
         with self._db.cursor() as c:
             return len(c.fetchall(*qry.assemble())) > 0
+
+    def create_database(self, database_name: str, **kwargs):
+        """
+        Create a database
+        :param database_name: database name
+        :param kwargs: optional parameters
+        :return:
+        """
+        dialect = self._db.dialect()
+        args = []
+        for k, v in kwargs.items():
+            args = "=".join([k.upper(), dialect.database(v)])
+        args = ' '.join(args)
+
+        backend = self._db.backend()
+        backend.set_isolation_level(0)  # ISOLATION_LEVEL_AUTOCOMMIT
+
+        sql = "CREATE DATABASE {db} {args}".format(db=dialect.database(database_name), args=args)
+        with self._db.cursor() as c:
+            c.exec(sql)
+        backend.set_isolation_level(self._db.isolation_level)
+
+    def database_exists(self, database_name: str) -> bool:
+        """
+        Checks if a given database exists
+        :param database_name: database name
+        :return: bool
+        """
+        return database_name in self.databases()
+
+    def drop_database(self, database_name: str):
+        """
+        Removes a database
+        :param database_name: database name
+        :return:
+        """
+        self.kill_clients(database_name)
+        dialect = self._db.dialect()
+
+        backend = self._db.backend()
+        backend.set_isolation_level(0)  # ISOLATION_LEVEL_AUTOCOMMIT
+        with self._db.cursor() as c:
+            c.exec('DROP DATABASE IF EXISTS {db}'.format(db=dialect.database(database_name)))
+        backend.set_isolation_level(self._db.isolation_level)
+
+    def create_schema(self, schema: str, **kwargs):
+        """
+        Create a new schema
+        :param schema:
+        :return:
+        """
+        dialect = self._db.dialect()
+        authorization = kwargs['authorization'] if 'authorization' in kwargs.keys() else None
+        sql = 'CREATE SCHEMA IF NOT EXISTS {schema}'.format(schema=dialect.database(schema))
+        if authorization:
+            sql = sql + " AUTHORIZATION {role}".format(role=dialect.database(authorization))
+        with self._db.cursor() as c:
+            c.exec(sql)
+
+    def schema_exists(self, schema: str) -> bool:
+        """
+        Check if a given schema exists on the current database
+        :param schema:
+        :return: bool
+        """
+        return schema in self.schemas()
+
+    def drop_schema(self, schema: str, cascade: bool = False):
+        """
+        Removes a schema
+        :param schema:
+        :param cascade:
+        :return:
+        """
+        dialect = self._db.dialect()
+        sql = "DROP SCHEMA IF EXISTS {schema}".format(schema=dialect.database(schema))
+        if cascade:
+            sql = sql + " CASCADE"
+        with self._db.cursor() as c:
+            c.exec(sql)
+
+    def kill_clients(self, database_name: str):
+        """
+        Kills all active connections to the database
+        :param database_name:
+        :return:
+        """
+        with self._db.cursor() as c:
+            sql = '''
+            SELECT pg_terminate_backend(pg_stat_activity.pid)
+            FROM pg_stat_activity
+            WHERE pg_stat_activity.datname = %s
+            AND pid <> pg_backend_pid();
+            '''
+            c.exec(sql, [database_name])
+

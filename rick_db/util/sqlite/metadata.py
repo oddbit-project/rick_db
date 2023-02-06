@@ -172,3 +172,61 @@ class Sqlite3Metadata(Metadata):
         )
         with self._db.cursor() as c:
             return len(c.fetchall(*qry.assemble())) > 0
+
+    def create_database(self, database_name: str, **kwargs):
+        """
+        Create a database
+        :param database_name: database name
+        :param kwargs: optional parameters
+        :return:
+        """
+        raise NotImplementedError("SqlLite3: feature not supported")
+
+    def database_exists(self, database_name: str) -> bool:
+        """
+        Checks if a given database exists
+        :param database_name: database name
+        :return: bool
+        """
+        raise NotImplementedError("SqlLite3: feature not supported")
+
+    def drop_database(self, database_name: str):
+        """
+        Removes a database
+        :param database_name: database name
+        :return:
+        """
+        raise NotImplementedError("SqlLite3: feature not supported")
+
+    def create_schema(self, schema: str, **kwargs):
+        """
+        Create a new schema
+        :param schema:
+        :return:
+        """
+        raise NotImplementedError("SqlLite3: feature not supported")
+
+    def schema_exists(self, schema: str) -> bool:
+        """
+        Check if a given schema exists on the current database
+        :param schema:
+        :return: bool
+        """
+        raise NotImplementedError("SqlLite3: feature not supported")
+
+    def drop_schema(self, schema: str, cascade: bool = False):
+        """
+        Removes a schema
+        :param schema:
+        :param cascade:
+        :return:
+        """
+        raise NotImplementedError("SqlLite3: feature not supported")
+
+    def kill_clients(self, database_name: str):
+        """
+        Kills all active connections to the database
+        :param database_name:
+        :return:
+        """
+        raise NotImplementedError("SqlLite3: feature not supported")

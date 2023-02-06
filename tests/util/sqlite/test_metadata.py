@@ -10,9 +10,7 @@ class TestSqlite3Metadata:
         "create table animals(legs integer primary key autoincrement, name varchar);"
     )
     createIndex = "create index idx01 on animals(legs)"
-    dropTable = "drop table if exists animals"
     createView = "create view list_animals as select * from animals"
-    dropView = "drop view list_animals"
 
     @pytest.fixture()
     def conn(self) -> Connection:
@@ -35,8 +33,7 @@ class TestSqlite3Metadata:
         assert meta.table_exists("animals") is True
 
         # cleanup
-        with conn.cursor() as c:
-            c.exec(self.dropTable)
+        meta.drop_table("animals")
 
     def test_schemas(self, conn):
         meta = Sqlite3Metadata(conn)
@@ -66,9 +63,8 @@ class TestSqlite3Metadata:
         assert meta.view_exists("list_animals") is True
 
         # cleanup
-        with conn.cursor() as qry:
-            qry.exec(self.dropView)
-            qry.exec(self.dropTable)
+        meta.drop_view("list_animals")
+        meta.drop_table("animals")
 
     def test_table_fields(self, conn):
         meta = Sqlite3Metadata(conn)
@@ -94,9 +90,8 @@ class TestSqlite3Metadata:
         assert field2.field == "name"
         assert field2.primary is False
 
-        with conn.cursor() as qry:
-            qry.exec(self.dropView)
-            qry.exec(self.dropTable)
+        meta.drop_view("list_animals")
+        meta.drop_table("animals")
 
     def test_table_keys(self, conn):
         meta = Sqlite3Metadata(conn)
@@ -122,8 +117,7 @@ class TestSqlite3Metadata:
         assert pk.type == keys[0].type
 
         # cleanup
-        with conn.cursor() as qry:
-            qry.exec(self.dropTable)
+        meta.drop_table("animals")
 
     def test_users(self, conn):
         meta = Sqlite3Metadata(conn)
