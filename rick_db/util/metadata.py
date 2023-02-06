@@ -99,7 +99,7 @@ class Metadata:
     def user_groups(self, user_name: str) -> List[str]:
         """
         List all groups associated with a given user
-        :param user_name: user name to check
+        :param user_name: username to check
         :return: list of group names
         """
         raise NotImplementedError("abstract method")
@@ -121,3 +121,91 @@ class Metadata:
         :return:
         """
         raise NotImplementedError("abstract method")
+
+    def create_database(self, database_name: str, **kwargs):
+        """
+        Create a database
+        :param database_name: database name
+        :param kwargs: optional parameters
+        :return:
+        """
+        raise NotImplementedError("abstract method")
+
+    def database_exists(self, database_name: str) -> bool:
+        """
+        Checks if a given database exists
+        :param database_name: database name
+        :return: bool
+        """
+        raise NotImplementedError("abstract method")
+
+    def drop_database(self, database_name: str):
+        """
+        Removes a database
+        :param database_name: database name
+        :return:
+        """
+        raise NotImplementedError("abstract method")
+
+    def create_schema(self, schema: str, **kwargs):
+        """
+        Create a new schema in the current database
+        :param schema:
+        :return:
+        """
+        raise NotImplementedError("abstract method")
+
+    def schema_exists(self, schema: str) -> bool:
+        """
+        Check if a given schema exists on the current database
+        :param schema:
+        :return: bool
+        """
+        raise NotImplementedError("abstract method")
+
+    def drop_schema(self, schema: str, cascade: bool = False):
+        """
+        Removes a schema
+        :param schema:
+        :param cascade:
+        :return:
+        """
+        raise NotImplementedError("abstract method")
+
+    def kill_clients(self, database_name: str):
+        """
+        Kills all active connections to the database
+        :param database_name:
+        :return:
+        """
+        raise NotImplementedError("abstract method")
+
+    def drop_table(self, table_name: str, cascade: bool = False, schema: str = None):
+        """
+        Removes a table
+        :param table_name:
+        :param cascade:
+        :param schema:
+        :return:
+        """
+        dialect = self._db.dialect()
+        sql = "DROP TABLE IF EXISTS {name}".format(name=dialect.table(table_name, schema=schema))
+        if cascade:
+            sql = sql + " CASCADE"
+        with self._db.cursor() as c:
+            c.exec(sql)
+
+    def drop_view(self, view_name: str, cascade: bool = False, schema: str = None):
+        """
+        Removes a view
+        :param view_name:
+        :param cascade:
+        :param schema:
+        :return:
+        """
+        dialect = self._db.dialect()
+        sql = "DROP VIEW IF EXISTS {name}".format(name=dialect.table(view_name, schema=schema))
+        if cascade:
+            sql = sql + " CASCADE"
+        with self._db.cursor() as c:
+            c.exec(sql)

@@ -18,6 +18,7 @@ class SqlDialect:
         self._quote_table = '"{table}"'
         self._quote_field = '"{field}"'
         self._quote_schema = '"{schema}"'
+        self._quote_database = '"{database}"'
         self._separator = "."
         self._as = " AS "
         self._cast = "CAST({field} AS {cast})"
@@ -40,9 +41,9 @@ class SqlDialect:
 
             if schema is not None:
                 table_name = (
-                    self._quote_schema.format(schema=schema)
-                    + self._separator
-                    + table_name
+                        self._quote_schema.format(schema=schema)
+                        + self._separator
+                        + table_name
                 )
         else:
             # table_name is actually a Literal expression, just add parenthesis
@@ -74,7 +75,7 @@ class SqlDialect:
             table = self._quote_table.format(table=table) + self._separator
             if schema is not None:
                 table = (
-                    self._quote_schema.format(schema=schema) + self._separator + table
+                        self._quote_schema.format(schema=schema) + self._separator + table
                 )
         else:
             table = ""
@@ -104,6 +105,28 @@ class SqlDialect:
         else:
             raise SqlError("Cannot parse fields")
 
+    def database(self, database_name, alias=None):
+        """
+        Quotes a database name
+        :param database_name: database name
+        :param alias: optional alias
+        :return: str
+
+        Examples:
+            database('name', None, None) -> "name"
+            table('name', 'alias') -> "name" AS "alias"
+        """
+        if not isinstance(database_name, Literal):
+            # database_name is a string to be
+            database_name = self._quote_database.format(database=database_name)
+        else:
+            # database_name is actually a Literal expression, just add parenthesis
+            database_name = "({database})".format(database=database_name)
+
+        if alias is None:
+            return database_name
+        return self._as.join([database_name, self._quote_database.format(database=alias)])
+
 
 class DefaultSqlDialect(SqlDialect):
     """
@@ -119,17 +142,14 @@ class PgSqlDialect(SqlDialect):
     """
 
     def __init__(self):
+        super().__init__()
         # public properties
         self.placeholder = "%s"
         self.insert_returning = True  # if true, INSERT...RETURNING syntax is supported
         self.ilike = True  # if true, ILIKE is supported
 
-        self._quote_table = '"{table}"'
-        self._quote_field = '"{field}"'
-        self._quote_schema = '"{schema}"'
-        self._separator = "."
+        # internal properties
         self._cast = "::"
-        self._as = " AS "
 
     def field(self, field, field_alias=None, table=None, schema=None):
         """
@@ -154,7 +174,7 @@ class PgSqlDialect(SqlDialect):
             table = self._quote_table.format(table=table) + self._separator
             if schema is not None:
                 table = (
-                    self._quote_schema.format(schema=schema) + self._separator + table
+                        self._quote_schema.format(schema=schema) + self._separator + table
                 )
         else:
             table = ""

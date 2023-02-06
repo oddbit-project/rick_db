@@ -9,6 +9,7 @@ from tests.util.pg.common import PgCommon
 class TestPgInfo(PgCommon):
     def test_tables(self, conn):
         info = PgInfo(conn)
+        meta = conn.metadata()
         # no tables created yet
         tables = info.list_database_tables()
         assert info.table_exists("animals") is False
@@ -22,8 +23,7 @@ class TestPgInfo(PgCommon):
         assert info.table_exists("animals") is True
 
         # cleanup
-        with conn.cursor() as c:
-            c.exec(self.dropTable)
+        meta.drop_table("animals")
 
         # test with schema
         with conn.cursor() as qry:
@@ -70,6 +70,7 @@ class TestPgInfo(PgCommon):
 
     def test_views(self, conn):
         info = PgInfo(conn)
+        meta = conn.metadata()
         # no views created yet
         views = info.list_database_views()
         assert len(views) == 0
@@ -86,9 +87,8 @@ class TestPgInfo(PgCommon):
         assert info.table_exists("list_animals", info.TYPE_VIEW) is True
 
         # cleanup
-        with conn.cursor() as qry:
-            qry.exec(self.dropView)
-            qry.exec(self.dropTable)
+        meta.drop_view("list_animals")
+        meta.drop_table("animals")
 
         # test with schema
         with conn.cursor() as qry:
@@ -96,7 +96,7 @@ class TestPgInfo(PgCommon):
         views = info.list_database_views("myschema")
         assert len(views) == 0
         assert (
-            info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is False
+                info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is False
         )
 
         # create one schema table
@@ -107,7 +107,7 @@ class TestPgInfo(PgCommon):
         assert len(views) == 1
         assert views[0].name == "list_aliens"
         assert (
-            info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is True
+                info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is True
         )
 
         self.cleanup(conn)
@@ -134,6 +134,7 @@ class TestPgInfo(PgCommon):
 
     def test_table_keys(self, conn):
         info = PgInfo(conn)
+        meta = conn.metadata()
         # create one table
         with conn.cursor() as qry:
             qry.exec(self.createTable)
@@ -152,9 +153,8 @@ class TestPgInfo(PgCommon):
         pk = info.list_table_pk("animals")
         assert pk.column == keys[0].field
 
-        # cleanup
-        with conn.cursor() as qry:
-            qry.exec(self.dropTable)
+        #
+        meta.drop_table("animals")
 
         # create table with schema
         with conn.cursor() as qry:

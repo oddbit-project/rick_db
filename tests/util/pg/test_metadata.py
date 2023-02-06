@@ -24,8 +24,7 @@ class TestPgMetadata(PgCommon):
         assert pgmeta.table_exists("animals") is True
 
         # cleanup
-        with conn.cursor() as c:
-            c.exec(self.dropTable)
+        pgmeta.drop_table("animals")
 
         # test with schema
         with conn.cursor() as qry:
@@ -156,8 +155,7 @@ class TestPgMetadata(PgCommon):
         assert pk.type == None  # table_pk does not retrieve type
 
         # cleanup
-        with conn.cursor() as qry:
-            qry.exec(self.dropTable)
+        pgmeta.drop_table("animals")
 
         # create table with schema
         with conn.cursor() as qry:
@@ -203,3 +201,17 @@ class TestPgMetadata(PgCommon):
 
         with conn.cursor() as qry:
             qry.exec(self.dropGroup)
+
+    def test_create_drop_db(self, conn):
+        pgmeta = PgMetadata(conn)
+        pgmeta.create_database('sample_database')
+        assert pgmeta.database_exists('sample_database') is True
+        pgmeta.drop_database('sample_database')
+        assert pgmeta.database_exists('sample_database') is False
+
+    def test_create_drop_schema(self, conn):
+        pgmeta = PgMetadata(conn)
+        pgmeta.create_schema('sample_schema')
+        assert pgmeta.schema_exists('sample_schema') is True
+        pgmeta.drop_schema('sample_schema')
+        assert pgmeta.schema_exists('sample_schema') is False
