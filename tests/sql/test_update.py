@@ -20,6 +20,9 @@ sample_record = SomeTable(field="value", other="other_value")
 
 update_cases = [
     ["table1", {"field1": "value1"}, None, None, 'UPDATE "table1" SET "field1"=?'],
+    ["table1", {"field1": Literal("field1+1")}, None, None, 'UPDATE "table1" SET "field1"=field1+1'],
+    ["table1", {"field1": sample_query}, None, None,
+     'UPDATE "table1" SET "field1"=SELECT "id" FROM "test" WHERE ("field" = ?)'],
     [
         "table1",
         {"f1": "v1", "f2": 2},
