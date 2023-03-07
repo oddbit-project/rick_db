@@ -73,14 +73,14 @@ class Update(SqlStatement):
         self._fields = fields
         return self
 
-    def values(self, values: Union[list, dict, object]):
+    def values(self, values: Union[dict, object]):
         """
         Set fields and/or values for update
 
         This method can be called multiple times; new field/value pairs will be added to the internal structure;
         Existing fields will have their value overridden
 
-        :param values: list, dict or record object
+        :param values: dict or record object
         :return: self
         """
         # if list, replace values
@@ -88,7 +88,7 @@ class Update(SqlStatement):
             self._values = values
 
         elif isinstance(values, collections.abc.Mapping):
-            self._fields = values.keys()
+            self._fields = list(values.keys())
             self._values = list(values.values())
 
         elif isinstance(values, object):
@@ -96,7 +96,7 @@ class Update(SqlStatement):
             if not callable(getattr(values, "asrecord", None)):
                 raise SqlError("values(): invalid object type for data parameter")
             values = values.asrecord()
-            self._fields = values.keys()
+            self._fields = list(values.keys())
             self._values = list(values.values())
         else:
             raise SqlError("values(): Invalid data type")
@@ -221,14 +221,22 @@ class Update(SqlStatement):
 
         # generate field list and placeholder list
         fields = []
-        for name in self._fields:
-            fields.append(
-                "{field}={ph}".format(
-                    field=self._dialect.field(name), ph=self._dialect.placeholder
-                )
-            )
+        values = []
+        expression = "{}={}"
+        for i in range(0, lf):
+            name = self._dialect.field(self._fields[i])
+            value = self._values[i]
+            if isinstance(value, Literal):
+                fields.append(expression.format(name, str(value)))
+            elif isinstance(value, Select):
+                value, sql_values = value.assemble()
+                values.extend(sql_values)
+                fields.append(expression.format(name, value))
+            else:
+                fields.append(expression.format(name, self._dialect.placeholder))
+                values.append(value)
+
         parts.append(", ".join(fields))
-        values = self._values
 
         # where clause
         if len(self._clauses) > 0:
