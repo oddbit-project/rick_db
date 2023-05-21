@@ -1,5 +1,7 @@
 rick_db - Simple SQL database layer
 --
+[![Tests](https://github.com/oddbit-project/rick_db/workflows/Tests/badge.svg?branch=master)](https://github.com/oddbit-project/rick_db/actions)
+[![pypi](https://img.shields.io/pypi/v/rick_db.svg)](https://pypi.org/project/rick_db/)
 [![license](https://img.shields.io/pypi/l/rick-db.svg)](https://git.oddbit.org/OddBit/rick_db/src/branch/master/LICENSE)
 
 
@@ -23,10 +25,10 @@ and the application layer has no responsibility on the structure of the database
 ```
 $ pip3 install rick-db
 ```
+
 ## Documentation
 
 Project documentation can be found on the [Documentation](https://docs.oddbit.org/rick_db/) website.
-
 
 ## TL;DR; example
 
