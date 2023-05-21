@@ -10,10 +10,10 @@
       
       
       
-        <link rel="canonical" href="https://github.com/oddbit-project/rick_db/migrations/">
+        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/migrations/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-8.1.2">
     
     
       
@@ -139,13 +139,13 @@
     
     
       <div class="md-header__source">
-        <a href="https://github.com/oddbit-project/rick_db/" title="Go to repository" class="md-source" data-md-component="source">
+        <a href="https://git.oddbit.org/OddBit/rick_db" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
-    oddbit-project/rick_db
+    OddBit/rick_db
   </div>
 </a>
       </div>
@@ -184,13 +184,13 @@
   </label>
   
     <div class="md-nav__source">
-      <a href="https://github.com/oddbit-project/rick_db/" title="Go to repository" class="md-source" data-md-component="source">
+      <a href="https://git.oddbit.org/OddBit/rick_db" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
-    oddbit-project/rick_db
+    OddBit/rick_db
   </div>
 </a>
     </div>
@@ -715,10 +715,6 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/oddbit-project/rick_db/edit/master/docs/migrations.md" title="Edit this page" class="md-content__button md-icon">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
-</a>
-
 
 <h1 id="migrations">Migrations</h1>
 <p>RickDb is a schema-first library - there is no automatic generation of database objects; instead they are
@@ -742,50 +738,50 @@ custom location, specified by the environment variable <strong>RICKDB_CONFIG</st
 <p>The TOML config file can have one or more database configuration keys. These keys may be a single
 default key <strong>db</strong> (for single database applications), or multiple, name-based keys prefixed with <strong>db_</strong>:</p>
 <p>Simple single-database configuration example:</p>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># single database, no name</span><span class="w"></span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">[db]</span><span class="w"></span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">engine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pgsql&quot;</span><span class="w"></span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;localhost&quot;</span><span class="w"></span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5432</span><span class="w"></span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;myuser&quot;</span><span class="w"></span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;mypassword&quot;</span><span class="w"></span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">dbname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;myschema&quot;</span><span class="w"></span>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># single database, no name</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">[db]</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">engine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pgsql&quot;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;localhost&quot;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5432</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;myuser&quot;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;mypassword&quot;</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">dbname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;myschema&quot;</span>
 </code></pre></div>
 Multiple database configuration example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># administration database</span><span class="w"></span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">[db_admin]</span><span class="w"></span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">engine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pgsql&quot;</span><span class="w"></span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;localhost&quot;</span><span class="w"></span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5432</span><span class="w"></span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;myuser&quot;</span><span class="w"></span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;mypassword&quot;</span><span class="w"></span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">dbname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;admin_schema&quot;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># administration database</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">[db_admin]</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">engine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pgsql&quot;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;localhost&quot;</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5432</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;myuser&quot;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;mypassword&quot;</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">dbname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;admin_schema&quot;</span>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># application database</span><span class="w"></span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">[db_app]</span><span class="w"></span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">engine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pgsql&quot;</span><span class="w"></span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;localhost&quot;</span><span class="w"></span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5432</span><span class="w"></span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;myuser&quot;</span><span class="w"></span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="n">dbname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;app_schema&quot;</span><span class="w"></span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="n">passfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/var/run/super_secret_pwd&quot;</span><span class="w"></span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># application database</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">[db_app]</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">engine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pgsql&quot;</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;localhost&quot;</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5432</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;myuser&quot;</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="n">dbname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;app_schema&quot;</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="n">passfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/var/run/super_secret_pwd&quot;</span>
 <a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="c1"># test database</span><span class="w"></span>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="k">[db_test]</span><span class="w"></span>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="n">engine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;sqlite&quot;</span><span class="w"></span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="c1"># test database</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="k">[db_test]</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="n">engine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;sqlite&quot;</span>
 <a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="n">db_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/tmp/test.db&quot;</span><span class="w">    </span>
 </code></pre></div>
 <p>If a <strong>[db]</strong> section exists, it will be used when no database is specified in the cli arguments; db_&lt;name&gt; configurations
 can be invoked by providing &lt;name&gt; as the first argument:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># use [db] database</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>$ rickdb list 
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="m">14</span>/12/2021 <span class="m">18</span>:28:56     <span class="m">001</span>.sql
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="m">15</span>/12/2021 <span class="m">19</span>:32:58     <span class="m">002</span>.sql
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="m">15</span>/12/2021 <span class="m">19</span>:33:42     <span class="m">003</span>.sql
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>$<span class="w"> </span>rickdb<span class="w"> </span>list<span class="w"> </span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="m">14</span>/12/2021<span class="w"> </span><span class="m">18</span>:28:56<span class="w">     </span><span class="m">001</span>.sql
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="m">15</span>/12/2021<span class="w"> </span><span class="m">19</span>:32:58<span class="w">     </span><span class="m">002</span>.sql
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="m">15</span>/12/2021<span class="w"> </span><span class="m">19</span>:33:42<span class="w">     </span><span class="m">003</span>.sql
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># use [db_app] database</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>$ rickdb app list
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="m">15</span>/12/2021 <span class="m">19</span>:15:00     001_schema.sql
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>$<span class="w"> </span>rickdb<span class="w"> </span>app<span class="w"> </span>list
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="m">15</span>/12/2021<span class="w"> </span><span class="m">19</span>:15:00<span class="w">     </span>001_schema.sql
 </code></pre></div>
 <p>In addition to the parameters required by the connection object, there are two additional parameters:</p>
 <table>
@@ -818,13 +814,13 @@ mind, if both <strong>password</strong> and <strong>passfile</strong> are used, 
 <p>The Migration Manager requires a database table to record executed migration information. This database table
 can be easily created via command-line:</p>
 <p>Single database configuration:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$ rickdb init
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Migration Manager installed sucessfully!
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$<span class="w"> </span>rickdb<span class="w"> </span>init
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Migration<span class="w"> </span>Manager<span class="w"> </span>installed<span class="w"> </span>sucessfully!
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>$
 </code></pre></div></p>
 <p>Multiple database configuration, in this case for db_app:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$ rickdb app init
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Migration Manager installed sucessfully!
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$<span class="w"> </span>rickdb<span class="w"> </span>app<span class="w"> </span>init
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Migration<span class="w"> </span>Manager<span class="w"> </span>installed<span class="w"> </span>sucessfully!
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>$
 </code></pre></div></p>
 <h2 id="creating-migrations">Creating migrations</h2>
@@ -856,10 +852,10 @@ migration. </p>
 <h4 id="rickdb-check-path">rickdb check &lt;path&gt;</h4>
 <p>This command compares all migration names in the specified path with the already applied ones, indicating which ones were
 already applied:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$ rickdb check migrations/
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Checking <span class="m">001</span>.sql... already applied
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Checking <span class="m">002</span>.sql... already applied
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>Checking <span class="m">003</span>.sql... new migration
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$<span class="w"> </span>rickdb<span class="w"> </span>check<span class="w"> </span>migrations/
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Checking<span class="w"> </span><span class="m">001</span>.sql...<span class="w"> </span>already<span class="w"> </span>applied
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Checking<span class="w"> </span><span class="m">002</span>.sql...<span class="w"> </span>already<span class="w"> </span>applied
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>Checking<span class="w"> </span><span class="m">003</span>.sql...<span class="w"> </span>new<span class="w"> </span>migration
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>$
 </code></pre></div>
 <h4 id="rickdb-migrate-path">rickdb migrate &lt;path&gt;</h4>
@@ -868,10 +864,10 @@ execution is aborted. The migrations are not executed within a transaction, due 
 database engines; any required transaction blocks must be explicit, or there is always the possibility of failure in the
 middle of a multi-statement migration. Partially failed migrations are not registered (because execution is aborted), and
 should be handled manually.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$ rickdb migrate migrations/
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Executing <span class="m">001</span>.sql... skipping, already applied
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Executing <span class="m">002</span>.sql... skipping, already applied
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Executing <span class="m">003</span>.sql... success
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$<span class="w"> </span>rickdb<span class="w"> </span>migrate<span class="w"> </span>migrations/
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Executing<span class="w"> </span><span class="m">001</span>.sql...<span class="w"> </span>skipping,<span class="w"> </span>already<span class="w"> </span>applied
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Executing<span class="w"> </span><span class="m">002</span>.sql...<span class="w"> </span>skipping,<span class="w"> </span>already<span class="w"> </span>applied
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Executing<span class="w"> </span><span class="m">003</span>.sql...<span class="w"> </span>success
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>$
 </code></pre></div>
 <h2 id="flattening-migrations">Flattening migrations</h2>
@@ -882,8 +878,8 @@ while assuming a certain schema state (either from a backup or from a plain file
 now reside on a specific file <strong>to be ignored</strong> (except on clean deploys), as migrations have already been applied.</p>
 <p>To remove all those applied migration names and replace them with a single entry with a custom name, we use the 
 <strong>flatten</strong> command:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$ rickdb flatten schema.sql
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Flattening all migrations to schema.sql... success
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$<span class="w"> </span>rickdb<span class="w"> </span>flatten<span class="w"> </span>schema.sql
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Flattening<span class="w"> </span>all<span class="w"> </span>migrations<span class="w"> </span>to<span class="w"> </span>schema.sql...<span class="w"> </span>success
 </code></pre></div>
 In the above example, the migration manager will remove all information of applied migrations, and create a single entry
 with schema.sql as migration name.</p>
