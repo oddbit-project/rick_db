@@ -29,7 +29,7 @@ class TestPgInfo(PgCommon):
         with conn.cursor() as qry:
             qry.exec(self.createSchema)
         tables = info.list_database_tables(schema="myschema")
-        assert len(tables) is 0
+        assert len(tables) == 0
         assert info.table_exists("aliens", schema="myschema") is False
 
         # create one schema table
@@ -96,7 +96,7 @@ class TestPgInfo(PgCommon):
         views = info.list_database_views("myschema")
         assert len(views) == 0
         assert (
-                info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is False
+            info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is False
         )
 
         # create one schema table
@@ -107,7 +107,7 @@ class TestPgInfo(PgCommon):
         assert len(views) == 1
         assert views[0].name == "list_aliens"
         assert (
-                info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is True
+            info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is True
         )
 
         self.cleanup(conn)

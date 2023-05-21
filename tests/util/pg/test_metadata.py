@@ -152,7 +152,7 @@ class TestPgMetadata(PgCommon):
         pk = pgmeta.table_pk("animals")
         assert pk.field == keys[0].field
         assert pk.primary == keys[0].primary
-        assert pk.type == None  # table_pk does not retrieve type
+        assert pk.type is None  # table_pk does not retrieve type
 
         # cleanup
         pgmeta.drop_table("animals")
@@ -170,7 +170,7 @@ class TestPgMetadata(PgCommon):
         pk = pgmeta.table_pk("aliens", "myschema")
         assert pk.field == keys[0].field
         assert pk.primary == keys[0].primary
-        assert pk.type == None  # table_pk does not retrieve type
+        assert pk.type is None  # table_pk does not retrieve type
 
         # cleanup
         self.cleanup(conn)
@@ -204,14 +204,14 @@ class TestPgMetadata(PgCommon):
 
     def test_create_drop_db(self, conn):
         pgmeta = PgMetadata(conn)
-        pgmeta.create_database('sample_database')
-        assert pgmeta.database_exists('sample_database') is True
-        pgmeta.drop_database('sample_database')
-        assert pgmeta.database_exists('sample_database') is False
+        pgmeta.create_database("sample_database")
+        assert pgmeta.database_exists("sample_database") is True
+        pgmeta.drop_database("sample_database")
+        assert pgmeta.database_exists("sample_database") is False
 
     def test_create_drop_schema(self, conn):
         pgmeta = PgMetadata(conn)
-        pgmeta.create_schema('sample_schema')
-        assert pgmeta.schema_exists('sample_schema') is True
-        pgmeta.drop_schema('sample_schema')
-        assert pgmeta.schema_exists('sample_schema') is False
+        pgmeta.create_schema("sample_schema")
+        assert pgmeta.schema_exists("sample_schema") is True
+        pgmeta.drop_schema("sample_schema")
+        assert pgmeta.schema_exists("sample_schema") is False

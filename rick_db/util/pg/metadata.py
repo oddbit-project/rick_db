@@ -200,12 +200,14 @@ class PgMetadata(Metadata):
         args = []
         for k, v in kwargs.items():
             args = "=".join([k.upper(), dialect.database(v)])
-        args = ' '.join(args)
+        args = " ".join(args)
 
         backend = self._db.backend()
         backend.set_isolation_level(0)  # ISOLATION_LEVEL_AUTOCOMMIT
 
-        sql = "CREATE DATABASE {db} {args}".format(db=dialect.database(database_name), args=args)
+        sql = "CREATE DATABASE {db} {args}".format(
+            db=dialect.database(database_name), args=args
+        )
         with self._db.cursor() as c:
             c.exec(sql)
         backend.set_isolation_level(self._db.isolation_level)
@@ -230,7 +232,11 @@ class PgMetadata(Metadata):
         backend = self._db.backend()
         backend.set_isolation_level(0)  # ISOLATION_LEVEL_AUTOCOMMIT
         with self._db.cursor() as c:
-            c.exec('DROP DATABASE IF EXISTS {db}'.format(db=dialect.database(database_name)))
+            c.exec(
+                "DROP DATABASE IF EXISTS {db}".format(
+                    db=dialect.database(database_name)
+                )
+            )
         backend.set_isolation_level(self._db.isolation_level)
 
     def create_schema(self, schema: str, **kwargs):
@@ -240,10 +246,16 @@ class PgMetadata(Metadata):
         :return:
         """
         dialect = self._db.dialect()
-        authorization = kwargs['authorization'] if 'authorization' in kwargs.keys() else None
-        sql = 'CREATE SCHEMA IF NOT EXISTS {schema}'.format(schema=dialect.database(schema))
+        authorization = (
+            kwargs["authorization"] if "authorization" in kwargs.keys() else None
+        )
+        sql = "CREATE SCHEMA IF NOT EXISTS {schema}".format(
+            schema=dialect.database(schema)
+        )
         if authorization:
-            sql = sql + " AUTHORIZATION {role}".format(role=dialect.database(authorization))
+            sql = sql + " AUTHORIZATION {role}".format(
+                role=dialect.database(authorization)
+            )
         with self._db.cursor() as c:
             c.exec(sql)
 
@@ -276,11 +288,10 @@ class PgMetadata(Metadata):
         :return:
         """
         with self._db.cursor() as c:
-            sql = '''
+            sql = """
             SELECT pg_terminate_backend(pg_stat_activity.pid)
             FROM pg_stat_activity
             WHERE pg_stat_activity.datname = %s
             AND pid <> pg_backend_pid();
-            '''
+            """
             c.exec(sql, [database_name])
-

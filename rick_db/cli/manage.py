@@ -136,7 +136,7 @@ class CliManager:
         from rick_db.conn.sqlite import Sqlite3Connection
 
         try:
-            conn = Sqlite3Connection(**cfg).migration_manager()
+            return Sqlite3Connection(**cfg).migration_manager()
         except Exception as e:
             self._tty.error("Error: {}".format(str(e)))
             return None

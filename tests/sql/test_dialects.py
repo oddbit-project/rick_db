@@ -18,14 +18,17 @@ sql_dialect_table = [
 def test_sqldialect_table(table_name, alias, schema, result):
     assert PgSqlDialect().table(table_name, alias, schema) == result
 
+
 sql_dialect_database = [
     ["name", None, '"name"'],
     ["name", "alias", '"name" AS "alias"'],
 ]
 
+
 @pytest.mark.parametrize("db_name, alias, result", sql_dialect_database)
 def test_sqldialect_database(db_name, alias, result):
     assert PgSqlDialect().database(db_name, alias) == result
+
 
 sql_dialect_field = [
     # simple fields

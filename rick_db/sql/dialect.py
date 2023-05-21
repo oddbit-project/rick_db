@@ -41,9 +41,9 @@ class SqlDialect:
 
             if schema is not None:
                 table_name = (
-                        self._quote_schema.format(schema=schema)
-                        + self._separator
-                        + table_name
+                    self._quote_schema.format(schema=schema)
+                    + self._separator
+                    + table_name
                 )
         else:
             # table_name is actually a Literal expression, just add parenthesis
@@ -75,7 +75,7 @@ class SqlDialect:
             table = self._quote_table.format(table=table) + self._separator
             if schema is not None:
                 table = (
-                        self._quote_schema.format(schema=schema) + self._separator + table
+                    self._quote_schema.format(schema=schema) + self._separator + table
                 )
         else:
             table = ""
@@ -125,7 +125,9 @@ class SqlDialect:
 
         if alias is None:
             return database_name
-        return self._as.join([database_name, self._quote_database.format(database=alias)])
+        return self._as.join(
+            [database_name, self._quote_database.format(database=alias)]
+        )
 
 
 class DefaultSqlDialect(SqlDialect):
@@ -174,7 +176,7 @@ class PgSqlDialect(SqlDialect):
             table = self._quote_table.format(table=table) + self._separator
             if schema is not None:
                 table = (
-                        self._quote_schema.format(schema=schema) + self._separator + table
+                    self._quote_schema.format(schema=schema) + self._separator + table
                 )
         else:
             table = ""

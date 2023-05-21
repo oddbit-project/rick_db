@@ -343,7 +343,7 @@ class PgInfo:
                 INNER JOIN pg_class referenced_tbl ON c.confrelid = referenced_tbl.oid
                 INNER JOIN pg_namespace AS referenced_sh ON referenced_sh.oid = referenced_tbl.relnamespace
                 INNER JOIN (SELECT oid, unnest(confkey) as confkey FROM pg_constraint) conf ON c.oid = conf.oid
-                INNER JOIN pg_attribute referenced_field ON 
+                INNER JOIN pg_attribute referenced_field ON
                     (referenced_field.attrelid = c.confrelid AND referenced_field.attnum = conf.confkey)
             WHERE c.contype = 'f' AND sh.nspname = %s AND tbl.relname = %s
         """
