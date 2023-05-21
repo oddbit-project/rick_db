@@ -4,7 +4,6 @@ rick_db - Simple SQL database layer
 [![pypi](https://img.shields.io/pypi/v/rick_db.svg)](https://pypi.org/project/rick_db/)
 [![license](https://img.shields.io/pypi/l/rick-db.svg)](https://git.oddbit.org/OddBit/rick_db/src/branch/master/LICENSE)
 
-
 rick_db is a simple SQL database layer for Python3. It includes connection management, Object Mapper, Query Builder,
 and a Repository pattern implementation. It is **not** an ORM, and it's not meant to replace one. 
 
@@ -28,7 +27,7 @@ $ pip3 install rick-db
 
 ## Documentation
 
-Project documentation can be found on the [Documentation](https://docs.oddbit.org/rick_db/) website.
+Project documentation can be found on the [Documentation](https://oddbit-project.github.io/rick_db/) website.
 
 ## TL;DR; example
 
