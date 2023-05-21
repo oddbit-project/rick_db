@@ -12,7 +12,7 @@ class TestSqlite3Repository(DbGridTest):
         create table if not exists grid(
         id_grid integer primary key autoincrement,
         label text,
-        content text default '',        
+        content text default '',
         odd boolean
         );
         """

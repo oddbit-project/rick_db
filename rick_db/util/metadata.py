@@ -189,7 +189,9 @@ class Metadata:
         :return:
         """
         dialect = self._db.dialect()
-        sql = "DROP TABLE IF EXISTS {name}".format(name=dialect.table(table_name, schema=schema))
+        sql = "DROP TABLE IF EXISTS {name}".format(
+            name=dialect.table(table_name, schema=schema)
+        )
         if cascade:
             sql = sql + " CASCADE"
         with self._db.cursor() as c:
@@ -204,7 +206,9 @@ class Metadata:
         :return:
         """
         dialect = self._db.dialect()
-        sql = "DROP VIEW IF EXISTS {name}".format(name=dialect.table(view_name, schema=schema))
+        sql = "DROP VIEW IF EXISTS {name}".format(
+            name=dialect.table(view_name, schema=schema)
+        )
         if cascade:
             sql = sql + " CASCADE"
         with self._db.cursor() as c:

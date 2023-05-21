@@ -24,8 +24,8 @@ class PgCommon:
 
     def cleanup(self, conn):
         md = conn.metadata()
-        with conn.cursor() as c:
-            md.drop_table('_migration')
-            md.drop_view('list_animals')
-            md.drop_table('animals')
-            md.drop_schema('myschema', True)
+        with conn.cursor():
+            md.drop_table("_migration")
+            md.drop_view("list_animals")
+            md.drop_table("animals")
+            md.drop_schema("myschema", True)

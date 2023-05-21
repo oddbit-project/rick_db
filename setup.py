@@ -15,32 +15,32 @@ with open("rick_db/version.py") as fp:
 
 # read the contents of README.md
 this_directory = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+with open(os.path.join(this_directory, "README.md"), encoding="utf-8") as f:
     description = f.read()
 
 setup(
-    name='rick-db',
-    version=version['__version__'],
+    name="rick-db",
+    version=version["__version__"],
     author="Joao Pinheiro",
     author_email="",
     url="https://git.oddbit.org/OddBit/rick_db",
-    description='SQL database layer',
-    license='MIT',
+    description="SQL database layer",
+    license="MIT",
     long_description=description,
     long_description_content_type="text/markdown",
     classifiers=[
-        'Development Status :: 4 - Beta',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: SQL',
-        'Topic :: Database',
-        'Topic :: Software Development :: Libraries :: Application Frameworks',
-        'Topic :: Software Development :: Libraries :: Python Modules',
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: SQL",
+        "Topic :: Database",
+        "Topic :: Software Development :: Libraries :: Application Frameworks",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     packages=find_packages(),
     include_package_data=False,
@@ -51,8 +51,8 @@ setup(
     ],
     zip_safe=False,
     entry_points={
-        'console_scripts': [
-            'rickdb=rick_db.cli.manage:main',
+        "console_scripts": [
+            "rickdb=rick_db.cli.manage:main",
         ],
-    }
+    },
 )

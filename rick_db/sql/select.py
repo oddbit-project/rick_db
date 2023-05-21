@@ -964,7 +964,6 @@ class Select(SqlStatement):
 
         # if name is not string, attempt to parse from type
         if not isinstance(table, str):
-
             # if select or Literal, convert to string
             if isinstance(table, (Literal, Select)):
                 if alias is None:
