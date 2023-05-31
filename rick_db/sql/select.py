@@ -5,6 +5,7 @@
 # Zend_Db_Select code and licensing at https://github.com/zendframework/zf1/blob/master/library/Zend/Db/Select.php
 
 import collections
+from typing import Union
 
 from .common import SqlStatement, Sql, Literal, SqlError
 from .dialect import SqlDialect, DefaultSqlDialect
@@ -34,6 +35,8 @@ class Select(SqlStatement):
         Sql.FULL_JOIN,
         Sql.CROSS_JOIN,
         Sql.NATURAL_JOIN,
+        Sql.INNER_JOIN_LATERAL,
+        Sql.LEFT_JOIN_LATERAL,
     ]
     _valid_unions = [Sql.SQL_UNION, Sql.SQL_UNION_ALL]
     _valid_order = [Sql.SQL_ASC, Sql.SQL_DESC]
@@ -163,6 +166,23 @@ class Select(SqlStatement):
             cols = Sql.SQL_WILDCARD
 
         return self._join(Sql.FROM, table, None, None, None, None, cols, schema, None)
+
+    def lateral(self, subquery: SqlStatement, alias: str, cols=None):
+        """
+        Adds a LATERAL clause
+        :param subquery: LATERAL subquery expression
+        :param alias: subquery alias
+        :param cols: optional columns to be selected
+        :return: self
+
+        Example:
+            .lateral(Select().from_("users"), "u")  # SELECT
+        """
+        if cols is None or (type(cols) in (list, tuple) and len(cols) == 0):
+            cols = Sql.SQL_WILDCARD
+        return self._join(
+            Sql.LATERAL, {subquery: alias}, None, None, None, None, cols, None, None
+        )
 
     def limit(self, limit: int, offset: int = None):
         """
@@ -709,6 +729,62 @@ class Select(SqlStatement):
             expr_schema,
         )
 
+    def join_inner_lateral(
+        self, subquery: Union[SqlStatement, Literal], alias: str, join_expr: Literal
+    ):
+        """
+        Performs a INNER JOIN LATERAL
+        See join() for more information
+
+        :param subquery: subquery
+        :param alias: alias for subquery
+        :param join_expr: Literal for ON clause
+
+        :return: self
+
+        Examples:
+            .join_inner_lateral(Select().from_('product').limit(3), 'prod', Literal('true'))
+        """
+        return self._join(
+            Sql.INNER_JOIN_LATERAL,
+            {subquery: alias},
+            join_expr,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+        )
+
+    def join_left_lateral(
+        self, subquery: Union[SqlStatement, Literal], alias: str, join_expr: Literal
+    ):
+        """
+        Performs a LEFT JOIN LATERAL
+        See join() for more information
+
+        :param subquery: subquery
+        :param alias: alias for subquery
+        :param join_expr: Literal for ON clause
+
+        :return: self
+
+        Examples:
+            .join_left_lateral(Select().from_('product').limit(3), 'prod', Literal('true'))
+        """
+        return self._join(
+            Sql.LEFT_JOIN_LATERAL,
+            {subquery: alias},
+            join_expr,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+        )
+
     def join_cross(self, table, cols=None, schema=None):
         """
         Performs a CROSS JOIN
@@ -860,7 +936,10 @@ class Select(SqlStatement):
         :param from_schema: source table schema
         :return:
         """
-        if join_type not in self._valid_joins and join_type != Sql.FROM:
+        if join_type not in self._valid_joins and join_type not in (
+            Sql.FROM,
+            Sql.LATERAL,
+        ):
             raise SqlError(f"_join(): invalid join type {join_type}")
 
         if len(self._parts_union) > 0:
@@ -933,13 +1012,12 @@ class Select(SqlStatement):
 
         # always alias wildcard tables
         has_alias = False
-        if join_type == Sql.FROM:
+        if join_type in (Sql.FROM, Sql.LATERAL):
             has_alias = (join_table != alias) or str(cols) == "*"
         else:
             # in joins, cols are always prefixed by alias
             if cols is not None:
                 has_alias = True
-
         self._add_columns(alias, cols, has_alias)
         return self
 
@@ -1076,9 +1154,12 @@ class Select(SqlStatement):
         parts = [Sql.SQL_FROM]
         from_parts = {}
         join_parts = {}
+        lateral_parts = {}
         for alias, details in self._parts_from.items():
             if details["joinType"] == Sql.FROM:
                 from_parts[alias] = details
+            elif details["joinType"] == Sql.LATERAL:
+                lateral_parts[alias] = details
             else:
                 join_parts[alias] = details
 
@@ -1091,6 +1172,23 @@ class Select(SqlStatement):
             names.append(
                 self._dialect.table(details["tableName"], tbl_alias, details["schema"])
             )
+
+        # LATERAL clause
+        if len(lateral_parts) > 0:
+            for alias, details in lateral_parts.items():
+                tbl_alias = None
+                if alias != details["tableName"]:
+                    tbl_alias = alias
+                names.append(
+                    " ".join(
+                        [
+                            Sql.SQL_LATERAL,
+                            self._dialect.table(details["tableName"], tbl_alias),
+                        ]
+                    )
+                )
+
+        # build FROM, LATERAL
         parts.append(", ".join(names))
 
         # JOIN clauses
@@ -1191,19 +1289,16 @@ class Select(SqlStatement):
                         stmt.append(order)
                     else:
                         stmt.append(_order)
+                    parts.append(" ".join(stmt))
             elif isinstance(expr, (list, tuple)):
                 for field in expr:
-                    stmt.append(self._dialect.field(field))
-                    stmt.append(order)
+                    parts.append(" ".join([self._dialect.field(field), order]))
             elif isinstance(expr, Literal):
-                stmt.append(str(expr))
-                stmt.append(order)
+                parts.append(" ".join([str(expr), order]))
             elif isinstance(expr, str):
-                stmt.append(self._dialect.field(expr))
-                stmt.append(order)
+                parts.append(" ".join([self._dialect.field(expr), order]))
             else:
                 raise SqlError("order(): invalid field type: %s" % str(type(expr)))
-            parts.append(" ".join(stmt))
 
         return " ".join([Sql.SQL_ORDER_BY, ",".join(parts)])
 

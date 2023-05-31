@@ -1,6 +1,6 @@
 import pytest
 from rick_db import fieldmapper
-from rick_db.sql import Select, SqlError, Literal, PgSqlDialect
+from rick_db.sql import Select, SqlError, Literal, PgSqlDialect, Sql
 
 TABLE_NAME = "test_table"
 
@@ -379,15 +379,15 @@ join_alias_cases = [
     join_noalias_cases,
 )
 def test_noalias_join(
-    join_table,
-    expr_or_field,
-    expr_table,
-    expr_field,
-    operator,
-    cols,
-    schema,
-    join_schema,
-    result,
+        join_table,
+        expr_or_field,
+        expr_table,
+        expr_field,
+        operator,
+        cols,
+        schema,
+        join_schema,
+        result,
 ):
     sql, _ = (
         Select()
@@ -412,15 +412,15 @@ def test_noalias_join(
     join_alias_cases,
 )
 def test_alias_join(
-    join_table,
-    expr_or_field,
-    expr_table,
-    expr_field,
-    operator,
-    cols,
-    schema,
-    join_schema,
-    result,
+        join_table,
+        expr_or_field,
+        expr_table,
+        expr_field,
+        operator,
+        cols,
+        schema,
+        join_schema,
+        result,
 ):
     sql, _ = (
         Select()
@@ -445,15 +445,15 @@ def test_alias_join(
     join_noalias_cases,
 )
 def test_noalias_join_left(
-    join_table,
-    expr_or_field,
-    expr_table,
-    expr_field,
-    operator,
-    cols,
-    schema,
-    join_schema,
-    result,
+        join_table,
+        expr_or_field,
+        expr_table,
+        expr_field,
+        operator,
+        cols,
+        schema,
+        join_schema,
+        result,
 ):
     result = result.replace("INNER", "LEFT")
     sql, _ = (
@@ -479,15 +479,15 @@ def test_noalias_join_left(
     join_alias_cases,
 )
 def test_alias_join_left(
-    join_table,
-    expr_or_field,
-    expr_table,
-    expr_field,
-    operator,
-    cols,
-    schema,
-    join_schema,
-    result,
+        join_table,
+        expr_or_field,
+        expr_table,
+        expr_field,
+        operator,
+        cols,
+        schema,
+        join_schema,
+        result,
 ):
     result = result.replace("INNER", "LEFT")
     sql, _ = (
@@ -513,15 +513,15 @@ def test_alias_join_left(
     join_noalias_cases,
 )
 def test_noalias_join_right(
-    join_table,
-    expr_or_field,
-    expr_table,
-    expr_field,
-    operator,
-    cols,
-    schema,
-    join_schema,
-    result,
+        join_table,
+        expr_or_field,
+        expr_table,
+        expr_field,
+        operator,
+        cols,
+        schema,
+        join_schema,
+        result,
 ):
     result = result.replace("INNER", "RIGHT")
     sql, _ = (
@@ -547,15 +547,15 @@ def test_noalias_join_right(
     join_alias_cases,
 )
 def test_alias_join_right(
-    join_table,
-    expr_or_field,
-    expr_table,
-    expr_field,
-    operator,
-    cols,
-    schema,
-    join_schema,
-    result,
+        join_table,
+        expr_or_field,
+        expr_table,
+        expr_field,
+        operator,
+        cols,
+        schema,
+        join_schema,
+        result,
 ):
     result = result.replace("INNER", "RIGHT")
     sql, _ = (
@@ -581,15 +581,15 @@ def test_alias_join_right(
     join_noalias_cases,
 )
 def test_noalias_join_full(
-    join_table,
-    expr_or_field,
-    expr_table,
-    expr_field,
-    operator,
-    cols,
-    schema,
-    join_schema,
-    result,
+        join_table,
+        expr_or_field,
+        expr_table,
+        expr_field,
+        operator,
+        cols,
+        schema,
+        join_schema,
+        result,
 ):
     result = result.replace("INNER", "FULL")
     sql, _ = (
@@ -615,15 +615,15 @@ def test_noalias_join_full(
     join_alias_cases,
 )
 def test_alias_join_full(
-    join_table,
-    expr_or_field,
-    expr_table,
-    expr_field,
-    operator,
-    cols,
-    schema,
-    join_schema,
-    result,
+        join_table,
+        expr_or_field,
+        expr_table,
+        expr_field,
+        operator,
+        cols,
+        schema,
+        join_schema,
+        result,
 ):
     result = result.replace("INNER", "FULL")
     sql, _ = (
@@ -1120,8 +1120,8 @@ def test_union():
     )
     sql, _ = qry_union.assemble()
     assert (
-        sql
-        == 'SELECT "test_table".* FROM "test_table" UNION SELECT "other_table".* FROM "public"."other_table"'
+            sql
+            == 'SELECT "test_table".* FROM "test_table" UNION SELECT "other_table".* FROM "public"."other_table"'
     )
 
 
@@ -1141,8 +1141,8 @@ def test_where_and():
 
     sql, values = qry.assemble()
     assert (
-        sql
-        == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) )'
+            sql
+            == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) )'
     )
     assert values == [1, 2]
 
@@ -1159,9 +1159,9 @@ def test_where_and():
 
     sql, values = qry.assemble()
     assert (
-        sql
-        == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) AND ( ("field1" = %s) AND ("field2" '
-        "= %s) )"
+            sql
+            == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) AND ( ("field1" = %s) AND ("field2" '
+               "= %s) )"
     )
     assert values == [3, 1, 2]
 
@@ -1179,9 +1179,9 @@ def test_where_and():
 
     sql, values = qry.assemble()
     assert (
-        sql
-        == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) AND ( ("field1" = %s) AND ("field2" '
-        '= %s) ) AND ("field4" = %s)'
+            sql
+            == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) AND ( ("field1" = %s) AND ("field2" '
+               '= %s) ) AND ("field4" = %s)'
     )
     assert values == [3, 1, 2, 4]
 
@@ -1202,9 +1202,9 @@ def test_where_and():
 
     sql, values = qry.assemble()
     assert (
-        sql
-        == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ( ("field2" = %s) OR ("field3" '
-        '= %s) ) AND ("field4" = %s) ) AND ("field5" = %s)'
+            sql
+            == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ( ("field2" = %s) OR ("field3" '
+               '= %s) ) AND ("field4" = %s) ) AND ("field5" = %s)'
     )
     assert values == [1, 2, 3, 4, 5]
 
@@ -1224,9 +1224,9 @@ def test_where_and():
 
     sql, values = qry.assemble()
     assert (
-        sql
-        == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) ) AND ( ('
-        '"field3" = %s) OR ("field4" = %s) )'
+            sql
+            == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) ) AND ( ('
+               '"field3" = %s) OR ("field4" = %s) )'
     )
     assert values == [1, 2, 3, 4]
 
@@ -1244,8 +1244,8 @@ def test_where_or():
 
     sql, values = qry.assemble()
     assert (
-        sql
-        == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) )'
+            sql
+            == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) )'
     )
     assert values == [1, 2]
 
@@ -1262,9 +1262,9 @@ def test_where_or():
 
     sql, values = qry.assemble()
     assert (
-        sql
-        == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) OR ( ("field1" = %s) AND ("field2" = '
-        "%s) )"
+            sql
+            == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) OR ( ("field1" = %s) AND ("field2" = '
+               "%s) )"
     )
     assert values == [3, 1, 2]
 
@@ -1282,9 +1282,9 @@ def test_where_or():
 
     sql, values = qry.assemble()
     assert (
-        sql
-        == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) OR ( ("field1" = %s) AND ("field2" = '
-        '%s) ) AND ("field4" = %s)'
+            sql
+            == 'SELECT "test_table".* FROM "test_table" WHERE ("field3" = %s) OR ( ("field1" = %s) AND ("field2" = '
+               '%s) ) AND ("field4" = %s)'
     )
     assert values == [3, 1, 2, 4]
 
@@ -1305,9 +1305,9 @@ def test_where_or():
 
     sql, values = qry.assemble()
     assert (
-        sql
-        == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) OR ( ("field2" = %s) OR ("field3" '
-        '= %s) ) AND ("field4" = %s) ) AND ("field5" = %s)'
+            sql
+            == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) OR ( ("field2" = %s) OR ("field3" '
+               '= %s) ) AND ("field4" = %s) ) AND ("field5" = %s)'
     )
     assert values == [1, 2, 3, 4, 5]
 
@@ -1327,9 +1327,9 @@ def test_where_or():
 
     sql, values = qry.assemble()
     assert (
-        sql
-        == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) ) OR ( ('
-        '"field3" = %s) OR ("field4" = %s) )'
+            sql
+            == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) ) OR ( ('
+               '"field3" = %s) OR ("field4" = %s) )'
     )
     assert values == [1, 2, 3, 4]
 
@@ -1351,8 +1351,87 @@ def test_where_and_or():
 
     sql, values = qry.assemble()
     assert (
-        sql
-        == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) ) OR ( ('
-        '"field3" = %s) AND ("field4" = %s) )'
+            sql
+            == 'SELECT "test_table".* FROM "test_table" WHERE ( ("field1" = %s) AND ("field2" = %s) ) OR ( ('
+               '"field3" = %s) AND ("field4" = %s) )'
     )
     assert values == [1, 2, 3, 4]
+
+
+# Select:join_left_lateral() --------------------------------------------------------------------------------------------
+
+join_lateral = [
+    [
+        {"t_wishlist": "w"},
+        Select(PgSqlDialect()).from_({"t_product": "p"}).where("price", "<", "desired_price").order("price",
+                                                                                                    Sql.SQL_DESC).limit(
+            3),
+        "x",
+        Literal("true"),
+        'SELECT "w".* FROM "t_wishlist" AS "w" LEFT JOIN LATERAL (SELECT "p".* FROM "t_product" AS "p" WHERE ("price" < %s) ORDER BY "price" DESC LIMIT 3) AS "x" ON (true)',
+    ],
+]
+
+from_lateral = [
+    [
+        {"t_wishlist": "w"},
+        Select(PgSqlDialect()).from_({"t_product": "p"}).where("price", "<", "desired_price").order("price",
+                                                                                                    Sql.SQL_DESC).limit(3),
+        "x",
+        'SELECT "w".*,"x".* FROM "t_wishlist" AS "w", LATERAL (SELECT "p".* FROM "t_product" AS "p" WHERE ("price" < %s) ORDER BY "price" DESC LIMIT 3) AS "x"'
+    ]
+]
+
+
+@pytest.mark.parametrize("table, subquery, alias, join_expr,result", join_lateral)
+def test_join_left_lateral(
+        table,
+        subquery,
+        alias,
+        join_expr,
+        result,
+):
+    sql, _ = (
+        Select()
+        .from_(table)
+        .join_left_lateral(subquery, alias, join_expr)
+        .assemble()
+    )
+    assert sql == result
+
+# Select:join_inner_lateral() ------------------------------------------------------------------------------------------
+
+@pytest.mark.parametrize("table, subquery, alias, join_expr,result", join_lateral)
+def test_join_inner_lateral(
+        table,
+        subquery,
+        alias,
+        join_expr,
+        result,
+):
+    result = result.replace("LEFT", "INNER")
+    sql, _ = (
+        Select()
+        .from_(table)
+        .join_inner_lateral(subquery, alias, join_expr)
+        .assemble()
+    )
+    assert sql == result
+
+
+# Select:lateral() ------------------------------------------------------------------------------------------
+
+@pytest.mark.parametrize("table, subquery, alias, result", from_lateral)
+def test_from_lateral(
+        table,
+        subquery,
+        alias,
+        result,
+):
+    sql, _ = (
+        Select()
+        .from_(table)
+        .lateral(subquery, alias)
+        .assemble()
+    )
+    assert sql == result

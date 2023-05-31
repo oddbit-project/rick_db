@@ -43,11 +43,11 @@ from rick_db import fieldmapper, Repository, DbGrid
 from rick_db.conn.pg import PgConnection
 
 
-@fieldmapper(tablename='product', pk='id_product')
+@fieldmapper(tablename="product", pk="id_product")
 class Product:
-    id = 'id_product'
-    short_description = 'short_description'
-    brand = 'brand_id'
+    id = "id_product"
+    short_description = "short_description"
+    brand = "brand_id"
 
 
 db_config = {
@@ -55,7 +55,7 @@ db_config = {
     "user": "someUser",
     "password": "somePassword",
     "host": "localhost",
-    "port": 5432
+    "port": 5432,
 }
 
 # create connection
@@ -66,20 +66,22 @@ repo = Repository(conn, Product)
 
 # create a grid
 grid = DbGrid(
-    repo,                           # repository to use
-    [Product.short_description],    # fields to perform text search
-    DbGrid.SEARCH_ANY               # type of search
+    repo,  # repository to use
+    [Product.short_description],  # fields to perform text search
+    DbGrid.SEARCH_ANY,  # type of search
 )
 
 # retrieve first 10 results
 # total will have the total row count that matches the filters, without limit
-total, rows = grid.run(search_text='bag', match_fields={Product.brand: 12}, limit=10)
+total, rows = grid.run(search_text="bag", match_fields={Product.brand: 12}, limit=10)
 print("total matches:", total)
 for r in rows:
     print(r.id, r.short_description)
 
 # retrieve second page of results
-total, rows = grid.run(search_text='bag', match_fields={Product.brand: 12}, limit=10, offset=10)
+total, rows = grid.run(
+    search_text="bag", match_fields={Product.brand: 12}, limit=10, offset=10
+)
 for r in rows:
     print(r.id, r.short_description)
 ```

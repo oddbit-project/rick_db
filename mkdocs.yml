@@ -29,6 +29,7 @@ nav:
   - Update: 'classes/update.md'
   - Delete: 'classes/delete.md'
   - Literal: 'classes/literal.md'
+  - CTEs (With): 'classes/with.md'
 plugins:
 - search
 
