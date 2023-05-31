@@ -65,7 +65,11 @@ class Sql:
     SQL_CASCADE = "CASCADE"
     SQL_UPDATE = "UPDATE"
     SQL_SET = "SET"
+    SQL_WITH = "WITH"
+    SQL_NOT_MATERIALIZED = "NOT MATERIALIZED"
 
 
 class SqlStatement:
-    pass
+
+    def assemble(self) -> tuple:
+        pass
