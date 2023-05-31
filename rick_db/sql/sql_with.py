@@ -4,12 +4,12 @@ from rick_db.sql import (
     SqlDialect,
     DefaultSqlDialect,
     SqlStatement,
-    Sql, Literal,
+    Sql,
+    Literal,
 )
 
 
 class With(SqlStatement):
-
     def __init__(self, dialect: SqlDialect = None):
         """
         WITH constructor
@@ -31,8 +31,13 @@ class With(SqlStatement):
         self._recursive = status
         return self
 
-    def clause(self, name: str, with_query: Union[SqlStatement, Literal], columns: list = None,
-               materialized: bool = True):
+    def clause(
+        self,
+        name: str,
+        with_query: Union[SqlStatement, Literal],
+        columns: list = None,
+        materialized: bool = True,
+    ):
         """
         Adds a WITH <clause>(columns) AS <with_query>
         :param name:

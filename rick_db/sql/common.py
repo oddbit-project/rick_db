@@ -75,6 +75,5 @@ class Sql:
 
 
 class SqlStatement:
-
     def assemble(self) -> tuple:
         pass

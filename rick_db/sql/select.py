@@ -36,7 +36,7 @@ class Select(SqlStatement):
         Sql.CROSS_JOIN,
         Sql.NATURAL_JOIN,
         Sql.INNER_JOIN_LATERAL,
-        Sql.LEFT_JOIN_LATERAL
+        Sql.LEFT_JOIN_LATERAL,
     ]
     _valid_unions = [Sql.SQL_UNION, Sql.SQL_UNION_ALL]
     _valid_order = [Sql.SQL_ASC, Sql.SQL_DESC]
@@ -180,7 +180,9 @@ class Select(SqlStatement):
         """
         if cols is None or (type(cols) in (list, tuple) and len(cols) == 0):
             cols = Sql.SQL_WILDCARD
-        return self._join(Sql.LATERAL, {subquery: alias}, None, None, None, None, cols, None, None)
+        return self._join(
+            Sql.LATERAL, {subquery: alias}, None, None, None, None, cols, None, None
+        )
 
     def limit(self, limit: int, offset: int = None):
         """
@@ -441,15 +443,15 @@ class Select(SqlStatement):
         return self
 
     def join(
-            self,
-            table,
-            field,
-            expr_table=None,
-            expr_field=None,
-            operator=None,
-            cols=None,
-            schema=None,
-            expr_schema=None,
+        self,
+        table,
+        field,
+        expr_table=None,
+        expr_field=None,
+        operator=None,
+        cols=None,
+        schema=None,
+        expr_schema=None,
     ):
         """
         INNER JOIN
@@ -492,15 +494,15 @@ class Select(SqlStatement):
         )
 
     def join_inner(
-            self,
-            table,
-            field,
-            expr_table=None,
-            expr_field=None,
-            operator=None,
-            cols=None,
-            schema=None,
-            expr_schema=None,
+        self,
+        table,
+        field,
+        expr_table=None,
+        expr_field=None,
+        operator=None,
+        cols=None,
+        schema=None,
+        expr_schema=None,
     ):
         """
         INNER JOIN
@@ -551,15 +553,15 @@ class Select(SqlStatement):
         )
 
     def join_left(
-            self,
-            table,
-            field,
-            expr_table=None,
-            expr_field=None,
-            operator=None,
-            cols=None,
-            schema=None,
-            expr_schema=None,
+        self,
+        table,
+        field,
+        expr_table=None,
+        expr_field=None,
+        operator=None,
+        cols=None,
+        schema=None,
+        expr_schema=None,
     ):
         """
         LEFT JOIN
@@ -610,15 +612,15 @@ class Select(SqlStatement):
         )
 
     def join_right(
-            self,
-            table,
-            field,
-            expr_table=None,
-            expr_field=None,
-            operator=None,
-            cols=None,
-            schema=None,
-            expr_schema=None,
+        self,
+        table,
+        field,
+        expr_table=None,
+        expr_field=None,
+        operator=None,
+        cols=None,
+        schema=None,
+        expr_schema=None,
     ):
         """
         RIGHT JOIN
@@ -669,15 +671,15 @@ class Select(SqlStatement):
         )
 
     def join_full(
-            self,
-            table,
-            field,
-            expr_table=None,
-            expr_field=None,
-            operator=None,
-            cols=None,
-            schema=None,
-            expr_schema=None,
+        self,
+        table,
+        field,
+        expr_table=None,
+        expr_field=None,
+        operator=None,
+        cols=None,
+        schema=None,
+        expr_schema=None,
     ):
         """
         FULL OUTER JOIN
@@ -727,7 +729,9 @@ class Select(SqlStatement):
             expr_schema,
         )
 
-    def join_inner_lateral(self, subquery: Union[SqlStatement, Literal], alias: str, join_expr: Literal):
+    def join_inner_lateral(
+        self, subquery: Union[SqlStatement, Literal], alias: str, join_expr: Literal
+    ):
         """
         Performs a INNER JOIN LATERAL
         See join() for more information
@@ -742,10 +746,20 @@ class Select(SqlStatement):
             .join_inner_lateral(Select().from_('product').limit(3), 'prod', Literal('true'))
         """
         return self._join(
-            Sql.INNER_JOIN_LATERAL, {subquery: alias}, join_expr, None, None, None, None, None, None
+            Sql.INNER_JOIN_LATERAL,
+            {subquery: alias},
+            join_expr,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
         )
 
-    def join_left_lateral(self, subquery: Union[SqlStatement, Literal], alias: str, join_expr: Literal):
+    def join_left_lateral(
+        self, subquery: Union[SqlStatement, Literal], alias: str, join_expr: Literal
+    ):
         """
         Performs a LEFT JOIN LATERAL
         See join() for more information
@@ -760,7 +774,15 @@ class Select(SqlStatement):
             .join_left_lateral(Select().from_('product').limit(3), 'prod', Literal('true'))
         """
         return self._join(
-            Sql.LEFT_JOIN_LATERAL, {subquery: alias}, join_expr, None, None, None, None, None, None
+            Sql.LEFT_JOIN_LATERAL,
+            {subquery: alias},
+            join_expr,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
         )
 
     def join_cross(self, table, cols=None, schema=None):
@@ -891,16 +913,16 @@ class Select(SqlStatement):
         return self
 
     def _join(
-            self,
-            join_type,
-            join_table,
-            expr_or_field,
-            from_table,
-            from_field,
-            operator,
-            cols,
-            schema,
-            from_schema,
+        self,
+        join_type,
+        join_table,
+        expr_or_field,
+        from_table,
+        from_field,
+        operator,
+        cols,
+        schema,
+        from_schema,
     ):
         """
         :param join_type: one of self._valid_joins
@@ -914,7 +936,10 @@ class Select(SqlStatement):
         :param from_schema: source table schema
         :return:
         """
-        if join_type not in self._valid_joins and join_type not in (Sql.FROM, Sql.LATERAL):
+        if join_type not in self._valid_joins and join_type not in (
+            Sql.FROM,
+            Sql.LATERAL,
+        ):
             raise SqlError(f"_join(): invalid join type {join_type}")
 
         if len(self._parts_union) > 0:
@@ -975,7 +1000,7 @@ class Select(SqlStatement):
 
             left_part = self._dialect.field(from_field, None, expr_alias, from_schema)
             expression = (
-                    left_part + operator + self._dialect.field(expr_or_field, table=alias)
+                left_part + operator + self._dialect.field(expr_or_field, table=alias)
             )
 
         self._parts_from[alias] = {
@@ -1098,7 +1123,7 @@ class Select(SqlStatement):
                 raise SqlError("Invalid column type: %s" % str(type(fields)))
 
             if (
-                    alias is True and tbl_alias != Sql.ANONYMOUS
+                alias is True and tbl_alias != Sql.ANONYMOUS
             ):  # masks anonymous expressions
                 alias = tbl_alias
             else:
@@ -1154,7 +1179,14 @@ class Select(SqlStatement):
                 tbl_alias = None
                 if alias != details["tableName"]:
                     tbl_alias = alias
-                names.append(" ".join([Sql.SQL_LATERAL, self._dialect.table(details["tableName"], tbl_alias)]))
+                names.append(
+                    " ".join(
+                        [
+                            Sql.SQL_LATERAL,
+                            self._dialect.table(details["tableName"], tbl_alias),
+                        ]
+                    )
+                )
 
         # build FROM, LATERAL
         parts.append(", ".join(names))
@@ -1336,7 +1368,7 @@ class Select(SqlStatement):
         parts = []
         for row in having:
             clause = (
-                    Sql.SQL_LIST_DELIMITER_LEFT + str(row) + Sql.SQL_LIST_DELIMITER_RIGHT
+                Sql.SQL_LIST_DELIMITER_LEFT + str(row) + Sql.SQL_LIST_DELIMITER_RIGHT
             )
             parts.append(clause)
 
