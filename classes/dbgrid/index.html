@@ -17,7 +17,7 @@
     
     
       
-        <title>Class rick_db.sql.**DbGrid** - RickDb</title>
+        <title>DbGrid - RickDb</title>
       
     
     
@@ -95,7 +95,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Class rick_db.sql.**DbGrid**
+              DbGrid
             
           </span>
         </div>
@@ -323,12 +323,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" checked>
       
       
       
@@ -499,6 +501,124 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../with/" class="md-nav__link">
+        CTEs (With)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          DbGrid
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        DbGrid
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#const-dbgridsearch_none" class="md-nav__link">
+    Const DbGrid.SEARCH_NONE
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#const-dbgridsearch_any" class="md-nav__link">
+    Const DbGrid.SEARCH_ANY
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#const-dbgridsearch_start" class="md-nav__link">
+    Const DbGrid.SEARCH_START
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#const-dbgridsearch_end" class="md-nav__link">
+    Const DbGrid.SEARCH_END
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dbgrid__init__repo-repository-search_fields-list-none-search_type-int-none-case_sensitivefalse" class="md-nav__link">
+    DbGrid.__init__(repo: Repository, search_fields: list = None, search_type: int = None, case_sensitive=False)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dbgriddefault_query" class="md-nav__link">
+    DbGrid.default_query():
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dbgriddefault_sort" class="md-nav__link">
+    DbGrid.default_sort():
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dbgridrunqry-select-none-search_text-str-none-match_fields-dict-none-limit-int-none-offset-int-none-sort_fields-dict-none-search_fields-list-none" class="md-nav__link">
+    DbGrid.run(qry: Select = None, search_text: str = None, match_fields: dict = None, limit: int = None, offset: int = None, sort_fields: dict = None, search_fields: list = None):
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -630,11 +750,11 @@ match (field=value).</p>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span> <span class="nn">rick_db.conn.pg</span> <span class="kn">import</span> <span class="n">PgConnection</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;product&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_product&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s2">&quot;product&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s2">&quot;id_product&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">class</span> <span class="nc">Product</span><span class="p">:</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_product&#39;</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">short_description</span> <span class="o">=</span> <span class="s1">&#39;short_description&#39;</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">brand</span> <span class="o">=</span> <span class="s1">&#39;brand_id&#39;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;id_product&quot;</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;short_description&quot;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">brand</span> <span class="o">=</span> <span class="s2">&quot;brand_id&quot;</span>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">db_config</span> <span class="o">=</span> <span class="p">{</span>
@@ -642,7 +762,7 @@ match (field=value).</p>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="s2">&quot;someUser&quot;</span><span class="p">,</span>
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;somePassword&quot;</span><span class="p">,</span>
 <a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">5432</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">,</span>
 <a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">}</span>
 <a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="c1"># create connection</span>
@@ -653,22 +773,24 @@ match (field=value).</p>
 <a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
 <a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="c1"># create a grid</span>
 <a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="n">grid</span> <span class="o">=</span> <span class="n">DbGrid</span><span class="p">(</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    <span class="n">repo</span><span class="p">,</span>                           <span class="c1"># repository to use</span>
-<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>    <span class="p">[</span><span class="n">Product</span><span class="o">.</span><span class="n">short_description</span><span class="p">],</span>    <span class="c1"># fields to perform text search</span>
-<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>    <span class="n">DbGrid</span><span class="o">.</span><span class="n">SEARCH_ANY</span>               <span class="c1"># type of search</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    <span class="n">repo</span><span class="p">,</span>  <span class="c1"># repository to use</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>    <span class="p">[</span><span class="n">Product</span><span class="o">.</span><span class="n">short_description</span><span class="p">],</span>  <span class="c1"># fields to perform text search</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>    <span class="n">DbGrid</span><span class="o">.</span><span class="n">SEARCH_ANY</span><span class="p">,</span>  <span class="c1"># type of search</span>
 <a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="p">)</span>
 <a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>
 <a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="c1"># retrieve first 10 results</span>
 <a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="c1"># total will have the total row count that matches the filters, without limit</span>
-<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="n">total</span><span class="p">,</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">search_text</span><span class="o">=</span><span class="s1">&#39;bag&#39;</span><span class="p">,</span> <span class="n">match_fields</span><span class="o">=</span><span class="p">{</span><span class="n">Product</span><span class="o">.</span><span class="n">brand</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="n">total</span><span class="p">,</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">search_text</span><span class="o">=</span><span class="s2">&quot;bag&quot;</span><span class="p">,</span> <span class="n">match_fields</span><span class="o">=</span><span class="p">{</span><span class="n">Product</span><span class="o">.</span><span class="n">brand</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;total matches:&quot;</span><span class="p">,</span> <span class="n">total</span><span class="p">)</span>
 <a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
 <a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">short_description</span><span class="p">)</span>
 <a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>
 <a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="c1"># retrieve second page of results</span>
-<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="n">total</span><span class="p">,</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">search_text</span><span class="o">=</span><span class="s1">&#39;bag&#39;</span><span class="p">,</span> <span class="n">match_fields</span><span class="o">=</span><span class="p">{</span><span class="n">Product</span><span class="o">.</span><span class="n">brand</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
-<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">short_description</span><span class="p">)</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="n">total</span><span class="p">,</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>    <span class="n">search_text</span><span class="o">=</span><span class="s2">&quot;bag&quot;</span><span class="p">,</span> <span class="n">match_fields</span><span class="o">=</span><span class="p">{</span><span class="n">Product</span><span class="o">.</span><span class="n">brand</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">10</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="p">)</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">short_description</span><span class="p">)</span>
 </code></pre></div></p>
 
               
@@ -679,6 +801,26 @@ match (field=value).</p>
       </main>
       
         <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../with/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CTEs (With)" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              CTEs (With)
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">

@@ -10,21 +10,21 @@
       
       
       
-        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/install/">
+        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/with/">
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-8.1.2">
     
     
       
-        <title>Installation - RickDb</title>
+        <title>CTEs (With) - RickDb</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.f7951f6f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
         
       
     
@@ -38,7 +38,7 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#installation" class="md-skip">
+        <a href="#class-rick_dbsqlwith" class="md-skip">
           Skip to content
         </a>
       
@@ -76,7 +76,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="RickDb" class="md-header__button md-logo" aria-label="RickDb" data-md-component="logo">
+    <a href="../.." title="RickDb" class="md-header__button md-logo" aria-label="RickDb" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -95,7 +95,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Installation
+              CTEs (With)
             
           </span>
         </div>
@@ -174,7 +174,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="RickDb" class="md-nav__button md-logo" aria-label="RickDb" data-md-component="logo">
+    <a href="../.." title="RickDb" class="md-nav__button md-logo" aria-label="RickDb" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -205,7 +205,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         Overview
       </a>
     </li>
@@ -218,66 +218,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Installation
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../install/" class="md-nav__link">
         Installation
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#required-dependencies" class="md-nav__link">
-    Required dependencies
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installing-from-package" class="md-nav__link">
-    Installing from package
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installing-from-source" class="md-nav__link">
-    Installing from source
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -290,7 +235,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../connection/" class="md-nav__link">
+      <a href="../../connection/" class="md-nav__link">
         Connection
       </a>
     </li>
@@ -305,7 +250,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../object_mapper/" class="md-nav__link">
+      <a href="../../object_mapper/" class="md-nav__link">
         Object Mapper
       </a>
     </li>
@@ -320,7 +265,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../building_queries/" class="md-nav__link">
+      <a href="../../building_queries/" class="md-nav__link">
         Query Builder
       </a>
     </li>
@@ -335,7 +280,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../repository/" class="md-nav__link">
+      <a href="../../repository/" class="md-nav__link">
         Repositories
       </a>
     </li>
@@ -350,7 +295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../grid/" class="md-nav__link">
+      <a href="../../grid/" class="md-nav__link">
         DbGrid
       </a>
     </li>
@@ -365,7 +310,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../migrations/" class="md-nav__link">
+      <a href="../../migrations/" class="md-nav__link">
         Migrations
       </a>
     </li>
@@ -378,12 +323,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" checked>
       
       
       
@@ -406,7 +353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/record/" class="md-nav__link">
+      <a href="../record/" class="md-nav__link">
         Record
       </a>
     </li>
@@ -420,7 +367,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/connection/" class="md-nav__link">
+      <a href="../connection/" class="md-nav__link">
         Connection
       </a>
     </li>
@@ -434,7 +381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/cursor/" class="md-nav__link">
+      <a href="../cursor/" class="md-nav__link">
         Cursor
       </a>
     </li>
@@ -448,7 +395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/profiler/" class="md-nav__link">
+      <a href="../profiler/" class="md-nav__link">
         Profiler
       </a>
     </li>
@@ -462,7 +409,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/repository/" class="md-nav__link">
+      <a href="../repository/" class="md-nav__link">
         Repository
       </a>
     </li>
@@ -476,7 +423,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/sqldialect/" class="md-nav__link">
+      <a href="../sqldialect/" class="md-nav__link">
         SqlDialect
       </a>
     </li>
@@ -490,7 +437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/select/" class="md-nav__link">
+      <a href="../select/" class="md-nav__link">
         Select
       </a>
     </li>
@@ -504,7 +451,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/insert/" class="md-nav__link">
+      <a href="../insert/" class="md-nav__link">
         Insert
       </a>
     </li>
@@ -518,7 +465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/update/" class="md-nav__link">
+      <a href="../update/" class="md-nav__link">
         Update
       </a>
     </li>
@@ -532,7 +479,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/delete/" class="md-nav__link">
+      <a href="../delete/" class="md-nav__link">
         Delete
       </a>
     </li>
@@ -546,7 +493,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/literal/" class="md-nav__link">
+      <a href="../literal/" class="md-nav__link">
         Literal
       </a>
     </li>
@@ -558,11 +505,80 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../classes/with/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          CTEs (With)
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         CTEs (With)
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#with__init__dialect-sqldialect-none" class="md-nav__link">
+    With.__init__(dialect: SqlDialect = None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#withrecursivestatustrue" class="md-nav__link">
+    With.recursive(status=True)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#withclausename-str-with_query-unionsqlstatement-literal-columns-list-none-materialized-bool" class="md-nav__link">
+    With.**clause(name: str, with_query: Union[SqlStatement, Literal], columns: list = None, materialized: bool =
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#withqueryquery-sqlstatement" class="md-nav__link">
+    With.query(query: SqlStatement)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#withassemble" class="md-nav__link">
+    With.assemble()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -574,7 +590,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/dbgrid/" class="md-nav__link">
+      <a href="../dbgrid/" class="md-nav__link">
         DbGrid
       </a>
     </li>
@@ -615,22 +631,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#required-dependencies" class="md-nav__link">
-    Required dependencies
+  <a href="#with__init__dialect-sqldialect-none" class="md-nav__link">
+    With.__init__(dialect: SqlDialect = None)
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#installing-from-package" class="md-nav__link">
-    Installing from package
+  <a href="#withrecursivestatustrue" class="md-nav__link">
+    With.recursive(status=True)
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#installing-from-source" class="md-nav__link">
-    Installing from source
+  <a href="#withclausename-str-with_query-unionsqlstatement-literal-columns-list-none-materialized-bool" class="md-nav__link">
+    With.**clause(name: str, with_query: Union[SqlStatement, Literal], columns: list = None, materialized: bool =
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#withqueryquery-sqlstatement" class="md-nav__link">
+    With.query(query: SqlStatement)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#withassemble" class="md-nav__link">
+    With.assemble()
   </a>
   
 </li>
@@ -648,45 +678,38 @@
               
                 
 
-<h1 id="installation">Installation</h1>
-<p>The recommended instalation procedure is to use the available pip package. Make sure you have psycopg2 and setuptools
-installed before proceeding.</p>
-<h2 id="required-dependencies">Required dependencies</h2>
-<p>RickDb requires the following dependencies:</p>
-<ul>
-<li>pytest</li>
-<li>psycopg2</li>
-<li>toml</li>
-<li>setuptools</li>
-</ul>
-<p>Please note, most platforms have both psycopg2 and setuptools available as a separate, binary installed package.</p>
-<p>Installing psycopg2 and setuptools in Ubuntu (&gt;=18):
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w">  </span>python3-setuptools<span class="w"> </span>python3-psycopg2
-</code></pre></div></p>
-<h2 id="installing-from-package">Installing from package</h2>
-<p>RickDb is available in <a href="https://pypi.org/project/rick-db/">PyPi</a> as a package, an can easily be installed using pip:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>rick-db
-</code></pre></div></p>
-<h2 id="installing-from-source">Installing from source</h2>
-<ol>
-<li>
-<p>clone the repository to a folder:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/oddbit-project/rick_db.git
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>rick_db
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>rick_db$
-</code></pre></div></p>
-</li>
-<li>
-<p>install missing dependencies
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>rick_db$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
-</code></pre></div></p>
-</li>
-<li>
-<p>run setuptools from the repository folder:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>rick_db$<span class="w"> </span>python3<span class="w"> </span>setup.py<span class="w"> </span>install
-</code></pre></div></p>
-</li>
-</ol>
+<h1 id="class-rick_dbsqlwith">Class rick_db.sql.<strong>With</strong></h1>
+<p>A wrapper for ordinary or recursive Common Table Expressions (CTE).</p>
+<h3 id="with__init__dialect-sqldialect-none">With.<strong>__init__(dialect: SqlDialect = None)</strong></h3>
+<p>Initialize the CTE wrapper object, using a database <em>dialect</em>. If no <em>dialect</em> is provided, a default dialect will be
+used.
+Check <a href="../sqldialect/">SqlDialect</a> for more details.</p>
+<h3 id="withrecursivestatustrue">With.<strong>recursive(status=True)</strong></h3>
+<p>Creates a recursive CTE if status is True, or an ordinary CTE if status is False</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">union</span> <span class="o">=</span> <span class="n">Select</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">([</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">Literal</span><span class="p">(</span><span class="s2">&quot;VALUES(1)&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">Select</span><span class="p">()</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="n">Literal</span><span class="p">(</span><span class="s2">&quot;n+1&quot;</span><span class="p">)])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">],</span> <span class="n">Sql</span><span class="o">.</span><span class="n">UNION_ALL</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># assemble a recursive CTE</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">with_qry</span> <span class="o">=</span> <span class="n">With</span><span class="p">()</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="o">.</span><span class="n">clause</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">union</span><span class="p">)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Select</span><span class="p">()</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="p">{</span><span class="n">Literal</span><span class="p">(</span><span class="s2">&quot;SUM(n)&quot;</span><span class="p">):</span> <span class="s2">&quot;total&quot;</span><span class="p">}))</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="o">.</span><span class="n">recursive</span><span class="p">()</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">sql</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">with_qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># sql: WITH RECURSIVE &quot;t&quot;(&quot;n&quot;) AS (VALUES(1) UNION SELECT n+1 FROM &quot;t&quot; WHERE (&quot;n&quot; &lt; %s)) SELECT SUM(n) AS &quot;total&quot; FROM &quot;t&quot;</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1"># values: [100]</span>
+</code></pre></div>
+<h3 id="withclausename-str-with_query-unionsqlstatement-literal-columns-list-none-materialized-bool">With.**clause(name: str, with_query: Union[SqlStatement, Literal], columns: list = None, materialized: bool =</h3>
+<p>True)**</p>
+<p>Adds a CTE expression with the format WITH <em>name</em>(<em>columns</em>) AS (<em>with_query</em>); The <em>columns</em> parameter is optional.
+If <em>materialized</em> is False, WITH...NOT MATERIALIZED AS () is generated instead.</p>
+<h3 id="withqueryquery-sqlstatement">With.<strong>query(query: SqlStatement)</strong></h3>
+<p>Specifies the final CTE query to be applied on the expressions.</p>
+<h3 id="withassemble">With.<strong>assemble()</strong></h3>
+<p>Generates a tuple with the generated SQL string and list of values.</p>
 
               
             </article>
@@ -700,7 +723,7 @@ installed before proceeding.</p>
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview" rel="prev">
+        <a href="../literal/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Literal" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -709,20 +732,20 @@ installed before proceeding.</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Overview
+              Literal
             </div>
           </div>
         </a>
       
       
         
-        <a href="../connection/" class="md-footer__link md-footer__link--next" aria-label="Next: Connection" rel="next">
+        <a href="../dbgrid/" class="md-footer__link md-footer__link--next" aria-label="Next: DbGrid" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Connection
+              DbGrid
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -752,10 +775,10 @@ installed before proceeding.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.0bbba5b5.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.649a939e.min.js"></script>
       
     
   </body>
