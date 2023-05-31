@@ -19,6 +19,7 @@ class Sql:
     DISTINCT = "distinct"
     COLUMNS = "columns"
     FROM = "from"
+    LATERAL = "lateral"
     UNION = "union"
     WHERE = "where"
     GROUP = "group"
@@ -35,6 +36,9 @@ class Sql:
     FULL_JOIN = "FULL JOIN"
     CROSS_JOIN = "CROSS JOIN"
     NATURAL_JOIN = "NATURAL JOIN"
+    INNER_JOIN_LATERAL = "INNER JOIN LATERAL"
+    LEFT_JOIN_LATERAL = "LEFT JOIN LATERAL"
+    SQL_LATERAL = "LATERAL"
 
     SQL_WILDCARD = "*"
     SQL_SELECT = "SELECT"
