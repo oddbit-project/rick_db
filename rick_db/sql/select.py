@@ -5,7 +5,7 @@
 # Zend_Db_Select code and licensing at https://github.com/zendframework/zf1/blob/master/library/Zend/Db/Select.php
 
 import collections
-from typing import Optional, Union
+from typing import Union
 
 from .common import SqlStatement, Sql, Literal, SqlError
 from .dialect import SqlDialect, DefaultSqlDialect

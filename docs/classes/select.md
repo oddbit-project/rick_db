@@ -401,34 +401,36 @@ Example:
 
 ```python
 # simple example
-qry, _ = Select(PgSqlDialect()).from_('some_table').
-    join_left('other_table', 'fk_some_table', 'some_table', 'id').
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("some_table")
+    .join_left("other_table", "fk_some_table", "some_table", "id")
+    .assemble()
+)
 
 # output: SELECT "some_table".* FROM "some_table" LEFT JOIN "other_table" ON "some_table"."id"="other_table"."fk_some_table"
 print(qry)
 
 # example w/ destination table aliasing
-qry, _ = Select(PgSqlDialect()).from_('some_table').
-    join_left({'other_table': 't2'}, 'fk_some_table', 'some_table', 'id').
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("some_table")
+    .join_left({"other_table": "t2"}, "fk_some_table", "some_table", "id")
+    .assemble()
+)
 
 # output: SELECT "some_table".* FROM "some_table" LEFT JOIN "other_table" AS "t2" ON "some_table"."id"="t2"."fk_some_table"
 print(qry)
 
 # example w/ source table aliasing
-qry, _ = Select(PgSqlDialect()).from_({'some_table': 't1'}).
-    join_left({'other_table': 't2'}, 'fk_some_table', {'some_table': 't1'}, 'id').
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_({"some_table": "t1"})
+    .join_left({"other_table": "t2"}, "fk_some_table", {"some_table": "t1"}, "id")
+    .assemble()
+)
 
 # output: SELECT "t1".* FROM "some_table" AS "t1" LEFT JOIN "other_table" AS "t2" ON "t1"."id"="t2"."fk_some_table"
-print(qry)
-
-# example w/ Record objects and extra SELECT column w/alias
-qry, _ = Select(PgSqlDialect()).from_(Book).
-    join_left(Publisher, Publisher.id, Book, Book.fk_publisher, '=', [{Publisher.name: 'publisher_name'}]).assemble()
-
-# output: SELECT "book".*,"publisher"."name" AS "publisher_name" FROM "book" LEFT JOIN "publisher" ON "book"."fk_publisher"="publisher"."id_publisher"
 print(qry)
 ```
 
@@ -441,34 +443,73 @@ Example:
 
 ```python
 # simple example
-qry, _ = Select(PgSqlDialect()).from_('some_table').
-    join_right('other_table', 'fk_some_table', 'some_table', 'id').
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("some_table")
+    .join_right("other_table", "fk_some_table", "some_table", "id")
+    .assemble()
+)
 
 # output: SELECT "some_table".* FROM "some_table" RIGHT JOIN "other_table" ON "some_table"."id"="other_table"."fk_some_table"
 print(qry)
 
 # example w/ destination table aliasing
-qry, _ = Select(PgSqlDialect()).from_('some_table').
-    join_right({'other_table': 't2'}, 'fk_some_table', 'some_table', 'id').
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("some_table")
+    .join_right({"other_table": "t2"}, "fk_some_table", "some_table", "id")
+    .assemble()
+)
 
 # output: SELECT "some_table".* FROM "some_table" RIGHT JOIN "other_table" AS "t2" ON "some_table"."id"="t2"."fk_some_table"
 print(qry)
 
 # example w/ source table aliasing
-qry, _ = Select(PgSqlDialect()).from_({'some_table': 't1'}).
-    join_right({'other_table': 't2'}, 'fk_some_table', {'some_table': 't1'}, 'id').
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_({"some_table": "t1"})
+    .join_right({"other_table": "t2"}, "fk_some_table", {"some_table": "t1"}, "id")
+    .assemble()
+)
 
 # output: SELECT "t1".* FROM "some_table" AS "t1" RIGHT JOIN "other_table" AS "t2" ON "t1"."id"="t2"."fk_some_table"
 print(qry)
 
 # example w/ Record objects and extra SELECT column w/alias
-qry, _ = Select(PgSqlDialect()).from_(Book).
-    join_right(Publisher, Publisher.id, Book, Book.fk_publisher, '=', [{Publisher.name: 'publisher_name'}]).assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_(Book)
+    .join_right(
+        Publisher,
+        Publisher.id,
+        Book,
+        Book.fk_publisher,
+        "=",
+        [{Publisher.name: "publisher_name"}],
+    )
+    .assemble()
+)
 
 # output: SELECT "book".*,"publisher"."name" AS "publisher_name" FROM "book" RIGHT JOIN "publisher" ON "book"."fk_publisher"="publisher"."id_publisher"
+print(qry)
+
+
+# example w/ Record objects and extra SELECT column w/alias
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_(Book)
+    .join_left(
+        Publisher,
+        Publisher.id,
+        Book,
+        Book.fk_publisher,
+        "=",
+        [{Publisher.name: "publisher_name"}],
+    )
+    .assemble()
+)
+
+# output: SELECT "book".*,"publisher"."name" AS "publisher_name" FROM "book" LEFT JOIN "publisher" ON "book"."fk_publisher"="publisher"."id_publisher"
 print(qry)
 ```
 
@@ -481,32 +522,52 @@ Example:
 
 ```python
 # simple example
-qry, _ = Select(PgSqlDialect()).from_('some_table').
-    join_full('other_table', 'fk_some_table', 'some_table', 'id').
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("some_table")
+    .join_full("other_table", "fk_some_table", "some_table", "id")
+    .assemble()
+)
 
 # output: SELECT "some_table".* FROM "some_table" FULL JOIN "other_table" ON "some_table"."id"="other_table"."fk_some_table"
 print(qry)
 
 # example w/ destination table aliasing
-qry, _ = Select(PgSqlDialect()).from_('some_table').
-    join_full({'other_table': 't2'}, 'fk_some_table', 'some_table', 'id').
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("some_table")
+    .join_full({"other_table": "t2"}, "fk_some_table", "some_table", "id")
+    .assemble()
+)
 
 # output: SELECT "some_table".* FROM "some_table" FULL JOIN "other_table" AS "t2" ON "some_table"."id"="t2"."fk_some_table"
 print(qry)
 
 # example w/ source table aliasing
-qry, _ = Select(PgSqlDialect()).from_({'some_table': 't1'}).
-    join_full({'other_table': 't2'}, 'fk_some_table', {'some_table': 't1'}, 'id').
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_({"some_table": "t1"})
+    .join_full({"other_table": "t2"}, "fk_some_table", {"some_table": "t1"}, "id")
+    .assemble()
+)
 
 # output: SELECT "t1".* FROM "some_table" AS "t1" FULL JOIN "other_table" AS "t2" ON "t1"."id"="t2"."fk_some_table"
 print(qry)
 
 # example w/ Record objects and extra SELECT column w/alias
-qry, _ = Select(PgSqlDialect()).from_(Book).
-    join_full(Publisher, Publisher.id, Book, Book.fk_publisher, '=', [{Publisher.name: 'publisher_name'}]).assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_(Book)
+    .join_full(
+        Publisher,
+        Publisher.id,
+        Book,
+        Book.fk_publisher,
+        "=",
+        [{Publisher.name: "publisher_name"}],
+    )
+    .assemble()
+)
 
 # output: SELECT "book".*,"publisher"."name" AS "publisher_name" FROM "book" FULL JOIN "publisher" ON "book"."fk_publisher"="publisher"."id_publisher"
 print(qry)
@@ -523,36 +584,39 @@ Example:
 
 ```python
 # simple example
-qry, _ = Select(PgSqlDialect()).from_('table1').
-    join_cross('table2').
-    assemble()
+qry, _ = Select(PgSqlDialect()).from_("table1").join_cross("table2").assemble()
 
 # output: SELECT "table1".* FROM "table1" CROSS JOIN "table2"
 print(qry)
 
 # example w/ destination table aliasing
-qry, _ = Select(PgSqlDialect()).from_('table1').
-    join_cross({'table2': 't2'}).
-    assemble()
+qry, _ = Select(PgSqlDialect()).from_("table1").join_cross({"table2": "t2"}).assemble()
 
 # output: SELECT "table1".* FROM "table1" CROSS JOIN "table2" AS "t2"
 print(qry)
 
 # example w/ destination table aliasing and extra SELECT columns
-qry, _ = Select(PgSqlDialect()).from_('table1').
-    join_cross({'table2': 't2'}, [{'id': 't2_id'}, 'name']).
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("table1")
+    .join_cross({"table2": "t2"}, [{"id": "t2_id"}, "name"])
+    .assemble()
+)
 
 # output: SELECT "table1".*,"t2"."id" AS "t2_id","t2"."name" FROM "table1" CROSS JOIN "table2" AS "t2"
 print(qry)
 
 # example w/ Record objects and extra SELECT columns
-qry, _ = Select(PgSqlDialect()).from_(Book).
-    join_cross(Publisher, [Publisher.id, Publisher.name]).
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_(Book)
+    .join_cross(Publisher, [Publisher.id, Publisher.name])
+    .assemble()
+)
 
 # output: SELECT "book".*,"publisher"."id_publisher","publisher"."name" FROM "book" CROSS JOIN "publisher"
 print(qry)
+
 ```
 
 ### Select.**join_natural(table, cols=None, schema=None)**
@@ -566,33 +630,37 @@ Example:
 
 ```python
 # simple example
-qry, _ = Select(PgSqlDialect()).from_('table1').
-    join_natural('table2').
-    assemble()
+qry, _ = Select(PgSqlDialect()).from_("table1").join_natural("table2").assemble()
 
 # output: SELECT "table1".* FROM "table1" NATURAL JOIN "table2"
 print(qry)
 
 # example w/ destination table aliasing
-qry, _ = Select(PgSqlDialect()).from_('table1').
-    join_natural({'table2': 't2'}).
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect()).from_("table1").join_natural({"table2": "t2"}).assemble()
+)
 
 # output: SELECT "table1".* FROM "table1" NATURAL JOIN "table2" AS "t2"
 print(qry)
 
 # example w/ destination table aliasing and extra SELECT columns
-qry, _ = Select(PgSqlDialect()).from_('table1').
-    join_natural({'table2': 't2'}, [{'id': 't2_id'}, 'name']).
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("table1")
+    .join_natural({"table2": "t2"}, [{"id": "t2_id"}, "name"])
+    .assemble()
+)
 
 # output: SELECT "table1".*,"t2"."id" AS "t2_id","t2"."name" FROM "table1" NATURAL JOIN "table2" AS "t2"
 print(qry)
 
 # example w/ Record objects and extra SELECT columns
-qry, _ = Select(PgSqlDialect()).from_(Book).
-    join_natural(Publisher, [Publisher.id, Publisher.name]).
-    assemble()
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_(Book)
+    .join_natural(Publisher, [Publisher.id, Publisher.name])
+    .assemble()
+)
 
 # output: SELECT "book".*,"publisher"."id_publisher","publisher"."name" FROM "book" NATURAL JOIN "publisher"
 print(qry)
@@ -615,3 +683,138 @@ print(qry)
 ### Select.**dialect()**
 
 Return the current [SqlDialect](sqldialect.md) object in use.
+
+
+### Select.**lateral(subquery: SqlStatement, alias: str, cols=None)**
+
+Adds a LATERAL subquery: *subquery* is the query object to add, *alias* is the alias for the subquery, and optionally it
+is possible to specify specific columns using *cols*. If *cols* is omitted, '*' is used instead.
+
+Example:
+
+```python
+
+@fieldmapper(tablename="t_product")
+class ProductRecord:
+    id = "product_id"
+    price = "price"
+    product = "product"
+
+
+@fieldmapper(tablename="t_wishlist")
+class WishListRecord:
+    id = "wishlist_id"
+    username = "username"
+    desired_price = "desired_price"
+
+
+qry = (
+    Select()
+    .from_({WishListRecord: "w"})
+    .lateral(
+        Select()
+        .from_({ProductRecord: "p"})
+        .where(Literal(ProductRecord.price + "<" + WishListRecord.desired_price))
+        .order(ProductRecord.price, Sql.SQL_DESC)
+        .limit(3),
+        "x",
+    )
+    .order([WishListRecord.id, ProductRecord.price], Sql.SQL_DESC)
+)
+
+# output: 
+# SELECT "w".*,"x".* FROM "t_wishlist" AS "w", LATERAL (
+#   SELECT "p".* FROM "t_product" AS "p" WHERE (price<desired_price) ORDER BY "price" DESC LIMIT 3
+# ) AS "x" ORDER BY "wishlist_id" DESC,"price" DESC
+print(qry.assemble())
+```
+
+### Select.**join_inner_lateral(subquery: Union[SqlStatement, Literal], alias: str, join_expr: Literal)**
+
+Performs a JOIN INNER LATERAL with a subquery.*subquery* is the query object to add, *alias* is the alias for the subquery,
+and *join_expr* is the ON literal expression.
+
+```python
+
+@fieldmapper(tablename="product")
+class ProductRecord:
+    id = "product_id"
+    price = "price"
+    product = "product"
+
+
+@fieldmapper(tablename="wishlist")
+class WishListRecord:
+    id = "wishlist_id"
+    username = "username"
+    desired_price = "desired_price"
+
+
+qry = (
+    Select()
+    .from_({WishListRecord: "w"})
+    .join_inner_lateral(
+        Select()
+        .from_({ProductRecord: "p"})
+        .where(Literal(ProductRecord.price + "<" + WishListRecord.desired_price))
+        .order(ProductRecord.price, Sql.SQL_DESC)
+        .limit(3),
+        "x",
+        Literal("true"),
+    )
+    .order([WishListRecord.id, ProductRecord.price], Sql.SQL_DESC)
+)
+
+# output:
+# SELECT "w".* FROM "wishlist" AS "w" 
+#   INNER JOIN LATERAL (
+#     SELECT "p".* FROM "product" AS "p" WHERE (price<desired_price) ORDER BY "price" DESC LIMIT 3
+#   ) AS "x" ON (true)
+# ORDER BY "wishlist_id" DESC,"price" DESC
+print(qry.assemble())
+```
+
+### Select.**join_left_lateral(subquery: Union[SqlStatement, Literal], alias: str, join_expr: Literal)**
+
+Performs a JOIN LEFT LATERAL with a subquery.*subquery* is the query object to add, *alias* is the alias for the subquery,
+and *join_expr* is the ON literal expression.
+
+```python
+
+@fieldmapper(tablename="product")
+class ProductRecord:
+    id = "product_id"
+    price = "price"
+    product = "product"
+
+
+@fieldmapper(tablename="wishlist")
+class WishListRecord:
+    id = "wishlist_id"
+    username = "username"
+    desired_price = "desired_price"
+
+
+qry = (
+    Select()
+    .from_({WishListRecord: "w"})
+    .join_left_lateral(
+        Select()
+        .from_({ProductRecord: "p"})
+        .where(Literal(ProductRecord.price + "<" + WishListRecord.desired_price))
+        .order(ProductRecord.price, Sql.SQL_DESC)
+        .limit(3),
+        "x",
+        Literal("true"),
+    )
+    .order([WishListRecord.id, ProductRecord.price], Sql.SQL_DESC)
+)
+
+# output:
+# SELECT "w".* FROM "wishlist" AS "w" 
+#   LEFT JOIN LATERAL (
+#     SELECT "p".* FROM "product" AS "p" WHERE (price<desired_price) ORDER BY "price" DESC LIMIT 3
+#   ) AS "x" ON (true)
+# ORDER BY "wishlist_id" DESC,"price" DESC
+print(qry.assemble())
+```

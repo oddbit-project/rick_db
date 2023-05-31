@@ -19,22 +19,23 @@ Simple Select() examples:
 from rick_db.sql import Select, PgSqlDialect
 
 # SELECT ALL
-qry, _ = Select(PgSqlDialect()).from_('table').assemble()
+qry, _ = Select(PgSqlDialect()).from_("table").assemble()
 # output: SELECT "table".* FROM "table"
 print(qry)
 
 # SELECT from 2 tables, with specific columns
-qry, _ = Select(PgSqlDialect()).from_('table1', ['table1_field']) \
-    .from_('table2', ['table2_field']) \
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("table1", ["table1_field"])
+    .from_("table2", ["table2_field"])
     .assemble()
+)
 # output: SELECT "table1_field","table2_field" FROM "table1", "table2"
 print(qry)
 
 # SELECT WHERE
-qry, values = Select(PgSqlDialect()).from_('table').\
-    where('id', '=', 7).\
-    assemble()
-# output: SELECT "table".* FROM "table" WHERE ("id" = %s) 
+qry, values = Select(PgSqlDialect()).from_("table").where("id", "=", 7).assemble()
+# output: SELECT "table".* FROM "table" WHERE ("id" = %s)
 print(qry)
 ```
 
@@ -72,21 +73,21 @@ from rick_db import fieldmapper
 from rick_db.sql import Select, PgSqlDialect
 
 
-@fieldmapper(tablename='publisher', pk='id_publisher')
+@fieldmapper(tablename="publisher", pk="id_publisher")
 class Publisher:
-    id = 'id_publisher'
-    name = 'name'
+    id = "id_publisher"
+    name = "name"
 
 
-@fieldmapper(tablename='book', pk='id_book')
+@fieldmapper(tablename="book", pk="id_book")
 class Book:
-    id = 'id_book'
-    title = 'title'
-    total_pages = 'total_pages'
-    rating = 'rating'
-    isbn = 'isbn'
-    published = 'published_date'
-    fk_publisher = 'fk_publisher'
+    id = "id_book"
+    title = "title"
+    total_pages = "total_pages"
+    rating = "rating"
+    isbn = "isbn"
+    published = "published_date"
+    fk_publisher = "fk_publisher"
 
 
 # simple SELECT
@@ -95,19 +96,30 @@ qry, values = Select(PgSqlDialect()).from_(Publisher).assemble()
 print(qry)
 
 # SELECT... WHERE
-qry, values = Select(PgSqlDialect()).from_(Book, [Book.title, Book.rating]) \
-    .where(Book.id, '=', 5) \
+qry, values = (
+    Select(PgSqlDialect())
+    .from_(Book, [Book.title, Book.rating])
+    .where(Book.id, "=", 5)
     .assemble()
+)
 # output: SELECT "title","rating" FROM "book" WHERE ("id_book" = %s)
 print(qry)
 
 # SELECT... JOIN
-qry, values = Select(PgSqlDialect()).from_(Book) \
-    .join(Publisher, Publisher.id, Book, Book.fk_publisher, cols={Publisher.name:'publisher_name'}) \
+qry, values = (
+    Select(PgSqlDialect())
+    .from_(Book)
+    .join(
+        Publisher,
+        Publisher.id,
+        Book,
+        Book.fk_publisher,
+        cols={Publisher.name: "publisher_name"},
+    )
     .assemble()
+)
 # output: SELECT "book".*,"publisher"."name" AS "publisher_name" FROM "book" INNER JOIN "publisher" ON "book"."fk_publisher"="publisher"."id_publisher"
 print(qry)
-
 ```
 
 The [Select](classes/select.md) Object also supports both **AND** and **OR** **WHERE** clauses, as well as nested parenthesis:
@@ -116,22 +128,28 @@ The [Select](classes/select.md) Object also supports both **AND** and **OR** **W
 from rick_db.sql import Select, PgSqlDialect
 
 # SELECT... WHERE <cond> OR <cond>
-qry, values = Select(PgSqlDialect()).from_(Book) \
-    .where(Book.title, 'ILIKE', '%SQL%') \
-    .orwhere(Book.rating, '>', 4) \
+qry, values = (
+    Select(PgSqlDialect())
+    .from_(Book)
+    .where(Book.title, "ILIKE", "%SQL%")
+    .orwhere(Book.rating, ">", 4)
     .assemble()
+)
 # output: SELECT "book".* FROM "book" WHERE ("title" ILIKE %s) OR ("rating" > %s)
 print(qry)
 
 
 # SELECT... WHERE <cond> OR (<cond> AND <cond>)
-qry, values = Select(PgSqlDialect()).from_(Book) \
-    .where(Book.title, 'ILIKE', '%SQL%') \
-    .where_or() \
-    .where(Book.rating, '>', 4) \
-    .where(Book.total_pages, '>', 150) \
-    .where_end() \
+qry, values = (
+    Select(PgSqlDialect())
+    .from_(Book)
+    .where(Book.title, "ILIKE", "%SQL%")
+    .where_or()
+    .where(Book.rating, ">", 4)
+    .where(Book.total_pages, ">", 150)
+    .where_end()
     .assemble()
+)
 # output: SELECT "book".* FROM "book" WHERE ("title" ILIKE %s) OR ( ("rating" > %s) AND ("total_pages" > %s) )
 print(qry)
 ```
@@ -142,46 +160,54 @@ print(qry)
 from rick_db.sql import Select, PgSqlDialect
 
 # LEFT JOIN
-qry, values = Select(PgSqlDialect()).from_('table1') \
-    .join('table2', 'id', 'table1', 'fk_table2') \
+qry, values = (
+    Select(PgSqlDialect())
+    .from_("table1")
+    .join("table2", "id", "table1", "fk_table2")
     .assemble()
+)
 # output: SELECT "table1".* FROM "table1" INNER JOIN "table2" ON "table1"."fk_table2"="table2"."id"
 print(qry)
 
 # RIGHT JOIN
-qry, values = Select(PgSqlDialect()).from_('table1') \
-    .join_right('table2', 'id', 'table1', 'fk_table2') \
+qry, values = (
+    Select(PgSqlDialect())
+    .from_("table1")
+    .join_right("table2", "id", "table1", "fk_table2")
     .assemble()
+)
 # output: SELECT "table1".* FROM "table1" RIGHT JOIN "table2" ON "table1"."fk_table2"="table2"."id"
 print(qry)
 
 # FULL JOIN
-qry, values = Select(PgSqlDialect()).from_('table1') \
-    .join_full('table2', 'id', 'table1', 'fk_table2') \
+qry, values = (
+    Select(PgSqlDialect())
+    .from_("table1")
+    .join_full("table2", "id", "table1", "fk_table2")
     .assemble()
+)
 # output: SELECT "table1".* FROM "table1" FULL JOIN "table2" ON "table1"."fk_table2"="table2"."id"
 print(qry)
 
 # CROSS JOIN
-qry, values = Select(PgSqlDialect()).from_('table1') \
-    .join_cross('table2') \
-    .assemble()
+qry, values = Select(PgSqlDialect()).from_("table1").join_cross("table2").assemble()
 # output: SELECT "table1".* FROM "table1" CROSS JOIN "table2"
 print(qry)
 
 # NATURAL JOIN
-qry, values = Select(PgSqlDialect()).from_('table1') \
-    .join_natural('table2') \
-    .assemble()
+qry, values = Select(PgSqlDialect()).from_("table1").join_natural("table2").assemble()
 # output: SELECT "table1".* FROM "table1" NATURAL JOIN "table2"
 print(qry)
 
 # mixed example
-qry, values = Select(PgSqlDialect()).from_('table1') \
-    .join_right('table2', 'id', 'table1', 'fk_table2') \
-    .join('table3', 'id', 'table2', 'fk_table3') \
-    .join('table4', 'id', 'table3', 'fk_table4') \
+qry, values = (
+    Select(PgSqlDialect())
+    .from_("table1")
+    .join_right("table2", "id", "table1", "fk_table2")
+    .join("table3", "id", "table2", "fk_table3")
+    .join("table4", "id", "table3", "fk_table4")
     .assemble()
+)
 # output: SELECT "table1".* FROM "table1" RIGHT JOIN "table2" ON "table1"."fk_table2"="table2"."id" INNER JOIN "table3" ON "table2"."fk_table3"="table3"."id" INNER JOIN "table4" ON "table3"."fk_table4"="table4"."id"
 print(qry)
 ```
@@ -191,11 +217,11 @@ It is also possible to use subselects:
 ```python
 from rick_db.sql import Select, PgSqlDialect
 
-subselect = Select(PgSqlDialect()).from_('some_table', ['id']).where('field', '>', 32)
+subselect = Select(PgSqlDialect()).from_("some_table", ["id"]).where("field", ">", 32)
 
-qry, _ = Select(PgSqlDialect()).from_('table') \
-    .where('field', 'IN', subselect) \
-    .assemble()
+qry, _ = (
+    Select(PgSqlDialect()).from_("table").where("field", "IN", subselect).assemble()
+)
 # output: SELECT "table".* FROM "table" WHERE ("field" IN (SELECT "id" FROM "some_table" WHERE ("field" > %s)))
 print(qry)
 ```
@@ -297,24 +323,30 @@ print(qry.assemble())
 from rick_db.sql import Update, PgSqlDialect
 
 # UPDATE WHERE... common usage
-qry = Update(PgSqlDialect()).table('table') \
-    .values({'field':'value'}) \
-    .where('id', '=', 7)
+qry = (
+    Update(PgSqlDialect()).table("table").values({"field": "value"}).where("id", "=", 7)
+)
 # output: ('UPDATE "table" SET "field"=%s WHERE "id" = %s', ['value', 7])
 print(qry.assemble())
 
 # UPDATE WHERE... no value
-qry = Update(PgSqlDialect()).table('table') \
-    .values({'field':'value'}) \
-    .where('id', 'IS NOT NULL')
+qry = (
+    Update(PgSqlDialect())
+    .table("table")
+    .values({"field": "value"})
+    .where("id", "IS NOT NULL")
+)
 # output: ('UPDATE "table" SET "field"=%s WHERE "id" IS NOT NULL', ['value'])
 print(qry.assemble())
 
 # UPDATE WHERE... with multiple clauses
-qry = Update(PgSqlDialect()).table('table') \
-    .values({'field':'value'}) \
-    .where('id', '=', 7) \
-    .where('name', 'ILIKE', 'john%')
+qry = (
+    Update(PgSqlDialect())
+    .table("table")
+    .values({"field": "value"})
+    .where("id", "=", 7)
+    .where("name", "ILIKE", "john%")
+)
 # output: ('UPDATE "table" SET "field"=%s WHERE "id" = %s AND "name" ILIKE %s', ['value', 7, 'john%'])
 print(qry.assemble())
 ```
@@ -328,21 +360,22 @@ print(qry.assemble())
 from rick_db.sql import Delete, PgSqlDialect
 
 # DELETE WHERE... common usage
-qry = Delete(PgSqlDialect()).from_('table') \
-    .where('id', '=', 7)
+qry = Delete(PgSqlDialect()).from_("table").where("id", "=", 7)
 # output: ('DELETE FROM "table" WHERE "id" = %s', [7])
 print(qry.assemble())
 
 # DELETE WHERE... no value
-qry = Delete(PgSqlDialect()).from_('table') \
-    .where('id', 'IS NOT NULL')
+qry = Delete(PgSqlDialect()).from_("table").where("id", "IS NOT NULL")
 # output: ('DELETE FROM "table" WHERE "id" IS NOT NULL', [])
 print(qry.assemble())
 
 # DELETE WHERE... with multiple clauses
-qry = Delete(PgSqlDialect()).from_('table') \
-    .where('id', '=', 7) \
-    .where('name', 'ILIKE', 'john%')
+qry = (
+    Delete(PgSqlDialect())
+    .from_("table")
+    .where("id", "=", 7)
+    .where("name", "ILIKE", "john%")
+)
 # output: ('DELETE FROM "table" WHERE "id" = %s AND "name" ILIKE %s', [7, 'john%'])
 print(qry.assemble())
 ```
@@ -357,31 +390,35 @@ print(qry.assemble())
 from rick_db import fieldmapper
 from rick_db.sql import Select, PgSqlDialect, With, Sql
 
-@fieldmapper(tablename='folder', pk='id_folder')
+@fieldmapper(tablename="folder", pk="id_folder")
 class FolderRecord:
-    id = 'id_folder'
-    parent = 'fk_parent'
+    id = "id_folder"
+    parent = "fk_parent"
 
 
 dialect = PgSqlDialect()
 
-union = Select(dialect) \
-    .union(
+union = Select(dialect).union(
     [
-        Select(dialect).from_({FolderRecord: 'f1'}).where(FolderRecord.id, '=', 19),
-        Select(dialect).from_({FolderRecord: 'f2'}).join('folder_tree', FolderRecord.parent, 'f2', FolderRecord.id)
+        Select(dialect).from_({FolderRecord: "f1"}).where(FolderRecord.id, "=", 19),
+        Select(dialect)
+        .from_({FolderRecord: "f2"})
+        .join("folder_tree", FolderRecord.parent, "f2", FolderRecord.id),
     ],
-    Sql.SQL_UNION_ALL)
+    Sql.SQL_UNION_ALL,
+)
 
-qry = With() \
-    .clause("folder_tree", union) \
-    .query(Select(dialect).from_("folder_tree")) \
+qry = (
+    With()
+    .clause("folder_tree", union)
+    .query(Select(dialect).from_("folder_tree"))
     .recursive()
+)
 
 # output:
 # ('WITH RECURSIVE "folder_tree" AS (
-#   SELECT "f1".* FROM "folder" AS "f1" WHERE ("id_folder" = %s) 
-#   UNION ALL 
+#   SELECT "f1".* FROM "folder" AS "f1" WHERE ("id_folder" = %s)
+#   UNION ALL
 #   SELECT "f2".* FROM "folder" AS "f2" INNER JOIN "folder_tree" ON "f2"."id_folder"="folder_tree"."fk_parent"
 #   ) SELECT "folder_tree".* FROM "folder_tree"', [19])
 print(qry.assemble())
