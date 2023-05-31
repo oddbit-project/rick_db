@@ -1,5 +1,5 @@
-rick_db - Simple SQL database layer
---
+# rick_db - Simple SQL database layer
+
 
 [![Tests](https://github.com/oddbit-project/rick_db/workflows/Tests/badge.svg?branch=master)](https://github.com/oddbit-project/rick_db/actions)
 [![pypi](https://img.shields.io/pypi/v/rick_db.svg)](https://pypi.org/project/rick_db/)
