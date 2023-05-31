@@ -1,8 +1,10 @@
+from typing import Union
+
 from rick_db.sql import (
     SqlDialect,
     DefaultSqlDialect,
     SqlStatement,
-    Sql,
+    Sql, Literal,
 )
 
 
@@ -14,12 +16,23 @@ class With(SqlStatement):
         """
         self._clauses = []  # each clause is (name, with_query, [columns], materialized)
         self._query = None
+        self._recursive = False
 
         if dialect is None:
             dialect = DefaultSqlDialect()
         self._dialect = dialect
 
-    def clause(self, name: str, with_query: SqlStatement, columns: list = None, materialized: bool = True):
+    def recursive(self, status=True):
+        """
+        Enables or disables RECURSIVE
+        :param status:
+        :return:
+        """
+        self._recursive = status
+        return self
+
+    def clause(self, name: str, with_query: Union[SqlStatement, Literal], columns: list = None,
+               materialized: bool = True):
         """
         Adds a WITH <clause>(columns) AS <with_query>
         :param name:
@@ -43,15 +56,18 @@ class With(SqlStatement):
         return self
 
     def assemble(self) -> tuple:
-        if not isinstance(self._query, SqlStatement):
+        if not isinstance(self._query, (SqlStatement, Literal)):
             raise RuntimeError("assemble(): missing CTE query")
         if len(self._clauses) == 0:
             raise RuntimeError("assemble(): missing CTE clauses")
 
         parts = [Sql.SQL_WITH]
         values = []
-
         with_clauses = []
+
+        if self._recursive:
+            parts.append(Sql.SQL_RECURSIVE)
+
         for clause in self._clauses:
             name, qry, cols, materialized = clause
 
@@ -69,15 +85,23 @@ class With(SqlStatement):
             if not materialized:
                 chunks.append(Sql.SQL_NOT_MATERIALIZED)
 
-            qry_sql, qry_values = qry.assemble()
-            values.extend(qry_values)
+            if isinstance(qry, SqlStatement):
+                qry_sql, qry_values = qry.assemble()
+                values.extend(qry_values)
+            else:
+                # Literal
+                qry_sql = str(qry)
 
             stmt = "{} ({})".format(" ".join(chunks), qry_sql)
             with_clauses.append(stmt)
 
         parts.append(",".join(with_clauses))
-        qry_sql, qry_values = self._query.assemble()
-        values.extend(qry_values)
-        parts.append(qry_sql)
+        if isinstance(self._query, SqlStatement):
+            qry_sql, qry_values = self._query.assemble()
+            values.extend(qry_values)
+            parts.append(qry_sql)
+        else:
+            # Literal
+            parts.append(str(self._query))
 
         return " ".join(parts).strip(), values

@@ -67,6 +67,7 @@ class Sql:
     SQL_SET = "SET"
     SQL_WITH = "WITH"
     SQL_NOT_MATERIALIZED = "NOT MATERIALIZED"
+    SQL_RECURSIVE = "RECURSIVE"
 
 
 class SqlStatement:
