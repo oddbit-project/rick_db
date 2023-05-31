@@ -30,6 +30,7 @@ nav:
   - Delete: 'classes/delete.md'
   - Literal: 'classes/literal.md'
   - CTEs (With): 'classes/with.md'
+  - DbGrid: 'classes/dbgrid.md'
 plugins:
 - search
 
