@@ -96,7 +96,7 @@ class TestPgInfo(PgCommon):
         views = info.list_database_views("myschema")
         assert len(views) == 0
         assert (
-                info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is False
+            info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is False
         )
 
         # create one schema table
@@ -107,7 +107,7 @@ class TestPgInfo(PgCommon):
         assert len(views) == 1
         assert views[0].name == "list_aliens"
         assert (
-                info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is True
+            info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is True
         )
 
         self.cleanup(conn)
@@ -207,7 +207,6 @@ class TestPgInfo(PgCommon):
         assert serials[0].sequence == "public.animals_legs_seq"
 
         self.cleanup(conn)
-
 
     def test_list_identity_columns(self, conn):
         info = PgInfo(conn)
