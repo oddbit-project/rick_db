@@ -96,7 +96,7 @@ class TestPgInfo(PgCommon):
         views = info.list_database_views("myschema")
         assert len(views) == 0
         assert (
-            info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is False
+                info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is False
         )
 
         # create one schema table
@@ -107,7 +107,7 @@ class TestPgInfo(PgCommon):
         assert len(views) == 1
         assert views[0].name == "list_aliens"
         assert (
-            info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is True
+                info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is True
         )
 
         self.cleanup(conn)
@@ -193,3 +193,35 @@ class TestPgInfo(PgCommon):
 
         with conn.cursor() as qry:
             qry.exec(self.dropGroup)
+
+    def test_list_table_sequences(self, conn):
+        info = PgInfo(conn)
+        with conn.cursor() as qry:
+            qry.exec(self.createTable)
+            qry.exec(self.createView)
+
+        serials = info.list_table_sequences("animals")
+        assert len(serials) == 1
+        assert serials[0].table == "public.animals"
+        assert serials[0].column == "legs"
+        assert serials[0].sequence == "public.animals_legs_seq"
+
+        self.cleanup(conn)
+
+
+    def test_list_identity_columns(self, conn):
+        info = PgInfo(conn)
+        with conn.cursor() as qry:
+            qry.exec(self.createTable)
+            qry.exec(self.createIdentityTable)
+
+        serials = info.list_identity_columns("animals")
+        assert len(serials) == 0
+
+        serials = info.list_identity_columns("foo")
+        assert len(serials) == 1
+        assert serials[0].column == "id_foo"
+        assert serials[0].generated == ""
+        assert serials[0].identity == "a"
+
+        self.cleanup(conn)

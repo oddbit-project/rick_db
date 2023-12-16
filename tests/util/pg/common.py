@@ -15,6 +15,7 @@ class PgCommon:
     createGroup = "create group staff;"
     addGroup = "alter group staff add user {user}"
     dropGroup = "drop group staff"
+    createIdentityTable = "create table if not exists foo(id_foo int generated always as identity, name varchar);"
 
     @pytest.fixture()
     def conn(self) -> PgConnection:
@@ -28,4 +29,5 @@ class PgCommon:
             md.drop_table("_migration")
             md.drop_view("list_animals")
             md.drop_table("animals")
+            md.drop_table("foo")
             md.drop_schema("myschema", True)

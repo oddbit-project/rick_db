@@ -989,7 +989,7 @@ class Select(SqlStatement):
             if expr_alias is None:
                 expr_alias = from_table
             if expr_alias not in self._parts_from.keys():
-                raise SqlError(f"_join(): table {expr_alias} not found")
+                raise SqlError("_join(): table {} not found".format(expr_alias))
 
             if operator is None:
                 operator = "="

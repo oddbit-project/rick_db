@@ -16,7 +16,7 @@ from rick_db.util.pg.records import (
     UserRecord,
     GroupRecord,
     ForeignKeyRecord,
-    IdentityRecord,
+    IdentityRecord, SequenceRecord,
 )
 
 
@@ -177,7 +177,7 @@ class PgInfo:
             return c.exec(sql, values, cls=NamespaceRecord)
 
     def list_database_tables_type(
-        self, table_type: str, schema: str = None
+            self, table_type: str, schema: str = None
     ) -> List[TableRecord]:
         """
         List tables by type for the specified schema
@@ -232,7 +232,7 @@ class PgInfo:
         return self.list_database_tables_type(self.TYPE_FOREIGN, schema)
 
     def list_table_columns(
-        self, table_name: str, schema: str = None
+            self, table_name: str, schema: str = None
     ) -> List[ColumnRecord]:
         """
         List all table columns, sorted by numerical order
@@ -255,7 +255,7 @@ class PgInfo:
             return c.exec(sql, values, cls=ColumnRecord)
 
     def list_table_pk(
-        self, table_name: str, schema: str = None
+            self, table_name: str, schema: str = None
     ) -> Optional[ConstraintRecord]:
         """
         List primary key of table
@@ -317,7 +317,7 @@ class PgInfo:
             return c.fetchall(sql, params, cls=FieldRecord)
 
     def list_table_foreign_keys(
-        self, table_name, schema: str = None
+            self, table_name, schema: str = None
     ) -> List[ForeignKeyRecord]:
         """
         List foreign keys for a given table
@@ -354,7 +354,7 @@ class PgInfo:
             return c.fetchall(sql, [schema, table_name], cls=ForeignKeyRecord)
 
     def table_exists(
-        self, table_name: str, table_type: str = None, schema: str = None
+            self, table_name: str, table_type: str = None, schema: str = None
     ) -> bool:
         """
         Returns true if the specified table exists
@@ -415,3 +415,39 @@ class PgInfo:
 
         with self.db.cursor() as c:
             return c.exec(sql, values, cls=IdentityRecord)
+
+    def list_table_sequences(self, table_name: str, schema: str = None) -> List[SequenceRecord]:
+        """
+        Fetch table sequences
+
+        :param table_name:
+        :param schema:
+        :return:
+        """
+        sql = """
+            WITH fq_objects AS (
+                SELECT 
+                    c.oid,n.nspname || '.' ||c.relname AS fqname , 
+                    c.relkind, 
+                    c.relname AS relation
+                    FROM pg_class c 
+                    JOIN pg_namespace n ON n.oid = c.relnamespace 
+                ),
+                 sequences AS (SELECT oid,fqname FROM fq_objects WHERE relkind = 'S'),
+                 tables    AS (SELECT oid, fqname FROM fq_objects WHERE relkind = 'r' )
+            SELECT	
+                   s.fqname AS sequence,
+                   t.fqname AS table,
+                   a.attname AS column
+            FROM
+                 pg_depend d JOIN sequences s ON s.oid = d.objid
+                             JOIN tables t ON t.oid = d.refobjid
+                             JOIN pg_attribute a ON a.attrelid = d.refobjid and a.attnum = d.refobjsubid
+            WHERE
+                 d.deptype = 'a' and t.fqname=%s;      
+        """
+        if not schema:
+            schema = self.SCHEMA_DEFAULT
+        name = "{}.{}".format(schema, table_name)
+        with self.db.cursor() as c:
+            return c.fetchall(sql, [name, ], cls=SequenceRecord)
