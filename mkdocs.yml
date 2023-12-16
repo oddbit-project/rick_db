@@ -7,6 +7,26 @@ repo_url: https://git.oddbit.org/OddBit/rick_db
 
 theme:
   name: material
+  palette:
+  - scheme: slate
+    primary: deep purple
+    accent: amber
+    toggle:
+      icon: material/lightbulb
+      name: Switch to light mode
+  - scheme: default
+    primary: deep purple
+    accent: amber
+    toggle:
+      icon: material/lightbulb-outline
+      name: Switch to light mode
+  features:
+  - search.suggest
+  - search.highlight
+  - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github-alt
+  language: en
 
 nav:
 - Overview: index.md
@@ -30,15 +50,26 @@ nav:
   - Delete: 'classes/delete.md'
   - Literal: 'classes/literal.md'
   - CTEs (With): 'classes/with.md'
-plugins:
-- search
+  - DbGrid: 'classes/dbgrid.md'
 
 markdown_extensions:
-  - pymdownx.highlight:
-      anchor_linenums: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences
+- toc:
+    permalink: true
+- markdown.extensions.codehilite:
+    guess_lang: false
+- admonition
+- codehilite
+- extra
+- pymdownx.superfences:
+    custom_fences:
+    - name: mermaid
+      class: mermaid
+      format: !!python/name:pymdownx.superfences.fence_code_format ''
+- pymdownx.tabbed:
+    alternate_style: true
+- mdx_include
 
-
-
+extra:
+  social:
+  - icon: fontawesome/brands/github-alt
+    link: https://github.com/oddbit/pokie

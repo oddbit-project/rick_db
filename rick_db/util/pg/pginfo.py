@@ -17,6 +17,7 @@ from rick_db.util.pg.records import (
     GroupRecord,
     ForeignKeyRecord,
     IdentityRecord,
+    SequenceRecord,
 )
 
 
@@ -415,3 +416,47 @@ class PgInfo:
 
         with self.db.cursor() as c:
             return c.exec(sql, values, cls=IdentityRecord)
+
+    def list_table_sequences(
+        self, table_name: str, schema: str = None
+    ) -> List[SequenceRecord]:
+        """
+        Fetch table sequences
+
+        :param table_name:
+        :param schema:
+        :return:
+        """
+        sql = """
+            WITH fq_objects AS (
+                SELECT 
+                    c.oid,n.nspname || '.' ||c.relname AS fqname , 
+                    c.relkind, 
+                    c.relname AS relation
+                    FROM pg_class c 
+                    JOIN pg_namespace n ON n.oid = c.relnamespace 
+                ),
+                 sequences AS (SELECT oid,fqname FROM fq_objects WHERE relkind = 'S'),
+                 tables    AS (SELECT oid, fqname FROM fq_objects WHERE relkind = 'r' )
+            SELECT	
+                   s.fqname AS sequence,
+                   t.fqname AS table,
+                   a.attname AS column
+            FROM
+                 pg_depend d JOIN sequences s ON s.oid = d.objid
+                             JOIN tables t ON t.oid = d.refobjid
+                             JOIN pg_attribute a ON a.attrelid = d.refobjid and a.attnum = d.refobjsubid
+            WHERE
+                 d.deptype = 'a' and t.fqname=%s;      
+        """
+        if not schema:
+            schema = self.SCHEMA_DEFAULT
+        name = "{}.{}".format(schema, table_name)
+        with self.db.cursor() as c:
+            return c.fetchall(
+                sql,
+                [
+                    name,
+                ],
+                cls=SequenceRecord,
+            )
