@@ -12,3 +12,4 @@ mkdocs-material-extensions
 mkdocs-material==9.2.7
 mdx-include>=1.4.1
 pymdown-extensions
+black>=24.3.0 # not directly required, pinned by Snyk to avoid a vulnerability
