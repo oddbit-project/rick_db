@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from .migrate import Command as MigrateCommand
-from rick_db.util import MigrationManager
+from ...migrations import BaseMigrationManager
 
 
 class Command(MigrateCommand):
@@ -16,8 +16,8 @@ class Command(MigrateCommand):
             "Usage: {name} [database] check <path_to_sql_files>".format(name=self._name)
         )
 
-    def run(self, mgr: MigrationManager, args: list, command_list: dict):
-        if not mgr.has_manager():
+    def run(self, mgr: BaseMigrationManager, args: list, command_list: dict):
+        if not mgr.is_installed():
             self._tty.error("Error : Migration Manager is not installed")
             return False
 
@@ -37,12 +37,12 @@ class Command(MigrateCommand):
                 # check if migration is duplicated
                 record = mgr.fetch_by_name(mig.name)
                 if record is not None:
-                    self._tty.write(self._tty.AMBAR.format(content="already applied"))
+                    self._tty.write(self._color.yellow("already applied"))
                 # check if migration is obviously empty
                 elif content.strip() == "":
-                    self._tty.write(self._tty.AMBAR.format(content="empty migration"))
+                    self._tty.write(self._color.yellow("empty migration"))
                 else:
-                    self._tty.write(self._tty.BOLD.format(content="new migration"))
+                    self._tty.write(self._color.white("new migration", attr="bold"))
 
             return True
 

@@ -1,10 +1,10 @@
 import copy
 import inspect
-from typing import Union, Any, Optional
+from contextlib import contextmanager
+from typing import Union, Any, Optional, Callable
 
-from rick_db import Record
-from rick_db.cache import StrCache
-from rick_db.conn import Connection
+from rick_db import PoolInterface, Connection, Cursor
+from rick_db.cache import QueryCache, CacheInterface
 from rick_db.mapper import ATTR_RECORD_MAGIC, ATTR_TABLE, ATTR_SCHEMA, ATTR_PRIMARY_KEY
 from rick_db.sql import SqlDialect, Select, Insert, Delete, Update, Literal, Sql
 
@@ -13,41 +13,101 @@ class RepositoryError(Exception):
     pass
 
 
-class BaseRepository:
-    def __init__(self, db: Connection, tablename: str, schema=None, pk=None):
-        self._db = db
-        self._tablename = tablename
-        self._schema = schema
-        self._pk = pk
-        self._dialect = db.dialect()
+class GenericRepository:
+    def __init__(
+        self,
+        db: Union[Connection, PoolInterface],
+        table_name: str,
+        schema=None,
+        pk=None,
+    ):
+        if isinstance(db, Connection):
+            # db is a connection
+            self._db = db
+            self._pool = None
+            self.dialect = db.dialect()
+        else:
+            # db is a pool
+            self._db = None
+            self._pool = db
+            self.dialect = db.dialect()
 
-    def backend(self) -> Connection:
-        return self._db
+        # table-related args
+        self.table_name = table_name
+        self.schema = schema
+        self.pk = pk
 
-    def dialect(self) -> SqlDialect:
-        return self._dialect
+        # internal query cache
+        self.query_cache = self._cache_factory()
+
+    @contextmanager
+    def conn(self) -> Connection:
+        if self._db:
+            try:
+                yield self._db
+            except Exception:
+                raise
+            finally:
+                return
+
+        if self._pool:
+            try:
+                conn = self._pool.getconn()
+                yield conn
+            except Exception:
+                raise
+            finally:
+                self._pool.putconn(conn)
+
+    @contextmanager
+    def cursor(self) -> Cursor:
+        with self.conn() as conn:
+            with conn.cursor() as cursor:
+                yield cursor
+
+    @staticmethod
+    def _cache_factory() -> CacheInterface:
+        """
+        Assemble a query cache object
+        :return:
+        """
+        return QueryCache()
 
 
-class Repository(BaseRepository):
-    def __init__(self, db, record_type):
+class Repository(GenericRepository):
+    def __init__(self, db, record: Callable):
+        """
+        Repository constructor
+
+        db can either be a ConnectionInterface or PoolInterface object;
+        record must be a Record class, and it is used to extract table and primary key details
+
+        :param db:
+        :param record:
+        """
         if (
-            not inspect.isclass(record_type)
-            or getattr(record_type, ATTR_RECORD_MAGIC, None) is not True
+            not inspect.isclass(record)
+            or getattr(record, ATTR_RECORD_MAGIC, None) is not True
         ):
             raise RepositoryError(
                 "__init__(): record_type must be a valid Record class"
             )
-        self._record = record_type  # type: Record
-        self._query_cache = query_cache  # use global query cache
-        self._key_prefix = "{0}:{1}.{2}:".format(
-            type(db).__name__, record_type.__module__, record_type.__name__
-        )
+        # record type
+        self._record = record
+
         super().__init__(
             db,
-            getattr(record_type, ATTR_TABLE),
-            getattr(record_type, ATTR_SCHEMA),
-            getattr(record_type, ATTR_PRIMARY_KEY),
+            getattr(record, ATTR_TABLE),
+            getattr(record, ATTR_SCHEMA),
+            getattr(record, ATTR_PRIMARY_KEY),
         )
+
+    def record_class(self):
+        """
+        Fetch record class
+        :return:
+        """
+        return self._record
 
     def select(self, cols=None) -> Select:
         """
@@ -55,8 +115,8 @@ class Repository(BaseRepository):
         :param cols: optional columns
         :return: Select
         """
-        return Select(self._dialect).from_(
-            self._tablename, cols=cols, schema=self._schema
+        return Select(self.dialect).from_(
+            self.table_name, cols=cols, schema=self.schema
         )
 
     def fetch_pk(self, pk_value) -> Optional[object]:
@@ -66,21 +126,25 @@ class Repository(BaseRepository):
         :return: record object of self._record type or None
 
         Example:
-            .fetch_pk(32)    # search for record with id 32
+            r.fetch_pk(32)    # search for record with id 32
         """
-        if self._pk is None:
+        if self.pk is None:
             raise RepositoryError(
-                "find_pk(): missing primary key in Record %s" % str(type(self._record))
+                "find_pk(): missing primary key in Record {}".format(
+                    str(type(self._record))
+                )
             )
-        qry = self._cache_get("find_pk")
+
+        qry = self.query_cache.get("find_pk")
         if qry is None:
             qry, values = (
-                self.select().where(self._pk, "=", pk_value).limit(1).assemble()
+                self.select().where(self.pk, "=", pk_value).limit(1).assemble()
             )
-            self._cache_set("find_pk", qry)
+            self.query_cache.set("find_pk", qry)
         else:
             values = [pk_value]
-        with self._db.cursor() as c:
+
+        with self.cursor() as c:
             return c.fetchone(qry, values, self._record)
 
     def fetch_one(self, qry: Select) -> Optional[object]:
@@ -92,7 +156,7 @@ class Repository(BaseRepository):
         Example:
             r.fetch_one(r.select().where('login', '=', 'gandalf@lotr'))     # fetch record if exists, else returns None
         """
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             sql, values = qry.limit(1).assemble()
             return c.fetchone(sql, values, cls=self._record)
 
@@ -107,7 +171,7 @@ class Repository(BaseRepository):
         Example:
             r.fetch(r.select().where('name', 'like', 'gandalf%'))     # fetch records that match query
         """
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             sql, values = qry.assemble()
             if cls is None:
                 cls = self._record
@@ -124,7 +188,7 @@ class Repository(BaseRepository):
         Example:
             r.fetch_raw(r.select().where('name', 'like', 'gandalf%'))     # fetch records that match query
         """
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             sql, values = qry.assemble()
             return c.fetchall(sql, values)
 
@@ -138,7 +202,7 @@ class Repository(BaseRepository):
         :return: list of record object or empty list
         """
         qry, values = self.select(cols=cols).where(field, "=", value).assemble()
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             return c.fetchall(qry, values, self._record)
 
     def fetch_where(self, where_clauses: list, cols=None) -> list:
@@ -165,7 +229,7 @@ class Repository(BaseRepository):
             qry.where(clause[0], clause[1], clause[2])
 
         qry, values = qry.assemble()
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             return c.fetchall(qry, values, self._record)
 
     def fetch_all(self) -> list:
@@ -174,13 +238,13 @@ class Repository(BaseRepository):
 
         :return: list of record object
         """
-        qry = self._cache_get("fetch_all")
+        qry = self.query_cache.get("fetch_all")
         if qry is None:
             qry = self.select()
             qry, _ = qry.assemble()
-            self._cache_set("fetch_all", qry)
+            self.query_cache.set("fetch_all", qry)
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             return c.fetchall(qry, (), self._record)
 
     def fetch_all_ordered(self, col_name: str, order=Sql.SQL_ASC) -> list:
@@ -191,8 +255,7 @@ class Repository(BaseRepository):
         :return: list of record object
         """
         qry, _ = self.select().order(col_name, order).assemble()
-
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             return c.fetchall(qry, (), self._record)
 
     def insert(self, record, cols=None) -> Optional[object]:
@@ -200,21 +263,25 @@ class Repository(BaseRepository):
         Insert a record, optionally returning values
 
         Notes:
-        If the database does not support INSERT...RETURNING, cols can only have one entry, and the primary key will be returned
-        regardless of the actual field name specified in cols
-        Alternatively, use insert_pk()
+        - If the database does not support INSERT...RETURNING, cols can only have one entry, and the primary key will be returned
+          regardless of the actual field name specified in cols
+          Alternatively, use insert_pk()
+
+        - record table name is not verified; as such, inserts are build by the query builder with the record information,
+          not the repository details. This effectively allows insertion of arbitrary records regardless of the repository details,
+          eg. insert aRecord into a bRecordRepository
 
         :param record: record object
         :param cols: optional return columns
         :return: if cols != None, record with specified columns
 
         Example:
-            .insert(MyTable(name="John", surname="connor"))         # insert a new record, returns None
-            .insert(MyTable(name="John", surname="connor"), cols=['id'])  # insert a new record, returns a record with id filled
+            r.insert(MyTable(name="John", surname="connor"))         # insert a new record, returns None
+            r.insert(MyTable(name="John", surname="connor"), cols=['id'])  # insert a new record, returns a record with id filled
         """
-        qry = Insert(self._dialect).into(record)
+        qry = Insert(self.dialect).into(record)
         if cols is not None:
-            if self._dialect.insert_returning:
+            if self.dialect.insert_returning:
                 if len(cols) > 0:
                     qry.returning(cols)
             else:
@@ -224,12 +291,16 @@ class Repository(BaseRepository):
                     )
 
         sql, values = qry.assemble()
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             result = c.exec(sql, values, self._record)
-            if not self._dialect.insert_returning and cols is not None:
+            if (
+                not self.dialect.insert_returning
+                and cols is not None
+                and self.pk is not None
+            ):
                 # assemble a record with only primary key
                 record = self._record()
-                record.fromrecord({self._pk: c.get_cursor().lastrowid})
+                record.fromrecord({self.pk: c.lastrowid()})
                 return record
 
             if len(result) > 0:
@@ -243,22 +314,23 @@ class Repository(BaseRepository):
         :param record: record object to insert
         :return: record id or None
         """
-        pk = self._pk
+        pk = self.pk
         if pk is None:
             pk = getattr(record, ATTR_PRIMARY_KEY, None)
+
         if pk is None:
             raise RepositoryError("insert_pk(): record has no primary key")
 
-        qry = Insert(self._dialect).into(record)
-        if self._dialect.insert_returning:
+        qry = Insert(self.dialect).into(record)
+        if self.dialect.insert_returning:
             sql, values = qry.returning(pk).assemble()
         else:
             sql, values = qry.assemble()
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             result = c.exec(sql, values, cls=self._record)
-            if not self._dialect.insert_returning:
-                return c.get_cursor().lastrowid
+            if not self.dialect.insert_returning:
+                return c.lastrowid()
 
             if len(result) > 0:
                 return result.pop(0).pk()
@@ -271,21 +343,21 @@ class Repository(BaseRepository):
         :param pk_value: search value for record to delete
         :return: none
         """
-        if self._pk is None:
+        if self.pk is None:
             raise RepositoryError("delete_pk(): record has no primary key")
 
-        sql = self._cache_get("delete_pk")
+        sql = self.query_cache.get("delete_pk")
         if sql is None:
             sql, values = (
-                Delete(self._dialect)
+                Delete(self.dialect)
                 .from_(self._record)
-                .where(self._pk, "=", pk_value)
+                .where(self.pk, "=", pk_value)
                 .assemble()
             )
-            self._cache_set("delete_pk", sql)
+            self.query_cache.set("delete_pk", sql)
         else:
             values = [pk_value]
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             c.exec(sql, values)
 
     def delete_where(self, where_clauses: list):
@@ -295,7 +367,7 @@ class Repository(BaseRepository):
         :param where_clauses: list of where clauses
         where_clauses = (field, operator, value)
         """
-        qry = Delete(self._dialect).from_(self._record)
+        qry = Delete(self.dialect).from_(self._record)
 
         if len(where_clauses) == 0:
             # avoid catastrophe if an empty list is passed
@@ -307,7 +379,7 @@ class Repository(BaseRepository):
             qry.where(clause[0], clause[1], clause[2])
 
         qry, values = qry.assemble()
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             c.exec(qry, values)
 
     def map_result_id(self, result: list) -> dict:
@@ -317,7 +389,7 @@ class Repository(BaseRepository):
         :param result: list to transform
         :return: dict of id:record
         """
-        if self._pk is None:
+        if self.pk is None:
             raise RepositoryError("map_result_id(): missing primary key")
         tmp = {}
         for r in result:
@@ -331,18 +403,18 @@ class Repository(BaseRepository):
         :param pk_value: primary key value to check
         :return: bool
         """
-        if self._pk is None:
+        if self.pk is None:
             raise RepositoryError("valid_pk(): missing primary key")
 
-        sql = self._cache_get("valid_pk")
+        sql = self.query_cache.get("valid_pk")
         values = [pk_value]
         if sql is None:
             sql, values = (
-                self.select(self._pk).where(self._pk, "=", pk_value).limit(1).assemble()
+                self.select(self.pk).where(self.pk, "=", pk_value).limit(1).assemble()
             )
-            self._cache_set("valid_pk", sql)
+            self.query_cache.set("valid_pk", sql)
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             result = c.fetchone(sql, values, cls=self._record)
             return result is not None
 
@@ -356,7 +428,7 @@ class Repository(BaseRepository):
         :param useCls: if false, no record deserialization will be attempted
         :return: list
         """
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             if cls is None and useCls:
                 cls = self._record
             return c.exec(sql, values, cls=cls)
@@ -370,17 +442,17 @@ class Repository(BaseRepository):
         :param pk_to_skip: pk value to skip
         :return: bool
         """
-        if self._pk is None:
+        if self.pk is None:
             raise RepositoryError("exists(): missing primary key")
 
         sql, values = (
-            self.select(self._pk)
-            .where(self._pk, "<>", pk_to_skip)
+            self.select(self.pk)
+            .where(self.pk, "<>", pk_to_skip)
             .where(field, "=", value)
             .limit(1)
             .assemble()
         )
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             result = c.fetchone(sql, values, cls=self._record)
             return result is not None
 
@@ -395,26 +467,26 @@ class Repository(BaseRepository):
         :param pk_value: optional primary key value
         :return:
         """
-        if self._pk is None:
+        if self.pk is None:
             raise RepositoryError("update(): missing primary key")
         data = record.asrecord()  # type:dict
 
         value = pk_value
-        if self._pk in data.keys():
+        if self.pk in data.keys():
             # if primary key already on record, extract it and remove it from update list
-            value = data[self._pk]
-            del data[self._pk]
+            value = data[self.pk]
+            del data[self.pk]
 
         if value is None:
             raise RepositoryError("update(): missing primary key value")
         sql, values = (
-            Update(self._dialect)
-            .table(self._tablename, self._schema)
+            Update(self.dialect)
+            .table(self.table_name, self.schema)
             .values(data)
-            .where(self._pk, "=", value)
+            .where(self.pk, "=", value)
             .assemble()
         )
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             c.exec(sql, values)
 
     def update_where(self, record, where_list: list):
@@ -432,7 +504,7 @@ class Repository(BaseRepository):
         if len(where_list) == 0:
             raise RepositoryError("update_where(): where clause list cannot be empty")
 
-        qry = Update(self._dialect).table(self._tablename, self._schema).values(record)
+        qry = Update(self.dialect).table(self.table_name, self.schema).values(record)
         for cond in where_list:
             if type(cond) not in [list, tuple]:
                 raise RepositoryError(
@@ -449,7 +521,7 @@ class Repository(BaseRepository):
                 )
 
         sql, values = qry.assemble()
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             c.exec(sql, values)
 
     def count(self) -> int:
@@ -459,13 +531,16 @@ class Repository(BaseRepository):
         :return: int
         """
         values = None
-        sql = self._cache_get("count")
+        sql = self.query_cache.get("count")
         if sql is None:
             sql, values = self.select(cols={Literal("COUNT(*)"): "total"}).assemble()
-            self._cache_set("count", sql)
-        result = self._db.cursor().fetchone(sql, values)
-        if result is not None:
-            return result["total"]
+            self.query_cache.set("count", sql)
+
+        with self.cursor() as c:
+            result = c.fetchone(sql, values)
+            if result is not None:
+                return result["total"]
+
         return 0
 
     def count_where(self, where_list: list):
@@ -499,7 +574,7 @@ class Repository(BaseRepository):
                 )
 
         sql, values = qry.assemble()
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             result = c.fetchone(sql, values)
             if result is not None:
                 return result["total"]
@@ -521,13 +596,13 @@ class Repository(BaseRepository):
         total = 0
         qry = copy.deepcopy(qry)
         sql, values = qry.assemble()
-        qry_count = Select(self._dialect).from_(
+        qry_count = Select(self.dialect).from_(
             {Literal(sql): "qry"}, cols={Literal("COUNT(*)"): "total"}
         )
         if limit:
             qry.limit(limit, offset)
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             # count total rows
             sql, _ = qry_count.assemble()
             count_record = c.fetchone(sql, values)
@@ -537,13 +612,3 @@ class Repository(BaseRepository):
         # fetch rows
         rows = self.fetch(qry, cls=cls)
         return total, rows
-
-    def _cache_get(self, key) -> Union[str, None]:
-        return self._query_cache.get(self._key_prefix + key)
-
-    def _cache_set(self, key, value):
-        return self._query_cache.set(self._key_prefix + key, value)
-
-
-# global query cache for all repositories
-query_cache = StrCache()

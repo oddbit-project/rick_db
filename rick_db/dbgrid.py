@@ -36,7 +36,7 @@ class DbGrid:
                     raise ValueError("search type '%s' is not supported" % search_type)
 
         self._repo = repo
-        record = repo._record()
+        record = repo.record_class()()
         self._fields = record.dbfields()
         self._field_pk = getattr(record, "_pk", None)
 
@@ -49,7 +49,7 @@ class DbGrid:
         self._search_type = search_type
         self._search_fields = search_fields
         self._case_sensitive = case_sensitive is True
-        self._ilike = repo.dialect().ilike
+        self._ilike = repo.dialect.ilike
 
     def default_query(self) -> Select:
         """
@@ -144,10 +144,9 @@ class DbGrid:
                     qry.orwhere(field, operand, mask.format(str(search_text)))
             else:
                 mask = mask.upper()
-                dialect = self._repo.dialect()
                 for field in search_fields:
                     # note: assuming non-pg operation does NOT support schemas or is referencing ambiguous fields
-                    field = dialect.field(field)
+                    field = self._repo.dialect.field(field)
                     qry.orwhere(Literal("UPPER({})".format(field)), operand, mask)
             qry.where_end()
 

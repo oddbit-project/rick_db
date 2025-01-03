@@ -7,7 +7,6 @@ installed before proceeding.
 
 RickDb requires the following dependencies:
 
-- pytest
 - psycopg2
 - toml
 - setuptools
@@ -18,8 +17,6 @@ Installing psycopg2 and setuptools in Ubuntu (>=18):
 ```shell
 $ sudo apt install  python3-setuptools python3-psycopg2
 ```
-
-
 
 ## Installing from package
 
