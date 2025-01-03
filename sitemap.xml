@@ -2,112 +2,118 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/building_queries/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/changelog/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/connection/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/grid/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/install/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/migrations/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/object_mapper/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/repository/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/connection/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/cursor/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/dbgrid/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/delete/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
+    </url>
+    <url>
+         <loc>https://git.oddbit.org/OddBit/rick_db/classes/fieldrecord/</loc>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/insert/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/literal/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
+    </url>
+    <url>
+         <loc>https://git.oddbit.org/OddBit/rick_db/classes/managerinterface/</loc>
+         <lastmod>2025-01-03</lastmod>
+    </url>
+    <url>
+         <loc>https://git.oddbit.org/OddBit/rick_db/classes/pgmanager/</loc>
+         <lastmod>2025-01-03</lastmod>
+    </url>
+    <url>
+         <loc>https://git.oddbit.org/OddBit/rick_db/classes/poolinterface/</loc>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/profiler/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
+    </url>
+    <url>
+         <loc>https://git.oddbit.org/OddBit/rick_db/classes/querycache/</loc>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/record/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/repository/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/select/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/sqldialect/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
+    </url>
+    <url>
+         <loc>https://git.oddbit.org/OddBit/rick_db/classes/sqlite3manager/</loc>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/update/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
+    </url>
+    <url>
+         <loc>https://git.oddbit.org/OddBit/rick_db/classes/userrecord/</loc>
+         <lastmod>2025-01-03</lastmod>
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/with/</loc>
-         <lastmod>2023-12-16</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-01-03</lastmod>
     </url>
 </urlset>

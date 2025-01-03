@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/cursor/">
+        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/managerinterface/">
       
       
-        <link rel="prev" href="../connection/">
+        <link rel="prev" href="../poolinterface/">
       
       
-        <link rel="next" href="../profiler/">
+        <link rel="next" href="../pgmanager/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Cursor - RickDb</title>
+        <title>Manager - RickDb</title>
       
     
     
@@ -79,7 +79,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-rick_dbcursor" class="md-skip">
+        <a href="#class-rick_dbmanagerinterface" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Cursor
+              Manager
             
           </span>
         </div>
@@ -482,29 +482,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Cursor
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../cursor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -513,82 +493,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#property-cursorconn" class="md-nav__link">
-    @property Cursor.conn
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#property-cursorcursor" class="md-nav__link">
-    @property Cursor.cursor
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#property-cursorprofiler" class="md-nav__link">
-    @property Cursor.profiler
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorexecqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.exec(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorfetchoneqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchone(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorfetchallqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchall(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorlastrowid" class="md-nav__link">
-    Cursor.lastrowid()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorclose" class="md-nav__link">
-    Cursor.close()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -838,17 +742,19 @@
                 
   
   
+    
+  
   
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_16" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_16" checked>
         
           <label class="md-nav__link" for="__nav_9_16" id="__nav_9_16_label" tabindex="0">
             
@@ -861,7 +767,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_16_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_16_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9_16">
             <span class="md-nav__icon md-icon"></span>
             Manager
@@ -872,9 +778,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../managerinterface/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Manager
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -883,6 +809,187 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfaceconn" class="md-nav__link">
+    ManagerInterface.conn()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacebackend" class="md-nav__link">
+    ManagerInterface.backend()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacetablesschemanone" class="md-nav__link">
+    ManagerInterface.tables(schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfaceviewsschemanone" class="md-nav__link">
+    ManagerInterface.views(schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfaceschemas" class="md-nav__link">
+    ManagerInterface.schemas()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacedatabase" class="md-nav__link">
+    ManagerInterface.database()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacetable_indexestable_namestr-schemanone" class="md-nav__link">
+    ManagerInterface.table_indexes(table_name:str, schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacetable_pktable_namestr-schemanone" class="md-nav__link">
+    ManagerInterface.table_pk(table_name:str, schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacetable_fieldstable_namestr-schemanone" class="md-nav__link">
+    ManagerInterface.table_fields(table_name:str, schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfaceview_fieldsview_namestr-schemanone" class="md-nav__link">
+    ManagerInterface.view_fields(view_name:str, schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfaceusers" class="md-nav__link">
+    ManagerInterface.users()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfaceuser_groupsuser_namestr" class="md-nav__link">
+    ManagerInterface.user_groups(user_name:str)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacetable_existstable_namestr-schemanone" class="md-nav__link">
+    ManagerInterface.table_exists(table_name:str, schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfaceview_existsview_namestr-schemanone" class="md-nav__link">
+    ManagerInterface.view_exists(view_name:str, schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacecreate_databasedatabase_namestr-kwargs" class="md-nav__link">
+    ManagerInterface.create_database(database_name:str, kwargs)**
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacedatabase_existsdatabase_namestr" class="md-nav__link">
+    ManagerInterface.database_exists(database_name:str)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacedrop_databasedatabase_namestr" class="md-nav__link">
+    ManagerInterface.drop_database(database_name:str)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacecreate_schemaschemastr-kwargs" class="md-nav__link">
+    ManagerInterface.create_schema(schema:str, kwargs)**
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfaceschema_existsschemastr" class="md-nav__link">
+    ManagerInterface.schema_exists(schema:str)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacedrop_schemaschemastr-cascadefalse" class="md-nav__link">
+    ManagerInterface.drop_schema(schema:str, cascade=False)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacekill_clientsdatabase_namestr" class="md-nav__link">
+    ManagerInterface.kill_clients(database_name:str)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacedrop_tabletable_name-str-cascadefalse-schemanone" class="md-nav__link">
+    ManagerInterface.drop_table(table_name: str, cascade=False, schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacedrop_viewview_name-str-cascadefalse-schemanone" class="md-nav__link">
+    ManagerInterface.drop_view(view_name: str, cascade=False, schema=None)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -970,57 +1077,162 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#property-cursorconn" class="md-nav__link">
-    @property Cursor.conn
+  <a href="#managerinterfaceconn" class="md-nav__link">
+    ManagerInterface.conn()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#property-cursorcursor" class="md-nav__link">
-    @property Cursor.cursor
+  <a href="#managerinterfacebackend" class="md-nav__link">
+    ManagerInterface.backend()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#property-cursorprofiler" class="md-nav__link">
-    @property Cursor.profiler
+  <a href="#managerinterfacetablesschemanone" class="md-nav__link">
+    ManagerInterface.tables(schema=None)
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cursorexecqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.exec(qry: str, params=None, cls=None)
+  <a href="#managerinterfaceviewsschemanone" class="md-nav__link">
+    ManagerInterface.views(schema=None)
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cursorfetchoneqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchone(qry: str, params=None, cls=None)
+  <a href="#managerinterfaceschemas" class="md-nav__link">
+    ManagerInterface.schemas()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cursorfetchallqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchall(qry: str, params=None, cls=None)
+  <a href="#managerinterfacedatabase" class="md-nav__link">
+    ManagerInterface.database()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cursorlastrowid" class="md-nav__link">
-    Cursor.lastrowid()
+  <a href="#managerinterfacetable_indexestable_namestr-schemanone" class="md-nav__link">
+    ManagerInterface.table_indexes(table_name:str, schema=None)
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cursorclose" class="md-nav__link">
-    Cursor.close()
+  <a href="#managerinterfacetable_pktable_namestr-schemanone" class="md-nav__link">
+    ManagerInterface.table_pk(table_name:str, schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacetable_fieldstable_namestr-schemanone" class="md-nav__link">
+    ManagerInterface.table_fields(table_name:str, schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfaceview_fieldsview_namestr-schemanone" class="md-nav__link">
+    ManagerInterface.view_fields(view_name:str, schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfaceusers" class="md-nav__link">
+    ManagerInterface.users()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfaceuser_groupsuser_namestr" class="md-nav__link">
+    ManagerInterface.user_groups(user_name:str)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacetable_existstable_namestr-schemanone" class="md-nav__link">
+    ManagerInterface.table_exists(table_name:str, schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfaceview_existsview_namestr-schemanone" class="md-nav__link">
+    ManagerInterface.view_exists(view_name:str, schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacecreate_databasedatabase_namestr-kwargs" class="md-nav__link">
+    ManagerInterface.create_database(database_name:str, kwargs)**
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacedatabase_existsdatabase_namestr" class="md-nav__link">
+    ManagerInterface.database_exists(database_name:str)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacedrop_databasedatabase_namestr" class="md-nav__link">
+    ManagerInterface.drop_database(database_name:str)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacecreate_schemaschemastr-kwargs" class="md-nav__link">
+    ManagerInterface.create_schema(schema:str, kwargs)**
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfaceschema_existsschemastr" class="md-nav__link">
+    ManagerInterface.schema_exists(schema:str)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacedrop_schemaschemastr-cascadefalse" class="md-nav__link">
+    ManagerInterface.drop_schema(schema:str, cascade=False)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacekill_clientsdatabase_namestr" class="md-nav__link">
+    ManagerInterface.kill_clients(database_name:str)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacedrop_tabletable_name-str-cascadefalse-schemanone" class="md-nav__link">
+    ManagerInterface.drop_table(table_name: str, cascade=False, schema=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managerinterfacedrop_viewview_name-str-cascadefalse-schemanone" class="md-nav__link">
+    ManagerInterface.drop_view(view_name: str, cascade=False, schema=None)
   </a>
   
 </li>
@@ -1040,27 +1252,57 @@
                   
 
 
-<h1 id="class-rick_dbcursor">Class rick_db.<strong>Cursor</strong><a class="headerlink" href="#class-rick_dbcursor" title="Permanent link">&para;</a></h1>
-<p>Provides cursor logic in a database-independent fashion.</p>
-<h3 id="property-cursorconn">@property Cursor.<strong>conn</strong><a class="headerlink" href="#property-cursorconn" title="Permanent link">&para;</a></h3>
-<p>Exposes the underlying connection used to create the Cursor object.</p>
-<h3 id="property-cursorcursor">@property Cursor.<strong>cursor</strong><a class="headerlink" href="#property-cursorcursor" title="Permanent link">&para;</a></h3>
-<p>Exposes the internal cursor object, from the connection adapter.</p>
-<h3 id="property-cursorprofiler">@property Cursor.<strong>profiler</strong><a class="headerlink" href="#property-cursorprofiler" title="Permanent link">&para;</a></h3>
-<p>Exposes the current <a href="../profiler/#rick_dbprofiler">Profiler</a>  object in use by the Cursor.</p>
-<h3 id="cursorexecqry-str-paramsnone-clsnone">Cursor.<strong>exec(qry: str, params=None, cls=None)</strong><a class="headerlink" href="#cursorexecqry-str-paramsnone-clsnone" title="Permanent link">&para;</a></h3>
-<p>Executes a SQL query specified in <em>qry</em>, with optional parameter list <em>params</em>. If <em>cls</em>, the specified class will be used
-to return objects via Object Mapper. The query may or may not return a result.</p>
-<h3 id="cursorfetchoneqry-str-paramsnone-clsnone">Cursor.<strong>fetchone(qry: str, params=None, cls=None)</strong><a class="headerlink" href="#cursorfetchoneqry-str-paramsnone-clsnone" title="Permanent link">&para;</a></h3>
-<p>Executes a SQL query specified in <em>qry</em>, with optional parameter list <em>params</em> and optional Object Mapper class defined via 
-<em>cls</em>. It will return a single result or None</p>
-<h3 id="cursorfetchallqry-str-paramsnone-clsnone">Cursor.<strong>fetchall(qry: str, params=None, cls=None)</strong><a class="headerlink" href="#cursorfetchallqry-str-paramsnone-clsnone" title="Permanent link">&para;</a></h3>
-<p>Executes a SQL query specified in <em>qry</em>, with optional parameter list <em>params</em> and optional Object Mapper class defined via 
-<em>cls</em>. It will always return a list. If no records are to be returned, the list will be empty.</p>
-<h3 id="cursorlastrowid">Cursor.<strong>lastrowid()</strong><a class="headerlink" href="#cursorlastrowid" title="Permanent link">&para;</a></h3>
-<p>Returns the last inserted id; if not supported, returns None</p>
-<h3 id="cursorclose">Cursor.<strong>close()</strong><a class="headerlink" href="#cursorclose" title="Permanent link">&para;</a></h3>
-<p>Closes current cursor.</p>
+<h1 id="class-rick_dbmanagerinterface">Class rick_db.<strong>ManagerInterface</strong><a class="headerlink" href="#class-rick_dbmanagerinterface" title="Permanent link">&para;</a></h1>
+<p>The ManagerInterface provides a common interface to <a href="../pgmanager/">PgManager</a> and <a href="../sqlite3manager/">Sqlite3Manager</a> 
+classes, exposing common management methods.</p>
+<h3 id="managerinterfaceconn">ManagerInterface.<strong>conn()</strong><a class="headerlink" href="#managerinterfaceconn" title="Permanent link">&para;</a></h3>
+<p>Returns a <a href="../connection/">Connection</a> using a context manager; the connection is automatically disposed (if required)
+when context exits.</p>
+<h3 id="managerinterfacebackend">ManagerInterface.<strong>backend()</strong><a class="headerlink" href="#managerinterfacebackend" title="Permanent link">&para;</a></h3>
+<p>Returns the current active backend, either a <a href="../connection/">Connection</a> object, or a <a href="../poolinterface/">PoolInterface</a>
+object.</p>
+<h3 id="managerinterfacetablesschemanone">ManagerInterface.<strong>tables(schema=None)</strong><a class="headerlink" href="#managerinterfacetablesschemanone" title="Permanent link">&para;</a></h3>
+<p>Returns a list of existing table names, optionally on a specific <em>schema</em>. </p>
+<h3 id="managerinterfaceviewsschemanone">ManagerInterface.<strong>views(schema=None)</strong><a class="headerlink" href="#managerinterfaceviewsschemanone" title="Permanent link">&para;</a></h3>
+<p>Returns a list of existing view names, optionally on a specific <em>schema</em>. </p>
+<h3 id="managerinterfaceschemas">ManagerInterface.<strong>schemas()</strong><a class="headerlink" href="#managerinterfaceschemas" title="Permanent link">&para;</a></h3>
+<p>Returns a list of existing schema names. </p>
+<h3 id="managerinterfacedatabase">ManagerInterface.<strong>database()</strong><a class="headerlink" href="#managerinterfacedatabase" title="Permanent link">&para;</a></h3>
+<p>Returns a list of existing database names. </p>
+<h3 id="managerinterfacetable_indexestable_namestr-schemanone">ManagerInterface.<strong>table_indexes(table_name:str, schema=None)</strong><a class="headerlink" href="#managerinterfacetable_indexestable_namestr-schemanone" title="Permanent link">&para;</a></h3>
+<p>Returns a list of <a href="../fieldrecord/">FieldRecord</a> with fields that are indexed on the specified table.</p>
+<h3 id="managerinterfacetable_pktable_namestr-schemanone">ManagerInterface.<strong>table_pk(table_name:str, schema=None)</strong><a class="headerlink" href="#managerinterfacetable_pktable_namestr-schemanone" title="Permanent link">&para;</a></h3>
+<p>Returns a <a href="../fieldrecord/">FieldRecord</a> with details of the primary key, or None if no primary key exists.</p>
+<h3 id="managerinterfacetable_fieldstable_namestr-schemanone">ManagerInterface.<strong>table_fields(table_name:str, schema=None)</strong><a class="headerlink" href="#managerinterfacetable_fieldstable_namestr-schemanone" title="Permanent link">&para;</a></h3>
+<p>Returns a list of <a href="../fieldrecord/">FieldRecord</a> with details of all the fields of the specified table.</p>
+<h3 id="managerinterfaceview_fieldsview_namestr-schemanone">ManagerInterface.<strong>view_fields(view_name:str, schema=None)</strong><a class="headerlink" href="#managerinterfaceview_fieldsview_namestr-schemanone" title="Permanent link">&para;</a></h3>
+<p>Returns a list of <a href="../fieldrecord/">FieldRecord</a> with details of all the fields of the specified view.</p>
+<h3 id="managerinterfaceusers">ManagerInterface.<strong>users()</strong><a class="headerlink" href="#managerinterfaceusers" title="Permanent link">&para;</a></h3>
+<p>Returns a list of <a href="../userrecord/">UserRecord</a> with details of all the users of the database;</p>
+<h3 id="managerinterfaceuser_groupsuser_namestr">ManagerInterface.<strong>user_groups(user_name:str)</strong><a class="headerlink" href="#managerinterfaceuser_groupsuser_namestr" title="Permanent link">&para;</a></h3>
+<p>Returns a string list  of all groups associated with a given user.</p>
+<h3 id="managerinterfacetable_existstable_namestr-schemanone">ManagerInterface.<strong>table_exists(table_name:str, schema=None)</strong><a class="headerlink" href="#managerinterfacetable_existstable_namestr-schemanone" title="Permanent link">&para;</a></h3>
+<p>Returns True if the specified table exists.</p>
+<h3 id="managerinterfaceview_existsview_namestr-schemanone">ManagerInterface.<strong>view_exists(view_name:str, schema=None)</strong><a class="headerlink" href="#managerinterfaceview_existsview_namestr-schemanone" title="Permanent link">&para;</a></h3>
+<p>Returns True if the specified view exists.</p>
+<h3 id="managerinterfacecreate_databasedatabase_namestr-kwargs">ManagerInterface.<strong>create_database(database_name:str, </strong>kwargs)**<a class="headerlink" href="#managerinterfacecreate_databasedatabase_namestr-kwargs" title="Permanent link">&para;</a></h3>
+<p>Creates a new database with the specified name and optional arguments.</p>
+<h3 id="managerinterfacedatabase_existsdatabase_namestr">ManagerInterface.<strong>database_exists(database_name:str)</strong><a class="headerlink" href="#managerinterfacedatabase_existsdatabase_namestr" title="Permanent link">&para;</a></h3>
+<p>Returns True if the specified database exists.</p>
+<h3 id="managerinterfacedrop_databasedatabase_namestr">ManagerInterface.<strong>drop_database(database_name:str)</strong><a class="headerlink" href="#managerinterfacedrop_databasedatabase_namestr" title="Permanent link">&para;</a></h3>
+<p>Removes the specified database.</p>
+<h3 id="managerinterfacecreate_schemaschemastr-kwargs">ManagerInterface.<strong>create_schema(schema:str, </strong>kwargs)**<a class="headerlink" href="#managerinterfacecreate_schemaschemastr-kwargs" title="Permanent link">&para;</a></h3>
+<p>Creates a new schema with the specified name and options in the current database.</p>
+<h3 id="managerinterfaceschema_existsschemastr">ManagerInterface.<strong>schema_exists(schema:str)</strong><a class="headerlink" href="#managerinterfaceschema_existsschemastr" title="Permanent link">&para;</a></h3>
+<p>Returns True if the specified schema exists.</p>
+<h3 id="managerinterfacedrop_schemaschemastr-cascadefalse">ManagerInterface.<strong>drop_schema(schema:str, cascade=False)</strong><a class="headerlink" href="#managerinterfacedrop_schemaschemastr-cascadefalse" title="Permanent link">&para;</a></h3>
+<p>Removes the specified schema, optionally cascading.</p>
+<h3 id="managerinterfacekill_clientsdatabase_namestr">ManagerInterface.<strong>kill_clients(database_name:str)</strong><a class="headerlink" href="#managerinterfacekill_clientsdatabase_namestr" title="Permanent link">&para;</a></h3>
+<p>Kill all clients for the specified database.</p>
+<h3 id="managerinterfacedrop_tabletable_name-str-cascadefalse-schemanone">ManagerInterface.<strong>drop_table(table_name: str, cascade=False, schema=None)</strong><a class="headerlink" href="#managerinterfacedrop_tabletable_name-str-cascadefalse-schemanone" title="Permanent link">&para;</a></h3>
+<p>Attempts to remove the specified table, optionally cascading.</p>
+<h3 id="managerinterfacedrop_viewview_name-str-cascadefalse-schemanone">ManagerInterface.<strong>drop_view(view_name: str, cascade=False, schema=None)</strong><a class="headerlink" href="#managerinterfacedrop_viewview_name-str-cascadefalse-schemanone" title="Permanent link">&para;</a></h3>
+<p>Attempts to remove the specified view, optionally cascading.</p>
 
 
 

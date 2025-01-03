@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.2.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.2.7">
     
     
       
@@ -757,6 +757,148 @@
 
               
             
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/querycache/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    QueryCache
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/poolinterface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pool
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_16" >
+        
+          <label class="md-nav__link" for="__nav_9_16" id="__nav_9_16_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Manager
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9_16">
+            <span class="md-nav__icon md-icon"></span>
+            Manager
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/managerinterface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Manager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/pgmanager/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PgManager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/sqlite3manager/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sqlite3Manager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -830,8 +972,8 @@
 <p>The connection object provides high-level methods to interact with the database, including cursor and transaction support,
 as well as a profiler. For more information on available methods, see <a href="../classes/connection/">Connection</a>.</p>
 <h2 id="connecting-to-postgresql">Connecting to PostgreSQL<a class="headerlink" href="#connecting-to-postgresql" title="Permanent link">&para;</a></h2>
-<p>There are three PostgreSQL connectors available; however, it is advisable to use the regular <strong>PgConnection</strong> with an external
-connection pool, such as <a href="https://www.pgpool.net/">pgpool</a> or equivalent.</p>
+<p>There are two PostgreSQL connectors available - a simple connector and a thread-safe connection pool; the recommended 
+usage is to use <strong>PgConnectionPool</strong>.</p>
 <p>Available connection parameters:</p>
 <table>
 <thead>
@@ -874,19 +1016,19 @@ connection pool, such as <a href="https://www.pgpool.net/">pgpool</a> or equival
 </tr>
 <tr>
 <td>minconn</td>
-<td>PgConnectionPool, PgThreadedConnectionPool</td>
+<td>PgConnectionPool</td>
 <td>Minimum number of connections to keep, defaults to 5 if not provided</td>
 </tr>
 <tr>
 <td>maxconn</td>
-<td>PgConnectionPool, PgThreadedConnectionPool</td>
-<td>Maximum number of connections to keep, defaults to 5 if not provided</td>
+<td>PgConnectionPool</td>
+<td>Maximum number of connections to keep, defaults to 25 if not provided</td>
 </tr>
 </tbody>
 </table>
 <p>*More details on sslmode operation are available in the <a href="https://www.postgresql.org/docs/current/libpq-ssl.html">libpq documentation</a>. </p>
 <p>Using PgConnection:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.conn.pg</span> <span class="kn">import</span> <span class="n">PgConnection</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.backend.pg</span> <span class="kn">import</span> <span class="n">PgConnection</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
@@ -899,9 +1041,11 @@ connection pool, such as <a href="https://www.pgpool.net/">pgpool</a> or equival
 
 <span class="c1"># create connection</span>
 <span class="n">conn</span> <span class="o">=</span> <span class="n">PgConnection</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+    <span class="c1"># to stuff</span>
 </code></pre></div>
 <p>Using PgConnectionPool:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.conn.pg</span> <span class="kn">import</span> <span class="n">PgConnectionPool</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.backend.pg</span> <span class="kn">import</span> <span class="n">PgConnectionPool</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
@@ -913,22 +1057,11 @@ connection pool, such as <a href="https://www.pgpool.net/">pgpool</a> or equival
 <span class="p">}</span>
 
 <span class="c1"># create connection</span>
-<span class="n">conn</span> <span class="o">=</span> <span class="n">PgConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
-</code></pre></div>
-<p>Using PgThreadedConnectionPool:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.conn.pg</span> <span class="kn">import</span> <span class="n">PgThreadedConnectionPool</span>
-
-<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;some_user&gt;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;some_password&gt;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">,</span>
-    <span class="s1">&#39;minconn&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-<span class="p">}</span>
-
-<span class="c1"># create connection</span>
-<span class="n">conn</span> <span class="o">=</span> <span class="n">PgThreadedConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
+<span class="n">pool</span> <span class="o">=</span> <span class="n">PgConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">pool</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>     <span class="c1"># fetch a connection from the pool</span>
+    <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>        <span class="c1"># create a cursor</span>
+        <span class="c1"># to stuff</span>
+        <span class="k">pass</span>
 </code></pre></div>
 <h2 id="connecting-to-sqlite">Connecting to SQLite<a class="headerlink" href="#connecting-to-sqlite" title="Permanent link">&para;</a></h2>
 <p>Available connection parameters:</p>
@@ -955,17 +1088,21 @@ connection pool, such as <a href="https://www.pgpool.net/">pgpool</a> or equival
 </tbody>
 </table>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.conn.sqlite</span> <span class="kn">import</span> <span class="n">Sqlite3Connection</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.backend.sqlite</span> <span class="kn">import</span> <span class="n">Sqlite3Connection</span>
 
 <span class="c1"># create or open a sqlite database</span>
 <span class="n">conn</span> <span class="o">=</span> <span class="n">Sqlite3Connection</span><span class="p">(</span><span class="s1">&#39;my_database.db&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+    <span class="c1"># do stuff</span>
+    <span class="k">pass</span>
 </code></pre></div></p>
 <h2 id="using-a-profiler">Using a profiler<a class="headerlink" href="#using-a-profiler" title="Permanent link">&para;</a></h2>
 <p>RickDb provides a simple profiler interface that allows logging of queries, parameters and execution times, as well
 as a simple in-memory profiler implementation, <a href="../classes/profiler/#class-rick_dbprofilerdefaultprofiler">DefaultProfiler</a>.</p>
 <p>To use a <a href="../classes/profiler/#class-rick_dbprofilerdefaultprofiler">DefaultProfiler</a> instance on a connection,
 just assign the desired instance to the <strong>profiler</strong> property:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.conn.pg</span> <span class="kn">import</span> <span class="n">PgConnection</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.backend.pg</span> <span class="kn">import</span> <span class="n">PgConnection</span>
 <span class="kn">from</span> <span class="nn">rick_db.profiler</span> <span class="kn">import</span> <span class="n">DefaultProfiler</span>
 
 <span class="n">db_cfg</span> <span class="o">=</span> <span class="p">{</span>
@@ -987,6 +1124,30 @@ just assign the desired instance to the <strong>profiler</strong> property:</p>
 <span class="k">for</span> <span class="n">evt</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">profiler</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">elapsed</span><span class="p">)</span>
 </code></pre></div>
+<p>Example using PgConnectionPool:
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.backend.pg</span> <span class="kn">import</span> <span class="n">PgConnectionPool</span>
+<span class="kn">from</span> <span class="nn">rick_db.profiler</span> <span class="kn">import</span> <span class="n">DefaultProfiler</span>
+
+<span class="n">db_cfg</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s2">&quot;rick_test&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_user&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_password&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;sslmode&#39;</span><span class="p">:</span> <span class="s1">&#39;require&#39;</span>
+<span class="p">}</span>
+
+<span class="n">pool</span> <span class="o">=</span> <span class="n">PgConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">db_cfg</span><span class="p">)</span>
+<span class="c1"># instantiate profiler, and use it on conn object</span>
+<span class="n">pool</span><span class="o">.</span><span class="n">profiler</span> <span class="o">=</span> <span class="n">DefaultProfiler</span><span class="p">()</span>
+
+<span class="c1"># perform some queries we can profile</span>
+<span class="k">with</span> <span class="n">pool</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;SELECT 1&quot;</span><span class="p">)</span>
+
+<span class="c1"># output: SELECT 1 0.00012579001486301422</span>
+<span class="k">for</span> <span class="n">evt</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">profiler</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">elapsed</span><span class="p">)</span>
+</code></pre></div></p>
 
 
 
@@ -1026,7 +1187,7 @@ just assign the desired instance to the <strong>profiler</strong> property:</p>
       
       
     
-    <a href="https://github.com/oddbit/pokie" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+    <a href="https://github.com/oddbit-project/rick_db" target="_blank" rel="noopener" title="github.com" class="md-social__link">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
     </a>
   

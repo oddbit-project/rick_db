@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/cursor/">
+        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/querycache/">
       
       
-        <link rel="prev" href="../connection/">
+        <link rel="prev" href="../dbgrid/">
       
       
-        <link rel="next" href="../profiler/">
+        <link rel="next" href="../poolinterface/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Cursor - RickDb</title>
+        <title>QueryCache - RickDb</title>
       
     
     
@@ -79,7 +79,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-rick_dbcursor" class="md-skip">
+        <a href="#class-rick_dbquerycache" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Cursor
+              QueryCache
             
           </span>
         </div>
@@ -482,29 +482,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Cursor
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../cursor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -513,82 +493,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#property-cursorconn" class="md-nav__link">
-    @property Cursor.conn
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#property-cursorcursor" class="md-nav__link">
-    @property Cursor.cursor
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#property-cursorprofiler" class="md-nav__link">
-    @property Cursor.profiler
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorexecqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.exec(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorfetchoneqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchone(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorfetchallqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchall(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorlastrowid" class="md-nav__link">
-    Cursor.lastrowid()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorclose" class="md-nav__link">
-    Cursor.close()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -798,9 +702,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../querycache/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    QueryCache
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -809,6 +733,68 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#querycachegetkeystr-defaultnone" class="md-nav__link">
+    QueryCache.get(key:str, default=None)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#querycachesetkeystr-valuestr" class="md-nav__link">
+    QueryCache.set(key:str, value:str)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#querycachehaskeystr" class="md-nav__link">
+    QueryCache.has(key:str)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#querycacheremovekeystr" class="md-nav__link">
+    QueryCache.remove(key:str)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#querycachepurge" class="md-nav__link">
+    QueryCache.purge()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#querycachecopy" class="md-nav__link">
+    QueryCache.copy()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -970,57 +956,43 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#property-cursorconn" class="md-nav__link">
-    @property Cursor.conn
+  <a href="#querycachegetkeystr-defaultnone" class="md-nav__link">
+    QueryCache.get(key:str, default=None)
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#property-cursorcursor" class="md-nav__link">
-    @property Cursor.cursor
+  <a href="#querycachesetkeystr-valuestr" class="md-nav__link">
+    QueryCache.set(key:str, value:str)
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#property-cursorprofiler" class="md-nav__link">
-    @property Cursor.profiler
+  <a href="#querycachehaskeystr" class="md-nav__link">
+    QueryCache.has(key:str)
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cursorexecqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.exec(qry: str, params=None, cls=None)
+  <a href="#querycacheremovekeystr" class="md-nav__link">
+    QueryCache.remove(key:str)
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cursorfetchoneqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchone(qry: str, params=None, cls=None)
+  <a href="#querycachepurge" class="md-nav__link">
+    QueryCache.purge()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cursorfetchallqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchall(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorlastrowid" class="md-nav__link">
-    Cursor.lastrowid()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorclose" class="md-nav__link">
-    Cursor.close()
+  <a href="#querycachecopy" class="md-nav__link">
+    QueryCache.copy()
   </a>
   
 </li>
@@ -1040,27 +1012,20 @@
                   
 
 
-<h1 id="class-rick_dbcursor">Class rick_db.<strong>Cursor</strong><a class="headerlink" href="#class-rick_dbcursor" title="Permanent link">&para;</a></h1>
-<p>Provides cursor logic in a database-independent fashion.</p>
-<h3 id="property-cursorconn">@property Cursor.<strong>conn</strong><a class="headerlink" href="#property-cursorconn" title="Permanent link">&para;</a></h3>
-<p>Exposes the underlying connection used to create the Cursor object.</p>
-<h3 id="property-cursorcursor">@property Cursor.<strong>cursor</strong><a class="headerlink" href="#property-cursorcursor" title="Permanent link">&para;</a></h3>
-<p>Exposes the internal cursor object, from the connection adapter.</p>
-<h3 id="property-cursorprofiler">@property Cursor.<strong>profiler</strong><a class="headerlink" href="#property-cursorprofiler" title="Permanent link">&para;</a></h3>
-<p>Exposes the current <a href="../profiler/#rick_dbprofiler">Profiler</a>  object in use by the Cursor.</p>
-<h3 id="cursorexecqry-str-paramsnone-clsnone">Cursor.<strong>exec(qry: str, params=None, cls=None)</strong><a class="headerlink" href="#cursorexecqry-str-paramsnone-clsnone" title="Permanent link">&para;</a></h3>
-<p>Executes a SQL query specified in <em>qry</em>, with optional parameter list <em>params</em>. If <em>cls</em>, the specified class will be used
-to return objects via Object Mapper. The query may or may not return a result.</p>
-<h3 id="cursorfetchoneqry-str-paramsnone-clsnone">Cursor.<strong>fetchone(qry: str, params=None, cls=None)</strong><a class="headerlink" href="#cursorfetchoneqry-str-paramsnone-clsnone" title="Permanent link">&para;</a></h3>
-<p>Executes a SQL query specified in <em>qry</em>, with optional parameter list <em>params</em> and optional Object Mapper class defined via 
-<em>cls</em>. It will return a single result or None</p>
-<h3 id="cursorfetchallqry-str-paramsnone-clsnone">Cursor.<strong>fetchall(qry: str, params=None, cls=None)</strong><a class="headerlink" href="#cursorfetchallqry-str-paramsnone-clsnone" title="Permanent link">&para;</a></h3>
-<p>Executes a SQL query specified in <em>qry</em>, with optional parameter list <em>params</em> and optional Object Mapper class defined via 
-<em>cls</em>. It will always return a list. If no records are to be returned, the list will be empty.</p>
-<h3 id="cursorlastrowid">Cursor.<strong>lastrowid()</strong><a class="headerlink" href="#cursorlastrowid" title="Permanent link">&para;</a></h3>
-<p>Returns the last inserted id; if not supported, returns None</p>
-<h3 id="cursorclose">Cursor.<strong>close()</strong><a class="headerlink" href="#cursorclose" title="Permanent link">&para;</a></h3>
-<p>Closes current cursor.</p>
+<h1 id="class-rick_dbquerycache">Class rick_db.<strong>QueryCache</strong><a class="headerlink" href="#class-rick_dbquerycache" title="Permanent link">&para;</a></h1>
+<p>Internal thread-safe query cache object</p>
+<h3 id="querycachegetkeystr-defaultnone">QueryCache.<strong>get(key:str, default=None)</strong><a class="headerlink" href="#querycachegetkeystr-defaultnone" title="Permanent link">&para;</a></h3>
+<p>Attempts to fetch a stored value by key, and if it does not exist, returns <em>default</em> value.</p>
+<h3 id="querycachesetkeystr-valuestr">QueryCache.<strong>set(key:str, value:str)</strong><a class="headerlink" href="#querycachesetkeystr-valuestr" title="Permanent link">&para;</a></h3>
+<p>Stores a value associated with the specified <em>key</em>. If <em>key</em> already exists, its contents are replaced.</p>
+<h3 id="querycachehaskeystr">QueryCache.<strong>has(key:str)</strong><a class="headerlink" href="#querycachehaskeystr" title="Permanent link">&para;</a></h3>
+<p>Returns <em>True</em> if the specified key exists.</p>
+<h3 id="querycacheremovekeystr">QueryCache.<strong>remove(key:str)</strong><a class="headerlink" href="#querycacheremovekeystr" title="Permanent link">&para;</a></h3>
+<p>Attempts to remove the entry identified by <em>key</em>. Non-existing keys are ignored.</p>
+<h3 id="querycachepurge">QueryCache.<strong>purge()</strong><a class="headerlink" href="#querycachepurge" title="Permanent link">&para;</a></h3>
+<p>Removes all stored data.</p>
+<h3 id="querycachecopy">QueryCache.<strong>copy()</strong><a class="headerlink" href="#querycachecopy" title="Permanent link">&para;</a></h3>
+<p>Returns a new <em>QueryCache</em> object with a copy of the stored data, and a new <em>threading.Lock()</em> instance.</p>
 
 
 

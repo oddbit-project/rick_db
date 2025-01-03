@@ -10,13 +10,9 @@
       
       
       
-        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/cursor/">
+        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/userrecord/">
       
       
-        <link rel="prev" href="../connection/">
-      
-      
-        <link rel="next" href="../profiler/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +20,7 @@
     
     
       
-        <title>Cursor - RickDb</title>
+        <title>Class rick_db.UserRecord - RickDb</title>
       
     
     
@@ -79,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-rick_dbcursor" class="md-skip">
+        <a href="#class-rick_dbuserrecord" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Cursor
+              Class rick_db.UserRecord
             
           </span>
         </div>
@@ -406,19 +402,17 @@
       
   
   
-    
-  
   
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
             
@@ -431,7 +425,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             Class List
@@ -482,29 +476,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Cursor
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../cursor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -513,82 +487,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#property-cursorconn" class="md-nav__link">
-    @property Cursor.conn
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#property-cursorcursor" class="md-nav__link">
-    @property Cursor.cursor
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#property-cursorprofiler" class="md-nav__link">
-    @property Cursor.profiler
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorexecqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.exec(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorfetchoneqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchone(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorfetchallqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchall(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorlastrowid" class="md-nav__link">
-    Cursor.lastrowid()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorclose" class="md-nav__link">
-    Cursor.close()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -970,57 +868,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#property-cursorconn" class="md-nav__link">
-    @property Cursor.conn
+  <a href="#property-userrecordname" class="md-nav__link">
+    @property UserRecord.name
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#property-cursorcursor" class="md-nav__link">
-    @property Cursor.cursor
+  <a href="#property-userrecordsuperuser" class="md-nav__link">
+    @property UserRecord.superuser
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#property-cursorprofiler" class="md-nav__link">
-    @property Cursor.profiler
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorexecqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.exec(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorfetchoneqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchone(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorfetchallqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchall(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorlastrowid" class="md-nav__link">
-    Cursor.lastrowid()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorclose" class="md-nav__link">
-    Cursor.close()
+  <a href="#property-userrecordcreatedb" class="md-nav__link">
+    @property UserRecord.createdb
   </a>
   
 </li>
@@ -1040,27 +903,14 @@
                   
 
 
-<h1 id="class-rick_dbcursor">Class rick_db.<strong>Cursor</strong><a class="headerlink" href="#class-rick_dbcursor" title="Permanent link">&para;</a></h1>
-<p>Provides cursor logic in a database-independent fashion.</p>
-<h3 id="property-cursorconn">@property Cursor.<strong>conn</strong><a class="headerlink" href="#property-cursorconn" title="Permanent link">&para;</a></h3>
-<p>Exposes the underlying connection used to create the Cursor object.</p>
-<h3 id="property-cursorcursor">@property Cursor.<strong>cursor</strong><a class="headerlink" href="#property-cursorcursor" title="Permanent link">&para;</a></h3>
-<p>Exposes the internal cursor object, from the connection adapter.</p>
-<h3 id="property-cursorprofiler">@property Cursor.<strong>profiler</strong><a class="headerlink" href="#property-cursorprofiler" title="Permanent link">&para;</a></h3>
-<p>Exposes the current <a href="../profiler/#rick_dbprofiler">Profiler</a>  object in use by the Cursor.</p>
-<h3 id="cursorexecqry-str-paramsnone-clsnone">Cursor.<strong>exec(qry: str, params=None, cls=None)</strong><a class="headerlink" href="#cursorexecqry-str-paramsnone-clsnone" title="Permanent link">&para;</a></h3>
-<p>Executes a SQL query specified in <em>qry</em>, with optional parameter list <em>params</em>. If <em>cls</em>, the specified class will be used
-to return objects via Object Mapper. The query may or may not return a result.</p>
-<h3 id="cursorfetchoneqry-str-paramsnone-clsnone">Cursor.<strong>fetchone(qry: str, params=None, cls=None)</strong><a class="headerlink" href="#cursorfetchoneqry-str-paramsnone-clsnone" title="Permanent link">&para;</a></h3>
-<p>Executes a SQL query specified in <em>qry</em>, with optional parameter list <em>params</em> and optional Object Mapper class defined via 
-<em>cls</em>. It will return a single result or None</p>
-<h3 id="cursorfetchallqry-str-paramsnone-clsnone">Cursor.<strong>fetchall(qry: str, params=None, cls=None)</strong><a class="headerlink" href="#cursorfetchallqry-str-paramsnone-clsnone" title="Permanent link">&para;</a></h3>
-<p>Executes a SQL query specified in <em>qry</em>, with optional parameter list <em>params</em> and optional Object Mapper class defined via 
-<em>cls</em>. It will always return a list. If no records are to be returned, the list will be empty.</p>
-<h3 id="cursorlastrowid">Cursor.<strong>lastrowid()</strong><a class="headerlink" href="#cursorlastrowid" title="Permanent link">&para;</a></h3>
-<p>Returns the last inserted id; if not supported, returns None</p>
-<h3 id="cursorclose">Cursor.<strong>close()</strong><a class="headerlink" href="#cursorclose" title="Permanent link">&para;</a></h3>
-<p>Closes current cursor.</p>
+<h1 id="class-rick_dbuserrecord">Class rick_db.<strong>UserRecord</strong><a class="headerlink" href="#class-rick_dbuserrecord" title="Permanent link">&para;</a></h1>
+<p><a href="../record/">Record</a> class to encapsulate a database user</p>
+<h3 id="property-userrecordname">@property UserRecord.<strong>name</strong><a class="headerlink" href="#property-userrecordname" title="Permanent link">&para;</a></h3>
+<p>String with user name.</p>
+<h3 id="property-userrecordsuperuser">@property UserRecord.<strong>superuser</strong><a class="headerlink" href="#property-userrecordsuperuser" title="Permanent link">&para;</a></h3>
+<p>If 1 or True, user is superuser.</p>
+<h3 id="property-userrecordcreatedb">@property UserRecord.<strong>createdb</strong><a class="headerlink" href="#property-userrecordcreatedb" title="Permanent link">&para;</a></h3>
+<p>If user is allowed to create databases. </p>
 
 
 

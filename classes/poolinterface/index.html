@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/cursor/">
+        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/poolinterface/">
       
       
-        <link rel="prev" href="../connection/">
+        <link rel="prev" href="../querycache/">
       
       
-        <link rel="next" href="../profiler/">
+        <link rel="next" href="../managerinterface/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Cursor - RickDb</title>
+        <title>Pool - RickDb</title>
       
     
     
@@ -79,7 +79,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-rick_dbcursor" class="md-skip">
+        <a href="#class-rick_dbpoolinterface" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Cursor
+              Pool
             
           </span>
         </div>
@@ -482,29 +482,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Cursor
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../cursor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -513,82 +493,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#property-cursorconn" class="md-nav__link">
-    @property Cursor.conn
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#property-cursorcursor" class="md-nav__link">
-    @property Cursor.cursor
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#property-cursorprofiler" class="md-nav__link">
-    @property Cursor.profiler
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorexecqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.exec(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorfetchoneqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchone(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorfetchallqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchall(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorlastrowid" class="md-nav__link">
-    Cursor.lastrowid()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorclose" class="md-nav__link">
-    Cursor.close()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -818,9 +722,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../poolinterface/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Pool
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -829,6 +753,47 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#poolinterfacegetconn" class="md-nav__link">
+    PoolInterface.getconn()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#poolinterfaceputconn" class="md-nav__link">
+    PoolInterface.putconn()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#poolinterfaceconnection" class="md-nav__link">
+    PoolInterface.connection()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -970,57 +935,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#property-cursorconn" class="md-nav__link">
-    @property Cursor.conn
+  <a href="#poolinterfacegetconn" class="md-nav__link">
+    PoolInterface.getconn()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#property-cursorcursor" class="md-nav__link">
-    @property Cursor.cursor
+  <a href="#poolinterfaceputconn" class="md-nav__link">
+    PoolInterface.putconn()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#property-cursorprofiler" class="md-nav__link">
-    @property Cursor.profiler
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorexecqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.exec(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorfetchoneqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchone(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorfetchallqry-str-paramsnone-clsnone" class="md-nav__link">
-    Cursor.fetchall(qry: str, params=None, cls=None)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorlastrowid" class="md-nav__link">
-    Cursor.lastrowid()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cursorclose" class="md-nav__link">
-    Cursor.close()
+  <a href="#poolinterfaceconnection" class="md-nav__link">
+    PoolInterface.connection()
   </a>
   
 </li>
@@ -1040,27 +970,15 @@
                   
 
 
-<h1 id="class-rick_dbcursor">Class rick_db.<strong>Cursor</strong><a class="headerlink" href="#class-rick_dbcursor" title="Permanent link">&para;</a></h1>
-<p>Provides cursor logic in a database-independent fashion.</p>
-<h3 id="property-cursorconn">@property Cursor.<strong>conn</strong><a class="headerlink" href="#property-cursorconn" title="Permanent link">&para;</a></h3>
-<p>Exposes the underlying connection used to create the Cursor object.</p>
-<h3 id="property-cursorcursor">@property Cursor.<strong>cursor</strong><a class="headerlink" href="#property-cursorcursor" title="Permanent link">&para;</a></h3>
-<p>Exposes the internal cursor object, from the connection adapter.</p>
-<h3 id="property-cursorprofiler">@property Cursor.<strong>profiler</strong><a class="headerlink" href="#property-cursorprofiler" title="Permanent link">&para;</a></h3>
-<p>Exposes the current <a href="../profiler/#rick_dbprofiler">Profiler</a>  object in use by the Cursor.</p>
-<h3 id="cursorexecqry-str-paramsnone-clsnone">Cursor.<strong>exec(qry: str, params=None, cls=None)</strong><a class="headerlink" href="#cursorexecqry-str-paramsnone-clsnone" title="Permanent link">&para;</a></h3>
-<p>Executes a SQL query specified in <em>qry</em>, with optional parameter list <em>params</em>. If <em>cls</em>, the specified class will be used
-to return objects via Object Mapper. The query may or may not return a result.</p>
-<h3 id="cursorfetchoneqry-str-paramsnone-clsnone">Cursor.<strong>fetchone(qry: str, params=None, cls=None)</strong><a class="headerlink" href="#cursorfetchoneqry-str-paramsnone-clsnone" title="Permanent link">&para;</a></h3>
-<p>Executes a SQL query specified in <em>qry</em>, with optional parameter list <em>params</em> and optional Object Mapper class defined via 
-<em>cls</em>. It will return a single result or None</p>
-<h3 id="cursorfetchallqry-str-paramsnone-clsnone">Cursor.<strong>fetchall(qry: str, params=None, cls=None)</strong><a class="headerlink" href="#cursorfetchallqry-str-paramsnone-clsnone" title="Permanent link">&para;</a></h3>
-<p>Executes a SQL query specified in <em>qry</em>, with optional parameter list <em>params</em> and optional Object Mapper class defined via 
-<em>cls</em>. It will always return a list. If no records are to be returned, the list will be empty.</p>
-<h3 id="cursorlastrowid">Cursor.<strong>lastrowid()</strong><a class="headerlink" href="#cursorlastrowid" title="Permanent link">&para;</a></h3>
-<p>Returns the last inserted id; if not supported, returns None</p>
-<h3 id="cursorclose">Cursor.<strong>close()</strong><a class="headerlink" href="#cursorclose" title="Permanent link">&para;</a></h3>
-<p>Closes current cursor.</p>
+<h1 id="class-rick_dbpoolinterface">Class rick_db.<strong>PoolInterface</strong><a class="headerlink" href="#class-rick_dbpoolinterface" title="Permanent link">&para;</a></h1>
+<p>Thread-safe pool interface, implemented by connection pool objects.</p>
+<h3 id="poolinterfacegetconn">PoolInterface.<strong>getconn()</strong><a class="headerlink" href="#poolinterfacegetconn" title="Permanent link">&para;</a></h3>
+<p>Returns a <a href="../connection/">Connection</a> object from the pool; the object needs to be disposed via <em>PoolInterface.putconn()</em>.</p>
+<h3 id="poolinterfaceputconn">PoolInterface.<strong>putconn()</strong><a class="headerlink" href="#poolinterfaceputconn" title="Permanent link">&para;</a></h3>
+<p>Returns a <a href="../connection/">Connection</a> object to the pool.</p>
+<h3 id="poolinterfaceconnection">PoolInterface.<strong>connection()</strong><a class="headerlink" href="#poolinterfaceconnection" title="Permanent link">&para;</a></h3>
+<p>Returns a <a href="../connection/">Connection</a> using a context manager; the connection is automatically returned
+to the pool when the context exits.</p>
 
 
 
