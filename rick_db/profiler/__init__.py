@@ -1,1 +1,7 @@
-from .profilers import EventCollection, DefaultProfiler, NullProfiler, Profiler, Event
+from .profilers import (
+    EventCollection,
+    DefaultProfiler,
+    NullProfiler,
+    ProfilerInterface,
+    Event,
+)

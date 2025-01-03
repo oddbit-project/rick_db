@@ -15,7 +15,7 @@ are usage scenarios where direct instantiation can be quite convenient:
 
 ```python
 from rick_db import fieldmapper, Repository
-from rick_db.conn.pg import PgConnection
+from rick_db.backend.pg import PgConnectionPool
 
 @fieldmapper(tablename='character', pk='id_character')
 class Character:
@@ -32,10 +32,10 @@ class CharacterRepository(Repository):
 
 
 db_cfg = {...}
-conn = PgConnection(**db_cfg)
+pool = PgConnectionPool(**db_cfg)
 
 # instantiate declared repository class
-repo = CharacterRepository(conn)
+repo = CharacterRepository(pool)
 
 # insert some records
 repo.insert(Character(id=1, name='Sarah Connor'))
@@ -46,7 +46,7 @@ for record in repo.fetch_all():
     print(record.name)
 
 # alternative method, instantiate a repository directly
-repo = Repository(conn, Character)
+repo = Repository(pool, Character)
 
 # use the repo object
 repo.insert(Character(id=3, name='T-1000'))
@@ -105,7 +105,7 @@ class AuthorRepository(Repository):
         # generated query:
         # SELECT avg(rating) AS "rating" FROM "book" INNER JOIN "book_author" ON 
         # "book"."id_book"="book_author"."fk_book" WHERE ("fk_author" = %s)
-        qry = Select(self._dialect). \
+        qry = Select(self.dialect). \
             from_(Book, {Literal("avg({})".format(Book.rating)): 'rating'}). \
             join(BookAuthor, BookAuthor.fk_book, Book, Book.id). \
             where(BookAuthor.fk_author, '=', id_author)
@@ -122,7 +122,7 @@ class AuthorRepository(Repository):
         :return: list[Book]
         """
         
-        qry = Select(self._dialect). \
+        qry = Select(self.dialect). \
             from_(Book). \
             join(BookAuthor, BookAuthor.fk_book, Book, Book.id). \
             where(BookAuthor.fk_author, '=', id_author)
@@ -132,25 +132,26 @@ class AuthorRepository(Repository):
 
 ## Advanced usage
 
-While Repository objects are stateless from an operational perspective, there is actually an internal, thread-safe, global cache that
+While Repository objects are stateless from an operational perspective, there is actually an internal, thread-safe, local cache that
 is used to accelerate query building. Most Repository methods perform actions with SQL generated from the [Query Builder](building_queries.md),
 and these generated SQL statements can often be cached, due to the fact that any required values are passed in a separate
 structure.
 
-The cache operations within the Repository internal scope can be performed by using the protected methods **_cache_get(key)**
-and **_cache_set(key, value)**. The *key* parameter is a unique identifier for the specific query within the Repository, and 
-will be internally concatenated with a database identifier, module and repository identifier. 
+Each Repository contains its own QueryCache instance, that can be accessed via the *query_cache* attribute.
 
 The typical usage scenario for cache interaction is:
 ```python
-sql_string = _cache_get(string_method_name)
-if sql_string is None:
-   sql_string, values = some_query.assemble()
-   _cache_set(string_method_name, sql_string)
-else:
-    values = list_of_required_values
-
-(...)
+from rick_db import Repository
+class MyRepository(Repository):
+    
+    def some_method(self):
+        sql = self.query_cache.get("<unique cache entry name>")
+        if not sql:
+           sql, values = some_query_using_query_builder.assemble()
+           self.query_cache.set("<unique cache entry name>", sql)
+        else:
+            values = list_of_required_values
+        (...)
 ```
 
 The implementation of the actual [Registry.fetch_pk()](classes/repository.md#repositoryfetch_pkpk_value) provides a good
@@ -161,38 +162,20 @@ example of the typical pattern usage of the cache manipulation methods:
 
     def fetch_pk(self, pk_value) -> Optional[object]:
         
-        if self._pk is None:
-            raise RepositoryError("find_pk(): missing primary key in Record %s" % str(type(self._record)))
+        (...)
         
-        # try to fetch a finished SQL string from the cache, ready to use
-        # the cache key is the method name
-        qry = self._cache_get('find_pk')
+        qry = self.query_cache.get("find_pk")
         if qry is None:
-            # if no cache match, we need to build the SQL string using the query builder
-            qry, values = self.select().where(self._pk, '=', pk_value).limit(1).assemble()
-            # ...and store the generated SQL string in the cache, for future usage
-            self._cache_set('find_pk', qry)
+            qry, values = (
+                self.select().where(self.pk, "=", pk_value).limit(1).assemble()
+            )
+            self.query_cache.set("find_pk", qry)
         else:
-            # SQL string was successfully found in the cache, no need to use query builder
-            # just build the required values list
             values = [pk_value]
-            
-        # execute SQL query and return the record           
-        with self._db.cursor() as c:
+
+        with self.cursor() as c:
             return c.fetchone(qry, values, self._record)
 
     (...)
-```
-
-## Accessing/Purging the Repository Cache
-
-If necessary, the cache used for the Repository SQL statements can be inspected or purged. The global variable is 
-a **rick_db.cache.StrCache** instance, and can be accessed via **rick_db.repository.query_cache**:
-
-```python
-from rick_db.repository import  query_cache
-
-# purge all cached items
-query_cache.purge()
 ```
 

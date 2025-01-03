@@ -1,26 +1,58 @@
-# rick_db.Repository
-
-## Class BaseRepository
+## Class rick_db.**GenericRepository**
 
 Internal top-level repository type.
 
-### BaseRepository.**backend()**
+### **GenericRepository(db, table_name, schema, pk)**
 
-Return the internal [Connection](connection.md) object.
+GenericRepository constructor. Receives a [Connection](connection.md) or a [PoolInterface](poolinterface.md) object, *db*, 
+a table name *table_name* and an optional *schema* and primary key, *pk*.
 
-### BaseRepository.**dialect()**
+### @property GenericRepository.**dialect**
 
-Return the internal [SqlDialect](sqldialect.md) object used by the current connection.
+Retrieve connection dialect. Check [SqlDialect](sqldialect.md) for more details on the return type.
 
-## Class Repository(BaseRepository)
+### @property GenericRepository.**table_name**
+
+Expose the table name to be used internally for queries
+
+### @property GenericRepository.**schema**
+
+Expose the schema, if any, to be used internally for queries
+
+### @property GenericRepository.**pk**
+
+Expose the primary key name (if any) to be used internally for queries
+
+### @property GenericRepository.**query_cache**
+
+Expose the internal [QueryCache](querycache.md) object, used to cache SQL queries.
+
+### GenericRepository.**conn()**
+
+Returns a [Connection](connection.md) object using a context manager; If a pool is used, connections
+are automatically checked in and out of the pool using the context.
+
+### GenericRepository.**cursor()**
+
+Returns a [Cursor](cursor.md) object using a context manager; The cursor connection is generated internally
+by invoking *GenericRepository.conn()*.
+
+
+## Class rick_db.**Repository(GenericRepository)**
 
 The parent Repository class implementation, to be extended to implement specific Record repositories.
 
-### **Repository(db, record_type)**
+### **Repository(db, record)**
 
-Repository constructor. Receives a [Connection](connection.md) object, *db*, and a [Record](record.md) class, *record_type*.
-The *record_type* class will provide the schema, table name and primary key information, and be used as a data type for
+Repository constructor. Receives a [Connection](connection.md) or a [PoolInterface](poolinterface.md) object, *db*, 
+and a [Record](record.md) class, *record*.
+The *record* class will provide the schema, table name and primary key information, and be used as a data type for
 methods that return records or collections.
+
+
+### Repository.**record_class()**
+
+Returns the internal [Record](record.md) class used on repository creation.
 
 
 ### Repository.**select(cols=None)**

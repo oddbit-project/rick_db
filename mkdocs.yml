@@ -51,6 +51,12 @@ nav:
   - Literal: 'classes/literal.md'
   - CTEs (With): 'classes/with.md'
   - DbGrid: 'classes/dbgrid.md'
+  - QueryCache: 'classes/querycache.md'
+  - Pool: 'classes/poolinterface.md'
+  - Manager:
+    - Manager: 'classes/managerinterface.md'
+    - PgManager: 'classes/pgmanager.md'
+    - Sqlite3Manager: 'classes/sqlite3manager.md'
 
 markdown_extensions:
 - toc:
@@ -72,4 +78,4 @@ markdown_extensions:
 extra:
   social:
   - icon: fontawesome/brands/github-alt
-    link: https://github.com/oddbit/pokie
+    link: https://github.com/oddbit-project/rick_db

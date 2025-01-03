@@ -10,7 +10,7 @@ Example:
 
 ```python
 from rick_db import fieldmapper, Repository, DbGrid
-from rick_db.conn.pg import PgConnection
+from rick_db.backend.pg import PgConnectionPool
 
 
 @fieldmapper(tablename='product', pk='id_product')
@@ -29,10 +29,10 @@ db_config = {
 }
 
 # create connection
-conn = PgConnection(**db_config)
+pool = PgConnectionPool(**db_config)
 
 # create a repository
-repo = Repository(conn, Product)
+repo = Repository(pool, Product)
 
 # create a grid
 grid = DbGrid(
@@ -65,5 +65,5 @@ this method only works with ASCII chars.
 It its therefore recommended to avoid the usage of case-sensitive search with this driver.
 
 As an option, one can instead use COLLATE NOCASE on the creation of the required fields, and use DbGrid with case_sensitive=True.
-This way, search will be case insensitive on the fields created with the COLLATE NOCASE option.  
+This way, search will be case-insensitive on the fields created with the COLLATE NOCASE option.  
 

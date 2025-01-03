@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import List
 from rick_db.cli.command import BaseCommand
-from rick_db.util import MigrationManager
-from rick_db.util.metadata import FieldRecord
+from rick_db.manager import FieldRecord
+from rick_db.migrations import BaseMigrationManager
 
 
 class Command(BaseCommand):
@@ -12,14 +12,14 @@ class Command(BaseCommand):
     )
 
     def help(self):
-        self._tty.title(self.description)
-        self._tty.title(
+        self._tty.header(self.description)
+        self._tty.header(
             "Usage: {name} [database] dto <[schema.]table_name> <output_file.py>".format(
                 name=self._name
             )
         )
 
-    def run(self, mgr: MigrationManager, args: list, command_list: dict):
+    def run(self, mm: BaseMigrationManager, args: list, command_list: dict):
         if len(args) < 1:
             self._tty.error("Error : Missing table name")
             return False
@@ -43,25 +43,25 @@ class Command(BaseCommand):
         else:
             table_name = table_name.pop(0)
 
-        meta = mgr.get_meta()
-        if not meta.table_exists(table_name, schema):
+        mgr = mm.manager
+        if not mgr.table_exists(table_name, schema):
             view = True
-            if not meta.view_exists(table_name, schema):
+            if not mgr.view_exists(table_name, schema):
                 self._tty.error(
                     "Error : Database object '{}' not found".format(args[0])
                 )
                 return False
 
         if view:
-            fields = meta.view_fields(table_name, schema)
+            fields = mgr.view_fields(table_name, schema)
         else:
-            fields = meta.table_fields(table_name, schema)
+            fields = mgr.table_fields(table_name, schema)
 
         try:
             contents = self._code_gen(table_name, schema, fields)
             with open(output_file, "w", encoding="utf-8") as f:
                 f.write(contents)
-            self._tty.title("DAO written to file {name}".format(name=output_file))
+            self._tty.header("DAO written to file {name}".format(name=output_file))
             return True
 
         except Exception as e:
@@ -98,7 +98,7 @@ class Command(BaseCommand):
             line.append("pk='{pk}'".format(pk=pk))
 
         result.append("@fieldmapper({fields})".format(fields=", ".join(line)))
-        result.append("class {name}:".format(name=name))
+        result.append("class {name}Record:".format(name=name))
 
         for f in fields:
             attr_name = f.field

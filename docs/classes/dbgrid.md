@@ -40,7 +40,7 @@ match (field=value).
 Example:
 ```python
 from rick_db import fieldmapper, Repository, DbGrid
-from rick_db.conn.pg import PgConnection
+from rick_db.backend.pg import PgConnectionPool
 
 
 @fieldmapper(tablename="product", pk="id_product")
@@ -59,10 +59,10 @@ db_config = {
 }
 
 # create connection
-conn = PgConnection(**db_config)
+pool = PgConnectionPool(**db_config)
 
 # create a repository
-repo = Repository(conn, Product)
+repo = Repository(pool, Product)
 
 # create a grid
 grid = DbGrid(
