@@ -212,5 +212,5 @@ class Sqlite3SqlDialect(SqlDialect):
     def __init__(self):
         super(Sqlite3SqlDialect, self).__init__()
         self.placeholder = "?"
-        self.insert_returning = False
+        self.insert_returning = True  # since 3.35.0
         self.ilike = False

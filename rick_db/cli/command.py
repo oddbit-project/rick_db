@@ -1,4 +1,5 @@
-from rick_db.util import ConsoleWriter, MigrationManager
+from .console import ConsoleWriter, AnsiColor
+from ..migrations import BaseMigrationManager
 
 
 class BaseCommand:
@@ -8,9 +9,10 @@ class BaseCommand:
     def __init__(self, prog_name: str, tty: ConsoleWriter):
         self._name = prog_name
         self._tty = tty
+        self._color = AnsiColor()
 
     def help(self):
         pass
 
-    def run(self, mgr: MigrationManager, args: list, command_list: dict):
+    def run(self, mgr: BaseMigrationManager, args: list, command_list: dict):
         pass

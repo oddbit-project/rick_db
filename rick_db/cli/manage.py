@@ -3,9 +3,12 @@ import sys
 from pathlib import Path
 from typing import Optional
 
+from rick_db.backend.pg import PgMigrationManager, PgManager
+from rick_db.backend.sqlite import Sqlite3Manager, Sqlite3MigrationManager
 from rick_db.cli.command import BaseCommand
 from rick_db.cli.config import ConfigFile
-from rick_db.util import ConsoleWriter, MigrationManager
+from rick_db.migrations import BaseMigrationManager
+from .console import ConsoleWriter
 
 
 class CliManager:
@@ -90,7 +93,7 @@ class CliManager:
             return -4
         return 0
 
-    def _resolve_db(self, db_name: str) -> Optional[MigrationManager]:
+    def _resolve_db(self, db_name: str) -> Optional[BaseMigrationManager]:
         """
         Build database connection and instantiate migration manager
         :param db_name: configuration key with database configuration
@@ -112,31 +115,35 @@ class CliManager:
             return None
         return getattr(self, factory)(cfg)
 
-    def _pgsql(self, cfg: dict) -> Optional[MigrationManager]:
+    def _pgsql(self, cfg: dict) -> Optional[BaseMigrationManager]:
         """
         Assemble PostgreSQL Migration Manager instance
         :param cfg: Conn parameters
         :return: MigrationManager instance
         """
         # imports are local to avoid direct dependency from drivers
-        from rick_db.conn.pg import PgConnection
+        from rick_db.backend.pg import PgConnection
 
         try:
-            return PgConnection(**cfg).migration_manager()
+            conn = PgConnection(**cfg)
+            mgr = PgManager(conn)
+            return PgMigrationManager(mgr)
         except Exception as e:
             self._tty.error("Error: {}".format(str(e)))
             return None
 
-    def _sqlite(self, cfg: dict) -> Optional[MigrationManager]:
+    def _sqlite(self, cfg: dict) -> Optional[BaseMigrationManager]:
         """
         Assemble Sqlite Migration Manager instance
         :param cfg: Conn parameters
         :return: MigrationManager instance
         """
-        from rick_db.conn.sqlite import Sqlite3Connection
+        from rick_db.backend.sqlite import Sqlite3Connection
 
         try:
-            return Sqlite3Connection(**cfg).migration_manager()
+            conn = Sqlite3Connection(**cfg)
+            mgr = Sqlite3Manager(conn)
+            return Sqlite3MigrationManager(mgr)
         except Exception as e:
             self._tty.error("Error: {}".format(str(e)))
             return None

@@ -19,7 +19,7 @@ class EventCollection(list):
         return result
 
 
-class Profiler:
+class ProfilerInterface:
     def add_event(self, query: str, parameters: dict, duration: float):
         pass
 
@@ -27,14 +27,14 @@ class Profiler:
         pass
 
     def get_events(self) -> EventCollection:
-        return EventCollection()
+        pass
 
 
-class NullProfiler(Profiler):
+class NullProfiler(ProfilerInterface):
     pass
 
 
-class DefaultProfiler(Profiler):
+class DefaultProfiler(ProfilerInterface):
     def __init__(self):
         self._events = EventCollection()
 

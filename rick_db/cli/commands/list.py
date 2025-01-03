@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from rick_db.cli.command import BaseCommand
-from rick_db.util import MigrationManager
+from rick_db.migrations import BaseMigrationManager
 
 
 class Command(BaseCommand):
@@ -9,11 +9,11 @@ class Command(BaseCommand):
     description = "list applied migrations, sorted by time"
 
     def help(self):
-        self._tty.title("List applied migrations")
-        self._tty.title("Usage: {name} [database] list".format(name=self._name))
+        self._tty.header("List applied migrations")
+        self._tty.header("Usage: {name} [database] list".format(name=self._name))
 
-    def run(self, mgr: MigrationManager, args: list, command_list: dict):
-        if not mgr.has_manager():
+    def run(self, mgr: BaseMigrationManager, args: list, command_list: dict):
+        if not mgr.is_installed():
             self._tty.error("Error : Migration Manager is not installed")
             return False
 
@@ -23,5 +23,5 @@ class Command(BaseCommand):
             else:
                 dt = str(migration.applied)
             self._tty.write(dt + "\t", False)
-            self._tty.title(migration.name)
+            self._tty.header(migration.name)
         return True

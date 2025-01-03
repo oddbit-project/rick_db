@@ -1,4 +1,4 @@
-from .common import SqlError, SqlStatement, Sql, Literal
+from .common import SqlError, SqlStatement, Sql, Literal, L
 from .dialect import SqlDialect, Sqlite3SqlDialect, PgSqlDialect, DefaultSqlDialect
 from .select import Select
 from .insert import Insert

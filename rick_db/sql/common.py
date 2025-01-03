@@ -15,6 +15,11 @@ class Literal:
         return self._literal
 
 
+# because Literal is also a typing keyword
+class L(Literal):
+    pass
+
+
 class Sql:
     DISTINCT = "distinct"
     COLUMNS = "columns"

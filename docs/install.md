@@ -19,8 +19,6 @@ Installing psycopg2 and setuptools in Ubuntu (>=18):
 $ sudo apt install  python3-setuptools python3-psycopg2
 ```
 
-
-
 ## Installing from package
 
 RickDb is available in [PyPi](https://pypi.org/project/rick-db/) as a package, an can easily be installed using pip:

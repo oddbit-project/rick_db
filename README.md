@@ -15,6 +15,9 @@ and a Repository pattern implementation. It is **not** an ORM, and it's not mean
 - Pluggable SQL query profiler; 
 - Simple migration manager for SQL files;
 
+> Note: rick_db versions 2.0.0 or posterior **are not** backwards compatible with 1.x versions; Code changes are
+> required to migrate between versions
+
 ## Usage scenarios
 
 rick_db was built to cater to a schema-first approach: Database schema is built and managed directly with SQL DDL commands,

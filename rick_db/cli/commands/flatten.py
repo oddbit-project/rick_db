@@ -1,5 +1,5 @@
 from rick_db.cli.command import BaseCommand
-from rick_db.util import MigrationManager, MigrationRecord
+from rick_db.migrations import BaseMigrationManager, MigrationRecord
 
 
 class Command(BaseCommand):
@@ -7,13 +7,13 @@ class Command(BaseCommand):
     description = "replaces all migration entries in the migration manager with a new one, with a specified name"
 
     def help(self):
-        self._tty.title(self.description)
-        self._tty.title(
+        self._tty.header(self.description)
+        self._tty.header(
             "Usage: {name} [database] flatten <name_to_use>".format(name=self._name)
         )
 
-    def run(self, mgr: MigrationManager, args: list, command_list: dict):
-        if not mgr.has_manager():
+    def run(self, mgr: BaseMigrationManager, args: list, command_list: dict):
+        if not mgr.is_installed():
             self._tty.error("Error : Migration Manager is not installed")
             return False
 
@@ -34,9 +34,9 @@ class Command(BaseCommand):
             )
             result = mgr.flatten(mig)
             if result.success:
-                self._tty.ok("success")
+                self._tty.success("success")
             else:
-                self._tty.write(self._tty.RED.format(content="error"))
+                self._tty.write(self._color.red("error"))
                 self._tty.error("Error : " + result.error)
                 return False
 

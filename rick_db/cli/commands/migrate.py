@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List
 from rick_db.cli.command import BaseCommand
-from rick_db.util import MigrationManager, MigrationRecord
+from rick_db.migrations import BaseMigrationManager, MigrationRecord
 
 
 class Command(BaseCommand):
@@ -9,15 +9,15 @@ class Command(BaseCommand):
     description = "execute migrations from the specified location"
 
     def help(self):
-        self._tty.title(self.description)
-        self._tty.title(
+        self._tty.header(self.description)
+        self._tty.header(
             "Usage: {name} [database] migrate <path_to_sql_files>".format(
                 name=self._name
             )
         )
 
-    def run(self, mgr: MigrationManager, args: list, command_list: dict):
-        if not mgr.has_manager():
+    def run(self, mgr: BaseMigrationManager, args: list, command_list: dict):
+        if not mgr.is_installed():
             self._tty.error("Error : Migration Manager is not installed")
             return False
 
@@ -37,22 +37,18 @@ class Command(BaseCommand):
                 # check if migration is duplicated
                 record = mgr.fetch_by_name(mig.name)
                 if record is not None:
-                    self._tty.write(
-                        self._tty.AMBAR.format(content="skipping, already applied")
-                    )
+                    self._tty.write(self._color.yellow("skipping, already applied"))
                 # check if migration is obviously empty
                 elif content.strip() == "":
-                    self._tty.write(
-                        self._tty.AMBAR.format(content="skipping, empty migration")
-                    )
+                    self._tty.write(self._color.yellow("skipping, empty migration"))
                 else:
                     # seems good, ty to execute
                     result = mgr.execute(mig, content)
                     if result.success:
-                        self._tty.ok("success")
+                        self._tty.success("success")
                     else:
                         # in case of error, abort
-                        self._tty.write(self._tty.RED.format(content="error"))
+                        self._tty.write(self._color.red("error"))
                         self._tty.error("Error : " + result.error)
                         return False
 
