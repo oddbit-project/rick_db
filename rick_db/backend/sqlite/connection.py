@@ -1,10 +1,12 @@
 import sqlite3
+import sys
+
 from rick_db import Connection
 from rick_db.sql.dialect import Sqlite3SqlDialect
 
 
 class Sqlite3Connection(Connection):
-    default_isolation_level = None
+    default_isolation_level = "DEFERRED"
     default_auto_commit = False
     timeout = 5.0
 
@@ -12,8 +14,15 @@ class Sqlite3Connection(Connection):
         self._in_transaction = False
         if "isolation_level" not in kwargs:
             kwargs["isolation_level"] = self.default_isolation_level
-        if "autocommit" not in kwargs:
-            kwargs["autocommit"] = self.default_auto_commit
+
+        version = sys.version_info
+        # python >=3.12 sqlite supports PEP249 autocommit property
+        if version >= (3, 12):
+            if "autocommit" not in kwargs:
+                kwargs["autocommit"] = self.default_auto_commit
+        else:
+            self.autocommit = kwargs["isolation_level"] is None
+
         if "timeout" not in kwargs:
             kwargs["timeout"] = self.timeout
         conn = sqlite3.connect(db_file, **kwargs)

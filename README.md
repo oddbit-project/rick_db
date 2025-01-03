@@ -14,6 +14,9 @@ and a Repository pattern implementation. It is **not** an ORM, and it's not mean
 - Pluggable SQL query profiler; 
 - Simple migration manager for SQL files;
 
+> Note: SQLite may have different behaviour based on Python versions; notably, DDL statements in a transaction 
+> may not be affected by rollback on Python <3.12. Also, there are limitations on text search when using the Grid helper
+
 > Note: rick_db version >=2.0.0 **are not** backwards compatible with 1.x versions; Code changes are
 > required to migrate between versions; see the documentation for further details
 

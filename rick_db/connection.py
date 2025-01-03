@@ -88,6 +88,14 @@ class Connection(ConnectionInterface):
         self._in_transaction = False
         self._cursor_factory = Cursor
         self.profiler = profiler
+        # autocommit can either be defined at inherited instances or
+        # imported from the database adapter
+        if getattr(self, "autocommit", None) is None:
+            v = getattr(self.db, "autocommit", None)
+            if v != None:
+                self.autocommit = v
+            else:
+                raise RuntimeError("cannot automatically set autocommit status")
 
     def get_cursor(self):
         """
@@ -111,7 +119,7 @@ class Connection(ConnectionInterface):
         Initializes a transaction on the connection
         :return:
         """
-        if self.db.autocommit not in [False, -1]:
+        if self.autocommit not in [False, -1]:
             raise ConnectionError(
                 "begin(): autocommit enabled, transactions are implicit"
             )

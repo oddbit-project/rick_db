@@ -1,8 +1,10 @@
 import sqlite3
+import sys
+
 import pytest
 
 from rick_db import Cursor, ConnectionError
-from rick_db.backend.sqlite import Sqlite3Connection
+from rick_db.backend.sqlite import Sqlite3Connection, Sqlite3Manager
 from rick_db.profiler import NullProfiler
 from rick_db.sql import Sqlite3SqlDialect
 
@@ -36,7 +38,7 @@ class TestConnection:
 
     def test_transaction_commit(self, sqlite_conn: Sqlite3Connection):
         assert sqlite_conn.in_transaction() is False
-        assert sqlite_conn.db.autocommit is False
+        assert sqlite_conn.autocommit is False
         with sqlite_conn.cursor() as c:
             c.exec("drop table if exists test")
             c.exec("create table test (id int)")
@@ -58,7 +60,7 @@ class TestConnection:
 
     def test_transaction_rollback(self, sqlite_conn: Sqlite3Connection):
         assert sqlite_conn.in_transaction() is False
-        assert sqlite_conn.db.autocommit is False
+        assert sqlite_conn.autocommit is False
         with sqlite_conn.cursor() as c:
             c.exec("drop table if exists test2")
             c.exec("create table test2 (id int)")
@@ -83,7 +85,8 @@ class TestConnection:
         # test rollback of multiple cursors
         sqlite_conn.begin()
         assert sqlite_conn.in_transaction() is True
-        assert sqlite_conn.db.autocommit is False
+        assert sqlite_conn.autocommit is False
+
         with sqlite_conn.cursor() as c:
             assert sqlite_conn.in_transaction() is True
             c.exec("drop table if exists test3")
@@ -99,7 +102,15 @@ class TestConnection:
         sqlite_conn.rollback()
         assert sqlite_conn.in_transaction() is False
 
-        # transaction rollback, table should not exist
-        with pytest.raises(sqlite3.OperationalError):
+        version = sys.version_info
+        # python >=3.12 sqlite supports PEP249 autocommit property
+        if version >= (3, 12):
+            # in previous python versions, rollback() does not rollback DDL statements
+            # transaction rollback, table should not exist
+            with pytest.raises(sqlite3.OperationalError):
+                with sqlite_conn.cursor() as c:
+                    _ = c.fetchall("select * from test3")
+        else:
+            # no DDL rollback supported, table should be empty
             with sqlite_conn.cursor() as c:
-                _ = c.fetchall("select * from test3")
+                assert len(c.fetchall("select * from test3")) == 0
