@@ -98,7 +98,7 @@ class Command(BaseCommand):
             line.append("pk='{pk}'".format(pk=pk))
 
         result.append("@fieldmapper({fields})".format(fields=", ".join(line)))
-        result.append("class {name}:".format(name=name))
+        result.append("class {name}Record:".format(name=name))
 
         for f in fields:
             attr_name = f.field
