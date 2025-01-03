@@ -102,4 +102,4 @@ class TestConnection:
         # transaction rollback, table should not exist
         with pytest.raises(sqlite3.OperationalError):
             with sqlite_conn.cursor() as c:
-                result = c.fetchall("select * from test3")
+                _ = c.fetchall("select * from test3")

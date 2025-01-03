@@ -3,7 +3,18 @@ import pytest
 from rick_db.backend.pg import PgConnection, PgConnectionPool
 from rick_db.backend.pg.manager import PgManager
 from rick_db.backend.pg.pginfo import PgInfo
-from .common import *
+from .common import (
+    create_table,
+    create_fk_table,
+    create_schema,
+    create_schema_table,
+    create_view,
+    create_schema_view,
+    create_group,
+    add_group,
+    drop_group,
+    create_identity_table,
+)
 
 
 class BasePgInfoTest:

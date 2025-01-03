@@ -1,5 +1,14 @@
 import pytest
-from .common import *
+from .common import (
+    create_table,
+    create_schema,
+    create_schema_table,
+    create_view,
+    create_schema_view,
+    create_group,
+    add_group,
+    drop_group,
+)
 
 from rick_db.backend.pg import PgManager, PgConnection, PgConnectionPool
 

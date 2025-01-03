@@ -98,4 +98,4 @@ class TestConnection:
         # transaction rollback, table should not exist
         with pytest.raises(psycopg2.errors.UndefinedTable):
             with pg_conn.cursor() as c:
-                result = c.fetchall("select * from test3")
+                _ = c.fetchall("select * from test3")

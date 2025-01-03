@@ -2,7 +2,6 @@ import pytest
 from rick_db import fieldmapper, Repository, RepositoryError
 from rick_db.backend.pg import PgConnection, PgConnectionPool
 from rick_db.backend.sqlite import Sqlite3Connection
-from tests.repository.conftest import fixture_users
 
 
 @fieldmapper(tablename="users", pk="id_user")

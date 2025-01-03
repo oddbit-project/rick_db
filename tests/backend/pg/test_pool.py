@@ -40,7 +40,7 @@ class TestPool:
     def test_getconn_closed(self, pg_pool: PgConnectionPool):
         pg_pool.close()
         with pytest.raises(PoolError):
-            with pg_pool.getconn() as conn:
+            with pg_pool.getconn():
                 pass
 
     def test_pool_ctx(self, pg_pool: PgConnectionPool):

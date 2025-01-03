@@ -466,16 +466,16 @@ class PgInfo:
         """
         sql = """
             WITH fq_objects AS (
-                SELECT 
-                    c.oid,n.nspname || '.' ||c.relname AS fqname , 
-                    c.relkind, 
+                SELECT
+                    c.oid,n.nspname || '.' ||c.relname AS fqname,
+                    c.relkind,
                     c.relname AS relation
-                    FROM pg_class c 
-                    JOIN pg_namespace n ON n.oid = c.relnamespace 
+                    FROM pg_class c
+                    JOIN pg_namespace n ON n.oid = c.relnamespace
                 ),
                  sequences AS (SELECT oid,fqname FROM fq_objects WHERE relkind = 'S'),
                  tables    AS (SELECT oid, fqname FROM fq_objects WHERE relkind = 'r' )
-            SELECT	
+            SELECT
                    s.fqname AS sequence,
                    t.fqname AS table,
                    a.attname AS column
@@ -484,7 +484,7 @@ class PgInfo:
                              JOIN tables t ON t.oid = d.refobjid
                              JOIN pg_attribute a ON a.attrelid = d.refobjid and a.attnum = d.refobjsubid
             WHERE
-                 d.deptype = 'a' and t.fqname=%s;      
+                 d.deptype = 'a' and t.fqname=%s;
         """
         if not schema:
             schema = self.SCHEMA_DEFAULT
