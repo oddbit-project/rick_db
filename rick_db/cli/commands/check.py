@@ -17,7 +17,7 @@ class Command(MigrateCommand):
         )
 
     def run(self, mgr: BaseMigrationManager, args: list, command_list: dict):
-        if not mgr.has_manager():
+        if not mgr.is_installed():
             self._tty.error("Error : Migration Manager is not installed")
             return False
 
