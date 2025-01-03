@@ -1,5 +1,3 @@
-from rick_db.backend.pg import PgConnectionPool
-
 # Welcome to RickDb
 
 [![Tests](https://github.com/oddbit-project/rick_db/workflows/Tests/badge.svg?branch=master)](https://github.com/oddbit-project/rick_db/actions)

@@ -7,7 +7,6 @@ installed before proceeding.
 
 RickDb requires the following dependencies:
 
-- pytest
 - psycopg2
 - toml
 - setuptools

@@ -3,7 +3,7 @@ import inspect
 from contextlib import contextmanager
 from typing import Union, Any, Optional, Callable
 
-from rick_db import Record, PoolInterface, ConnectionInterface, Connection, Cursor
+from rick_db import PoolInterface, Connection, Cursor
 from rick_db.cache import QueryCache, CacheInterface
 from rick_db.mapper import ATTR_RECORD_MAGIC, ATTR_TABLE, ATTR_SCHEMA, ATTR_PRIMARY_KEY
 from rick_db.sql import SqlDialect, Select, Insert, Delete, Update, Literal, Sql
