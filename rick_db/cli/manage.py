@@ -59,6 +59,7 @@ class CliManager:
                 return -1
 
             db_name = ConfigFile.KEY_PREFIX + cmd
+            print(db_name, self._cfg.keys())
             if db_name not in self._cfg.keys():
                 self._tty.error(
                     "Error : database '{db}' not found in the config file".format(

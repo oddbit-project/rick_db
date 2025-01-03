@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from .migrate import Command as MigrateCommand
-from ..console import AnsiColor
 from ...migrations import BaseMigrationManager
 
 
