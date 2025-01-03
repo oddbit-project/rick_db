@@ -14,7 +14,7 @@ and a Repository pattern implementation. It is **not** an ORM, and it's not mean
 - Pluggable SQL query profiler; 
 - Simple migration manager for SQL files;
 
-> Note: rick_db versions 2.0.0 or posterior **are not** backwards compatible with 1.x versions; Code changes are
+> Note: rick_db version >=2.0.0 **are not** backwards compatible with 1.x versions; Code changes are
 > required to migrate between versions; see the documentation for further details
 
 ## Usage scenarios
