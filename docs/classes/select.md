@@ -320,8 +320,7 @@ qry, _ = Select(PgSqlDialect()).union([
 print(qry)
 ```
 
-### Select.**join(table, field, expr_table=None, expr_field=None, operator=None, cols=None, schema=None,
-expr_schema=None)**
+### Select.**join(table, field, expr_table=None, expr_field=None, operator=None, cols=None, schema=None, expr_schema=None)**
 
 Adds a **INNER JOIN** clause. The parameters must conform with [join() parameters](#join-parameters).
 
