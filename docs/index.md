@@ -15,6 +15,9 @@ and a Repository pattern implementation.
 - Grid helper
 - Migration Manager
 
+> Note: SQLite may have different behaviour based on Python versions; notably, DDL statements in a transaction 
+> may not be affected by rollback on Python <3.12. Also, there are limitations on text search when using the Grid helper
+
 ## Purpose
 
 RickDb was designed to be used in schema-first scenarios: Database schema is built and managed directly with SQL DDL commands,
