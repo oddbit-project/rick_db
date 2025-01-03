@@ -48,7 +48,7 @@ print(sql)
 
 ### Update.**values(values: Union[list, dict, object])**
 
-Define values of fields to be updated. This method can be called multiple times (see [fields()](#insertfieldsfields-list) for an
+Define values of fields to be updated. This method can be called multiple times (see [fields()](insert.md/#insertfieldsfields-list) for an
 example). If *values* is a dict, both fields and values are read from the provided dict. If *values* is a [Record](record.md)
 object, fields and values are read from the object.
 
