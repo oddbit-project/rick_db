@@ -109,8 +109,6 @@ class Connection(ConnectionInterface):
         try:
             c = self.get_cursor()
             yield c
-        except Exception:
-            raise
         finally:
             c.close()
 
@@ -196,12 +194,6 @@ class Cursor(CursorInterface):
     @staticmethod
     def _elapsed(start: float):
         return default_timer() - start
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
 
     def lastrowid(self):
         """
