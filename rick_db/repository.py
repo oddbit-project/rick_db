@@ -43,19 +43,12 @@ class GenericRepository:
     @contextmanager
     def conn(self) -> Connection:
         if self._db:
-            try:
-                yield self._db
-            except Exception:
-                raise
-            finally:
-                return
+            yield self._db
 
         if self._pool:
             try:
                 conn = self._pool.getconn()
                 yield conn
-            except Exception:
-                raise
             finally:
                 self._pool.putconn(conn)
 

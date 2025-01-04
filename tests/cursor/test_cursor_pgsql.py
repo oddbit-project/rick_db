@@ -15,6 +15,33 @@ class TestCursorPGConnection(BaseTestCursor):
 
         conn.close()
 
+    def test_propagate_exception(self, pg_conn: PgConnection):
+        with pg_conn.cursor() as cur:
+            # simple select
+            result = cur.exec("select 1")
+            assert len(result) == 1
+
+            # object mapper hydration
+            cur.exec("drop table if exists counter")
+            cur.exec("create table counter (id int not null primary key)")
+            cur.exec("insert into counter(id) values(1)")
+            cur.exec("insert into counter(id) values(2)")
+            cur.exec("insert into counter(id) values(3)")
+            cur.exec("insert into counter(id) values(4)")
+            result = cur.exec("select * from counter", cls=NumberRecord)
+            assert len(result) == 4
+            for r in result:
+                assert isinstance(r, NumberRecord)
+
+        # ensures exception propagates outside of context
+        with pytest.raises(UniqueViolation):
+            with pg_conn.cursor() as cur:
+                cur.exec("insert into counter(id) values (1)")
+
+            with pg_conn.cursor() as cur:
+                # cleanup
+                cur.exec("drop table if exists counter")
+
 
 class TestCursorPGConnectionPool(BaseTestCursor):
 

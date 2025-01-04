@@ -52,10 +52,7 @@ class PgInfo:
         :return:
         """
         if self._db:
-            try:
-                yield self._db
-            finally:
-                return
+            yield self._db
 
         if self._pool:
             try:

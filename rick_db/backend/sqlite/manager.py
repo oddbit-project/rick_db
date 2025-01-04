@@ -20,10 +20,7 @@ class Sqlite3Manager(ManagerInterface):
         Fetch connection object
         :return:
         """
-        try:
-            yield self._db
-        finally:
-            return
+        yield self._db
 
     def backend(self) -> Sqlite3Connection:
         """
