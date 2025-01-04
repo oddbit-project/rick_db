@@ -12,7 +12,7 @@ def pg_settings() -> dict:
         "host": os.environ.get("PGHOST", "localhost"),
         "port": int(os.environ.get("PGPORT", 5432)),
         "user": os.environ.get("POSTGRES_USER", "pguser"),
-        "password": os.environ.get("POSTGRES_PASSWORD", "pgpassword"),
+        "password": os.environ.get("POSTGRES_PASSWORD", "pgpass"),
         "database": os.environ.get("POSTGRES_DB", "rickdb"),
         "sslmode": os.environ.get("PGSSLMODE", "allow"),
     }
