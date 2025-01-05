@@ -363,3 +363,41 @@ class BaseRepositoryTest:
         assert len(rows) == 2
         assert rows[0].name == "samwise"
         assert rows[1].name == "gandalf"
+
+    def test_transaction(self, conn):
+        repo = Repository(conn, User)
+
+        # start transaction
+        repo.begin()
+        with pytest.raises(RepositoryError):
+            repo.begin()
+        result = repo.insert_pk(User(name="Sarah", email="sarah.connor@skynet"))
+        assert isinstance(result, int)
+        assert result > 0
+        record = repo.fetch_pk(result)
+        assert record.name == "Sarah"
+        # rollback
+        repo.rollback()
+
+        with pytest.raises(RepositoryError):
+            repo.commit()
+        with pytest.raises(RepositoryError):
+            repo.rollback()
+
+        # start other transaction
+        # this should commit successfully
+        with repo.transaction():
+            result = repo.insert_pk(User(name="Sarah", email="sarah.connor@skynet"))
+            assert isinstance(result, int)
+            assert result > 0
+            record = repo.fetch_pk(result)
+            assert record.name == "Sarah"
+
+        # record should exist
+        record = repo.fetch_pk(result)
+        assert record.name == "Sarah"
+
+        with pytest.raises(RepositoryError):
+            repo.commit()
+        with pytest.raises(RepositoryError):
+            repo.rollback()
