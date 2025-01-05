@@ -32,6 +32,9 @@ class GenericRepository:
             self._pool = db
             self.dialect = db.dialect()
 
+        # repository transaction semantics
+        self._transaction = None
+
         # table-related args
         self.table_name = table_name
         self.schema = schema
@@ -42,6 +45,11 @@ class GenericRepository:
 
     @contextmanager
     def conn(self) -> Connection:
+        # if a current repository transaction is running, yield that connection instead
+        if self._transaction:
+            yield self._transaction
+            return
+
         if self._db:
             yield self._db
 
@@ -57,6 +65,55 @@ class GenericRepository:
         with self.conn() as conn:
             with conn.cursor() as cursor:
                 yield cursor
+
+    def begin(self):
+        """
+        Initiates a transaction
+        Transaction semantics is valid only within the current Repository; However, if a Repository
+        is initialized from a Connection, other Repositories using the same connection may suffer side effects
+        :return:
+        """
+        if self._transaction:
+            raise RepositoryError("repository already in a transaction")
+        if self._db:
+            self._transaction = self._db
+        elif self._pool:
+            self._transaction = self._pool.getconn()
+        self._transaction.begin()
+
+    def commit(self):
+        """
+        Commits the current transaction
+        :return:
+        """
+        if self._transaction is None:
+            raise RepositoryError("repository is not in a transaction")
+        self._transaction.commit()
+        if self._pool:
+            self._pool.putconn(self._transaction)
+        self._transaction = None
+
+    def rollback(self):
+        """
+        Rolls back the current transaction
+        :return:
+        """
+        if self._transaction is None:
+            raise RepositoryError("repository is not in a transaction")
+        self._transaction.rollback()
+        if self._pool:
+            self._pool.putconn(self._transaction)
+        self._transaction = None
+
+    @contextmanager
+    def transaction(self):
+        """
+        ContextManager for transaction that only commits
+        :return:
+        """
+        self.begin()
+        yield
+        self.commit()
 
     @staticmethod
     def _cache_factory() -> CacheInterface:
