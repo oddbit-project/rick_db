@@ -112,7 +112,7 @@ class GenericRepository:
         :return:
         """
         self.begin()
-        yield
+        yield self._transaction
         self.commit()
 
     @staticmethod
