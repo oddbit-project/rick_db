@@ -34,6 +34,7 @@ nav:
 - connection.md
 - object_mapper.md
 - Query Builder: building_queries.md
+- JSON Operations: json_operations.md
 - repository.md
 - grid.md
 - migrations.md
@@ -49,6 +50,8 @@ nav:
   - Update: 'classes/update.md'
   - Delete: 'classes/delete.md'
   - Literal: 'classes/literal.md'
+  - JsonField: 'classes/jsonfield.md'
+  - PgJsonField: 'classes/pgjsonfield.md'
   - CTEs (With): 'classes/with.md'
   - DbGrid: 'classes/dbgrid.md'
   - QueryCache: 'classes/querycache.md'

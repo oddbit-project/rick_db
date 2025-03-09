@@ -10,6 +10,7 @@ and a Repository pattern implementation.
 ## Features
 - Object Mapper
 - Fluent SQL Query builder with schema support
+- Comprehensive JSON operations support
 - High level connectors for PostgreSQL, SQLite
 - Pluggable SQL query profiler
 - Grid helper

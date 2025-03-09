@@ -20,6 +20,175 @@ class L(Literal):
     pass
 
 
+class JsonField:
+    """
+    Specialized class for working with JSON/JSONB fields.
+    
+    This class provides a convenient way to work with JSON fields in SQL
+    queries, supporting operations like extracting values and checking
+    for the existence of paths.
+    """
+    
+    def __init__(self, field_name, dialect=None):
+        """
+        Initialize a JsonField
+        
+        :param field_name: The name of the JSON field
+        :param dialect: Optional SQL dialect to use for JSON operations
+        """
+        self.field_name = field_name
+        self.dialect = dialect
+        
+    def extract(self, path, alias=None):
+        """
+        Extract a value from the JSON field
+        
+        :param path: JSON path to extract
+        :param alias: Optional alias for the result
+        :return: Literal SQL expression
+        """
+        if self.dialect and self.dialect.json_support:
+            expr = self.dialect.json_extract(self.field_name, path, alias)
+            return Literal(expr)
+        return Literal(f"JSON_EXTRACT({self.field_name}, '{path}')")
+    
+    def extract_text(self, path, alias=None):
+        """
+        Extract a value as text from the JSON field
+        
+        :param path: JSON path to extract
+        :param alias: Optional alias for the result
+        :return: Literal SQL expression
+        """
+        if self.dialect and self.dialect.json_support:
+            expr = self.dialect.json_extract_text(self.field_name, path, alias)
+            return Literal(expr)
+        return Literal(f"JSON_EXTRACT({self.field_name}, '{path}')")
+    
+    def contains(self, value):
+        """
+        Check if the JSON field contains a value
+        
+        :param value: Value to check for
+        :return: Literal SQL expression
+        """
+        if self.dialect and self.dialect.json_support:
+            expr = self.dialect.json_contains(self.field_name, value)
+            return Literal(expr)
+        return Literal(f"JSON_CONTAINS({self.field_name}, ?)")
+    
+    def has_path(self, path):
+        """
+        Check if a path exists in the JSON field
+        
+        :param path: Path to check
+        :return: Literal SQL expression
+        """
+        if self.dialect and self.dialect.json_support:
+            expr = self.dialect.json_contains_path(self.field_name, path)
+            return Literal(expr)
+        return Literal(f"JSON_CONTAINS_PATH({self.field_name}, 'one', '{path}')")
+        
+    def __str__(self):
+        return self.field_name
+        
+    # Support for -> operator overloading for easier path access
+    def __getitem__(self, key):
+        """
+        Allow dictionary-style access to JSON fields using square brackets.
+        
+        Example:
+            json_field = JsonField('data')
+            json_field['name']  # Returns the expression to extract the 'name' field
+        """
+        # Create a new JsonField with modified field name to represent the JSON path
+        field_path = f'{self.field_name}->>"{key}"'
+        result = JsonField(field_path, self.dialect)
+        return result
+        
+        
+class PgJsonField(JsonField):
+    """
+    PostgreSQL-specific JSON field implementation with extended functionality.
+    """
+    
+    def __init__(self, field_name, dialect=None, is_jsonb=True):
+        """
+        Initialize a PostgreSQL JsonField
+        
+        :param field_name: The name of the JSON field
+        :param dialect: Optional SQL dialect to use
+        :param is_jsonb: Whether the field is JSONB (True) or JSON (False)
+        """
+        super().__init__(field_name, dialect)
+        self.is_jsonb = is_jsonb
+        
+    def extract_object(self, path, alias=None):
+        """
+        Extract a JSON object using the -> operator
+        
+        :param path: JSON path to extract
+        :param alias: Optional alias for the result
+        :return: Literal SQL expression
+        """
+        if self.dialect and hasattr(self.dialect, 'json_extract_object'):
+            expr = self.dialect.json_extract_object(self.field_name, path, alias)
+            return Literal(expr)
+        return self.extract(path, alias)
+        
+    def path_query(self, path, alias=None):
+        """
+        PostgreSQL specific jsonpath query (for PostgreSQL 12+)
+        
+        :param path: jsonpath expression
+        :param alias: Optional alias for the result
+        :return: Literal SQL expression
+        """
+        if self.dialect and hasattr(self.dialect, 'json_path_query'):
+            expr = self.dialect.json_path_query(self.field_name, path, alias)
+            return Literal(expr)
+        return self.has_path(path)
+        
+    def as_jsonb(self):
+        """
+        Cast field to JSONB type
+        
+        :return: This instance with JSONB type set to True
+        """
+        self.is_jsonb = True
+        return self
+        
+    def as_json(self):
+        """
+        Cast field to JSON type
+        
+        :return: This instance with JSONB type set to False
+        """
+        self.is_jsonb = False
+        return self
+        
+    def __getitem__(self, key):
+        """
+        Allow dictionary-style access to JSON fields using PostgreSQL arrow operators.
+        
+        Example:
+            json_field = PgJsonField('data')
+            json_field['name']  # Returns an object representing data->"name"
+        """
+        # For PostgreSQL we use -> which preserves the JSON type
+        field_path = f'{self.field_name}->"{key}"'
+        result = PgJsonField(field_path, self.dialect, self.is_jsonb)
+        return result
+        
+    def __str__(self):
+        """
+        String representation of the field with appropriate type cast
+        """
+        if self.is_jsonb:
+            return f"{self.field_name}::jsonb"
+        return f"{self.field_name}::json"
+
+
 class Sql:
     DISTINCT = "distinct"
     COLUMNS = "columns"

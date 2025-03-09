@@ -1,7 +1,7 @@
 # Building Queries
 
 RickDb's Query Builder can generate SELECT, INSERT, DELETE and UPDATE queries. It also provides schema support (including
-cross-schema operations), JOIN support and recognizes [Record](object_mapper.md) objects for table and schema 
+cross-schema operations), JOIN support, JSON operations, and recognizes [Record](object_mapper.md) objects for table and schema 
 identification.
 
 The query builder provides SQL generation using a fluent interface, suitable for most cases. Different database support
@@ -380,6 +380,46 @@ qry = (
 print(qry.assemble())
 ```
 
+
+## JSON Operations
+
+The Query Builder provides comprehensive support for working with JSON data through the `JsonField` and `PgJsonField` classes and specialized helper methods on the `Select` class. For detailed information, see the [JSON Operations](json_operations.md) documentation.
+
+Basic JSON query example:
+
+```python
+from rick_db.sql import Select, PgJsonField
+from rick_db.sql.dialect import PgSqlDialect
+
+# Create a PostgreSQL dialect
+pg_dialect = PgSqlDialect()
+
+# Using JsonField directly
+json_field = PgJsonField("user_data", pg_dialect)
+
+# Extract values from JSON
+query = (
+    Select(pg_dialect)
+    .from_("users")
+    .where(json_field.extract("$.name"), "=", "John")
+    .where(json_field.extract("$.active"), "=", True)
+)
+
+# Using helper methods
+query = (
+    Select(pg_dialect)
+    .from_("users")
+    .json_extract("user_data", "$.name", "user_name")
+    .json_where("user_data", "$.active", "=", True)
+)
+
+# Using bracket notation (PostgreSQL)
+query = (
+    Select(pg_dialect)
+    .from_("users")
+    .where(json_field["address"]["city"], "=", "New York")
+)
+```
 
 ## With
 

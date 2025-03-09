@@ -13,6 +13,7 @@ class SqlDialect:
         self.placeholder = "?"
         self.insert_returning = True  # if true, INSERT...RETURNING syntax is supported
         self.ilike = True  # if true, ILIKE is supported
+        self.json_support = False  # if true, JSON operations are supported
 
         # internal properties
         self._quote_table = '"{table}"'
@@ -22,6 +23,12 @@ class SqlDialect:
         self._separator = "."
         self._as = " AS "
         self._cast = "CAST({field} AS {cast})"
+        
+        # JSON operators (to be overridden by specific dialects)
+        self._json_extract = "JSON_EXTRACT({field}, {path})"  # Extract value from JSON
+        self._json_extract_text = "JSON_EXTRACT({field}, {path})"  # Extract as text
+        self._json_contains = "JSON_CONTAINS({field}, {value})"  # Check if JSON contains value
+        self._json_contains_path = "JSON_CONTAINS_PATH({field}, 'one', {path})"  # Check if path exists
 
     def table(self, table_name, alias=None, schema=None):
         """
@@ -128,6 +135,119 @@ class SqlDialect:
         return self._as.join(
             [database_name, self._quote_database.format(database=alias)]
         )
+        
+    def json_extract(self, field, path, alias=None):
+        """
+        Extract a value from a JSON field
+        
+        :param field: JSON field name or expression
+        :param path: JSON path to extract
+        :param alias: optional alias for the result
+        :return: SQL expression string
+        :raises: SqlError if JSON is not supported
+        
+        Examples:
+            json_extract('data', '$.name') -> JSON_EXTRACT("data", '$.name')
+            json_extract('data', '$.name', 'username') -> JSON_EXTRACT("data", '$.name') AS "username"
+        """
+        if not self.json_support:
+            raise SqlError("JSON operations not supported in this SQL dialect")
+            
+        field_expr = self.field(field) if not isinstance(field, str) or "." in field else self._quote_field.format(field=field)
+        
+        if isinstance(path, str) and not path.startswith("'") and not path.startswith('"'):
+            # Add quotes to path if needed
+            path = f"'{path}'"
+            
+        expr = self._json_extract.format(field=field_expr, path=path)
+        
+        if alias:
+            return self._as.join([expr, self._quote_field.format(field=alias)])
+        return expr
+        
+    def json_extract_text(self, field, path, alias=None):
+        """
+        Extract a value from a JSON field as text
+        
+        :param field: JSON field name or expression
+        :param path: JSON path to extract
+        :param alias: optional alias for the result
+        :return: SQL expression string
+        :raises: SqlError if JSON is not supported
+        
+        Examples:
+            json_extract_text('data', '$.name') -> JSON_EXTRACT("data", '$.name')
+            json_extract_text('data', '$.name', 'username') -> JSON_EXTRACT("data", '$.name') AS "username"
+        """
+        if not self.json_support:
+            raise SqlError("JSON operations not supported in this SQL dialect")
+            
+        field_expr = self.field(field) if not isinstance(field, str) or "." in field else self._quote_field.format(field=field)
+        
+        if isinstance(path, str) and not path.startswith("'") and not path.startswith('"'):
+            # Add quotes to path if needed
+            path = f"'{path}'"
+            
+        expr = self._json_extract_text.format(field=field_expr, path=path)
+        
+        if alias:
+            return self._as.join([expr, self._quote_field.format(field=alias)])
+        return expr
+        
+    def json_contains(self, field, value, alias=None):
+        """
+        Check if a JSON field contains a value
+        
+        :param field: JSON field name or expression
+        :param value: Value to check for (will be converted to JSON)
+        :param alias: optional alias for the result
+        :return: SQL expression string
+        :raises: SqlError if JSON is not supported
+        
+        Examples:
+            json_contains('data', '"value"') -> JSON_CONTAINS("data", '"value"')
+            json_contains('data', '"value"', 'has_value') -> JSON_CONTAINS("data", '"value"') AS "has_value"
+        """
+        if not self.json_support:
+            raise SqlError("JSON operations not supported in this SQL dialect")
+            
+        field_expr = self.field(field) if not isinstance(field, str) or "." in field else self._quote_field.format(field=field)
+        
+        # For value, we'll use placeholder
+        expr = self._json_contains.format(field=field_expr, value=self.placeholder)
+        
+        if alias:
+            return self._as.join([expr, self._quote_field.format(field=alias)])
+        return expr
+        
+    def json_contains_path(self, field, path, alias=None):
+        """
+        Check if a JSON path exists in a JSON field
+        
+        :param field: JSON field name or expression
+        :param path: JSON path to check
+        :param alias: optional alias for the result
+        :return: SQL expression string
+        :raises: SqlError if JSON is not supported
+        
+        Examples:
+            json_contains_path('data', '$.name') -> JSON_CONTAINS_PATH("data", 'one', '$.name')
+            json_contains_path('data', '$.name', 'has_name') -> JSON_CONTAINS_PATH("data", 'one', '$.name') AS "has_name"
+        """
+        if not self.json_support:
+            raise SqlError("JSON operations not supported in this SQL dialect")
+            
+        field_expr = self.field(field) if not isinstance(field, str) or "." in field else self._quote_field.format(field=field)
+        
+        if isinstance(path, str) and not path.startswith("'") and not path.startswith('"'):
+            # Add quotes to path if needed
+            path = f"'{path}'"
+            
+        expr = self._json_contains_path.format(field=field_expr, path=path)
+        
+        if alias:
+            return self._as.join([expr, self._quote_field.format(field=alias)])
+        return expr
 
 
 class DefaultSqlDialect(SqlDialect):
@@ -149,9 +269,17 @@ class PgSqlDialect(SqlDialect):
         self.placeholder = "%s"
         self.insert_returning = True  # if true, INSERT...RETURNING syntax is supported
         self.ilike = True  # if true, ILIKE is supported
+        self.json_support = True  # PostgreSQL has excellent JSON support
 
         # internal properties
         self._cast = "::"
+        
+        # PostgreSQL specific JSON operators
+        self._json_extract = "{field}->>{path}"  # ->> gets as text (most common use case)
+        self._json_extract_text = "{field}->>{path}"  # Same as extract for PostgreSQL
+        self._json_extract_object = "{field}->{path}"  # -> gets as JSON
+        self._json_contains = "{field} @> {value}::jsonb"  # @> contains operator (for JSONB)
+        self._json_contains_path = "{field} ?? {path}"  # ?? checks if path exists (for JSONB)
 
     def field(self, field, field_alias=None, table=None, schema=None):
         """
@@ -206,6 +334,62 @@ class PgSqlDialect(SqlDialect):
                 return field + cast
         else:
             raise SqlError("Cannot parse fields")
+            
+    def json_extract_object(self, field, path, alias=None):
+        """
+        Extract a JSON object from a JSON/JSONB field (PostgreSQL specific)
+        Uses the -> operator which preserves the JSON type
+        
+        :param field: JSON field name or expression
+        :param path: JSON path to extract (without quotes for numeric path, with quotes for key names)
+        :param alias: optional alias for the result
+        :return: SQL expression string
+        
+        Examples:
+            json_extract_object('data', '0') -> "data"->0
+            json_extract_object('data', '"name"') -> "data"->"name"
+            json_extract_object('data', '"name"', 'user_obj') -> "data"->"name" AS "user_obj"
+        """
+        field_expr = self.field(field) if not isinstance(field, str) or "." in field else self._quote_field.format(field=field)
+        
+        # In PostgreSQL, numeric paths don't need quotes, text keys do
+        if path.isdigit():
+            path_expr = path
+        elif path.startswith('"') and path.endswith('"'):
+            path_expr = path  # Already quoted
+        else:
+            path_expr = f'"{path}"'  # Add quotes to text keys
+            
+        expr = self._json_extract_object.format(field=field_expr, path=path_expr)
+        
+        if alias:
+            return self._as.join([expr, self._quote_field.format(field=alias)])
+        return expr
+        
+    def json_path_query(self, field, path, alias=None):
+        """
+        PostgreSQL specific jsonpath query (for PostgreSQL 12+)
+        Uses the @? operator with jsonpath syntax
+        
+        :param field: JSON field name or expression
+        :param path: jsonpath expression
+        :param alias: optional alias for the result
+        :return: SQL expression string
+        
+        Examples:
+            json_path_query('data', '$.name') -> "data" @? '$.name'
+            json_path_query('data', '$.name', 'has_name') -> "data" @? '$.name' AS "has_name"
+        """
+        field_expr = self.field(field) if not isinstance(field, str) or "." in field else self._quote_field.format(field=field)
+        
+        if not path.startswith("'"):
+            path = f"'{path}'"
+            
+        expr = f"{field_expr}::jsonb @? {path}"
+        
+        if alias:
+            return self._as.join([expr, self._quote_field.format(field=alias)])
+        return expr
 
 
 class Sqlite3SqlDialect(SqlDialect):
