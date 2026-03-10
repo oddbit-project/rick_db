@@ -398,7 +398,7 @@ class BaseRepositoryTest:
         assert record.name == "John"
 
         # Test that changes are rolled back on exception
-        try:
+        with pytest.raises(ValueError):
             with repo.transaction():
                 result2 = repo.insert_pk(User(name="Kyle", email="kyle.reese@skynet"))
                 assert isinstance(result2, int)
@@ -406,8 +406,6 @@ class BaseRepositoryTest:
                 record2 = repo.fetch_pk(result2)
                 assert record2.name == "Kyle"
                 raise ValueError("Intentional error to trigger rollback")
-        except ValueError:
-            pass
 
         # Record should not exist after transaction rolls back
         record2 = repo.fetch_pk(result2)

@@ -7,7 +7,7 @@
 import collections
 from typing import Union
 
-from .common import SqlStatement, Sql, Literal, SqlError
+from .common import SqlStatement, Sql, Literal, SqlError, JsonField, PgJsonField
 from .dialect import SqlDialect, DefaultSqlDialect, PgSqlDialect
 from ..mapper import ATTR_TABLE, ATTR_SCHEMA
 
@@ -26,15 +26,6 @@ class Select(SqlStatement):
     WHERE_AND = 1
     WHERE_OR = 2
     WHERE_CLOSE = 3
-
-    # Query building state
-    STATE_INIT = 0  # Initial state
-    STATE_FROM = 1  # FROM clause added
-    STATE_WHERE = 2  # WHERE clause added
-    STATE_GROUP = 3  # GROUP BY clause added
-    STATE_HAVING = 4  # HAVING clause added
-    STATE_ORDER = 5  # ORDER BY clause added
-    STATE_LIMIT = 6  # LIMIT clause added
 
     # validation rules
     _valid_joins = [
@@ -72,10 +63,6 @@ class Select(SqlStatement):
 
         self._where_blocks = 0
         self._where_blocks_track = []  # Track block openings for better error messages
-
-        # Track query building state for validation
-        self._state = self.STATE_INIT
-        self._validation_errors = []  # Track validation errors
 
         # SQL dialect options
         if dialect is None:
@@ -327,58 +314,24 @@ class Select(SqlStatement):
         """
         Validates the current state of the query.
 
-        Performs various validation checks to ensure the query is properly structured.
-        Collects all validation errors instead of failing fast.
+        Checks for WHERE block balance (unclosed AND/OR blocks).
 
         :return: self (for method chaining)
         :raises: SqlError if the query is invalid
         """
-        errors = []
-
-        # Check if a FROM, UNION, or expression query
-        # An expression query (like SELECT 1,2,3) doesn't need a FROM clause
-        has_expr = Sql.ANONYMOUS in self._parts_columns
-        if len(self._parts_from) == 0 and len(self._parts_union) == 0 and not has_expr:
-            errors.append("Query must have a FROM, UNION, or expression clause")
-
         # Check for WHERE blocks balance
         if self._where_blocks != 0:
             if self._where_blocks_track:
                 block_type, position = self._where_blocks_track[0]
-                errors.append(
-                    f"Unclosed {block_type} block started at position {position} in WHERE clause"
+                raise SqlError(
+                    "Unclosed {} block started at position {} in WHERE clause".format(
+                        block_type, position
+                    )
                 )
             else:
-                errors.append("Unbalanced WHERE blocks in WHERE clause")
-
-        # Check JOIN references
-        for alias, details in self._parts_from.items():
-            # Skip validation for FROM, LATERAL, CROSS JOIN, and NATURAL JOIN
-            if (
-                details["joinType"]
-                not in [Sql.FROM, Sql.LATERAL, Sql.CROSS_JOIN, Sql.NATURAL_JOIN]
-                and details["joinCondition"] is None
-            ):
-                errors.append(f"JOIN condition missing for table {alias}")
-
-        # Check column references in ORDER BY
-        if len(self._parts_order) > 0:
-            table_aliases = set(self._parts_from.keys())
-            for order_spec in self._parts_order:
-                fields, _ = order_spec
-                if isinstance(fields, dict):
-                    for field_name in fields.keys():
-                        if isinstance(field_name, str) and "." in field_name:
-                            table_alias = field_name.split(".")[0]
-                            if table_alias not in table_aliases:
-                                errors.append(
-                                    f"Unknown table alias '{table_alias}' in ORDER BY clause"
-                                )
-
-        # If any errors were found, raise an exception with all errors
-        if errors:
-            error_msg = "Query validation failed:\n- " + "\n- ".join(errors)
-            raise SqlError(error_msg)
+                raise SqlError(
+                    "Unbalanced WHERE blocks: more opening blocks than closing blocks"
+                )
 
         return self
 
@@ -1543,8 +1496,6 @@ class Select(SqlStatement):
         :param table: Optional table name or alias
         :return: JsonField object configured with this query's dialect
         """
-        from rick_db.sql.common import JsonField, PgJsonField
-
         full_field = field_name
         if table:
             full_field = f"{table}.{field_name}"
@@ -1566,8 +1517,6 @@ class Select(SqlStatement):
         :param value: Value to compare against (optional)
         :return: self
         """
-        from rick_db.sql.common import JsonField
-
         # Convert to JsonField if it's a string
         if isinstance(json_field, str):
             json_field = self.json_field(json_field)
@@ -1587,8 +1536,6 @@ class Select(SqlStatement):
         :param alias: Optional alias for the result
         :return: self
         """
-        from rick_db.sql.common import JsonField
-
         # Convert to JsonField if it's a string
         if isinstance(json_field, str):
             json_field = self.json_field(json_field)

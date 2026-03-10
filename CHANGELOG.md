@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [2.1.0]
 
 ### Added
 - Nested transaction support via savepoints in `Repository.transaction()` context manager; inner transaction failures automatically doom the outer transaction

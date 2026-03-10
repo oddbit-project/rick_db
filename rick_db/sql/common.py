@@ -67,9 +67,13 @@ class JsonField:
 
     def contains(self, value):
         """
-        Check if the JSON field contains a value
+        Check if the JSON field contains a value.
 
-        :param value: Value to check for
+        The generated SQL uses a parameter placeholder for the value.
+        The value argument is not interpolated into the SQL string;
+        it should be passed separately to the query executor for parameter binding.
+
+        :param value: Value to check for (used for parameter binding, not interpolated into SQL)
         :return: Literal SQL expression
         """
         if self.dialect and self.dialect.json_support:
