@@ -35,6 +35,7 @@ class Command(BaseCommand):
             result = mgr.flatten(mig)
             if result.success:
                 self._tty.success("success")
+                return True
             else:
                 self._tty.write(self._color.red("error"))
                 self._tty.error("Error : " + result.error)

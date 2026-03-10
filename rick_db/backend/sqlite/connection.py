@@ -25,6 +25,8 @@ class Sqlite3Connection(Connection):
 
         if "timeout" not in kwargs:
             kwargs["timeout"] = self.timeout
+        if "uri" not in kwargs and db_file.startswith("file:"):
+            kwargs["uri"] = True
         conn = sqlite3.connect(db_file, **kwargs)
 
         conn.row_factory = self._row_factory

@@ -1,7 +1,5 @@
 import pytest
 from rick_db import fieldmapper, Repository, RepositoryError
-from rick_db.backend.pg import PgConnection, PgConnectionPool
-from rick_db.backend.sqlite import Sqlite3Connection
 
 
 @fieldmapper(tablename="users", pk="id_user")
@@ -33,19 +31,14 @@ class BaseRepositoryTest:
         repo = Repository(conn, User)
         users = repo.fetch_all()
         assert type(users) is list
-        assert len(users) == len(users)
+        assert len(users) == len(fixture_users)
         for r in users:
             assert isinstance(r, User)
             assert r.id is not None and type(r.id) is int
             assert r.name is not None and type(r.name) is str and len(r.name) > 0
             assert r.email is not None and type(r.email) is str and len(r.email) > 0
             assert r.active is not None
-            if isinstance(self.conn, PgConnection) or isinstance(
-                self.conn, PgConnectionPool
-            ):
-                assert type(r.active) is bool
-            elif isinstance(self.conn, Sqlite3Connection):
-                assert type(r.active) is int
+            assert type(r.active) in (bool, int)
 
     def test_fetchall_ordered(self, conn, fixture_users):
         repo = Repository(conn, User)
@@ -66,12 +59,7 @@ class BaseRepositoryTest:
             assert r.email == expected_list[i]
             i = i + 1
             assert r.active is not None
-            if isinstance(self.conn, PgConnection) or isinstance(
-                self.conn, PgConnectionPool
-            ):
-                assert type(r.active) is bool
-            elif isinstance(self.conn, Sqlite3Connection):
-                assert type(r.active) is int
+            assert type(r.active) in (bool, int)
 
     def test_fetch_pk(self, conn, fixture_users):
         repo = Repository(conn, User)

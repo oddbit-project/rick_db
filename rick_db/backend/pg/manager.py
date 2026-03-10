@@ -32,13 +32,16 @@ class PgManager(ManagerInterface):
         """
         if self._db:
             yield self._db
-
-        if self._pool:
+        elif self._pool:
+            conn = None
             try:
                 conn = self._pool.getconn()
                 yield conn
             finally:
-                self._pool.putconn(conn)
+                if conn is not None:
+                    self._pool.putconn(conn)
+        else:
+            raise RuntimeError("no database connection or pool available")
 
     def backend(self) -> Union[PgConnection, PgConnectionPool]:
         """
@@ -137,7 +140,7 @@ class PgManager(ManagerInterface):
             with conn.cursor() as c:
                 fields = c.fetchall(
                     *qry.assemble(), cls=FieldRecord
-                )  # type:list[FieldRecord]
+                )  # type: list[FieldRecord]
                 if idx is not None:
                     for f in fields:
                         f.primary = f.field == idx.field
@@ -236,11 +239,12 @@ class PgManager(ManagerInterface):
         :param kwargs: optional parameters
         :return:
         """
-        args = []
+        parts = []
         for k, v in kwargs.items():
-            args = "=".join([k.upper(), self.dialect.database(v)])
-        args = " ".join(args)
+            parts.append("=".join([k.upper(), self.dialect.database(v)]))
+        args = " ".join(parts)
         with self.conn() as conn:
+            original_isolation_level = conn.db.isolation_level
             conn.db.set_isolation_level(0)  # ISOLATION_LEVEL_AUTOCOMMIT
 
             sql = "CREATE DATABASE {db} {args}".format(
@@ -249,7 +253,7 @@ class PgManager(ManagerInterface):
 
             with conn.cursor() as c:
                 c.exec(sql)
-            conn.db.set_isolation_level(conn.db.isolation_level)
+            conn.db.set_isolation_level(original_isolation_level)
 
     def database_exists(self, database_name: str) -> bool:
         """
@@ -268,6 +272,7 @@ class PgManager(ManagerInterface):
         self.kill_clients(database_name)
 
         with self.conn() as conn:
+            original_isolation_level = conn.db.isolation_level
             conn.db.set_isolation_level(0)  # ISOLATION_LEVEL_AUTOCOMMIT
             with conn.cursor() as c:
                 c.exec(
@@ -275,7 +280,7 @@ class PgManager(ManagerInterface):
                         db=self.dialect.database(database_name)
                     )
                 )
-            conn.db.set_isolation_level(conn.db.isolation_level)
+            conn.db.set_isolation_level(original_isolation_level)
 
     def create_schema(self, schema: str, **kwargs):
         """

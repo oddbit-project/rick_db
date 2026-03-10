@@ -5,7 +5,7 @@ from rick_db import fieldmapper
 class DatabaseRecord:
     id = "oid"
     name = "datname"
-    id_owner = "datba"
+    id_owner = "datdba"
     encoding = "encoding"
     collation = "datcollate"
     ctype = "datctype"

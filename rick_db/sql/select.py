@@ -1034,7 +1034,7 @@ class Select(SqlStatement):
         # join table
         join_table, alias, schema = self._parse_table_def(join_table, schema)
         if alias in self._parts_from.keys():
-            raise SqlError("_join(): duplicate alias for table {tbl}")
+            raise SqlError(f"_join(): duplicate alias for table {alias}")
 
         # join expression (if necessary)
         if from_table is None:

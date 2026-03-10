@@ -1,12 +1,7 @@
 import pytest
 
 from rick_db.backend.sqlite import Sqlite3Connection, Sqlite3Manager
-
-create_table = (
-    "create table animal(id_animal integer primary key autoincrement, name varchar);"
-)
-create_index = "create index idx01 on animal(id_animal)"
-create_view = "create view list_animals as select * from animal"
+from .common import create_table, create_index, create_view
 
 
 class TestManager:
@@ -86,7 +81,7 @@ class TestManager:
         assert field2.primary is False
 
         meta.drop_view("list_animals")
-        meta.drop_table("animals")
+        meta.drop_table("animal")
 
     def test_table_keys(self, sqlite_conn: Sqlite3Connection):
         meta = Sqlite3Manager(sqlite_conn)

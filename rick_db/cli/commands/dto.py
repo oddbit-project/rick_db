@@ -61,7 +61,7 @@ class Command(BaseCommand):
             contents = self._code_gen(table_name, schema, fields)
             with open(output_file, "w", encoding="utf-8") as f:
                 f.write(contents)
-            self._tty.header("DAO written to file {name}".format(name=output_file))
+            self._tty.header("DTO written to file {name}".format(name=output_file))
             return True
 
         except Exception as e:

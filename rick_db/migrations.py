@@ -142,6 +142,10 @@ class BaseMigrationManager:
         """
         Execute a migration and register it
 
+        Note: _exec() and register() use separate connection/cursor scopes. If _exec()
+        succeeds but register() fails, the migration SQL is applied but not recorded.
+        This is a known limitation of the current architecture.
+
         :param migration:
         :param content:
         :return:

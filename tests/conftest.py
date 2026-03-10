@@ -34,4 +34,6 @@ def pg_pool(pg_settings) -> PgConnectionPool:
 
 @pytest.fixture
 def sqlite_conn() -> Sqlite3Connection:
-    return Sqlite3Connection("file::memory:")
+    c = Sqlite3Connection(":memory:")
+    yield c
+    c.close()

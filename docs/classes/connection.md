@@ -5,7 +5,7 @@ Base connection class for all database connections.
 ### @property Connection.**profiler**
 
 Get or set the current profiler. By default, a connection is initialized with
-a [NullProfiler](profiler.md#class-rick_dbprofilernullprofiler). Check [Profiler](profiler.md#rick_dbprofiler) for details on the return type.
+a [NullProfiler](profiler.md#class-rick_dbprofilernullprofiler). Check [ProfilerInterface](profiler.md#class-rick_dbprofilerprofilerinterface) for details on the return type.
 
 ### Connection.**dialect()**
 
@@ -21,7 +21,7 @@ Creates a new [Cursor](cursor.md)  and returns it as a contextmanager
 
 ### Connection.**begin()**
 
-Starts a database transaction. Raises **ConnectionError** exception if autocommit is enabled or a transaction is already
+Starts a database transaction. Raises **DbConnectionError** exception if autocommit is enabled or a transaction is already
 opened.
 
 ### Connection.**commit()**

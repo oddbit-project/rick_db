@@ -27,7 +27,9 @@ class PgConnectionPool(PoolInterface):
         self._lock = threading.Lock()
         self.profiler = NullProfiler()
         self._dialect = PgSqlDialect()
-        self.ping = True  # if true, connections are "pinged" for validity
+        self.ping = kwargs.pop(
+            "ping", True
+        )  # if true, connections are "pinged" for validity
 
         kwargs["cursor_factory"] = psycopg2.extras.DictCursor
         minconn = kwargs.pop("minconn", self.default_min_conn)
@@ -94,14 +96,26 @@ class PgConnectionPool(PoolInterface):
                     cur.execute("SELECT 1")
                     cur.close()
 
-            except psycopg2.OperationalError:
+            except (psycopg2.OperationalError, psycopg2.InterfaceError):
                 logger.warning(
-                    "feching connection from pool failed (stale connection), retrying..."
+                    "fetching connection from pool failed (stale connection), retrying..."
                 )
                 with self._lock:
-                    self._pool.putconn(dbconn, close=True)
+                    try:
+                        self._pool.putconn(dbconn, close=True)
+                    except Exception:
+                        pass
                 dbconn = None
                 tries += 1
+            except Exception:
+                # on unexpected exceptions, ensure the connection is returned/closed
+                if dbconn is not None:
+                    with self._lock:
+                        try:
+                            self._pool.putconn(dbconn, close=True)
+                        except Exception:
+                            pass
+                raise
 
         if dbconn is None:
             raise PoolError("Cannot connect to database, no connections available")
@@ -116,6 +130,11 @@ class PgConnectionPool(PoolInterface):
     def putconn(self, conn: Connection):
         with self._lock:
             if conn.db:
+                if conn.in_transaction():
+                    try:
+                        conn.rollback()
+                    except Exception:
+                        pass
                 self._pool.putconn(conn.db)
                 conn.db = None
 

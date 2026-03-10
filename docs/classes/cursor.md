@@ -12,7 +12,7 @@ Exposes the internal cursor object, from the connection adapter.
 
 ### @property Cursor.**profiler**
 
-Exposes the current [Profiler](profiler.md#rick_dbprofiler)  object in use by the Cursor.
+Exposes the current [ProfilerInterface](profiler.md#class-rick_dbprofilerprofilerinterface) object in use by the Cursor.
 
 ### Cursor.**exec(qry: str, params=None, cls=None)**
 

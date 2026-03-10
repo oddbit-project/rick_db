@@ -1,4 +1,4 @@
-# Class rick_db.sql.**DbGrid**
+# Class rick_db.**DbGrid**
 
 ### Const DbGrid.**SEARCH_NONE**
 No search to be done.

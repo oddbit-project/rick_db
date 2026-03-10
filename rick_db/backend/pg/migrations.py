@@ -16,6 +16,4 @@ class PgMigrationManager(BaseMigrationManager):
             applied TIMESTAMP WITH TIME ZONE,
             name TEXT NOT NULL
         );
-        """.format(
-            name=PgSqlDialect().table(table_name)
-        )
+        """.format(name=PgSqlDialect().table(table_name))

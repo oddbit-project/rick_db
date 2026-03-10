@@ -18,6 +18,17 @@ insert_table = "insert into users(name, email, login, active) values(%s,%s,%s,%s
 drop_table = "drop table if exists users"
 
 
+def _setup_users(cursor, fixture_users):
+    cursor.exec(drop_table)
+    cursor.exec(create_table)
+    for r in fixture_users:
+        cursor.exec(insert_table, list(r.values()))
+
+
+def _teardown_users(cursor):
+    cursor.exec(drop_table)
+
+
 class TestPgConnRepository(BaseRepositoryTest):
 
     @pytest.fixture
@@ -25,16 +36,13 @@ class TestPgConnRepository(BaseRepositoryTest):
         conn = PgConnection(**pg_settings)
         # setup
         with conn.cursor() as c:
-            c.exec(drop_table)
-            c.exec(create_table)
-            for r in fixture_users:
-                c.exec(insert_table, list(r.values()))
+            _setup_users(c, fixture_users)
 
         yield conn
 
         # teardown
         with conn.cursor() as c:
-            c.exec(drop_table)
+            _teardown_users(c)
         conn.close()
 
     def test_exceptions(self, conn):
@@ -55,15 +63,12 @@ class TestPgPoolRepository(BaseRepositoryTest):
         # setup
         with pool.connection() as db:
             with db.cursor() as c:
-                c.exec(drop_table)
-                c.exec(create_table)
-                for r in fixture_users:
-                    c.exec(insert_table, list(r.values()))
+                _setup_users(c, fixture_users)
 
         yield pool
 
         # teardown
         with pool.connection() as conn:
             with conn.cursor() as c:
-                c.exec(drop_table)
+                _teardown_users(c)
         pool.close()

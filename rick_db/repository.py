@@ -52,13 +52,19 @@ class GenericRepository:
 
         if self._db:
             yield self._db
+            return
 
         if self._pool:
+            conn = None
             try:
                 conn = self._pool.getconn()
                 yield conn
             finally:
-                self._pool.putconn(conn)
+                if conn is not None:
+                    self._pool.putconn(conn)
+            return
+
+        raise RepositoryError("no database connection or pool available")
 
     @contextmanager
     def cursor(self) -> Cursor:
@@ -108,12 +114,16 @@ class GenericRepository:
     @contextmanager
     def transaction(self):
         """
-        ContextManager for transaction that only commits
+        ContextManager for transaction that commits on success, rolls back on exception
         :return:
         """
         self.begin()
-        yield self._transaction
-        self.commit()
+        try:
+            yield self._transaction
+            self.commit()
+        except Exception:
+            self.rollback()
+            raise
 
     @staticmethod
     def _cache_factory() -> CacheInterface:
@@ -519,7 +529,7 @@ class Repository(GenericRepository):
         """
         if self.pk is None:
             raise RepositoryError("update(): missing primary key")
-        data = record.asrecord()  # type:dict
+        data = record.asrecord()  # type: dict
 
         value = pk_value
         if self.pk in data.keys():

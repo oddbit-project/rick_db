@@ -15,18 +15,21 @@ class Sqlite3MigrationManager(BaseMigrationManager):
             applied TIMESTAMP WITH TIME ZONE,
             name TEXT NOT NULL
         );
-        """.format(
-            name=Sqlite3SqlDialect().table(table_name)
-        )
+        """.format(name=Sqlite3SqlDialect().table(table_name))
 
     def _exec(self, content):
         """
         Execute migration using a cursor
+
+        Note: statements are split by ';' and executed individually to avoid
+        sqlite3's executescript() which implicitly commits any pending transaction.
+
         :param content: string
         :return: none
         """
         with self.manager.conn() as conn:
             with conn.cursor() as c:
-                # sqlite does not support multiple queries with exec()
-                # so we use the sqlite3 cursor executescript() instead
-                c.get_cursor().executescript(content)
+                for statement in content.split(";"):
+                    statement = statement.strip()
+                    if statement:
+                        c.exec(statement)

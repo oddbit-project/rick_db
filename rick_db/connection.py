@@ -7,8 +7,12 @@ from timeit import default_timer
 from rick_db.sql.dialect import SqlDialect
 
 
-class ConnectionError(Exception):
+class DbConnectionError(Exception):
     pass
+
+
+# backwards compatibility alias
+ConnectionError = DbConnectionError
 
 
 class CursorInterface:
@@ -92,7 +96,7 @@ class Connection(ConnectionInterface):
         # imported from the database adapter
         if getattr(self, "autocommit", None) is None:
             v = getattr(self.db, "autocommit", None)
-            if v != None:
+            if v is not None:
                 self.autocommit = v
             else:
                 raise RuntimeError("cannot automatically set autocommit status")
@@ -106,11 +110,13 @@ class Connection(ConnectionInterface):
 
     @contextmanager
     def cursor(self) -> CursorInterface:
+        c = None
         try:
             c = self.get_cursor()
             yield c
         finally:
-            c.close()
+            if c is not None:
+                c.close()
 
     def begin(self):
         """
@@ -118,13 +124,13 @@ class Connection(ConnectionInterface):
         :return:
         """
         if self.autocommit not in [False, -1]:
-            raise ConnectionError(
+            raise DbConnectionError(
                 "begin(): autocommit enabled, transactions are implicit"
             )
         if not self._in_transaction:
             self._in_transaction = True
         else:
-            raise ConnectionError("begin(): transaction already opened")
+            raise DbConnectionError("begin(): transaction already opened")
 
     def commit(self):
         """

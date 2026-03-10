@@ -2,6 +2,7 @@ from .version import __version__, get_version
 from .connection import (
     Connection,
     ConnectionInterface,
+    DbConnectionError,
     ConnectionError,
     Cursor,
     CursorInterface,

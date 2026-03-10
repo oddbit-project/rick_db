@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-from rick_db import Cursor, ConnectionError
+from rick_db import Cursor, DbConnectionError
 from rick_db.backend.sqlite import Sqlite3Connection, Sqlite3Manager
 from rick_db.profiler import NullProfiler
 from rick_db.sql import Sqlite3SqlDialect
@@ -29,7 +29,7 @@ class TestConnection:
         assert sqlite_conn.in_transaction() is False
         sqlite_conn.begin()
         assert sqlite_conn.in_transaction() is True
-        with pytest.raises(ConnectionError):
+        with pytest.raises(DbConnectionError):
             sqlite_conn.begin()
 
         sqlite_conn.rollback()
@@ -114,3 +114,4 @@ class TestConnection:
             # no DDL rollback supported, table should be empty
             with sqlite_conn.cursor() as c:
                 assert len(c.fetchall("select * from test3")) == 0
+                c.exec("drop table test3")
