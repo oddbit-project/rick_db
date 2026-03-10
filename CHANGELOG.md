@@ -3,9 +3,12 @@
 ## [Unreleased]
 
 ### Added
-- Python 3.12, 3.13, and 3.14 support in classifiers and tox environments
+- Nested transaction support via savepoints in `Repository.transaction()` context manager; inner transaction failures automatically doom the outer transaction
+- Python 3.12, 3.13, and 3.14 support in classifiers, CI matrix, and tox environments
+- `Repository.transaction()`, `begin()`, `commit()`, `rollback()` documented in repository docs
 
 ### Changed
+- Dropped Python 3.9 support (`pytest` 9.x requires Python >=3.10)
 - Bumped `psycopg2` dependency from `>=2.9.2` to `>=2.9.11` (required for Python 3.13+ support)
 - Removed Python 3.8 classifier (already unsupported via `python_requires = >=3.9`)
 - Updated dev dependencies to latest versions:
@@ -18,6 +21,8 @@
   - `tox` 4.5.1 -> 4.49.1
   - `psycopg2-binary` 2.9.3 -> 2.9.11
   - `mkdocs-material` 9.2.7 -> 9.7.4
+- CI: bumped `actions/checkout` to v4, `actions/setup-python` to v5, added `allow-prereleases: true` for Python 3.14
+- CI: modernized publish workflow to use `python -m build --sdist`
 
 ### Bug Fixes
 
@@ -55,6 +60,27 @@
 
 #### Migrations
 - **migrations.py**: Added documentation comment noting that `execute()` is not transactional between SQL execution and migration registration
+
+### Documentation
+- Fixed `ConnectionError` references to `DbConnectionError` throughout docs
+- Fixed `Profiler` references to `ProfilerInterface` in profiler and related docs
+- Added transaction methods (`begin()`, `commit()`, `rollback()`, `transaction()`) to repository documentation
+- Fixed `update_where` example (wrong method name and missing operator)
+- Fixed `DbGrid` class path from `rick_db.sql.DbGrid` to `rick_db.DbGrid`
+- Fixed `Registry.fetch_pk()` typo to `Repository.fetch_pk()`
+- Fixed `repo.Select()` to `repo.select()` (lowercase)
+- Fixed CLI commands in CLAUDE.md: `install` to `init`, `apply` to `migrate`
+- Modernized install docs: replaced `python3 setup.py install` with `pip install .`
+
+### Test Improvements
+- Consolidated PG test classes using parametrized fixtures (`test_manager.py`, `test_pginfo.py`, `test_migrations.py`)
+- Decoupled `base_repository.py` from backend-specific imports (`PgConnection`, `PgConnectionPool`, `Sqlite3Connection`)
+- Decoupled `base_cursor.py` from psycopg2; moved `test_duplicate_record` to PG-specific test classes
+- Extracted shared helper functions in PG repository and dbgrid tests (`_setup_users`, `_teardown_users`, `_setup_grid`, `_teardown_grid`)
+- Created `tests/backend/sqlite/common.py` for shared SQLite DDL constants
+- Fixed `sqlite_conn` fixture teardown to use `yield` + `close()` pattern
+- Removed redundant `close()` call in SQLite cursor test fixture
+- Fixed trailing whitespace and Black formatting across `rick_db/sql/` and test files
 
 ### Test Fixes
 - **tests/conftest.py**: Changed `sqlite_conn` fixture from `"file::memory:"` to `":memory:"` to fix test isolation (URI was treated as a literal filename without `uri=True`, causing shared state between tests)
