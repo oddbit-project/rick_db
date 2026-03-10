@@ -1,6 +1,6 @@
 import psycopg2
 import pytest
-from rick_db import Cursor, ConnectionError
+from rick_db import Cursor, DbConnectionError
 from rick_db.backend.pg import PgConnection
 from rick_db.profiler import NullProfiler
 from rick_db.sql import PgSqlDialect
@@ -30,7 +30,7 @@ class TestConnection:
         assert pg_conn.in_transaction() is False
         pg_conn.begin()
         assert pg_conn.in_transaction() is True
-        with pytest.raises(ConnectionError):
+        with pytest.raises(DbConnectionError):
             pg_conn.begin()
 
         pg_conn.rollback()

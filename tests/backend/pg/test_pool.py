@@ -19,7 +19,7 @@ class TestPool:
         assert pg_pool.profiler is not None
         assert isinstance(pg_pool.profiler, NullProfiler)
         assert isinstance(pg_pool.dialect(), PgSqlDialect)
-        assert type(pg_pool._factory) == type(Cursor)
+        assert pg_pool._factory is Connection
         assert pg_pool._pool is not None
 
     def test_pool_cursor(self, pg_pool: PgConnectionPool):
@@ -59,8 +59,8 @@ class TestPool:
             pg_pool.putconn(conn)
 
     def test_pool_factory(self, pg_pool: PgConnectionPool):
-        assert type(pg_pool._factory) == type(Connection)
+        assert pg_pool._factory is Connection
         pg_pool.connection_factory(SampleConnection)
-        assert type(pg_pool._factory) == type(SampleConnection)
+        assert pg_pool._factory is SampleConnection
         with pg_pool.connection() as conn:
             assert isinstance(conn, SampleConnection)

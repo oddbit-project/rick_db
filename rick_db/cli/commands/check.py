@@ -11,8 +11,8 @@ class Command(MigrateCommand):
     )
 
     def help(self):
-        self._tty.title(self.description)
-        self._tty.title(
+        self._tty.header(self.description)
+        self._tty.header(
             "Usage: {name} [database] check <path_to_sql_files>".format(name=self._name)
         )
 

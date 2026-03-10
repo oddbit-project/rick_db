@@ -16,6 +16,17 @@ insert_table = "insert into grid(label, content, odd) values(%s,%s,%s)"
 drop_table = "drop table if exists grid"
 
 
+def _setup_grid(cursor, label_template):
+    cursor.exec(drop_table)
+    cursor.exec(create_table)
+    for i in range(1, 100):
+        cursor.exec(insert_table, [label_template % i, "mickey mouse", (i % 2) == 0])
+
+
+def _teardown_grid(cursor):
+    cursor.exec(drop_table)
+
+
 class TestPgConnDbGrid(BaseDbGridTest):
 
     @pytest.fixture
@@ -23,16 +34,13 @@ class TestPgConnDbGrid(BaseDbGridTest):
         conn = PgConnection(**pg_settings)
         # setup
         with conn.cursor() as c:
-            c.exec(drop_table)
-            c.exec(create_table)
-            for i in range(1, 100):
-                c.exec(insert_table, [self.label % i, "mickey mouse", (i % 2) == 0])
+            _setup_grid(c, self.label)
 
         yield conn
 
         # teardown
         with conn.cursor() as c:
-            c.exec(drop_table)
+            _teardown_grid(c)
         conn.close()
 
     def test_grid_search_fields(self, conn):
@@ -84,15 +92,12 @@ class TestPgPoolDbGrid(TestPgConnDbGrid):
         # setup
         with pool.connection() as db:
             with db.cursor() as c:
-                c.exec(drop_table)
-                c.exec(create_table)
-                for i in range(1, 100):
-                    c.exec(insert_table, [self.label % i, "mickey mouse", (i % 2) == 0])
+                _setup_grid(c, self.label)
 
         yield pool
 
         # teardown
         with pool.connection() as conn:
             with conn.cursor() as c:
-                c.exec(drop_table)
+                _teardown_grid(c)
         pool.close()

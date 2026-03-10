@@ -10,12 +10,12 @@ from .common import (
     drop_group,
 )
 
-from rick_db.backend.pg import PgManager, PgConnection, PgConnectionPool
+from rick_db.backend.pg import PgManager
 
 
-class BasePgManagerTest:
-    def test_tables(self, conn):
-        pgmeta = PgManager(conn)
+class TestPgManager:
+    def test_tables(self, pg_backend):
+        pgmeta = PgManager(pg_backend)
         # no tables created yet
         tables = pgmeta.tables()
         assert len(tables) == 0
@@ -51,8 +51,8 @@ class BasePgManagerTest:
         assert tables[0] == "aliens"
         assert pgmeta.table_exists("aliens", "myschema") is True
 
-    def test_schemas(self, conn):
-        pgmeta = PgManager(conn)
+    def test_schemas(self, pg_backend):
+        pgmeta = PgManager(pg_backend)
         schemas = pgmeta.schemas()
         assert len(schemas) > 2
         assert "public" in schemas
@@ -67,14 +67,14 @@ class BasePgManagerTest:
         assert "myschema" in schemas
         assert len(schemas) > 2
 
-    def test_databases(self, conn, pg_settings):
-        pgmeta = PgManager(conn)
+    def test_databases(self, pg_backend, pg_settings):
+        pgmeta = PgManager(pg_backend)
         dbs = pgmeta.databases()
         assert len(dbs) > 0
         assert pg_settings["database"] in dbs
 
-    def test_views(self, conn):
-        pgmeta = PgManager(conn)
+    def test_views(self, pg_backend):
+        pgmeta = PgManager(pg_backend)
         # no views created yet
         views = pgmeta.views()
         assert len(views) == 0
@@ -91,8 +91,8 @@ class BasePgManagerTest:
         assert views[0] == "list_animal"
         assert pgmeta.view_exists("list_animal") is True
 
-    def test_view_schema(self, conn, pg_settings):
-        pgmeta = PgManager(conn)
+    def test_view_schema(self, pg_backend, pg_settings):
+        pgmeta = PgManager(pg_backend)
 
         # test with schema
         with pgmeta.conn() as conn:
@@ -112,8 +112,8 @@ class BasePgManagerTest:
         assert views[0] == "list_aliens"
         assert pgmeta.view_exists("list_aliens", "myschema") is True
 
-    def test_table_fields(self, conn):
-        pgmeta = PgManager(conn)
+    def test_table_fields(self, pg_backend):
+        pgmeta = PgManager(pg_backend)
         with pgmeta.conn() as conn:
             with conn.cursor() as qry:
                 qry.exec(create_table)
@@ -137,8 +137,8 @@ class BasePgManagerTest:
         assert field2.field == "name"
         assert field2.primary is False
 
-    def test_table_keys(self, conn):
-        pgmeta = PgManager(conn)
+    def test_table_keys(self, pg_backend):
+        pgmeta = PgManager(pg_backend)
         # create one table
         with pgmeta.conn() as conn:
             with conn.cursor() as qry:
@@ -179,8 +179,8 @@ class BasePgManagerTest:
         assert pk.primary == keys[0].primary
         assert pk.type is None  # table_pk does not retrieve type
 
-    def test_users(self, conn, pg_settings):
-        pgmeta = PgManager(conn)
+    def test_users(self, pg_backend, pg_settings):
+        pgmeta = PgManager(pg_backend)
         users = pgmeta.users()
         assert len(users) > 0
         names = []
@@ -188,8 +188,8 @@ class BasePgManagerTest:
             names.append(r.name)
         assert pg_settings["user"] in names
 
-    def test_user_groups(self, conn, pg_settings):
-        pgmeta = PgManager(conn)
+    def test_user_groups(self, pg_backend, pg_settings):
+        pgmeta = PgManager(pg_backend)
         groups = pgmeta.user_groups(pg_settings["user"])
         assert len(groups) == 0
 
@@ -206,54 +206,16 @@ class BasePgManagerTest:
             with conn.cursor() as qry:
                 qry.exec(drop_group)
 
-    def test_create_drop_db(self, conn):
-        pgmeta = PgManager(conn)
+    def test_create_drop_db(self, pg_backend):
+        pgmeta = PgManager(pg_backend)
         pgmeta.create_database("sample_database")
         assert pgmeta.database_exists("sample_database") is True
         pgmeta.drop_database("sample_database")
         assert pgmeta.database_exists("sample_database") is False
 
-    def test_create_drop_schema(self, conn):
-        pgmeta = PgManager(conn)
+    def test_create_drop_schema(self, pg_backend):
+        pgmeta = PgManager(pg_backend)
         pgmeta.create_schema("sample_schema")
         assert pgmeta.schema_exists("sample_schema") is True
         pgmeta.drop_schema("sample_schema")
         assert pgmeta.schema_exists("sample_schema") is False
-
-
-class TestPgManagerConn(BasePgManagerTest):
-
-    @pytest.fixture
-    def conn(self, pg_settings):
-        conn = PgConnection(**pg_settings)
-
-        yield conn
-
-        # teardown
-        md = PgManager(conn)
-        md.drop_table("_migration")
-        md.drop_view("list_animal")
-        md.drop_table("animal")
-        md.drop_table("foo")
-        md.drop_schema("myschema", True)
-
-        conn.close()
-
-
-class TestPgManagerPool(BasePgManagerTest):
-
-    @pytest.fixture
-    def conn(self, pg_settings: dict):
-        pool = PgConnectionPool(**pg_settings)
-
-        yield pool
-
-        # teardown
-        with pool.connection() as conn:
-            md = PgManager(conn)
-            md.drop_table("_migration")
-            md.drop_view("list_animal")
-            md.drop_table("animal")
-            md.drop_table("foo")
-            md.drop_schema("myschema", True)
-        pool.close()

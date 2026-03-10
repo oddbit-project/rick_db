@@ -5,11 +5,12 @@ from rick_db.backend.pg import PgManager, PgMigrationManager
 from rick_db.migrations import MigrationRecord
 
 
-class TestPgConnMigrationManager:
+class TestPgMigrationManager:
 
-    @pytest.fixture()
-    def mm(self, pg_conn) -> PgMigrationManager:
-        mgr = PgManager(pg_conn)
+    @pytest.fixture(params=["conn", "pool"])
+    def mm(self, request, pg_conn, pg_pool) -> PgMigrationManager:
+        backend = pg_conn if request.param == "conn" else pg_pool
+        mgr = PgManager(backend)
         mm = PgMigrationManager(mgr)
         yield mm
         mgr.drop_table(mm.MIGRATION_TABLE)
@@ -76,13 +77,3 @@ class TestPgConnMigrationManager:
         r = mm.fetch_by_name("flattened")
         assert r.name == flatten.name
         assert len(str(r.applied)) > 0
-
-
-class TestPgPoolMigrationManager(TestPgConnMigrationManager):
-
-    @pytest.fixture()
-    def mm(self, pg_pool) -> PgMigrationManager:
-        mgr = PgManager(pg_pool)
-        mm = PgMigrationManager(mgr)
-        yield mm
-        mgr.drop_table(mm.MIGRATION_TABLE)

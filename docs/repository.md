@@ -130,6 +130,39 @@ class AuthorRepository(Repository):
         return self.fetch(qry, cls=Book)
 ```
 
+## Transactions
+
+Repositories support transaction management via `begin()`, `commit()`, `rollback()` and a `transaction()` context manager.
+
+Explicit transaction management:
+```python
+repo = CharacterRepository(pool)
+
+repo.begin()
+try:
+    repo.insert(Character(name='Sarah Connor'))
+    repo.insert(Character(name='John Connor'))
+    repo.commit()
+except Exception:
+    repo.rollback()
+    raise
+```
+
+Using the context manager (recommended):
+```python
+repo = CharacterRepository(pool)
+
+with repo.transaction():
+    repo.insert(Character(name='Sarah Connor'))
+    repo.insert(Character(name='John Connor'))
+    # auto-commits on success, auto-rolls back on exception
+```
+
+Note: Transaction semantics is valid within the current Repository. If a Repository is initialized from a Connection
+(not a pool), other Repositories using the same connection may be affected.
+
+For more details on all the available methods, check the [Repository](classes/repository.md) class documentation.
+
 ## Advanced usage
 
 While Repository objects are stateless from an operational perspective, there is actually an internal, thread-safe, local cache that
@@ -154,7 +187,7 @@ class MyRepository(Repository):
         (...)
 ```
 
-The implementation of the actual [Registry.fetch_pk()](classes/repository.md#repositoryfetch_pkpk_value) provides a good
+The implementation of the actual [Repository.fetch_pk()](classes/repository.md#repositoryfetch_pkpk_value) provides a good
 example of the typical pattern usage of the cache manipulation methods:
 
 ```python

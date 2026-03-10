@@ -128,7 +128,8 @@ class DbGrid:
                 # either search_fields was not passed as parameter, or had invalid fields
                 search_fields = self._search_fields
 
-            mask = self.search_map[self._search_type].format(str(search_text))
+            search_str = str(search_text)
+            mask = self.search_map[self._search_type].replace("{}", search_str)
 
             operand = "LIKE"
             psql_mode = False
@@ -141,7 +142,7 @@ class DbGrid:
 
             if psql_mode:
                 for field in search_fields:
-                    qry.orwhere(field, operand, mask.format(str(search_text)))
+                    qry.orwhere(field, operand, mask)
             else:
                 mask = mask.upper()
                 for field in search_fields:

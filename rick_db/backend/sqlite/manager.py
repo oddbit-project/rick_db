@@ -261,15 +261,13 @@ class Sqlite3Manager(ManagerInterface):
         """
         Removes a table
         :param table_name:
-        :param cascade:
+        :param cascade: ignored on SQLite (CASCADE not supported)
         :param schema:
         :return:
         """
         sql = "DROP TABLE IF EXISTS {name}".format(
             name=self.dialect.table(table_name, schema=schema)
         )
-        if cascade:
-            sql = sql + " CASCADE"
         with self.conn() as conn:
             with conn.cursor() as c:
                 c.exec(sql)
@@ -278,15 +276,13 @@ class Sqlite3Manager(ManagerInterface):
         """
         Removes a view
         :param view_name:
-        :param cascade:
+        :param cascade: ignored on SQLite (CASCADE not supported)
         :param schema:
         :return:
         """
         sql = "DROP VIEW IF EXISTS {name}".format(
             name=self.dialect.table(view_name, schema=schema)
         )
-        if cascade:
-            sql = sql + " CASCADE"
 
         with self.conn() as conn:
             with conn.cursor() as c:

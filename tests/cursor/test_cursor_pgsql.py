@@ -15,6 +15,38 @@ class TestCursorPGConnection(BaseTestCursor):
 
         conn.close()
 
+    def test_duplicate_record(self, conn):
+        with conn.cursor() as cur:
+            # simple select
+            result = cur.exec("select 1")
+            assert len(result) == 1
+
+            # object mapper hydration
+            cur.exec("drop table if exists counter")
+            cur.exec("create table counter (id int not null primary key)")
+            cur.exec("insert into counter(id) values(1)")
+            cur.exec("insert into counter(id) values(2)")
+            cur.exec("insert into counter(id) values(3)")
+            cur.exec("insert into counter(id) values(4)")
+            result = cur.exec("select * from counter", cls=NumberRecord)
+            assert len(result) == 4
+            for r in result:
+                assert isinstance(r, NumberRecord)
+
+            # attempt to insert forbidden value
+            # exception raised, transaction is aborted
+            with pytest.raises(UniqueViolation):
+                cur.exec("insert into counter(id) values (1)")
+
+        # ensures exception propagates outside of context
+        with pytest.raises(UniqueViolation):
+            with conn.cursor() as cur:
+                cur.exec("insert into counter(id) values (1)")
+
+        with conn.cursor() as cur:
+            # cleanup
+            cur.exec("drop table if exists counter")
+
     def test_propagate_exception(self, pg_conn: PgConnection):
         with pg_conn.cursor() as cur:
             # simple select
@@ -54,6 +86,38 @@ class TestCursorPGConnectionPool(BaseTestCursor):
 
         # teardown
         pool.close()
+
+    def test_duplicate_record(self, conn):
+        with conn.cursor() as cur:
+            # simple select
+            result = cur.exec("select 1")
+            assert len(result) == 1
+
+            # object mapper hydration
+            cur.exec("drop table if exists counter")
+            cur.exec("create table counter (id int not null primary key)")
+            cur.exec("insert into counter(id) values(1)")
+            cur.exec("insert into counter(id) values(2)")
+            cur.exec("insert into counter(id) values(3)")
+            cur.exec("insert into counter(id) values(4)")
+            result = cur.exec("select * from counter", cls=NumberRecord)
+            assert len(result) == 4
+            for r in result:
+                assert isinstance(r, NumberRecord)
+
+            # attempt to insert forbidden value
+            # exception raised, transaction is aborted
+            with pytest.raises(UniqueViolation):
+                cur.exec("insert into counter(id) values (1)")
+
+        # ensures exception propagates outside of context
+        with pytest.raises(UniqueViolation):
+            with conn.cursor() as cur:
+                cur.exec("insert into counter(id) values (1)")
+
+        with conn.cursor() as cur:
+            # cleanup
+            cur.exec("drop table if exists counter")
 
     def test_propagate_exception(self, pg_pool: PgConnectionPool):
         with pg_pool.connection() as conn:

@@ -294,7 +294,7 @@ below for more details.
 Example:
 ```python
 record = Character(name='T-1000')
-repo.update(record, [('name', 'John Connor')])
+repo.update_where(record, [('name', '=', 'John Connor')])
 ```
 
 ### Repository.**count()**
@@ -331,6 +331,44 @@ Note: The original *qry* object is left intact.
 
 Example:
 ```python
-total_records, recordset = repo.list(repo.Select(), 10)
+total_records, recordset = repo.list(repo.select(), 10)
+```
+
+### Repository.**begin()**
+
+Starts a repository transaction. Raises **RepositoryError** if a transaction is already in progress.
+When using a pool, a connection is acquired from the pool and held until the transaction is committed or rolled back.
+
+Example:
+```python
+repo.begin()
+try:
+    repo.insert(Character(name='Sarah Connor'))
+    repo.commit()
+except Exception:
+    repo.rollback()
+    raise
+```
+
+### Repository.**commit()**
+
+Commits the current repository transaction. Raises **RepositoryError** if no transaction is in progress.
+When using a pool, the connection is returned to the pool after commit.
+
+### Repository.**rollback()**
+
+Rolls back the current repository transaction. Raises **RepositoryError** if no transaction is in progress.
+When using a pool, the connection is returned to the pool after rollback.
+
+### Repository.**transaction()**
+
+Context manager for repository transactions. Commits on successful exit, rolls back on exception.
+
+Example:
+```python
+with repo.transaction():
+    repo.insert(Character(name='Sarah Connor'))
+    repo.insert(Character(name='John Connor'))
+    # auto-commits on success, auto-rolls back on exception
 ```
 

@@ -53,13 +53,16 @@ class PgInfo:
         """
         if self._db:
             yield self._db
-
-        if self._pool:
+        elif self._pool:
+            conn = None
             try:
                 conn = self._pool.getconn()
                 yield conn
             finally:
-                self._pool.putconn(conn)
+                if conn is not None:
+                    self._pool.putconn(conn)
+        else:
+            raise RuntimeError("no database connection or pool available")
 
     def get_server_version(self) -> str:
         """

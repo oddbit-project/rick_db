@@ -18,7 +18,7 @@ class TestSqlite3Repository(BaseRepositoryTest):
 
     @pytest.fixture
     def conn(self, fixture_users: list):
-        conn = Sqlite3Connection("file::memory:?cache=shared")
+        conn = Sqlite3Connection(":memory:")
 
         # setup
         with conn.cursor() as c:

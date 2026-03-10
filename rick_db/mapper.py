@@ -42,6 +42,9 @@ class Record:
     def values(self):
         pass
 
+    def fieldmap(self):
+        pass
+
 
 class BaseRecord(Record):
     _fieldmap = {}
@@ -148,6 +151,21 @@ class BaseRecord(Record):
             if dbfield in data.keys():
                 result.append(data[dbfield])
         return result
+
+    def fieldmap(self):
+        """
+        Return the field mapping dict {attribute_name: db_column_name}
+        :return: dict
+        """
+        return self._fieldmap
+
+    def add(self, name, value, field_name: str = None):
+        if not field_name:
+            self._fieldmap[name] = name
+            field_name = name
+        else:
+            self._fieldmap[name] = field_name
+        self.__setattr__(name, value)
 
     def __getattribute__(self, attr):
         fieldmap = object.__getattribute__(self, ATTR_FIELDS)

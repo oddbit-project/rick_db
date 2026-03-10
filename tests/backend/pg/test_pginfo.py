@@ -1,6 +1,5 @@
 import pytest
 
-from rick_db.backend.pg import PgConnection, PgConnectionPool
 from rick_db.backend.pg.manager import PgManager
 from rick_db.backend.pg.pginfo import PgInfo
 from .common import (
@@ -17,15 +16,11 @@ from .common import (
 )
 
 
-class BasePgInfoTest:
+class TestPgInfo:
 
-    @pytest.fixture()
-    def conn(self, pg_settings) -> PgConnection:
-        pass
-
-    def test_tables(self, conn):
-        info = PgInfo(conn)
-        meta = PgManager(conn)
+    def test_tables(self, pg_backend):
+        info = PgInfo(pg_backend)
+        meta = PgManager(pg_backend)
 
         # make sure no tables exist
         meta.drop_table("animal_type")
@@ -64,8 +59,8 @@ class BasePgInfoTest:
         assert tables[0].name == "aliens"
         assert info.table_exists("aliens", schema="myschema") is True
 
-    def test_namespaces(self, conn):
-        info = PgInfo(conn)
+    def test_namespaces(self, pg_backend):
+        info = PgInfo(pg_backend)
         namespaces = info.list_database_namespaces()
         schemas = [ns.name for ns in namespaces]
         assert len(schemas) > 2
@@ -82,16 +77,16 @@ class BasePgInfoTest:
         assert "myschema" in schemas
         assert len(schemas) > 2
 
-    def test_databases(self, conn, pg_settings):
-        info = PgInfo(conn)
+    def test_databases(self, pg_backend, pg_settings):
+        info = PgInfo(pg_backend)
         dbs = info.list_server_databases()
         assert len(dbs) > 0
         names = [r.name for r in dbs]
         assert pg_settings["database"] in names
 
-    def test_views(self, conn):
-        info = PgInfo(conn)
-        meta = PgManager(conn)
+    def test_views(self, pg_backend):
+        info = PgInfo(pg_backend)
+        meta = PgManager(pg_backend)
         # no views created yet
         views = info.list_database_views()
         assert len(views) == 0
@@ -135,8 +130,8 @@ class BasePgInfoTest:
             info.table_exists("list_aliens", info.TYPE_VIEW, schema="myschema") is True
         )
 
-    def test_table_fields(self, conn):
-        info = PgInfo(conn)
+    def test_table_fields(self, pg_backend):
+        info = PgInfo(pg_backend)
         with info.conn() as conn:
             with conn.cursor() as qry:
                 qry.exec(create_table)
@@ -154,9 +149,9 @@ class BasePgInfoTest:
         assert "name" in fields
         assert len(fields) == 2
 
-    def test_table_keys(self, conn):
-        info = PgInfo(conn)
-        meta = PgManager(conn)
+    def test_table_keys(self, pg_backend):
+        info = PgInfo(pg_backend)
+        meta = PgManager(pg_backend)
 
         # create one table
         with info.conn() as conn:
@@ -194,15 +189,15 @@ class BasePgInfoTest:
         pk = info.list_table_pk("aliens", "myschema")
         assert pk.column == keys[0].field
 
-    def test_users(self, conn, pg_settings):
-        info = PgInfo(conn)
+    def test_users(self, pg_backend, pg_settings):
+        info = PgInfo(pg_backend)
         users = info.list_server_roles()
         assert len(users) > 0
         names = [r.name for r in users]
         assert pg_settings["user"] in names
 
-    def test_user_groups(self, conn, pg_settings):
-        info = PgInfo(conn)
+    def test_user_groups(self, pg_backend, pg_settings):
+        info = PgInfo(pg_backend)
         groups = info.list_user_groups(pg_settings["user"])
         assert len(groups) == 0
 
@@ -219,8 +214,8 @@ class BasePgInfoTest:
         assert len(groups) == 1
         assert groups[0].name == "staff"
 
-    def test_server_groups(self, conn, pg_settings):
-        info = PgInfo(conn)
+    def test_server_groups(self, pg_backend, pg_settings):
+        info = PgInfo(pg_backend)
         groups = info.list_server_groups()
         group_names = [g.name for g in groups]
         assert "staff" not in group_names
@@ -237,8 +232,8 @@ class BasePgInfoTest:
 
         assert "staff" in group_names
 
-    def test_list_table_sequences(self, conn):
-        info = PgInfo(conn)
+    def test_list_table_sequences(self, pg_backend):
+        info = PgInfo(pg_backend)
         with info.conn() as conn:
             with conn.cursor() as qry:
                 qry.exec(create_table)
@@ -250,8 +245,8 @@ class BasePgInfoTest:
         assert serials[0].column == "id_animal"
         assert serials[0].sequence == "public.animal_id_animal_seq"
 
-    def test_list_identity_columns(self, conn):
-        info = PgInfo(conn)
+    def test_list_identity_columns(self, pg_backend):
+        info = PgInfo(pg_backend)
         with info.conn() as conn:
             with conn.cursor() as qry:
                 qry.exec(create_table)
@@ -266,15 +261,15 @@ class BasePgInfoTest:
         assert serials[0].generated == ""
         assert serials[0].identity == "a"
 
-    def test_server_version(self, conn):
-        info = PgInfo(conn)
+    def test_server_version(self, pg_backend):
+        info = PgInfo(pg_backend)
         version = info.get_server_version()
         assert len(version) > 0
         chunks = version.split(".")
         assert len(chunks) >= 2
 
-    def test_server_tablespaces(self, conn):
-        info = PgInfo(conn)
+    def test_server_tablespaces(self, pg_backend):
+        info = PgInfo(pg_backend)
         ts = info.list_server_tablespaces()
         # to create a tablespace, a superuser and a local path is required;
         # as such, testing can be troublesome; instead we list the local tablespaces
@@ -282,8 +277,8 @@ class BasePgInfoTest:
         ts_names = [t.name for t in ts]
         assert "pg_default" in ts_names
 
-    def test_server_settings(self, conn):
-        info = PgInfo(conn)
+    def test_server_settings(self, pg_backend):
+        info = PgInfo(pg_backend)
         settings = info.list_server_settings()
         names = [s.name for s in settings]
         # just some settings
@@ -295,22 +290,22 @@ class BasePgInfoTest:
         ]:
             assert n in names
 
-    def test_list_database_schemas(self, conn):
-        info = PgInfo(conn)
+    def test_list_database_schemas(self, pg_backend):
+        info = PgInfo(pg_backend)
         schema = info.list_database_schemas()
         names = [s.name for s in schema]
         for n in ["information_schema", "pg_catalog", "pg_toast", "public"]:
             assert n in names
 
-    def test_list_server_users(self, conn, pg_settings):
-        info = PgInfo(conn)
+    def test_list_server_users(self, pg_backend, pg_settings):
+        info = PgInfo(pg_backend)
         users = info.list_server_users()
         names = [u.name for u in users]
         assert pg_settings["user"] in names
 
-    def test_list_table_foreign_keys(self, conn):
-        info = PgInfo(conn)
-        meta = PgManager(conn)
+    def test_list_table_foreign_keys(self, pg_backend):
+        info = PgInfo(pg_backend)
+        meta = PgManager(pg_backend)
 
         # create table with foreign key
         with info.conn() as conn:
@@ -329,41 +324,3 @@ class BasePgInfoTest:
         # cleanup
         meta.drop_table("animal_type")
         meta.drop_table("animal")
-
-
-class TestPgInfoConn(BasePgInfoTest):
-
-    @pytest.fixture
-    def conn(self, pg_settings):
-        conn = PgConnection(**pg_settings)
-
-        yield conn
-
-        # teardown
-        md = PgManager(conn)
-        md.drop_table("_migration")
-        md.drop_view("list_animal")
-        md.drop_table("animal")
-        md.drop_table("foo")
-        md.drop_schema("myschema", True)
-
-        conn.close()
-
-
-class TestPgInfoPool(BasePgInfoTest):
-
-    @pytest.fixture
-    def conn(self, pg_settings: dict):
-        pool = PgConnectionPool(**pg_settings)
-
-        yield pool
-
-        # teardown
-        with pool.connection() as conn:
-            md = PgManager(conn)
-            md.drop_table("_migration")
-            md.drop_view("list_animal")
-            md.drop_table("animal")
-            md.drop_table("foo")
-            md.drop_schema("myschema", True)
-        pool.close()

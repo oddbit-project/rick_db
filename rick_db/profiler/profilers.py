@@ -14,7 +14,7 @@ class EventCollection(list):
     def filter_duration(self, duration: float) -> list:
         result = []
         for e in self:
-            if e.duration >= duration:
+            if e.elapsed >= duration:
                 result.append(e)
         return result
 

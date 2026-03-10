@@ -34,6 +34,8 @@ class GenericRepository:
 
         # repository transaction semantics
         self._transaction = None
+        self._savepoint_depth = 0
+        self._needs_rollback = False
 
         # table-related args
         self.table_name = table_name
@@ -52,13 +54,19 @@ class GenericRepository:
 
         if self._db:
             yield self._db
+            return
 
         if self._pool:
+            conn = None
             try:
                 conn = self._pool.getconn()
                 yield conn
             finally:
-                self._pool.putconn(conn)
+                if conn is not None:
+                    self._pool.putconn(conn)
+            return
+
+        raise RepositoryError("no database connection or pool available")
 
     @contextmanager
     def cursor(self) -> Cursor:
@@ -108,12 +116,46 @@ class GenericRepository:
     @contextmanager
     def transaction(self):
         """
-        ContextManager for transaction that only commits
+        ContextManager for transaction that commits on success, rolls back on exception.
+        Supports nesting via savepoints - inner transaction failures doom the outer transaction.
         :return:
         """
-        self.begin()
-        yield
-        self.commit()
+        if self._transaction is not None:
+            # nested transaction - use savepoint
+            self._savepoint_depth += 1
+            sp_name = "sp_{}".format(self._savepoint_depth)
+            with self.cursor() as c:
+                c.exec("SAVEPOINT {}".format(sp_name))
+            try:
+                yield self._transaction
+                if self._needs_rollback:
+                    with self.cursor() as c:
+                        c.exec("ROLLBACK TO SAVEPOINT {}".format(sp_name))
+                else:
+                    with self.cursor() as c:
+                        c.exec("RELEASE SAVEPOINT {}".format(sp_name))
+                self._savepoint_depth -= 1
+            except Exception:
+                with self.cursor() as c:
+                    c.exec("ROLLBACK TO SAVEPOINT {}".format(sp_name))
+                self._savepoint_depth -= 1
+                self._needs_rollback = True
+                raise
+        else:
+            # outermost transaction
+            self.begin()
+            try:
+                yield self._transaction
+                if self._needs_rollback:
+                    self._needs_rollback = False
+                    self.rollback()
+                else:
+                    self.commit()
+            except Exception:
+                self._needs_rollback = False
+                if self._transaction is not None:
+                    self.rollback()
+                raise
 
     @staticmethod
     def _cache_factory() -> CacheInterface:
@@ -519,7 +561,7 @@ class Repository(GenericRepository):
         """
         if self.pk is None:
             raise RepositoryError("update(): missing primary key")
-        data = record.asrecord()  # type:dict
+        data = record.asrecord()  # type: dict
 
         value = pk_value
         if self.pk in data.keys():

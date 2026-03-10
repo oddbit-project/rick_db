@@ -7,8 +7,8 @@
 import collections
 from typing import Union
 
-from .common import SqlStatement, Sql, Literal, SqlError
-from .dialect import SqlDialect, DefaultSqlDialect
+from .common import SqlStatement, Sql, Literal, SqlError, JsonField, PgJsonField
+from .dialect import SqlDialect, DefaultSqlDialect, PgSqlDialect
 from ..mapper import ATTR_TABLE, ATTR_SCHEMA
 
 
@@ -62,6 +62,7 @@ class Select(SqlStatement):
         self._parts_order = []
 
         self._where_blocks = 0
+        self._where_blocks_track = []  # Track block openings for better error messages
 
         # SQL dialect options
         if dialect is None:
@@ -264,15 +265,17 @@ class Select(SqlStatement):
         """
         self._parts_where.append([self.WHERE_AND])
         self._where_blocks += 1
+        self._where_blocks_track.append(("AND", len(self._parts_where) - 1))
         return self
 
     def where_or(self):
         """
-        Starts a parenthesis ORblock in the where clause
+        Starts a parenthesis OR block in the where clause
         :return: self
         """
         self._parts_where.append([self.WHERE_OR])
         self._where_blocks += 1
+        self._where_blocks_track.append(("OR", len(self._parts_where) - 1))
         return self
 
     def where_end(self):
@@ -280,8 +283,56 @@ class Select(SqlStatement):
         Closes a parenthesis AND/OR block in the where clause
         :return: self
         """
+        if self._where_blocks <= 0:
+            raise SqlError("where_end(): No open AND/OR block to close")
+
         self._parts_where.append([self.WHERE_CLOSE])
         self._where_blocks -= 1
+        if self._where_blocks_track:
+            self._where_blocks_track.pop()
+        return self
+
+    def check_where_blocks(self):
+        """
+        Validates that all where blocks are properly balanced
+        :return: None
+        :raises: SqlError if blocks are not balanced
+        """
+        if self._where_blocks > 0:
+            # Find the first unclosed block to provide better error message
+            if self._where_blocks_track:
+                block_type, position = self._where_blocks_track[0]
+                raise SqlError(
+                    f"Unclosed {block_type} block started at position {position} in WHERE clause"
+                )
+            else:
+                raise SqlError(
+                    "Unbalanced WHERE blocks: more opening blocks than closing blocks"
+                )
+
+    def validate(self):
+        """
+        Validates the current state of the query.
+
+        Checks for WHERE block balance (unclosed AND/OR blocks).
+
+        :return: self (for method chaining)
+        :raises: SqlError if the query is invalid
+        """
+        # Check for WHERE blocks balance
+        if self._where_blocks != 0:
+            if self._where_blocks_track:
+                block_type, position = self._where_blocks_track[0]
+                raise SqlError(
+                    "Unclosed {} block started at position {} in WHERE clause".format(
+                        block_type, position
+                    )
+                )
+            else:
+                raise SqlError(
+                    "Unbalanced WHERE blocks: more opening blocks than closing blocks"
+                )
+
         return self
 
     def where(self, field, operator=None, value=None):
@@ -948,7 +999,7 @@ class Select(SqlStatement):
         # join table
         join_table, alias, schema = self._parse_table_def(join_table, schema)
         if alias in self._parts_from.keys():
-            raise SqlError("_join(): duplicate alias for table {tbl}")
+            raise SqlError(f"_join(): duplicate alias for table {alias}")
 
         # join expression (if necessary)
         if from_table is None:
@@ -1383,6 +1434,9 @@ class Select(SqlStatement):
         Retrieve assembled query and binded values
         :return: tuple(str, list)
         """
+        # Validate the query before assembling
+        self.validate()
+
         self._values = []
         parts = []
         # union queries don't have select clause
@@ -1403,10 +1457,6 @@ class Select(SqlStatement):
             parts.append(self._render_from())
 
         if len(self._parts_where) > 0:
-            if self._where_blocks != 0:
-                raise RuntimeError(
-                    "assemble(): where block count mismatch; did you forget to close a AND/OR block?"
-                )
             parts.append(self._render_where())
 
         if len(self._parts_group) > 0:
@@ -1437,3 +1487,84 @@ class Select(SqlStatement):
         :return: SqlDialect
         """
         return self._dialect
+
+    def json_field(self, field_name, table=None):
+        """
+        Create a JsonField object for the given field name
+
+        :param field_name: The name of the JSON field
+        :param table: Optional table name or alias
+        :return: JsonField object configured with this query's dialect
+        """
+        full_field = field_name
+        if table:
+            full_field = f"{table}.{field_name}"
+
+        # Use PgJsonField for PostgreSQL dialect
+        if isinstance(self._dialect, PgSqlDialect):
+            return PgJsonField(full_field, self._dialect)
+
+        # Use regular JsonField for other dialects
+        return JsonField(full_field, self._dialect)
+
+    def json_where(self, json_field, json_path, operator, value=None):
+        """
+        Add a WHERE condition for a JSON field
+
+        :param json_field: JSON field name or JsonField object
+        :param json_path: JSON path to extract
+        :param operator: Comparison operator
+        :param value: Value to compare against (optional)
+        :return: self
+        """
+        # Convert to JsonField if it's a string
+        if isinstance(json_field, str):
+            json_field = self.json_field(json_field)
+
+        # Create the JSON expression
+        json_expr = json_field.extract(json_path)
+
+        # Add WHERE clause
+        return self.where(json_expr, operator, value)
+
+    def json_extract(self, json_field, json_path, alias=None):
+        """
+        Add a JSON extraction to the SELECT clause
+
+        :param json_field: JSON field name or JsonField object
+        :param json_path: JSON path to extract
+        :param alias: Optional alias for the result
+        :return: self
+        """
+        # Convert to JsonField if it's a string
+        if isinstance(json_field, str):
+            json_field = self.json_field(json_field)
+
+        # Create the JSON expression with alias
+        json_expr = json_field.extract(json_path)
+
+        # Create a mapping with optional alias
+        if alias:
+            cols = {json_expr: alias}
+        else:
+            cols = [json_expr]
+
+        # If this is the first column added, set as main columns
+        if len(self._parts_columns) == 0:
+            self._add_columns(Sql.ANONYMOUS, cols)
+        else:
+            # Otherwise add to existing columns
+            existing_cols = self._parts_columns.get(Sql.ANONYMOUS, (None, False))[0]
+            if existing_cols is None:
+                existing_cols = {}
+            if isinstance(existing_cols, dict):
+                existing_cols.update(
+                    cols if isinstance(cols, dict) else {col: None for col in cols}
+                )
+            else:
+                existing_cols = list(existing_cols) + (
+                    list(cols) if isinstance(cols, list) else [cols]
+                )
+            self._parts_columns[Sql.ANONYMOUS] = (existing_cols, False)
+
+        return self

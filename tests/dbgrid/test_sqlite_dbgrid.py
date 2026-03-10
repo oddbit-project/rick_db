@@ -19,7 +19,7 @@ class TestSqlite3DbGrid(BaseDbGridTest):
 
     @pytest.fixture
     def conn(self):
-        conn = Sqlite3Connection("file::memory:?cache=shared")
+        conn = Sqlite3Connection(":memory:")
 
         # setup
         with conn.cursor() as c:

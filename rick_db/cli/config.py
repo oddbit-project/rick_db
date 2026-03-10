@@ -46,10 +46,10 @@ class ConfigFile:
                         )
                     result[k] = config[k]
                     if self.KEY_PASSFILE in config[k].keys():
-                        result[self.KEY_PASSWORD] = self._load_pass(
+                        result[k][self.KEY_PASSWORD] = self._load_pass(
                             config[k][self.KEY_PASSFILE]
                         )
-                        del result[self.KEY_PASSFILE]
+                        del result[k][self.KEY_PASSFILE]
         return result
 
     def _load_pass(self, passfile: str) -> str:

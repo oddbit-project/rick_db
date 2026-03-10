@@ -12,7 +12,6 @@ class TestCursorSqlLite3(BaseTestCursor):
     @pytest.fixture
     def conn(self, sqlite_conn: Sqlite3Connection):
         yield sqlite_conn
-        sqlite_conn.close()
 
     def test_duplicate_record(self, conn):
         with conn.cursor() as cur:

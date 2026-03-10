@@ -23,29 +23,29 @@ A list-based class to hold a collection of [Event](#class-rick_dbprofilerevent) 
 
 Retrieve a list of [Event](#class-rick_dbprofilerevent) objects whose duration is bigger than or equal to *duration*.
 
-## Class rick_db.profiler.**Profiler**
+## Class rick_db.profiler.**ProfilerInterface**
 
-Base profiler class. Implements an interface for the Profiler classes.
+Base profiler interface. Defines the interface for all Profiler implementations.
 
-### Profiler.**add_event(query: str, parameters: dict, duration: float)**
+### ProfilerInterface.**add_event(query: str, parameters: dict, duration: float)**
 
 Create a new profiling event based on the passed *query*, *parameters* and *duration*, and add it to the internal
 event collection.
 
-### Profiler.**clear()**
+### ProfilerInterface.**clear()**
 
 Purge (clear) all stored events.
 
-### Profiler.**get_events()**
+### ProfilerInterface.**get_events()**
 
 Return internal profiling event collection.
 
 
 ## Class rick_db.profiler.**NullProfiler**
 
-A [Profiler](#rick_dbprofiler)-based class with dummy behaviour, to be used when no profiler is desired.
+A [ProfilerInterface](#class-rick_dbprofilerprofilerinterface)-based class with dummy behaviour, to be used when no profiler is desired.
 
 
 ## Class rick_db.profiler.**DefaultProfiler**
 
-A [Profiler](#rick_dbprofiler)-based class. Events are kept in-memory.
+A [ProfilerInterface](#class-rick_dbprofilerprofilerinterface)-based class. Events are kept in-memory.
