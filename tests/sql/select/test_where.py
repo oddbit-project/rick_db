@@ -399,17 +399,19 @@ class TestWhere:
             '"field3" = %s) AND ("field4" = %s) )'
         )
         assert values == [1, 2, 3, 4]
-        
+
     def test_where_end_without_begin(self):
         """Test that appropriate error is raised when where_end is called without a matching where_and/where_or"""
         select = Select(PgSqlDialect()).from_(SomeRecord).where("field", "=", 34)
         with pytest.raises(SqlError) as excinfo:
             select.where_end()
         assert "No open AND/OR block to close" in str(excinfo.value)
-        
+
     def test_where_unbalanced_blocks(self):
         """Test that appropriate error is raised when where blocks are not properly closed"""
-        select = Select(PgSqlDialect()).from_(SomeRecord).where("field", "=", 34).where_and()
+        select = (
+            Select(PgSqlDialect()).from_(SomeRecord).where("field", "=", 34).where_and()
+        )
         with pytest.raises(SqlError) as excinfo:
             select.assemble()
         assert "Unclosed AND block" in str(excinfo.value)

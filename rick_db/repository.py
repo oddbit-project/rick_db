@@ -34,6 +34,8 @@ class GenericRepository:
 
         # repository transaction semantics
         self._transaction = None
+        self._savepoint_depth = 0
+        self._needs_rollback = False
 
         # table-related args
         self.table_name = table_name
@@ -114,16 +116,46 @@ class GenericRepository:
     @contextmanager
     def transaction(self):
         """
-        ContextManager for transaction that commits on success, rolls back on exception
+        ContextManager for transaction that commits on success, rolls back on exception.
+        Supports nesting via savepoints - inner transaction failures doom the outer transaction.
         :return:
         """
-        self.begin()
-        try:
-            yield self._transaction
-            self.commit()
-        except Exception:
-            self.rollback()
-            raise
+        if self._transaction is not None:
+            # nested transaction - use savepoint
+            self._savepoint_depth += 1
+            sp_name = "sp_{}".format(self._savepoint_depth)
+            with self.cursor() as c:
+                c.exec("SAVEPOINT {}".format(sp_name))
+            try:
+                yield self._transaction
+                if self._needs_rollback:
+                    with self.cursor() as c:
+                        c.exec("ROLLBACK TO SAVEPOINT {}".format(sp_name))
+                else:
+                    with self.cursor() as c:
+                        c.exec("RELEASE SAVEPOINT {}".format(sp_name))
+                self._savepoint_depth -= 1
+            except Exception:
+                with self.cursor() as c:
+                    c.exec("ROLLBACK TO SAVEPOINT {}".format(sp_name))
+                self._savepoint_depth -= 1
+                self._needs_rollback = True
+                raise
+        else:
+            # outermost transaction
+            self.begin()
+            try:
+                yield self._transaction
+                if self._needs_rollback:
+                    self._needs_rollback = False
+                    self.rollback()
+                else:
+                    self.commit()
+            except Exception:
+                self._needs_rollback = False
+                if self._transaction is not None:
+                    self.rollback()
+                raise
 
     @staticmethod
     def _cache_factory() -> CacheInterface:

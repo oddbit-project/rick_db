@@ -380,10 +380,10 @@ class BaseRepositoryTest:
             assert result > 0
             record = repo.fetch_pk(result)
             assert record.name == "Sarah"
-            
+
     def test_transaction_context_manager(self, conn):
         repo = Repository(conn, User)
-        
+
         # Insert a user using transaction context manager
         with repo.transaction():
             result = repo.insert_pk(User(name="John", email="john.connor@skynet"))
@@ -391,12 +391,12 @@ class BaseRepositoryTest:
             assert result > 0
             record = repo.fetch_pk(result)
             assert record.name == "John"
-            
+
         # Record should still exist after transaction completes successfully
         record = repo.fetch_pk(result)
         assert record is not None
         assert record.name == "John"
-        
+
         # Test that changes are rolled back on exception
         try:
             with repo.transaction():
@@ -408,15 +408,15 @@ class BaseRepositoryTest:
                 raise ValueError("Intentional error to trigger rollback")
         except ValueError:
             pass
-            
+
         # Record should not exist after transaction rolls back
         record2 = repo.fetch_pk(result2)
         assert record2 is None
-        
+
     def test_nested_transaction_context_manager(self, conn):
         """Test that nested transaction context managers work correctly"""
         repo = Repository(conn, User)
-        
+
         # Test nested transactions with successful commit
         with repo.transaction():
             # Outer transaction
@@ -424,7 +424,7 @@ class BaseRepositoryTest:
             with repo.transaction():
                 # Inner transaction
                 result2 = repo.insert_pk(User(name="Bob", email="bob@example.com"))
-                
+
         # Both records should exist after nested transactions complete
         record1 = repo.fetch_pk(result1)
         record2 = repo.fetch_pk(result2)
@@ -432,16 +432,20 @@ class BaseRepositoryTest:
         assert record2 is not None
         assert record1.name == "Alice"
         assert record2.name == "Bob"
-        
+
         # Test that error in inner transaction rolls back everything
         try:
             with repo.transaction():
                 # Outer transaction
-                result3 = repo.insert_pk(User(name="Charlie", email="charlie@example.com"))
+                result3 = repo.insert_pk(
+                    User(name="Charlie", email="charlie@example.com")
+                )
                 try:
                     with repo.transaction():
                         # Inner transaction
-                        result4 = repo.insert_pk(User(name="Dave", email="dave@example.com"))
+                        result4 = repo.insert_pk(
+                            User(name="Dave", email="dave@example.com")
+                        )
                         raise ValueError("Inner transaction error")
                 except ValueError:
                     pass
@@ -450,7 +454,7 @@ class BaseRepositoryTest:
                 assert record4 is None
         except Exception:
             pass
-            
+
         # Neither record should exist - both transactions should have been rolled back
         record3 = repo.fetch_pk(result3)
         record4 = repo.fetch_pk(result4)

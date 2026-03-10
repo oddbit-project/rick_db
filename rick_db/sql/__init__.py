@@ -15,7 +15,7 @@ __all__ = [
     "JsonField",
     "PgJsonField",
     "SqlDialect",
-    "Sqlite3SqlDialect", 
+    "Sqlite3SqlDialect",
     "PgSqlDialect",
     "DefaultSqlDialect",
     "Select",
