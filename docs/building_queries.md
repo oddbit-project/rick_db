@@ -159,7 +159,7 @@ print(qry)
 ```python
 from rick_db.sql import Select, PgSqlDialect
 
-# LEFT JOIN
+# INNER JOIN
 qry, values = (
     Select(PgSqlDialect())
     .from_("table1")

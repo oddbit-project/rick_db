@@ -79,7 +79,7 @@ qry, _ = Select(PgSqlDialect()).from_("foo", ["field1", "field2"]).assemble()
 print(qry)
 
 qry, _ = Select(PgSqlDialect()).from_({"foo": "bar"}, ["field1"]).assemble()
-# output: SELECT "bar.field1" FROM "foo" AS "bar"
+# output: SELECT "bar"."field1" FROM "foo" AS "bar"
 print(qry)
 
 qry, _ = Select(PgSqlDialect()).from_(record_class_or_object, ["field1"]).assemble()
@@ -132,7 +132,7 @@ qry, _ = Select(PgSqlDialect()).from_("foo").page(1, 10).assemble()
 print(qry)
 
 qry, _ = Select(PgSqlDialect()).from_("foo").page(10, 10).assemble()
-# output: SELECT "foo".* FROM "foo" LIMIT 10 OFFSET 10
+# output: SELECT "foo".* FROM "foo" LIMIT 10 OFFSET 90
 print(qry)
 ```
 
@@ -148,11 +148,11 @@ Example:
 
 ```python
 qry, _ = Select(PgSqlDialect()).from_("foo").order('id').assemble()
-# output: SELECT "foo".* FROM "foo" ORDER BY id ASC
+# output: SELECT "foo".* FROM "foo" ORDER BY "id" ASC
 print(qry)
 
 qry, _ = Select(PgSqlDialect()).from_("foo").order(['id', 'name'], Select.ORDER_DESC).assemble()
-# output: SELECT "foo".* FROM "foo" ORDER BY id DESC, a DESC
+# output: SELECT "foo".* FROM "foo" ORDER BY "id" DESC,"name" DESC
 print(qry)
 ```
 
@@ -810,10 +810,64 @@ qry = (
 )
 
 # output:
-# SELECT "w".* FROM "wishlist" AS "w" 
+# SELECT "w".* FROM "wishlist" AS "w"
 #   LEFT JOIN LATERAL (
 #     SELECT "p".* FROM "product" AS "p" WHERE (price<desired_price) ORDER BY "price" DESC LIMIT 3
 #   ) AS "x" ON (true)
 # ORDER BY "wishlist_id" DESC,"price" DESC
 print(qry.assemble())
+```
+
+### Select.**json_field(field_name, table=None)**
+
+Creates a [JsonField](jsonfield.md) or [PgJsonField](pgjsonfield.md) instance bound to this query's dialect.
+If the dialect is `PgSqlDialect`, a `PgJsonField` is returned; otherwise a `JsonField` is returned.
+
+- *field_name* - the name of the JSON column
+- *table* - optional table name or alias to qualify the field
+
+```python
+pg = PgSqlDialect()
+qry = Select(pg).from_('users')
+
+# Creates a PgJsonField for the 'profile' column
+jf = qry.json_field('profile')
+
+# With table qualifier
+jf = qry.json_field('config', 'users')
+```
+
+For more details on JSON operations, see the [JSON Operations](../json_operations.md) guide.
+
+### Select.**json_extract(json_field, json_path, alias=None)**
+
+Adds a JSON extraction expression to the **SELECT** column list.
+
+- *json_field* - JSON field name (string) or `JsonField` object
+- *json_path* - JSON path or key to extract
+- *alias* - optional alias for the result column
+
+```python
+qry = Select(PgSqlDialect()).from_('users').json_extract('user_data', 'name', 'user_name')
+sql, _ = qry.assemble()
+# output: SELECT "users".*,"user_data"->>'name' AS "user_name" FROM "users"
+print(sql)
+```
+
+### Select.**json_where(json_field, json_path, operator, value=None)**
+
+Adds a **WHERE** condition for a JSON field value.
+
+- *json_field* - JSON field name (string) or `JsonField` object
+- *json_path* - JSON path or key to extract for comparison
+- *operator* - comparison operator
+- *value* - optional value to compare against
+
+```python
+qry = Select(PgSqlDialect()).from_('users').json_where('user_data', 'active', '=', True)
+sql, values = qry.assemble()
+# output: SELECT "users".* FROM "users" WHERE ("user_data"->>'active' = %s)
+print(sql)
+# values: [True]
+print(values)
 ```

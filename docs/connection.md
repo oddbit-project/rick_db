@@ -133,7 +133,7 @@ db_cfg = {
 }
 
 pool = PgConnectionPool(**db_cfg)
-# instantiate profiler, and use it on conn object
+# instantiate profiler, and use it on pool object
 pool.profiler = DefaultProfiler()
 
 # perform some queries we can profile
@@ -142,6 +142,6 @@ with pool.connection() as conn:
         c.exec("SELECT 1")
 
 # output: SELECT 1 0.00012579001486301422
-for evt in conn.profiler.get_events():
+for evt in pool.profiler.get_events():
     print(evt.query, evt.elapsed)
 ```
