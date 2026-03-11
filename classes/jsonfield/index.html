@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/sqldialect/">
+        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/jsonfield/">
       
       
-        <link rel="prev" href="../repository/">
+        <link rel="prev" href="../literal/">
       
       
-        <link rel="next" href="../select/">
+        <link rel="next" href="../pgjsonfield/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>SqlDialect - RickDb</title>
+        <title>JsonField - RickDb</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-rick_dbsqlsqldialect" class="md-skip">
+        <a href="#class-rick_dbsqljsonfield" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              SqlDialect
+              JsonField
             
           </span>
         </div>
@@ -691,37 +691,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    SqlDialect
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../sqldialect/" class="md-nav__link">
         
   
   
@@ -737,48 +710,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#sqldialecttabletable_name-aliasnone-schemanone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SqlDialect.table(table_name, alias=None, schema=None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sqldialectfieldfield-field_aliasnone-tablenone-schemanone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SqlDialect.field(field, field_alias=None, table=None, schema=None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -928,10 +859,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../jsonfield/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JsonField
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -947,6 +905,103 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#jsonfield__init__field_name-dialectnone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsonField.__init__(field_name, dialect=None)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jsonfieldextractpath-aliasnone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsonField.extract(path, alias=None)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jsonfieldextract_textpath-aliasnone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsonField.extract_text(path, alias=None)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jsonfieldcontainsvalue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsonField.contains(value)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jsonfieldhas_pathpath" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsonField.has_path(path)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jsonfield__getitem__key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsonField.__getitem__(key)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jsonfield__str__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsonField.__str__()
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1321,10 +1376,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sqldialecttabletable_name-aliasnone-schemanone" class="md-nav__link">
+  <a href="#jsonfield__init__field_name-dialectnone" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SqlDialect.table(table_name, alias=None, schema=None)
+        JsonField.__init__(field_name, dialect=None)
       
     </span>
   </a>
@@ -1332,10 +1387,65 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sqldialectfieldfield-field_aliasnone-tablenone-schemanone" class="md-nav__link">
+  <a href="#jsonfieldextractpath-aliasnone" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SqlDialect.field(field, field_alias=None, table=None, schema=None)
+        JsonField.extract(path, alias=None)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jsonfieldextract_textpath-aliasnone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsonField.extract_text(path, alias=None)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jsonfieldcontainsvalue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsonField.contains(value)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jsonfieldhas_pathpath" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsonField.has_path(path)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jsonfield__getitem__key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsonField.__getitem__(key)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jsonfield__str__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsonField.__str__()
       
     </span>
   </a>
@@ -1359,49 +1469,121 @@
 
 
 
-<h1 id="class-rick_dbsqlsqldialect">Class rick_db.sql.<strong>SqlDialect</strong><a class="headerlink" href="#class-rick_dbsqlsqldialect" title="Permanent link">&para;</a></h1>
-<p>Base Dialect Class. Implements schema, table and field quoting specifics to be used primarily within the query builder.</p>
-<h3 id="sqldialecttabletable_name-aliasnone-schemanone">SqlDialect.<strong>table(table_name, alias=None, schema=None)</strong><a class="headerlink" href="#sqldialecttabletable_name-aliasnone-schemanone" title="Permanent link">&para;</a></h3>
-<p>Quotes a table name, with an optional <em>alias</em> and <em>schema</em>.</p>
-<p>Example:
-<div class="highlight"><pre><span></span><code><span class="c1"># get dialect from a PgConnection() object</span>
-<span class="n">dialect</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">dialect</span><span class="p">()</span>
+<h1 id="class-rick_dbsqljsonfield">Class rick_db.sql.<strong>JsonField</strong><a class="headerlink" href="#class-rick_dbsqljsonfield" title="Permanent link">&para;</a></h1>
+<p>Specialized class for working with JSON/JSONB fields in SQL queries. Generates SQL expressions as <code>Literal</code> objects
+that can be used in <code>Select</code>, <code>where()</code>, and other query builder methods.</p>
+<p>When a dialect with <code>json_support</code> is provided, dialect-specific operators are used. Otherwise, generic <code>JSON_EXTRACT()</code>
+/ <code>JSON_CONTAINS()</code> syntax is generated as fallback.</p>
+<p>See also: <a href="../pgjsonfield/">PgJsonField</a> for PostgreSQL-specific extensions, and <a href="../../json_operations/">JSON Operations</a>
+for usage examples.</p>
+<h3 id="jsonfield__init__field_name-dialectnone">JsonField.<strong>__init__(field_name, dialect=None)</strong><a class="headerlink" href="#jsonfield__init__field_name-dialectnone" title="Permanent link">&para;</a></h3>
+<p>Create a JsonField for the given <em>field_name</em>. An optional <em>dialect</em> can be provided to enable dialect-specific SQL
+generation.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
 
-<span class="c1"># output: &quot;tbl&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dialect</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;tbl&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> 
+<span class="c1"># Without dialect (generic SQL)</span>
+<span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 
-<span class="c1"># output: &quot;schema&quot;.&quot;tbl&quot; AS &quot;alias&quot;   </span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dialect</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;tbl&#39;</span><span class="p">,</span> <span class="s1">&#39;alias&#39;</span><span class="p">,</span> <span class="s1">&#39;schema&#39;</span><span class="p">))</span>
+<span class="c1"># With PostgreSQL dialect</span>
+<span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">PgSqlDialect</span><span class="p">())</span>
+</code></pre></div>
+<h3 id="jsonfieldextractpath-aliasnone">JsonField.<strong>extract(path, alias=None)</strong><a class="headerlink" href="#jsonfieldextractpath-aliasnone" title="Permanent link">&para;</a></h3>
+<p>Extract a value from the JSON field. Returns a <code>Literal</code> SQL expression.</p>
+<ul>
+<li><em>path</em> - JSON path or key name to extract</li>
+<li><em>alias</em> - optional alias for the result</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+
+<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
+
+<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+<span class="c1"># output: &quot;data&quot;-&gt;&gt;&#39;name&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+
+<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;user_name&#39;</span><span class="p">)</span>
+<span class="c1"># output: &quot;data&quot;-&gt;&gt;&#39;name&#39; AS &quot;user_name&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+</code></pre></div>
+<p>Without a dialect:
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
+
+<span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+
+<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;$.name&#39;</span><span class="p">)</span>
+<span class="c1"># output: JSON_EXTRACT(data, &#39;$.name&#39;)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
 </code></pre></div></p>
-<h3 id="sqldialectfieldfield-field_aliasnone-tablenone-schemanone">SqlDialect.<strong>field(field, field_alias=None, table=None, schema=None)</strong><a class="headerlink" href="#sqldialectfieldfield-field_aliasnone-tablenone-schemanone" title="Permanent link">&para;</a></h3>
-<p>Quotes a field name, with an optional <em>field_alias</em>, <em>table</em> and <em>schema</em>. If field_alias is a list or tuple, a CAST()
-is performed instead, using the first item as type. If the list or tuple contains 2 items, the first one is used as type,
-and the second one as alias.</p>
-<p>Example:
-<div class="highlight"><pre><span></span><code><span class="c1"># get dialect from a PgConnection() object</span>
-<span class="n">dialect</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">dialect</span><span class="p">()</span>
+<h3 id="jsonfieldextract_textpath-aliasnone">JsonField.<strong>extract_text(path, alias=None)</strong><a class="headerlink" href="#jsonfieldextract_textpath-aliasnone" title="Permanent link">&para;</a></h3>
+<p>Extract a value as text from the JSON field. Returns a <code>Literal</code> SQL expression.
+For PostgreSQL, this produces the same output as <code>extract()</code> (both use the <code>-&gt;&gt;</code> operator).</p>
+<ul>
+<li><em>path</em> - JSON path or key name to extract</li>
+<li><em>alias</em> - optional alias for the result</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
 
-<span class="c1"># output: &quot;field&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dialect</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
 
-<span class="c1"># output: &quot;field&quot; AS &quot;alias&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dialect</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">,</span> <span class="s1">&#39;alias&#39;</span><span class="p">))</span> 
+<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract_text</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;user_email&#39;</span><span class="p">)</span>
+<span class="c1"># output: &quot;data&quot;-&gt;&gt;&#39;email&#39; AS &quot;user_email&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="jsonfieldcontainsvalue">JsonField.<strong>contains(value)</strong><a class="headerlink" href="#jsonfieldcontainsvalue" title="Permanent link">&para;</a></h3>
+<p>Check if the JSON field contains a value. Returns a <code>Literal</code> SQL expression with a parameter placeholder.
+The <em>value</em> argument is not interpolated into the SQL; it should be passed separately for parameter binding.</p>
+<ul>
+<li><em>value</em> - value to check for (used for parameter binding)</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
 
-<span class="c1"># output: CAST(&quot;field&quot; AS text)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dialect</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]))</span>
+<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
 
-<span class="c1"># output: CAST(&quot;field&quot; AS text) AS &quot;alias&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dialect</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;alias&#39;</span><span class="p">]))</span>
+<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+<span class="c1"># output: &quot;data&quot; @&gt; %s::jsonb</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="jsonfieldhas_pathpath">JsonField.<strong>has_path(path)</strong><a class="headerlink" href="#jsonfieldhas_pathpath" title="Permanent link">&para;</a></h3>
+<p>Check if a path exists in the JSON field. Returns a <code>Literal</code> SQL expression.</p>
+<ul>
+<li><em>path</em> - path to check for existence</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
 
-<span class="c1"># output: CAST(COUNT(*) AS int) AS &quot;total&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dialect</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;COUNT(*)&#39;</span><span class="p">),</span> <span class="p">[</span><span class="s1">&#39;int&#39;</span><span class="p">,</span> <span class="s1">&#39;total&#39;</span><span class="p">]))</span> 
+<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
 
-<span class="c1"># output: &quot;table&quot;.&quot;field&quot; AS &quot;alias&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dialect</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">,</span> <span class="s1">&#39;alias&#39;</span><span class="p">,</span> <span class="s1">&#39;table&#39;</span><span class="p">))</span>
+<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">has_path</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+<span class="c1"># output: &quot;data&quot; ?? &#39;name&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="jsonfield__getitem__key">JsonField.<strong>__getitem__(key)</strong><a class="headerlink" href="#jsonfield__getitem__key" title="Permanent link">&para;</a></h3>
+<p>Bracket notation for JSON path access. Returns a new <code>JsonField</code> representing the nested path.</p>
+<p>Uses the <code>-&gt;&gt;</code> operator to build the path expression.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
 
-<span class="c1"># output: &quot;public&quot;.&quot;table&quot;.&quot;field&quot; AS &quot;alias&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dialect</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">,</span> <span class="s1">&#39;alias&#39;</span><span class="p">,</span> <span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="s1">&#39;public&#39;</span><span class="p">))</span> 
-</code></pre></div></p>
+<span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+
+<span class="n">nested</span> <span class="o">=</span> <span class="n">jf</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+<span class="c1"># output: data-&gt;&gt;&quot;name&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">nested</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="jsonfield__str__">JsonField.<strong>__str__()</strong><a class="headerlink" href="#jsonfield__str__" title="Permanent link">&para;</a></h3>
+<p>Returns the field name string.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
+
+<span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<span class="c1"># output: data</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">jf</span><span class="p">)</span>
+</code></pre></div>
 
 
 

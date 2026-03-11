@@ -16,11 +16,14 @@
         <link rel="prev" href="../object_mapper/">
       
       
-        <link rel="next" href="../repository/">
+        <link rel="next" href="../json_operations/">
+      
+      
+        
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.2.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
     
     
       
@@ -28,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.046329b4.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.85d0ee34.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -50,11 +53,10 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
-    
     
     
   </head>
@@ -69,9 +71,6 @@
     
     <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="amber">
   
-    
-    
-      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -98,12 +97,12 @@
     <a href=".." title="RickDb" class="md-header__button md-logo" aria-label="RickDb" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
       
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -128,20 +127,20 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
     
-      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>
       </label>
     
   
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
     
-      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
       </label>
     
   
@@ -149,27 +148,32 @@
       
     
     
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
-      <label class="md-header__button md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-      </label>
-      <div class="md-search" data-md-component="search" role="dialog">
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
         
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
         
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
       </nav>
       
@@ -177,7 +181,7 @@
       
     </form>
     <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Initializing search
@@ -188,13 +192,14 @@
     </div>
   </div>
 </div>
+      
     
     
       <div class="md-header__source">
         <a href="https://git.oddbit.org/OddBit/rick_db" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
   </div>
   <div class="md-source__repository">
     OddBit/rick_db
@@ -230,7 +235,7 @@
     <a href=".." title="RickDb" class="md-nav__button md-logo" aria-label="RickDb" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
     RickDb
@@ -240,7 +245,7 @@
       <a href="https://git.oddbit.org/OddBit/rick_db" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
   </div>
   <div class="md-source__repository">
     OddBit/rick_db
@@ -255,13 +260,21 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href=".." class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Overview
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -271,6 +284,7 @@
     
       
       
+  
   
   
   
@@ -278,9 +292,16 @@
       <a href="../install/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Installation
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -290,6 +311,7 @@
     
       
       
+  
   
   
   
@@ -297,9 +319,16 @@
       <a href="../connection/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Connection
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -309,6 +338,7 @@
     
       
       
+  
   
   
   
@@ -316,9 +346,16 @@
       <a href="../object_mapper/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Object Mapper
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -331,6 +368,7 @@
   
   
     
+  
   
   
     <li class="md-nav__item md-nav__item--active">
@@ -344,9 +382,16 @@
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
   
+  
   <span class="md-ellipsis">
+    
+  
     Query Builder
+  
+
+    
   </span>
+  
   
 
           <span class="md-nav__icon md-icon"></span>
@@ -355,9 +400,16 @@
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Query Builder
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -379,35 +431,66 @@
       
         <li class="md-nav__item">
   <a href="#select" class="md-nav__link">
-    Select
+    <span class="md-ellipsis">
+      
+        Select
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#insert" class="md-nav__link">
-    Insert
+    <span class="md-ellipsis">
+      
+        Insert
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#update" class="md-nav__link">
-    Update
+    <span class="md-ellipsis">
+      
+        Update
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#delete" class="md-nav__link">
-    Delete
+    <span class="md-ellipsis">
+      
+        Delete
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JSON Operations
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#with" class="md-nav__link">
-    With
+    <span class="md-ellipsis">
+      
+        With
+      
+    </span>
   </a>
   
 </li>
@@ -425,13 +508,21 @@
   
   
   
+  
     <li class="md-nav__item">
-      <a href="../repository/" class="md-nav__link">
+      <a href="../json_operations/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
-    Repositories
+    
+  
+    JSON Operations
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -441,6 +532,34 @@
     
       
       
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repository/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repositories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
   
   
   
@@ -448,9 +567,16 @@
       <a href="../grid/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     DbGrid
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -460,6 +586,7 @@
     
       
       
+  
   
   
   
@@ -467,9 +594,16 @@
       <a href="../migrations/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Migrations
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -482,6 +616,9 @@
   
   
   
+  
+    
+    
     
     
     
@@ -489,30 +626,41 @@
       
         
         
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
-        
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
             
   
+  
   <span class="md-ellipsis">
+    
+  
     Class List
+  
+
+    
   </span>
+  
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_9">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
-            Class List
+            
+  
+    Class List
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
+  
   
   
   
@@ -520,9 +668,16 @@
       <a href="../classes/record/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Record
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -533,6 +688,7 @@
             
               
                 
+  
   
   
   
@@ -540,9 +696,16 @@
       <a href="../classes/connection/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Connection
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -553,6 +716,7 @@
             
               
                 
+  
   
   
   
@@ -560,9 +724,16 @@
       <a href="../classes/cursor/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Cursor
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -573,6 +744,7 @@
             
               
                 
+  
   
   
   
@@ -580,9 +752,16 @@
       <a href="../classes/profiler/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Profiler
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -593,6 +772,7 @@
             
               
                 
+  
   
   
   
@@ -600,9 +780,16 @@
       <a href="../classes/repository/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Repository
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -613,6 +800,7 @@
             
               
                 
+  
   
   
   
@@ -620,9 +808,16 @@
       <a href="../classes/sqldialect/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     SqlDialect
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -633,6 +828,7 @@
             
               
                 
+  
   
   
   
@@ -640,9 +836,16 @@
       <a href="../classes/select/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Select
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -653,6 +856,7 @@
             
               
                 
+  
   
   
   
@@ -660,9 +864,16 @@
       <a href="../classes/insert/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Insert
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -673,6 +884,7 @@
             
               
                 
+  
   
   
   
@@ -680,9 +892,16 @@
       <a href="../classes/update/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Update
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -693,6 +912,7 @@
             
               
                 
+  
   
   
   
@@ -700,9 +920,16 @@
       <a href="../classes/delete/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Delete
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -713,6 +940,7 @@
             
               
                 
+  
   
   
   
@@ -720,9 +948,16 @@
       <a href="../classes/literal/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Literal
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -733,6 +968,63 @@
             
               
                 
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/jsonfield/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JsonField
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/pgjsonfield/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PgJsonField
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
   
   
   
@@ -740,9 +1032,16 @@
       <a href="../classes/with/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     CTEs (With)
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -753,6 +1052,7 @@
             
               
                 
+  
   
   
   
@@ -760,9 +1060,16 @@
       <a href="../classes/dbgrid/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     DbGrid
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -773,6 +1080,7 @@
             
               
                 
+  
   
   
   
@@ -780,9 +1088,16 @@
       <a href="../classes/querycache/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     QueryCache
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -793,6 +1108,7 @@
             
               
                 
+  
   
   
   
@@ -800,9 +1116,16 @@
       <a href="../classes/poolinterface/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Pool
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -816,6 +1139,65 @@
   
   
   
+  
+    <li class="md-nav__item">
+      <a href="../classes/fieldrecord/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FieldRecord
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/userrecord/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UserRecord
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
     
     
     
@@ -823,25 +1205,35 @@
       
         
         
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_20" >
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9_16" >
-        
-          <label class="md-nav__link" for="__nav_9_16" id="__nav_9_16_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_10_20" id="__nav_10_20_label" tabindex="0">
             
   
+  
   <span class="md-ellipsis">
+    
+  
     Manager
+  
+
+    
   </span>
+  
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_9_16_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_9_16">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_20">
             <span class="md-nav__icon md-icon"></span>
-            Manager
+            
+  
+    Manager
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -850,13 +1242,21 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../classes/managerinterface/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Manager
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -867,6 +1267,7 @@
             
               
                 
+  
   
   
   
@@ -874,9 +1275,16 @@
       <a href="../classes/pgmanager/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     PgManager
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -890,13 +1298,21 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../classes/sqlite3manager/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Sqlite3Manager
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -948,35 +1364,66 @@
       
         <li class="md-nav__item">
   <a href="#select" class="md-nav__link">
-    Select
+    <span class="md-ellipsis">
+      
+        Select
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#insert" class="md-nav__link">
-    Insert
+    <span class="md-ellipsis">
+      
+        Insert
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#update" class="md-nav__link">
-    Update
+    <span class="md-ellipsis">
+      
+        Update
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#delete" class="md-nav__link">
-    Delete
+    <span class="md-ellipsis">
+      
+        Delete
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JSON Operations
+      
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#with" class="md-nav__link">
-    With
+    <span class="md-ellipsis">
+      
+        With
+      
+    </span>
   </a>
   
 </li>
@@ -991,14 +1438,16 @@
           
           
             <div class="md-content" data-md-component="content">
+              
               <article class="md-content__inner md-typeset">
                 
                   
 
 
+
 <h1 id="building-queries">Building Queries<a class="headerlink" href="#building-queries" title="Permanent link">&para;</a></h1>
 <p>RickDb's Query Builder can generate SELECT, INSERT, DELETE and UPDATE queries. It also provides schema support (including
-cross-schema operations), JOIN support and recognizes <a href="../object_mapper/">Record</a> objects for table and schema 
+cross-schema operations), JOIN support, JSON operations, and recognizes <a href="../object_mapper/">Record</a> objects for table and schema 
 identification.</p>
 <p>The query builder provides SQL generation using a fluent interface, suitable for most cases. Different database support
 is handled via dialect objects (extending from SqlDialect). The query builder itself will only generate a SQL string
@@ -1007,7 +1456,7 @@ and a parameter value list; it is up to the developer to use the generated SQL i
 <p>Selects are by far the most common statements, and can be easily built using a <a href="../classes/select/">Select</a> query builder
 object. Check the class documentation for more details on all available methods.</p>
 <p>Simple Select() examples:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
 
 <span class="c1"># SELECT ALL</span>
 <span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
@@ -1030,7 +1479,7 @@ object. Check the class documentation for more details on all available methods.
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
 </code></pre></div>
 <p>Table aliasing is also supported, as well as schema names:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
 
 <span class="c1"># SELECT w/ table alias and schema</span>
 <span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">({</span><span class="s1">&#39;table&#39;</span><span class="p">:</span> <span class="s1">&#39;t1&#39;</span><span class="p">},</span> <span class="n">schema</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
@@ -1038,7 +1487,7 @@ object. Check the class documentation for more details on all available methods.
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
 </code></pre></div></p>
 <p>And, of course, columns can be aliased too:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
 
 <span class="c1"># SELECT w/ column alias</span>
 <span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;id_table&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
@@ -1052,18 +1501,18 @@ object. Check the class documentation for more details on all available methods.
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
 </code></pre></div></p>
 <p>The query builder also fully supports <a href="../object_mapper/">Record</a> classes or objects as table and schema identifiers:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db</span> <span class="kn">import</span> <span class="n">fieldmapper</span>
-<span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
 
 
 <span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s2">&quot;publisher&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s2">&quot;id_publisher&quot;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Publisher</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Publisher</span><span class="p">:</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;id_publisher&quot;</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
 
 
 <span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s2">&quot;book&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s2">&quot;id_book&quot;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Book</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Book</span><span class="p">:</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;id_book&quot;</span>
     <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;title&quot;</span>
     <span class="n">total_pages</span> <span class="o">=</span> <span class="s2">&quot;total_pages&quot;</span>
@@ -1105,7 +1554,7 @@ object. Check the class documentation for more details on all available methods.
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
 </code></pre></div>
 <p>The <a href="../classes/select/">Select</a> Object also supports both <strong>AND</strong> and <strong>OR</strong> <strong>WHERE</strong> clauses, as well as nested parenthesis:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
 
 <span class="c1"># SELECT... WHERE &lt;cond&gt; OR &lt;cond&gt;</span>
 <span class="n">qry</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">(</span>
@@ -1134,9 +1583,9 @@ object. Check the class documentation for more details on all available methods.
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
 </code></pre></div>
 <p><a href="../classes/select/">Select</a> Object supports <strong>LEFT JOIN</strong>, <strong>RIGHT JOIN</strong>, <strong>FULL JOIN</strong>, <strong>CROSS JOIN</strong> and <strong>NATURAL JOIN</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
 
-<span class="c1"># LEFT JOIN</span>
+<span class="c1"># INNER JOIN</span>
 <span class="n">qry</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span>
     <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table1&quot;</span><span class="p">)</span>
@@ -1189,7 +1638,7 @@ object. Check the class documentation for more details on all available methods.
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
 </code></pre></div>
 <p>It is also possible to use subselects:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
 
 <span class="n">subselect</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;some_table&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;field&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
 
@@ -1200,7 +1649,7 @@ object. Check the class documentation for more details on all available methods.
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
 </code></pre></div>
 <p>Also, custom SQL expressions are supported:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span><span class="p">,</span> <span class="n">Literal</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span><span class="p">,</span> <span class="n">Literal</span>
 
 <span class="c1"># using a simple expression</span>
 <span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">expr</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
@@ -1220,11 +1669,11 @@ object. Check the class documentation for more details on all available methods.
 <h2 id="insert">Insert<a class="headerlink" href="#insert" title="Permanent link">&para;</a></h2>
 <p><a href="../classes/insert/">Insert</a> objects can be used to generate SQL <strong>INSERT</strong> statements, with optional <strong>RETURNING</strong> clause,
 and with full support for <a href="../object_mapper/">Record</a> objects:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Insert</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
-<span class="kn">from</span> <span class="nn">rick_db</span> <span class="kn">import</span> <span class="n">fieldmapper</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Insert</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
 
 <span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;publisher&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_publisher&#39;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Publisher</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Publisher</span><span class="p">:</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_publisher&#39;</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
 
@@ -1240,7 +1689,7 @@ and with full support for <a href="../object_mapper/">Record</a> objects:</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
 </code></pre></div>
 <p>It is possible to build an <strong>INSERT</strong> query to perform multiple inserts:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Insert</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Insert</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[</span><span class="s1">&#39;john&#39;</span><span class="p">,</span> <span class="s1">&#39;connor&#39;</span><span class="p">],</span>
@@ -1260,10 +1709,10 @@ and with full support for <a href="../object_mapper/">Record</a> objects:</p>
 <h2 id="update">Update<a class="headerlink" href="#update" title="Permanent link">&para;</a></h2>
 <p><a href="../classes/update/">Update</a> objects can be used to generate SQL <strong>UPDATE WHERE</strong> statements, with <a href="../object_mapper/">Record</a>
 object support:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Update</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Update</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
 
 <span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;publisher&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_publisher&#39;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Publisher</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Publisher</span><span class="p">:</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_publisher&#39;</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
 
@@ -1279,7 +1728,7 @@ object support:</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
 </code></pre></div>
 <p><strong>WHERE</strong> clause support:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Update</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Update</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
 
 <span class="c1"># UPDATE WHERE... common usage</span>
 <span class="n">qry</span> <span class="o">=</span> <span class="p">(</span>
@@ -1311,7 +1760,7 @@ object support:</p>
 </code></pre></div></p>
 <h2 id="delete">Delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h2>
 <p><a href="../classes/delete/">Delete</a> objects can be used to generate SQL <strong>DELETE</strong> statements:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Delete</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Delete</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
 
 <span class="c1"># DELETE WHERE... common usage</span>
 <span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
@@ -1333,13 +1782,48 @@ object support:</p>
 <span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; = %s AND &quot;name&quot; ILIKE %s&#39;, [7, &#39;john%&#39;])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
 </code></pre></div>
+<h2 id="json-operations">JSON Operations<a class="headerlink" href="#json-operations" title="Permanent link">&para;</a></h2>
+<p>The Query Builder provides comprehensive support for working with JSON data through the <code>JsonField</code> and <code>PgJsonField</code> classes and specialized helper methods on the <code>Select</code> class. For detailed information, see the <a href="../json_operations/">JSON Operations</a> documentation.</p>
+<p>Basic JSON query example:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgJsonField</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+
+<span class="c1"># Create a PostgreSQL dialect</span>
+<span class="n">pg_dialect</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+
+<span class="c1"># Using JsonField directly</span>
+<span class="n">json_field</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="s2">&quot;user_data&quot;</span><span class="p">,</span> <span class="n">pg_dialect</span><span class="p">)</span>
+
+<span class="c1"># Extract values from JSON</span>
+<span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Select</span><span class="p">(</span><span class="n">pg_dialect</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;users&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">json_field</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s2">&quot;$.name&quot;</span><span class="p">),</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">json_field</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s2">&quot;$.active&quot;</span><span class="p">),</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Using helper methods</span>
+<span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Select</span><span class="p">(</span><span class="n">pg_dialect</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;users&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">json_extract</span><span class="p">(</span><span class="s2">&quot;user_data&quot;</span><span class="p">,</span> <span class="s2">&quot;$.name&quot;</span><span class="p">,</span> <span class="s2">&quot;user_name&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">json_where</span><span class="p">(</span><span class="s2">&quot;user_data&quot;</span><span class="p">,</span> <span class="s2">&quot;$.active&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Using bracket notation (PostgreSQL)</span>
+<span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Select</span><span class="p">(</span><span class="n">pg_dialect</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;users&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">json_field</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">][</span><span class="s2">&quot;city&quot;</span><span class="p">],</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;New York&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
 <h2 id="with">With<a class="headerlink" href="#with" title="Permanent link">&para;</a></h2>
 <p><a href="../classes/with/">With</a> objects can be used to generate CTE statements:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db</span> <span class="kn">import</span> <span class="n">fieldmapper</span>
-<span class="kn">from</span> <span class="nn">rick_db.sql</span> <span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span><span class="p">,</span> <span class="n">With</span><span class="p">,</span> <span class="n">Sql</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span><span class="p">,</span> <span class="n">With</span><span class="p">,</span> <span class="n">Sql</span>
 
 <span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s2">&quot;folder&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s2">&quot;id_folder&quot;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">FolderRecord</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FolderRecord</span><span class="p">:</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;id_folder&quot;</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="s2">&quot;fk_parent&quot;</span>
 
@@ -1376,13 +1860,21 @@ object support:</p>
 
 
 
+
+
+
+
+
+
+
                 
               </article>
             </div>
           
           
-  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
 
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
       </main>
@@ -1401,7 +1893,8 @@ object support:</p>
   
 </div>
       
-        <div class="md-social">
+        
+<div class="md-social">
   
     
     
@@ -1411,7 +1904,7 @@ object support:</p>
       
     
     <a href="https://github.com/oddbit-project/rick_db" target="_blank" rel="noopener" title="github.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
     </a>
   
 </div>
@@ -1425,10 +1918,14 @@ object support:</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.dff1b7c8.min.js"></script>
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
