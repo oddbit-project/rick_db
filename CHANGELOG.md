@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0]
+
+### Added
+- `json_exclude` parameter on `@fieldmapper` decorator to exclude fields from `asdict()` serialization at the class level
+- `exclude` parameter on `asdict()` for per-call field exclusion, merged with class-level defaults
+- Excluded fields remain accessible via attribute access, `asrecord()`, `fields()`, and `values()`
+
 ## [2.1.0]
 
 ### Added
