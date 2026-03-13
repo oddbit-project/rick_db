@@ -87,11 +87,11 @@ In addition to the parameters required by the connection object, there are two a
 
 |Parameter | Mandatory | Description|
 |---|---|---|
-|engine|yes|Database engine to use (currently "pgsql" or "sqlite")|
+|engine|yes|Database engine to use ("pgsql", "sqlite", or "clickhouse")|
 |passfile|no|Optional password file containing the database password|
 
 Engine is a mandatory field that specifies which database Connection object will be used. Currently, its value can
-be either 'pgsql' or 'sqlite'.
+be 'pgsql', 'sqlite', or 'clickhouse'.
 
 Passfile is an optional parameter indicating that the password should be read from an existing file
 instead. When **passfile** is used, the file is read into a **password** parameter automatically. Keep in

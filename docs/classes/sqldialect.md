@@ -2,6 +2,12 @@
 
 Base Dialect Class. Implements schema, table and field quoting specifics to be used primarily within the query builder.
 
+Available dialect implementations:
+
+- **PgSqlDialect** — PostgreSQL dialect (`%s` placeholders, `INSERT...RETURNING`, `ILIKE`, JSONB operators)
+- **Sqlite3SqlDialect** — SQLite3 dialect (`?` placeholders, no `ILIKE`, no JSON)
+- **ClickHouseSqlDialect** — ClickHouse dialect (`%s` placeholders, no `INSERT...RETURNING`, `ILIKE`, JSON functions via `JSONExtractString`/`JSONHas`/`JSON_EXISTS`)
+
 ### SqlDialect.**table(table_name, alias=None, schema=None)**
 
 Quotes a table name, with an optional *alias* and *schema*.

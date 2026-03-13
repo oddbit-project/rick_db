@@ -10,7 +10,7 @@ and a Repository pattern implementation. It is **not** an ORM, and it's not mean
 ## Features
 - Object Mapper;
 - Fluent Sql Query builder;
-- High level connectors for PostgreSQL, SqlLite3;
+- High level connectors for PostgreSQL, SQLite3, ClickHouse;
 - Pluggable SQL query profiler; 
 - Simple migration manager for SQL files;
 
@@ -151,8 +151,8 @@ if __name__ == '__main__':
 ## Running tests
 
 To run the tests, you should have both tox and tox-docker, as well as a local docker daemon. Make sure the current user has
-access to the docker daemon.
+access to the docker daemon. The test suite uses PostgreSQL and ClickHouse docker containers.
 ```python
 $ pip3 install -r requirements-dev.txt
-$ tox 
+$ tox
 ```

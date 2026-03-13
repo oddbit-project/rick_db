@@ -2,7 +2,7 @@
 
 SQL database abstraction layer for Python. **Not an ORM** — follows a schema-first approach where the database structure is managed independently via SQL DDL.
 
-Supports **PostgreSQL** (psycopg2) and **SQLite3**.
+Supports **PostgreSQL** (psycopg2), **SQLite3**, and **ClickHouse** (clickhouse-connect).
 
 ## Quick Start
 
@@ -38,6 +38,11 @@ from rick_db.backend.sqlite import Sqlite3Connection
 
 conn = Sqlite3Connection("mydb.db")       # file-based
 conn = Sqlite3Connection(":memory:")       # in-memory
+
+# ClickHouse
+from rick_db.backend.clickhouse import ClickHouseConnection
+
+conn = ClickHouseConnection(host="localhost", port=8123, database="mydb")
 ```
 
 ### Use the Repository
@@ -210,6 +215,13 @@ from rick_db.backend.sqlite import Sqlite3Manager
 
 mgr = Sqlite3Manager(conn)
 mgr.tables(), mgr.views(), mgr.table_fields("users"), mgr.table_pk("users")
+
+# ClickHouse
+from rick_db.backend.clickhouse import ClickHouseManager
+
+mgr = ClickHouseManager(conn)
+mgr.tables(), mgr.views(), mgr.table_fields("users"), mgr.table_pk("users")
+mgr.databases(), mgr.users()
 ```
 
 ## Profiler

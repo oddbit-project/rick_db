@@ -7,6 +7,7 @@ from rick_db.mapper import (
     ATTR_TABLE,
     ATTR_SCHEMA,
     ATTR_PRIMARY_KEY,
+    ATTR_JSON_EXCLUDE,
     ATTR_RECORD_MAGIC,
     ATTR_ROW,
 )
@@ -175,3 +176,87 @@ class TestMapper:
         for field in ua.fields():
             assert field in ["id", "name", "user", "street", "city"]
         assert len(ua.asdict()) == 2
+
+
+# field names - SecureUser
+FIELD_SECURE_USER_ID = "id_user"
+FIELD_SECURE_USER_NAME = "username"
+FIELD_SECURE_USER_PASSWORD = "password_hash"
+FIELD_SECURE_USER_SECRET = "secret_key"
+
+
+@fieldmapper(pk="id_user", tablename="users", json_exclude={"password", "secret"})
+class SecureUser(Record):
+    id = FIELD_SECURE_USER_ID
+    name = FIELD_SECURE_USER_NAME
+    password = FIELD_SECURE_USER_PASSWORD
+    secret = FIELD_SECURE_USER_SECRET
+
+
+class TestJsonExclude:
+
+    def test_class_level_exclusion(self):
+        """Fields listed in json_exclude are omitted from asdict()"""
+        user = SecureUser(id=1, name="alice", password="hashed", secret="s3cret")
+        result = user.asdict()
+        assert result == {"id": 1, "name": "alice"}
+        assert "password" not in result
+        assert "secret" not in result
+
+    def test_per_call_exclusion(self):
+        """asdict(exclude=...) omits additional fields per call"""
+        user = User(id=1, name="john")
+        result = user.asdict(exclude=["name"])
+        assert result == {"id": 1}
+        assert "name" not in result
+
+    def test_combined_exclusion(self):
+        """Per-call exclude merges with class-level json_exclude"""
+        user = SecureUser(id=1, name="alice", password="hashed", secret="s3cret")
+        result = user.asdict(exclude=["name"])
+        assert result == {"id": 1}
+        assert "name" not in result
+        assert "password" not in result
+        assert "secret" not in result
+
+    def test_backward_compat_no_exclusion(self):
+        """Existing asdict() without arguments still works identically"""
+        user = User(id=3, name="john doe")
+        result = user.asdict()
+        assert result == {"id": 3, "name": "john doe"}
+
+    def test_excluded_fields_still_accessible(self):
+        """Excluded fields are still accessible as attributes and via other methods"""
+        user = SecureUser(id=1, name="alice", password="hashed", secret="s3cret")
+
+        # attribute access still works
+        assert user.password == "hashed"
+        assert user.secret == "s3cret"
+
+        # asrecord() still includes excluded fields
+        record = user.asrecord()
+        assert record == {
+            "id_user": 1,
+            "username": "alice",
+            "password_hash": "hashed",
+            "secret_key": "s3cret",
+        }
+
+        # fields() still includes excluded fields
+        assert "password" in user.fields()
+        assert "secret" in user.fields()
+
+        # values() still includes excluded fields
+        assert "hashed" in user.values()
+        assert "s3cret" in user.values()
+
+    def test_json_exclude_attribute_set_on_class(self):
+        """The _json_exclude attribute is properly set on decorated classes"""
+        assert getattr(SecureUser, ATTR_JSON_EXCLUDE) == {"password", "secret"}
+        assert getattr(User, ATTR_JSON_EXCLUDE) == set()
+
+    def test_empty_exclude_returns_all(self):
+        """Passing an empty list to exclude returns all fields (no class-level exclude)"""
+        user = User(id=1, name="john")
+        result = user.asdict(exclude=[])
+        assert result == {"id": 1, "name": "john"}

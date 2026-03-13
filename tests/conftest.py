@@ -37,3 +37,28 @@ def sqlite_conn() -> Sqlite3Connection:
     c = Sqlite3Connection(":memory:")
     yield c
     c.close()
+
+
+@pytest.fixture
+def ch_settings() -> dict:
+    return {
+        "host": os.environ.get("CLICKHOUSE_HOST", "localhost"),
+        "port": int(os.environ.get("CLICKHOUSE_PORT", 8123)),
+        "username": os.environ.get("CLICKHOUSE_USER", "default"),
+        "password": os.environ.get("CLICKHOUSE_PASSWORD", ""),
+        "database": os.environ.get("CLICKHOUSE_DB", "default"),
+    }
+
+
+@pytest.fixture
+def ch_conn(ch_settings):
+    from rick_db.backend.clickhouse import ClickHouseConnection
+
+    try:
+        c = ClickHouseConnection(**ch_settings)
+    except Exception:
+        pytest.skip("ClickHouse server not available")
+        return
+
+    yield c
+    c.close()

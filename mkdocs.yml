@@ -56,10 +56,13 @@ nav:
   - DbGrid: 'classes/dbgrid.md'
   - QueryCache: 'classes/querycache.md'
   - Pool: 'classes/poolinterface.md'
+  - FieldRecord: 'classes/fieldrecord.md'
+  - UserRecord: 'classes/userrecord.md'
   - Manager:
     - Manager: 'classes/managerinterface.md'
     - PgManager: 'classes/pgmanager.md'
     - Sqlite3Manager: 'classes/sqlite3manager.md'
+    - ClickHouseManager: 'classes/clickhousemanager.md'
 
 markdown_extensions:
 - toc:

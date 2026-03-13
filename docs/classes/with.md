@@ -21,10 +21,12 @@ union = Select().union([
 ], Sql.UNION_ALL)
 
 # assemble a recursive CTE
-with_qry = With()
+with_qry = (
+    With()
     .clause("t", union)
     .query(Select().from_("t", cols={Literal("SUM(n)"): "total"}))
     .recursive()
+)
 
 sql, values = with_qry.assemble()
 # sql: WITH RECURSIVE "t"("n") AS (VALUES(1) UNION SELECT n+1 FROM "t" WHERE ("n" < %s)) SELECT SUM(n) AS "total" FROM "t"

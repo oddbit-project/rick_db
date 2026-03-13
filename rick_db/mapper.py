@@ -7,6 +7,7 @@ ATTR_FIELDS = "_fieldmap"
 ATTR_TABLE = "_tablename"
 ATTR_SCHEMA = "_schema"
 ATTR_PRIMARY_KEY = "_pk"
+ATTR_JSON_EXCLUDE = "_json_exclude"
 ATTR_ROW = "_row"
 
 
@@ -27,7 +28,7 @@ class Record:
     def pk(self):
         pass
 
-    def asdict(self):
+    def asdict(self, exclude=None):
         pass
 
     def asrecord(self):
@@ -51,6 +52,7 @@ class BaseRecord(Record):
     _tablename = None
     _schema = None
     _pk = None
+    _json_exclude = set()
 
     def __init__(self, **kwargs):
         self._row = {}  # row must be a local scoped var
@@ -116,11 +118,15 @@ class BaseRecord(Record):
             return row[pk]
         raise AttributeError("primary key value is not set")
 
-    def asdict(self):
+    def asdict(self, exclude=None):
+        if exclude is None:
+            skip = self._json_exclude
+        else:
+            skip = set(exclude) | self._json_exclude
         result = {}
         data = self._row
         for key, dbfield in self._fieldmap.items():
-            if dbfield in data.keys():
+            if key not in skip and dbfield in data.keys():
                 result[key] = data[dbfield]
         return result
 
@@ -204,7 +210,7 @@ def _base_record_method_map() -> dict:
     return methods
 
 
-def fieldmapper(cls=None, pk=None, tablename=None, schema=None, clsonly=False):
+def fieldmapper(cls=None, pk=None, tablename=None, schema=None, clsonly=False, json_exclude=None):
     def wrap(cls):
         fieldmap = {}
         if clsonly:
@@ -228,6 +234,7 @@ def fieldmapper(cls=None, pk=None, tablename=None, schema=None, clsonly=False):
         setattr(cls, ATTR_TABLE, tablename)
         setattr(cls, ATTR_SCHEMA, schema)
         setattr(cls, ATTR_PRIMARY_KEY, pk)
+        setattr(cls, ATTR_JSON_EXCLUDE, set(json_exclude) if json_exclude else set())
         # row attr is set, but will be shadowed by internal attribute on __init__
         setattr(cls, ATTR_ROW, {})
 
