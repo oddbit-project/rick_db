@@ -124,6 +124,32 @@ class TestSqlDialect:
     def test_sqlitedialect_field(self, field, field_alias, table, schema, result):
         assert SqlDialect().field(field, field_alias, table, schema) == result
 
+    def test_identifier_escaping_table(self):
+        d = SqlDialect()
+        # embedded double-quote must be doubled (SQL standard)
+        assert d.table('tab"le') == '"tab""le"'
+        assert d.table("safe") == '"safe"'
+        # alias and schema are also escaped
+        assert d.table("t", alias='a"lias') == '"t" AS "a""lias"'
+        assert d.table("t", schema='s"ch') == '"s""ch"."t"'
+
+    def test_identifier_escaping_field(self):
+        d = SqlDialect()
+        assert d.field('fi"eld') == '"fi""eld"'
+        assert d.field("f", field_alias='a"l') == '"f" AS "a""l"'
+        assert d.field("f", table='t"bl') == '"t""bl"."f"'
+
+    def test_identifier_escaping_database(self):
+        d = SqlDialect()
+        assert d.database('db"name') == '"db""name"'
+        assert d.database("db", alias='a"l') == '"db" AS "a""l"'
+
+    def test_identifier_escaping_pg(self):
+        d = PgSqlDialect()
+        assert d.table('tab"le') == '"tab""le"'
+        assert d.field('fi"eld') == '"fi""eld"'
+        assert d.database('db"name') == '"db""name"'
+
     @pytest.mark.parametrize("table_name, alias, schema, result", pg_dialect_table())
     def test_pgsqldialect_table(self, table_name, alias, schema, result):
         assert PgSqlDialect().table(table_name, alias, schema) == result

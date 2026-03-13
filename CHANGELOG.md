@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.3.0]
+
+### Added
+- ClickHouse backend support via `clickhouse-connect` HTTP client
+  - `ClickHouseConnection` — connection wrapper with DB-API 2.0 compatible cursor and client wrappers
+  - `ClickHouseRepository` — repository with ClickHouse mutation syntax (`ALTER TABLE ... UPDATE/DELETE`)
+  - `ClickHouseManager` — database introspection using `system.*` tables
+  - `ClickHouseMigrationManager` — forward-only migration manager for ClickHouse
+  - `ClickHouseUpdate` / `ClickHouseDelete` — SQL builders generating ClickHouse mutation syntax
+  - `ClickHouseSqlDialect` — dialect with ClickHouse-specific placeholders, JSON functions, and no `INSERT...RETURNING`
+- ClickHouse integration tests using `tox-docker` with `clickhouse/clickhouse-server:25.8`
+- `clickhouse-connect>=0.7.0` added to dev dependencies
+
+### Changed
+- Updated `tox.ini` to include ClickHouse docker service alongside PostgreSQL
+
+### Security
+- **sql/dialect.py**: Fixed SQL identifier quoting across all dialects (PostgreSQL, SQLite, ClickHouse) to escape embedded double-quotes by doubling them (SQL standard). Previously, `dialect.table()`, `dialect.field()`, and `dialect.database()` wrapped names in double-quotes without escaping, allowing identifier injection in Manager DDL methods (`create_database`, `drop_database`, `drop_table`, `drop_view`)
+
 ## [2.2.0]
 
 ### Added

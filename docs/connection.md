@@ -88,6 +88,51 @@ with conn.cursor() as c:
     pass
 ```
 
+## Connecting to ClickHouse
+
+ClickHouse is supported via the `clickhouse-connect` HTTP client. Install the optional dependency:
+
+```shell
+$ pip install clickhouse-connect
+```
+
+Available connection parameters:
+
+|Field| Description |
+|---|---|
+|host| ClickHouse server hostname (defaults to "localhost") |
+|port| HTTP port (defaults to 8123) |
+|username| User name used to authenticate (defaults to "default") |
+|password| Password used to authenticate (defaults to empty) |
+|database| Database name (defaults to "default") |
+
+Any additional keyword arguments are passed directly to `clickhouse_connect.get_client()`.
+
+Example:
+```python
+from rick_db.backend.clickhouse import ClickHouseConnection
+
+config = {
+    'host': 'localhost',
+    'port': 8123,
+    'username': 'default',
+    'password': '',
+    'database': 'my_database',
+}
+
+# create connection
+conn = ClickHouseConnection(**config)
+with conn.cursor() as c:
+    # do stuff
+    pass
+```
+
+> Note: ClickHouse has no real transactions. `commit()` and `rollback()` are no-ops. The `Repository.transaction()`
+> context manager will work without errors but provides no atomicity guarantees. Each statement is its own unit of work.
+
+> Note: ClickHouse does not support `INSERT...RETURNING` or auto-increment primary keys. `insert_pk()` always returns
+> `None`. UPDATE and DELETE operations use ClickHouse mutation syntax (`ALTER TABLE ... UPDATE/DELETE`).
+
 ## Using a profiler
 
 RickDb provides a simple profiler interface that allows logging of queries, parameters and execution times, as well

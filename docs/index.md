@@ -11,7 +11,7 @@ and a Repository pattern implementation.
 - Object Mapper
 - Fluent SQL Query builder with schema support
 - Comprehensive JSON operations support
-- High level connectors for PostgreSQL, SQLite
+- High level connectors for PostgreSQL, SQLite, ClickHouse
 - Pluggable SQL query profiler
 - Grid helper
 - Migration Manager

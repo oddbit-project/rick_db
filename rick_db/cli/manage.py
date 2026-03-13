@@ -17,6 +17,7 @@ class CliManager:
     DB_FACTORIES = {
         "_pgsql": ["pg", "pgsql", "postgres"],
         "_sqlite": ["sqlite", "sql3", "sqlite3"],
+        "_clickhouse": ["clickhouse", "ch"],
     }
 
     def __init__(self, prog_name: str, tty: ConsoleWriter, cfg: dict):
@@ -146,6 +147,26 @@ class CliManager:
             conn = Sqlite3Connection(**cfg)
             mgr = Sqlite3Manager(conn)
             return Sqlite3MigrationManager(mgr)
+        except Exception as e:
+            self._tty.error("Error: {}".format(str(e)))
+            return None
+
+    def _clickhouse(self, cfg: dict) -> Optional[BaseMigrationManager]:
+        """
+        Assemble ClickHouse Migration Manager instance
+        :param cfg: Conn parameters
+        :return: MigrationManager instance
+        """
+        from rick_db.backend.clickhouse import (
+            ClickHouseConnection,
+            ClickHouseManager,
+        )
+        from rick_db.backend.clickhouse.migrations import ClickHouseMigrationManager
+
+        try:
+            conn = ClickHouseConnection(**cfg)
+            mgr = ClickHouseManager(conn)
+            return ClickHouseMigrationManager(mgr)
         except Exception as e:
             self._tty.error("Error: {}".format(str(e)))
             return None

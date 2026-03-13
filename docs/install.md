@@ -10,6 +10,10 @@ RickDb requires the following dependencies:
 - toml
 - setuptools
 
+For ClickHouse support, install the optional `clickhouse-connect` dependency:
+
+- clickhouse-connect
+
 Please note, most platforms have both psycopg2 and setuptools available as a separate, binary installed package.
 
 Installing psycopg2 and setuptools in Ubuntu:

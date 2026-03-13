@@ -1,7 +1,7 @@
 # Class rick_db.**ManagerInterface**
 
-The ManagerInterface provides a common interface to [PgManager](pgmanager.md) and [Sqlite3Manager](sqlite3manager.md) 
-classes, exposing common management methods.
+The ManagerInterface provides a common interface to [PgManager](pgmanager.md), [Sqlite3Manager](sqlite3manager.md),
+and [ClickHouseManager](clickhousemanager.md) classes, exposing common management methods.
 
 ### ManagerInterface.**conn()**
 

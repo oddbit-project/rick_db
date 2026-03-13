@@ -62,6 +62,7 @@ nav:
     - Manager: 'classes/managerinterface.md'
     - PgManager: 'classes/pgmanager.md'
     - Sqlite3Manager: 'classes/sqlite3manager.md'
+    - ClickHouseManager: 'classes/clickhousemanager.md'
 
 markdown_extensions:
 - toc:
