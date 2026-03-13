@@ -11,6 +11,7 @@ and a Repository pattern implementation. It is **not** an ORM, and it's not mean
 - Object Mapper;
 - Fluent Sql Query builder;
 - High level connectors for PostgreSQL, SQLite3, ClickHouse;
+- SQL query builder dialect for MySQL;
 - Pluggable SQL query profiler; 
 - Simple migration manager for SQL files;
 

@@ -307,15 +307,16 @@ print(values)
 
 ## Dialect support
 
-| Feature | PostgreSQL | SQLite | Generic |
-|---|---|---|---|
-| `extract()` | `->>` operator | Not built-in | `JSON_EXTRACT()` |
-| `extract_text()` | `->>` operator | Not built-in | `JSON_EXTRACT()` |
-| `extract_object()` | `->` operator | N/A | N/A |
-| `path_query()` | `@?` operator | N/A | N/A |
-| `contains()` | `@>` operator | Not built-in | `JSON_CONTAINS()` |
-| `has_path()` | `??` operator | Not built-in | `JSON_CONTAINS_PATH()` |
-| `as_jsonb()` / `as_json()` | Type casting | N/A | N/A |
+| Feature | PostgreSQL | MySQL | SQLite | Generic |
+|---|---|---|---|---|
+| `extract()` | `->>` operator | `JSON_EXTRACT()` | Not built-in | `JSON_EXTRACT()` |
+| `extract_text()` | `->>` operator | `JSON_UNQUOTE(JSON_EXTRACT())` | Not built-in | `JSON_EXTRACT()` |
+| `extract_object()` | `->` operator | N/A | N/A | N/A |
+| `path_query()` | `@?` operator | N/A | N/A | N/A |
+| `contains()` | `@>` operator | `JSON_CONTAINS()` | Not built-in | `JSON_CONTAINS()` |
+| `has_path()` | `??` operator | `JSON_CONTAINS_PATH()` | Not built-in | `JSON_CONTAINS_PATH()` |
+| `as_jsonb()` / `as_json()` | Type casting | N/A | N/A | N/A |
 
-PostgreSQL has native JSON support enabled by default in `PgSqlDialect`. The `Sqlite3SqlDialect` does not currently
-enable `json_support`, so JSON operations will fall back to generic syntax if used with a `JsonField` without a dialect.
+PostgreSQL has native JSON support enabled by default in `PgSqlDialect`. MySQL has JSON support enabled by default
+in `MySqlSqlDialect`, using MySQL 5.7+ JSON functions. The `Sqlite3SqlDialect` does not currently enable `json_support`,
+so JSON operations will fall back to generic syntax if used with a `JsonField` without a dialect.

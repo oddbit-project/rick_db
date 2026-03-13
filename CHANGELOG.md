@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.4.0]
+
+### Added
+- `MySqlSqlDialect` — MySQL SQL dialect for the query builder, with backtick identifier quoting, `%s` placeholders, JSON support (`JSON_EXTRACT`, `JSON_UNQUOTE`, `JSON_CONTAINS`, `JSON_CONTAINS_PATH`), no `INSERT...RETURNING`, no `ILIKE` (uses `UPPER()` fallback in DbGrid)
+
 ## [2.3.0]
 
 ### Added

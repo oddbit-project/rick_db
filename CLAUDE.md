@@ -2,7 +2,7 @@
 
 SQL database abstraction layer for Python. **Not an ORM** — follows a schema-first approach where the database structure is managed independently via SQL DDL.
 
-Supports **PostgreSQL** (psycopg2), **SQLite3**, and **ClickHouse** (clickhouse-connect).
+Supports **PostgreSQL** (psycopg2), **SQLite3**, and **ClickHouse** (clickhouse-connect). **MySQL** is supported at the SQL query builder level via `MySqlSqlDialect`.
 
 ## Quick Start
 
@@ -77,6 +77,7 @@ from rick_db.sql import Select, Insert, Update, Delete, Literal, PgSqlDialect
 
 dialect = PgSqlDialect()   # uses %s placeholders
 # or Sqlite3SqlDialect()   # uses ? placeholders
+# or MySqlSqlDialect()     # uses %s placeholders, backtick quoting
 ```
 
 ### Select

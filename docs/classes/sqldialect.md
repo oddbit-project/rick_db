@@ -7,6 +7,7 @@ Available dialect implementations:
 - **PgSqlDialect** — PostgreSQL dialect (`%s` placeholders, `INSERT...RETURNING`, `ILIKE`, JSONB operators)
 - **Sqlite3SqlDialect** — SQLite3 dialect (`?` placeholders, no `ILIKE`, no JSON)
 - **ClickHouseSqlDialect** — ClickHouse dialect (`%s` placeholders, no `INSERT...RETURNING`, `ILIKE`, JSON functions via `JSONExtractString`/`JSONHas`/`JSON_EXISTS`)
+- **MySqlSqlDialect** — MySQL dialect (`%s` placeholders, backtick identifier quoting, no `INSERT...RETURNING`, no `ILIKE`, JSON functions via `JSON_EXTRACT`/`JSON_UNQUOTE`/`JSON_CONTAINS`/`JSON_CONTAINS_PATH`)
 
 ### SqlDialect.**table(table_name, alias=None, schema=None)**
 

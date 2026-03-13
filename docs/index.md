@@ -12,6 +12,7 @@ and a Repository pattern implementation.
 - Fluent SQL Query builder with schema support
 - Comprehensive JSON operations support
 - High level connectors for PostgreSQL, SQLite, ClickHouse
+- SQL query builder dialect for MySQL
 - Pluggable SQL query profiler
 - Grid helper
 - Migration Manager
