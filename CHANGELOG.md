@@ -12,7 +12,6 @@
   - `ClickHouseSqlDialect` — dialect with ClickHouse-specific placeholders, JSON functions, and no `INSERT...RETURNING`
 - ClickHouse integration tests using `tox-docker` with `clickhouse/clickhouse-server:25.8`
 - `clickhouse-connect>=0.7.0` added to dev dependencies
-- `MySqlSqlDialect` — MySQL SQL dialect for the query builder, with backtick identifier quoting, `%s` placeholders, JSON support (`JSON_EXTRACT`, `JSON_UNQUOTE`, `JSON_CONTAINS`, `JSON_CONTAINS_PATH`), no `INSERT...RETURNING`, no `ILIKE` (uses `UPPER()` fallback in DbGrid)
 
 ### Changed
 - Updated `tox.ini` to include ClickHouse docker service alongside PostgreSQL
@@ -23,6 +22,7 @@
 ## [2.2.0]
 
 ### Added
+- `MySqlSqlDialect` — MySQL SQL dialect for the query builder, with backtick identifier quoting, `%s` placeholders, JSON support (`JSON_EXTRACT`, `JSON_UNQUOTE`, `JSON_CONTAINS`, `JSON_CONTAINS_PATH`), no `INSERT...RETURNING`, no `ILIKE` (uses `UPPER()` fallback in DbGrid)
 - `json_exclude` parameter on `@fieldmapper` decorator to exclude fields from `asdict()` serialization at the class level
 - `exclude` parameter on `asdict()` for per-call field exclusion, merged with class-level defaults
 - Excluded fields remain accessible via attribute access, `asrecord()`, `fields()`, and `values()`
