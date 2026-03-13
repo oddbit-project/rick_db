@@ -5,8 +5,10 @@ cross-schema operations), JOIN support, JSON operations, and recognizes [Record]
 identification.
 
 The query builder provides SQL generation using a fluent interface, suitable for most cases. Different database support
-is handled via dialect objects (extending from SqlDialect). The query builder itself will only generate a SQL string
-and a parameter value list; it is up to the developer to use the generated SQL in the appropriate database context.
+is handled via dialect objects (extending from SqlDialect): `PgSqlDialect` for PostgreSQL, `Sqlite3SqlDialect` for
+SQLite, `ClickHouseSqlDialect` for ClickHouse, and `MySqlSqlDialect` for MySQL. The query builder itself will only
+generate a SQL string and a parameter value list; it is up to the developer to use the generated SQL in the appropriate
+database context.
 
 ## Select
 

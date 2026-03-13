@@ -1,6 +1,6 @@
 import pytest
 
-from rick_db.sql import PgSqlDialect, SqlDialect
+from rick_db.sql import PgSqlDialect, SqlDialect, MySqlSqlDialect
 from rick_db.sql.common import Literal
 
 TABLE_NAME = "test_table"
@@ -159,3 +159,150 @@ class TestSqlDialect:
     )
     def test_pgsqldialect_field(self, field, field_alias, table, schema, result):
         assert PgSqlDialect().field(field, field_alias, table, schema) == result
+
+
+def mysql_dialect_table():
+    return [
+        ["name", None, None, "`name`"],
+        ["name", "alias", None, "`name` AS `alias`"],
+        ["name", "alias", "schema", "`schema`.`name` AS `alias`"],
+        ["name", None, "schema", "`schema`.`name`"],
+    ]
+
+
+def mysql_dialect_database():
+    return [
+        ["name", None, "`name`"],
+        ["name", "alias", "`name` AS `alias`"],
+    ]
+
+
+def mysql_dialect_field():
+    return [
+        # simple fields
+        ["field", None, None, None, "`field`"],
+        ["field", "alias", None, None, "`field` AS `alias`"],
+        ["field", "alias", "table", None, "`table`.`field` AS `alias`"],
+        ["field", "alias", "table", "schema", "`schema`.`table`.`field` AS `alias`"],
+        # field literals
+        [Literal("TOP(field)"), None, None, None, "TOP(field)"],
+        [Literal("TOP(field)"), "alias", None, None, "TOP(field) AS `alias`"],
+        [
+            Literal("TOP(field)"),
+            "alias",
+            "table",
+            "schema",
+            "TOP(field) AS `alias`",
+        ],
+        # field alias and casting
+        ["field", ["text"], None, None, "CAST(`field` AS text)"],
+        ["field", ["text"], "table", None, "CAST(`table`.`field` AS text)"],
+        [
+            "field",
+            ["text"],
+            "table",
+            "schema",
+            "CAST(`schema`.`table`.`field` AS text)",
+        ],
+        ["field", ["text", "alias"], None, None, "CAST(`field` AS text) AS `alias`"],
+        [
+            "field",
+            ["text", "alias"],
+            "table",
+            None,
+            "CAST(`table`.`field` AS text) AS `alias`",
+        ],
+        [
+            "field",
+            ["text", "alias"],
+            "table",
+            "schema",
+            "CAST(`schema`.`table`.`field` AS text) AS `alias`",
+        ],
+    ]
+
+
+class TestMySqlDialect:
+    def test_import_from_sql_package(self):
+        from rick_db.sql import MySqlSqlDialect as Imported
+
+        d = Imported()
+        assert isinstance(d, Imported)
+        assert isinstance(d, SqlDialect)
+
+    @pytest.mark.parametrize("table_name, alias, schema, result", mysql_dialect_table())
+    def test_mysqldialect_table(self, table_name, alias, schema, result):
+        assert MySqlSqlDialect().table(table_name, alias, schema) == result
+
+    @pytest.mark.parametrize("db_name, alias, result", mysql_dialect_database())
+    def test_mysqldialect_database(self, db_name, alias, result):
+        assert MySqlSqlDialect().database(db_name, alias) == result
+
+    @pytest.mark.parametrize(
+        "field, field_alias, table, schema, result", mysql_dialect_field()
+    )
+    def test_mysqldialect_field(self, field, field_alias, table, schema, result):
+        assert MySqlSqlDialect().field(field, field_alias, table, schema) == result
+
+    def test_identifier_escaping_backtick(self):
+        d = MySqlSqlDialect()
+        assert d.table("tab`le") == "`tab``le`"
+        assert d.table("safe") == "`safe`"
+        assert d.table("t", alias="a`lias") == "`t` AS `a``lias`"
+        assert d.table("t", schema="s`ch") == "`s``ch`.`t`"
+
+    def test_identifier_escaping_field(self):
+        d = MySqlSqlDialect()
+        assert d.field("fi`eld") == "`fi``eld`"
+        assert d.field("f", field_alias="a`l") == "`f` AS `a``l`"
+        assert d.field("f", table="t`bl") == "`t``bl`.`f`"
+
+    def test_identifier_escaping_database(self):
+        d = MySqlSqlDialect()
+        assert d.database("db`name") == "`db``name`"
+        assert d.database("db", alias="a`l") == "`db` AS `a``l`"
+
+    def test_dialect_properties(self):
+        d = MySqlSqlDialect()
+        assert d.placeholder == "%s"
+        assert d.insert_returning is False
+        assert d.ilike is False
+        assert d.json_support is True
+
+    def test_json_extract(self):
+        d = MySqlSqlDialect()
+        assert d.json_extract("data", "$.name") == "JSON_EXTRACT(`data`, '$.name')"
+        assert (
+            d.json_extract("data", "$.name", "username")
+            == "JSON_EXTRACT(`data`, '$.name') AS `username`"
+        )
+
+    def test_json_extract_text(self):
+        d = MySqlSqlDialect()
+        assert (
+            d.json_extract_text("data", "$.name")
+            == "JSON_UNQUOTE(JSON_EXTRACT(`data`, '$.name'))"
+        )
+        assert (
+            d.json_extract_text("data", "$.name", "username")
+            == "JSON_UNQUOTE(JSON_EXTRACT(`data`, '$.name')) AS `username`"
+        )
+
+    def test_json_contains(self):
+        d = MySqlSqlDialect()
+        assert d.json_contains("data", "value") == "JSON_CONTAINS(`data`, %s)"
+        assert (
+            d.json_contains("data", "value", "has_val")
+            == "JSON_CONTAINS(`data`, %s) AS `has_val`"
+        )
+
+    def test_json_contains_path(self):
+        d = MySqlSqlDialect()
+        assert (
+            d.json_contains_path("data", "$.name")
+            == "JSON_CONTAINS_PATH(`data`, 'one', '$.name')"
+        )
+        assert (
+            d.json_contains_path("data", "$.name", "has_name")
+            == "JSON_CONTAINS_PATH(`data`, 'one', '$.name') AS `has_name`"
+        )

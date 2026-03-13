@@ -499,6 +499,32 @@ class PgSqlDialect(SqlDialect):
         return expr
 
 
+class MySqlSqlDialect(SqlDialect):
+    """
+    MySQL SqlDialect implementation
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.placeholder = "%s"
+        self.insert_returning = False
+        self.ilike = False
+        self.json_support = True
+
+        # Override only _json_extract_text for unquoted text extraction
+        self._json_extract_text = "JSON_UNQUOTE(JSON_EXTRACT({field}, {path}))"
+
+    def _qi(self, identifier):
+        """
+        Quote a SQL identifier with backticks, escaping embedded backticks by doubling.
+
+        :param identifier: identifier name (table, field, schema, database)
+        :return: quoted identifier string, e.g. `my_table`
+        """
+        escaped = identifier.replace('`', '``')
+        return '`{}`'.format(escaped)
+
+
 class ClickHouseSqlDialect(SqlDialect):
     """
     ClickHouse SqlDialect implementation

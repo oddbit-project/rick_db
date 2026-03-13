@@ -1,5 +1,5 @@
 from .common import SqlError, SqlStatement, Sql, Literal, L, JsonField, PgJsonField
-from .dialect import SqlDialect, Sqlite3SqlDialect, PgSqlDialect, DefaultSqlDialect, ClickHouseSqlDialect
+from .dialect import SqlDialect, Sqlite3SqlDialect, PgSqlDialect, DefaultSqlDialect, ClickHouseSqlDialect, MySqlSqlDialect
 from .select import Select
 from .insert import Insert
 from .delete import Delete
@@ -19,6 +19,7 @@ __all__ = [
     "PgSqlDialect",
     "DefaultSqlDialect",
     "ClickHouseSqlDialect",
+    "MySqlSqlDialect",
     "Select",
     "Insert",
     "Delete",
