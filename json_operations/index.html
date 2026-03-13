@@ -1460,6 +1460,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/clickhousemanager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClickHouseManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1974,6 +2002,7 @@ and <code>JSON_CONTAINS()</code> are generated instead.</p>
 <tr>
 <th>Feature</th>
 <th>PostgreSQL</th>
+<th>MySQL</th>
 <th>SQLite</th>
 <th>Generic</th>
 </tr>
@@ -1982,12 +2011,14 @@ and <code>JSON_CONTAINS()</code> are generated instead.</p>
 <tr>
 <td><code>extract()</code></td>
 <td><code>-&gt;&gt;</code> operator</td>
+<td><code>JSON_EXTRACT()</code></td>
 <td>Not built-in</td>
 <td><code>JSON_EXTRACT()</code></td>
 </tr>
 <tr>
 <td><code>extract_text()</code></td>
 <td><code>-&gt;&gt;</code> operator</td>
+<td><code>JSON_UNQUOTE(JSON_EXTRACT())</code></td>
 <td>Not built-in</td>
 <td><code>JSON_EXTRACT()</code></td>
 </tr>
@@ -1996,22 +2027,26 @@ and <code>JSON_CONTAINS()</code> are generated instead.</p>
 <td><code>-&gt;</code> operator</td>
 <td>N/A</td>
 <td>N/A</td>
+<td>N/A</td>
 </tr>
 <tr>
 <td><code>path_query()</code></td>
 <td><code>@?</code> operator</td>
 <td>N/A</td>
 <td>N/A</td>
+<td>N/A</td>
 </tr>
 <tr>
 <td><code>contains()</code></td>
 <td><code>@&gt;</code> operator</td>
+<td><code>JSON_CONTAINS()</code></td>
 <td>Not built-in</td>
 <td><code>JSON_CONTAINS()</code></td>
 </tr>
 <tr>
 <td><code>has_path()</code></td>
 <td><code>??</code> operator</td>
+<td><code>JSON_CONTAINS_PATH()</code></td>
 <td>Not built-in</td>
 <td><code>JSON_CONTAINS_PATH()</code></td>
 </tr>
@@ -2020,11 +2055,13 @@ and <code>JSON_CONTAINS()</code> are generated instead.</p>
 <td>Type casting</td>
 <td>N/A</td>
 <td>N/A</td>
+<td>N/A</td>
 </tr>
 </tbody>
 </table>
-<p>PostgreSQL has native JSON support enabled by default in <code>PgSqlDialect</code>. The <code>Sqlite3SqlDialect</code> does not currently
-enable <code>json_support</code>, so JSON operations will fall back to generic syntax if used with a <code>JsonField</code> without a dialect.</p>
+<p>PostgreSQL has native JSON support enabled by default in <code>PgSqlDialect</code>. MySQL has JSON support enabled by default
+in <code>MySqlSqlDialect</code>, using MySQL 5.7+ JSON functions. The <code>Sqlite3SqlDialect</code> does not currently enable <code>json_support</code>,
+so JSON operations will fall back to generic syntax if used with a <code>JsonField</code> without a dialect.</p>
 
 
 

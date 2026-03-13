@@ -1321,6 +1321,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/clickhousemanager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClickHouseManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1450,8 +1478,10 @@
 cross-schema operations), JOIN support, JSON operations, and recognizes <a href="../object_mapper/">Record</a> objects for table and schema 
 identification.</p>
 <p>The query builder provides SQL generation using a fluent interface, suitable for most cases. Different database support
-is handled via dialect objects (extending from SqlDialect). The query builder itself will only generate a SQL string
-and a parameter value list; it is up to the developer to use the generated SQL in the appropriate database context.</p>
+is handled via dialect objects (extending from SqlDialect): <code>PgSqlDialect</code> for PostgreSQL, <code>Sqlite3SqlDialect</code> for
+SQLite, <code>ClickHouseSqlDialect</code> for ClickHouse, and <code>MySqlSqlDialect</code> for MySQL. The query builder itself will only
+generate a SQL string and a parameter value list; it is up to the developer to use the generated SQL in the appropriate
+database context.</p>
 <h2 id="select">Select<a class="headerlink" href="#select" title="Permanent link">&para;</a></h2>
 <p>Selects are by far the most common statements, and can be easily built using a <a href="../classes/select/">Select</a> query builder
 object. Check the class documentation for more details on all available methods.</p>

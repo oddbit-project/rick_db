@@ -1279,6 +1279,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../clickhousemanager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClickHouseManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1361,6 +1389,13 @@
 
 <h1 id="class-rick_dbsqlsqldialect">Class rick_db.sql.<strong>SqlDialect</strong><a class="headerlink" href="#class-rick_dbsqlsqldialect" title="Permanent link">&para;</a></h1>
 <p>Base Dialect Class. Implements schema, table and field quoting specifics to be used primarily within the query builder.</p>
+<p>Available dialect implementations:</p>
+<ul>
+<li><strong>PgSqlDialect</strong> — PostgreSQL dialect (<code>%s</code> placeholders, <code>INSERT...RETURNING</code>, <code>ILIKE</code>, JSONB operators)</li>
+<li><strong>Sqlite3SqlDialect</strong> — SQLite3 dialect (<code>?</code> placeholders, no <code>ILIKE</code>, no JSON)</li>
+<li><strong>ClickHouseSqlDialect</strong> — ClickHouse dialect (<code>%s</code> placeholders, no <code>INSERT...RETURNING</code>, <code>ILIKE</code>, JSON functions via <code>JSONExtractString</code>/<code>JSONHas</code>/<code>JSON_EXISTS</code>)</li>
+<li><strong>MySqlSqlDialect</strong> — MySQL dialect (<code>%s</code> placeholders, backtick identifier quoting, no <code>INSERT...RETURNING</code>, no <code>ILIKE</code>, JSON functions via <code>JSON_EXTRACT</code>/<code>JSON_UNQUOTE</code>/<code>JSON_CONTAINS</code>/<code>JSON_CONTAINS_PATH</code>)</li>
+</ul>
 <h3 id="sqldialecttabletable_name-aliasnone-schemanone">SqlDialect.<strong>table(table_name, alias=None, schema=None)</strong><a class="headerlink" href="#sqldialecttabletable_name-aliasnone-schemanone" title="Permanent link">&para;</a></h3>
 <p>Quotes a table name, with an optional <em>alias</em> and <em>schema</em>.</p>
 <p>Example:

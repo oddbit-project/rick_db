@@ -398,6 +398,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#connecting-to-clickhouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connecting to ClickHouse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#using-a-profiler" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1288,6 +1299,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/clickhousemanager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClickHouseManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1345,6 +1384,17 @@
     <span class="md-ellipsis">
       
         Connecting to SQLite
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connecting-to-clickhouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connecting to ClickHouse
       
     </span>
   </a>
@@ -1508,6 +1558,65 @@ usage is to use <strong>PgConnectionPool</strong>.</p>
     <span class="c1"># do stuff</span>
     <span class="k">pass</span>
 </code></pre></div></p>
+<h2 id="connecting-to-clickhouse">Connecting to ClickHouse<a class="headerlink" href="#connecting-to-clickhouse" title="Permanent link">&para;</a></h2>
+<p>ClickHouse is supported via the <code>clickhouse-connect</code> HTTP client. Install the optional dependency:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>clickhouse-connect
+</code></pre></div>
+<p>Available connection parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>host</td>
+<td>ClickHouse server hostname (defaults to "localhost")</td>
+</tr>
+<tr>
+<td>port</td>
+<td>HTTP port (defaults to 8123)</td>
+</tr>
+<tr>
+<td>username</td>
+<td>User name used to authenticate (defaults to "default")</td>
+</tr>
+<tr>
+<td>password</td>
+<td>Password used to authenticate (defaults to empty)</td>
+</tr>
+<tr>
+<td>database</td>
+<td>Database name (defaults to "default")</td>
+</tr>
+</tbody>
+</table>
+<p>Any additional keyword arguments are passed directly to <code>clickhouse_connect.get_client()</code>.</p>
+<p>Example:
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.clickhouse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseConnection</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">8123</span><span class="p">,</span>
+    <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># create connection</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">ClickHouseConnection</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+    <span class="c1"># do stuff</span>
+    <span class="k">pass</span>
+</code></pre></div></p>
+<blockquote>
+<p>Note: ClickHouse has no real transactions. <code>commit()</code> and <code>rollback()</code> are no-ops. The <code>Repository.transaction()</code>
+context manager will work without errors but provides no atomicity guarantees. Each statement is its own unit of work.</p>
+<p>Note: ClickHouse does not support <code>INSERT...RETURNING</code> or auto-increment primary keys. <code>insert_pk()</code> always returns
+<code>None</code>. UPDATE and DELETE operations use ClickHouse mutation syntax (<code>ALTER TABLE ... UPDATE/DELETE</code>).</p>
+</blockquote>
 <h2 id="using-a-profiler">Using a profiler<a class="headerlink" href="#using-a-profiler" title="Permanent link">&para;</a></h2>
 <p>RickDb provides a simple profiler interface that allows logging of queries, parameters and execution times, as well
 as a simple in-memory profiler implementation, <a href="../classes/profiler/#class-rick_dbprofilerdefaultprofiler">DefaultProfiler</a>.</p>

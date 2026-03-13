@@ -10,13 +10,11 @@
       
       
       
-        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/insert/">
+        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/clickhousemanager/">
       
       
-        <link rel="prev" href="../select/">
+        <link rel="prev" href="../sqlite3manager/">
       
-      
-        <link rel="next" href="../update/">
       
       
         
@@ -27,7 +25,7 @@
     
     
       
-        <title>Insert - RickDb</title>
+        <title>ClickHouseManager - RickDb</title>
       
     
     
@@ -78,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-rick_dbsqlinsert" class="md-skip">
+        <a href="#class-rick_dbbackendclickhouseclickhousemanager" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Insert
+              ClickHouseManager
             
           </span>
         </div>
@@ -747,37 +745,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Insert
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../insert/" class="md-nav__link">
         
   
   
@@ -793,103 +764,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#insert__init__dialect-sqldialect-none" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.__init__(dialect: SqlDialect = None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#insertintotable-schemanone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.into(table, schema=None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#insertfieldsfields-list" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.fields(fields: list)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#insertvaluesvalues-unionlist-dict-object" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.values(values: Union[list, dict, object])
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#insertreturningfields" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.returning(fields)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#insertget_values" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.get_values()
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#insertassemble" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.assemble()
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1207,18 +1081,20 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_20" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_20" checked>
         
           
           <label class="md-nav__link" for="__nav_10_20" id="__nav_10_20_label" tabindex="0">
@@ -1239,7 +1115,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_20_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_20_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_10_20">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1338,10 +1214,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../clickhousemanager/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1357,6 +1242,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -1397,91 +1283,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#insert__init__dialect-sqldialect-none" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.__init__(dialect: SqlDialect = None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#insertintotable-schemanone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.into(table, schema=None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#insertfieldsfields-list" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.fields(fields: list)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#insertvaluesvalues-unionlist-dict-object" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.values(values: Union[list, dict, object])
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#insertreturningfields" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.returning(fields)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#insertget_values" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.get_values()
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#insertassemble" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Insert.assemble()
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1497,88 +1298,22 @@
 
 
 
-<h1 id="class-rick_dbsqlinsert">Class rick_db.sql.<strong>Insert</strong><a class="headerlink" href="#class-rick_dbsqlinsert" title="Permanent link">&para;</a></h1>
-<h3 id="insert__init__dialect-sqldialect-none">Insert.<strong>__init__(dialect: SqlDialect = None)</strong><a class="headerlink" href="#insert__init__dialect-sqldialect-none" title="Permanent link">&para;</a></h3>
-<p>Initialize a Insert() object, using a database <em>dialect</em>. If no <em>dialect</em> is provided, a default dialect will be used.
-Check <a href="../sqldialect/">SqlDialect</a> for more details.</p>
-<h3 id="insertintotable-schemanone">Insert.<strong>into(table, schema=None)</strong><a class="headerlink" href="#insertintotable-schemanone" title="Permanent link">&para;</a></h3>
-<p>Defines the target <em>table</em> name and <em>schema</em>. If <em>table</em> is a <a href="../record/">Record</a> object, it will also load fields and
-values from this object.</p>
-<p>Example:
-<div class="highlight"><pre><span></span><code><span class="c1"># simple INSERT example</span>
-<span class="n">qry</span> <span class="o">=</span> <span class="n">Insert</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fields</span><span class="p">([</span><span class="s1">&#39;field&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">([</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
-<span class="c1"># output: (&#39;INSERT INTO &quot;table&quot; (&quot;field&quot;) VALUES (%s)&#39;, [&#39;value&#39;])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-
-<span class="c1"># INSERT w/ Record object</span>
-<span class="n">record</span> <span class="o">=</span> <span class="n">Publisher</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;some publisher name&#39;</span><span class="p">)</span>
-<span class="n">qry</span> <span class="o">=</span> <span class="n">Insert</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
-<span class="c1"># output: (&#39;INSERT INTO &quot;publisher&quot; (&quot;name&quot;) VALUES (%s)&#39;, [&#39;some publisher name&#39;])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-</code></pre></div></p>
-<h3 id="insertfieldsfields-list">Insert.<strong>fields(fields: list)</strong><a class="headerlink" href="#insertfieldsfields-list" title="Permanent link">&para;</a></h3>
-<p>Defines the field names for insertion. The length of <em>fields</em> list must match the list of provided values.</p>
-<p>Example:
-<div class="highlight"><pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">[</span><span class="s1">&#39;john&#39;</span><span class="p">,</span> <span class="s1">&#39;connor&#39;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">&#39;sarah&#39;</span><span class="p">,</span> <span class="s1">&#39;connor&#39;</span><span class="p">]</span>
-<span class="p">]</span>
-<span class="n">sql</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">qry</span> <span class="o">=</span> <span class="n">Insert</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fields</span><span class="p">([</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;surname&#39;</span><span class="p">])</span>
-<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-    <span class="n">qry</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-    <span class="n">sql</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-
-<span class="c1"># output: </span>
-<span class="c1"># [(&#39;INSERT INTO &quot;table&quot; (&quot;name&quot;, &quot;surname&quot;) VALUES (%s, %s)&#39;, [&#39;john&#39;, &#39;connor&#39;]), </span>
-<span class="c1"># (&#39;INSERT INTO &quot;table&quot; (&quot;name&quot;, &quot;surname&quot;) VALUES (%s, %s)&#39;, [&#39;sarah&#39;, &#39;connor&#39;])]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
-</code></pre></div></p>
-<h3 id="insertvaluesvalues-unionlist-dict-object">Insert.<strong>values(values: Union[list, dict, object])</strong><a class="headerlink" href="#insertvaluesvalues-unionlist-dict-object" title="Permanent link">&para;</a></h3>
-<p>Define values to be inserted. This method can be called multiple times (see <a href="#insertfieldsfields-list">fields()</a> for an
-example). If <em>values</em> is a dict, both fields and values are read from the provided dict. If <em>values</em> is a <a href="../record/">Record</a>
-object, fields and values are read from the object.</p>
-<p>Example:
-<div class="highlight"><pre><span></span><code><span class="c1"># simple INSERT example</span>
-<span class="n">qry</span> <span class="o">=</span> <span class="n">Insert</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fields</span><span class="p">([</span><span class="s1">&#39;field&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">([</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
-<span class="c1"># output: (&#39;INSERT INTO &quot;table&quot; (&quot;field&quot;) VALUES (%s)&#39;, [&#39;value&#39;])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-
-<span class="c1"># INSERT w/ Record object</span>
-<span class="n">record</span> <span class="o">=</span> <span class="n">Publisher</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;some publisher name&#39;</span><span class="p">)</span>
-<span class="n">qry</span> <span class="o">=</span> <span class="n">Insert</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="s1">&#39;tablename&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
-<span class="c1"># output: (&#39;INSERT INTO &quot;tablename&quot; (&quot;name&quot;) VALUES (%s)&#39;, [&#39;some publisher name&#39;])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-</code></pre></div></p>
-<h3 id="insertreturningfields">Insert.<strong>returning(fields)</strong><a class="headerlink" href="#insertreturningfields" title="Permanent link">&para;</a></h3>
-<p>Adds a <strong>RETURNING</strong> clause to the <strong>INSERT</strong>. <em>fields</em> is a string or list of field names to be returned.</p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># simple INSERT example</span>
-<span class="n">qry</span> <span class="o">=</span> <span class="n">Insert</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="s1">&#39;tablename&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fields</span><span class="p">([</span><span class="s1">&#39;field&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">([</span><span class="s1">&#39;value&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">returning</span><span class="p">([</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;field&#39;</span><span class="p">])</span>
-<span class="c1"># output: (&#39;INSERT INTO &quot;tablename&quot; (&quot;field&quot;) VALUES (%s) RETURNING &quot;id&quot;, &quot;field&quot;&#39;, [&#39;value&#39;])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-
-<span class="c1"># INSERT w/ Record object</span>
-<span class="n">record</span> <span class="o">=</span> <span class="n">Publisher</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;some publisher name&#39;</span><span class="p">)</span>
-<span class="n">qry</span> <span class="o">=</span> <span class="n">Insert</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="s1">&#39;tablename&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="n">record</span><span class="p">)</span><span class="o">.</span><span class="n">returning</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
-<span class="c1"># output: (&#39;INSERT INTO &quot;tablename&quot; (&quot;name&quot;) VALUES (%s) RETURNING &quot;id&quot;&#39;, [&#39;some publisher name&#39;])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-</code></pre></div>
-<h3 id="insertget_values">Insert.<strong>get_values()</strong><a class="headerlink" href="#insertget_values" title="Permanent link">&para;</a></h3>
-<p>Returns list of current values.</p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><span class="n">qry</span> <span class="o">=</span> <span class="n">Insert</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="s1">&#39;tablename&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fields</span><span class="p">([</span><span class="s1">&#39;field&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">([</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
-<span class="c1"># output: [&#39;value&#39;]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">get_values</span><span class="p">())</span>
-</code></pre></div>
-<h3 id="insertassemble">Insert.<strong>assemble()</strong><a class="headerlink" href="#insertassemble" title="Permanent link">&para;</a></h3>
-<p>Assembles <strong>INSERT</strong> SQL string and returns a tuple with (sql_string, list_of_values). If an error occurs, <em>SqlError</em> is raised.</p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># simple INSERT example</span>
-<span class="n">qry</span> <span class="o">=</span> <span class="n">Insert</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fields</span><span class="p">([</span><span class="s1">&#39;field&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">([</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
-<span class="c1"># output: (&#39;INSERT INTO &quot;table&quot; (&quot;field&quot;) VALUES (%s)&#39;, [&#39;value&#39;])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-</code></pre></div>
+<h1 id="class-rick_dbbackendclickhouseclickhousemanager">Class rick_db.backend.clickhouse.<strong>ClickHouseManager</strong><a class="headerlink" href="#class-rick_dbbackendclickhouseclickhousemanager" title="Permanent link">&para;</a></h1>
+<p>This class extends <a href="../managerinterface/">ManagerInterface</a> to provide a specific ClickHouse implementation.
+It uses ClickHouse <code>system.*</code> tables for introspection. The <code>schema</code> parameter maps to ClickHouse <code>database</code>;
+when <code>None</code>, the connection's current database is used.</p>
+<p>The following methods are <strong>NOT</strong> supported, and either return empty lists or raise a <em>NotImplementedError</em> exception:</p>
+<ul>
+<li>ClickHouseManager.user_groups()</li>
+<li>ClickHouseManager.create_schema()</li>
+<li>ClickHouseManager.drop_schema()</li>
+<li>ClickHouseManager.kill_clients()</li>
+</ul>
+<p>The following methods delegate to their database equivalents (ClickHouse databases are equivalent to schemas):</p>
+<ul>
+<li>ClickHouseManager.schemas() — delegates to databases()</li>
+<li>ClickHouseManager.schema_exists() — delegates to database_exists()</li>
+</ul>
 
 
 
