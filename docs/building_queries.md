@@ -268,6 +268,74 @@ qry, _ = Select(PgSqlDialect()).from_('table', {Literal('COUNT(*)'):'total'}).as
 print(qry)
 ```
 
+## SQL Functions
+
+The [Fn](classes/fn.md) class provides helpers for common SQL functions. Each method returns a
+[Literal](classes/literal.md), so they work anywhere a Literal is accepted. Use dict-style column definitions
+to alias the results:
+
+```python
+from rick_db.sql import Select, Fn, PgSqlDialect
+
+# Single aggregate with alias
+qry, _ = Select(PgSqlDialect()).from_("orders", {Fn.count(): "total"}).assemble()
+# output: SELECT COUNT(*) AS "total" FROM "orders"
+print(qry)
+
+# Multiple columns: regular fields and aggregates together
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("orders", {
+        "category": None,
+        Fn.count(): "order_count",
+        Fn.sum("amount"): "total_amount",
+        Fn.avg("amount"): "avg_amount",
+    })
+    .group("category")
+    .assemble()
+)
+# output: SELECT "category",COUNT(*) AS "order_count",SUM(amount) AS "total_amount",AVG(amount) AS "avg_amount" FROM "orders" GROUP BY "category"
+print(qry)
+
+# Nested functions
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("orders", {
+        "category": None,
+        Fn.round(Fn.avg("amount"), 2): "avg_rounded",
+    })
+    .group("category")
+    .assemble()
+)
+# output: SELECT "category",ROUND(AVG(amount), 2) AS "avg_rounded" FROM "orders" GROUP BY "category"
+print(qry)
+
+# Multiple aggregates with HAVING
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("orders", {
+        "category": None,
+        Fn.count(): "cnt",
+        Fn.min("price"): "cheapest",
+        Fn.max("price"): "priciest",
+        Fn.sum("amount"): "total",
+    })
+    .group("category")
+    .having(Fn.count(), ">", 5)
+    .assemble()
+)
+# output: SELECT "category",COUNT(*) AS "cnt",MIN(price) AS "cheapest",MAX(price) AS "priciest",SUM(amount) AS "total" FROM "orders" GROUP BY "category" HAVING (COUNT(*) > %s)
+print(qry)
+```
+
+Available functions:
+
+- **Aggregate**: `count`, `sum`, `avg`, `min`, `max`
+- **Math**: `abs`, `ceil`, `floor`, `round`, `power`, `sqrt`, `mod`, `sign`, `trunc`
+- **General**: `coalesce`, `cast`
+
+See [Fn class documentation](classes/fn.md) for full reference.
+
 ## Insert
 
 [Insert](classes/insert.md) objects can be used to generate SQL **INSERT** statements, with optional **RETURNING** clause,

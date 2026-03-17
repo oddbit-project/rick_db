@@ -84,7 +84,7 @@ user = repo.fetch_one(repo.select(cols=["name", "email"]), cls=UserInfo)
 Fluent builders for SELECT, INSERT, UPDATE, DELETE. All builders require a dialect and produce `(sql, values)` tuples via `.assemble()`.
 
 ```python
-from rick_db.sql import Select, Insert, Update, Delete, Literal, PgSqlDialect
+from rick_db.sql import Select, Insert, Update, Delete, Literal, Fn, PgSqlDialect
 
 dialect = PgSqlDialect()   # uses %s placeholders
 # or Sqlite3SqlDialect()   # uses ? placeholders
@@ -108,8 +108,14 @@ Select(dialect).from_(User).where(User.id, "not in", [4, 5]).assemble()
 # JOIN
 Select(dialect).from_(User).join(Order, User.id, Order, Order.user_id).assemble()
 
-# Aggregation
-Select(dialect).from_(User, {Literal("COUNT(*)"): "total"}).group(User.active).assemble()
+# Aggregation with Fn helpers
+Select(dialect).from_(User, {Fn.count(): "total"}).group(User.active).assemble()
+Select(dialect).from_(User, {
+    User.name: None,
+    Fn.count(): "cnt",
+    Fn.sum("amount"): "total",
+    Fn.round(Fn.avg("price"), 2): "avg_price",
+}).group(User.name).assemble()
 
 # Pagination
 Select(dialect).from_(User).order(User.name).limit(10, offset=20).assemble()
