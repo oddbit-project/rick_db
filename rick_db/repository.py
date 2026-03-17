@@ -239,10 +239,11 @@ class Repository(GenericRepository):
         with self.cursor() as c:
             return c.fetchone(qry, values, self._record)
 
-    def fetch_one(self, qry: Select) -> Optional[object]:
+    def fetch_one(self, qry: Select, cls=None) -> Optional[object]:
         """
         Retrieve a single row
         :param qry: query to execute
+        :param cls: optional record class
         :return: record object of self._record or None
 
         Example:
@@ -250,7 +251,7 @@ class Repository(GenericRepository):
         """
         with self.cursor() as c:
             sql, values = qry.limit(1).assemble()
-            return c.fetchone(sql, values, cls=self._record)
+            return c.fetchone(sql, values, cls=cls or self._record)
 
     def fetch(self, qry: Select, cls=None) -> Optional[list]:
         """
@@ -284,20 +285,21 @@ class Repository(GenericRepository):
             sql, values = qry.assemble()
             return c.fetchall(sql, values)
 
-    def fetch_by_field(self, field, value, cols=None):
+    def fetch_by_field(self, field, value, cols=None, cls=None):
         """
         Fetch a list of rows where field=value
 
         :param field: field name
         :param value: value to match
         :param cols: optional columns to return
+        :param cls: optional record class
         :return: list of record object or empty list
         """
         qry, values = self.select(cols=cols).where(field, "=", value).assemble()
         with self.cursor() as c:
-            return c.fetchall(qry, values, self._record)
+            return c.fetchall(qry, values, cls or self._record)
 
-    def fetch_where(self, where_clauses: list, cols=None) -> list:
+    def fetch_where(self, where_clauses: list, cols=None, cls=None) -> list:
         """
         Fetch a list of rows that match a list of AND'ed WHERE clauses
 
@@ -322,9 +324,9 @@ class Repository(GenericRepository):
 
         qry, values = qry.assemble()
         with self.cursor() as c:
-            return c.fetchall(qry, values, self._record)
+            return c.fetchall(qry, values, cls or self._record)
 
-    def fetch_all(self) -> list:
+    def fetch_all(self, cls=None) -> list:
         """
         Fetch all rows
 
@@ -337,9 +339,9 @@ class Repository(GenericRepository):
             self.query_cache.set("fetch_all", qry)
 
         with self.cursor() as c:
-            return c.fetchall(qry, (), self._record)
+            return c.fetchall(qry, (), cls or self._record)
 
-    def fetch_all_ordered(self, col_name: str, order=Sql.SQL_ASC) -> list:
+    def fetch_all_ordered(self, col_name: str, order=Sql.SQL_ASC, cls=None) -> list:
         """
         Fetch all rows sorted by a column
         :param col_name: name of column to order by
@@ -348,7 +350,7 @@ class Repository(GenericRepository):
         """
         qry, _ = self.select().order(col_name, order).assemble()
         with self.cursor() as c:
-            return c.fetchall(qry, (), self._record)
+            return c.fetchall(qry, (), cls or self._record)
 
     def insert(self, record, cols=None) -> Optional[object]:
         """

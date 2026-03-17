@@ -250,10 +250,12 @@ class Cursor(CursorInterface):
             return []
 
         if cls is not None:
-            tmp = []
-            for r in result:
-                tmp.append(cls().fromrecord(r))
-            return tmp
+            if hasattr(cls, 'fromrecord'):
+                tmp = []
+                for r in result:
+                    tmp.append(cls().fromrecord(r))
+                return tmp
+            return [cls(**dict(r)) for r in result]
 
         return result
 
@@ -282,7 +284,9 @@ class Cursor(CursorInterface):
             return result
 
         if cls is not None:
-            return cls().fromrecord(result)
+            if hasattr(cls, 'fromrecord'):
+                return cls().fromrecord(result)
+            return cls(**dict(result))
         return result
 
     def fetchall(self, qry: str, params=None, cls=None) -> Optional[List]:
@@ -311,8 +315,10 @@ class Cursor(CursorInterface):
             return []
 
         if cls is not None:
-            tmp = []
-            for r in result:
-                tmp.append(cls().fromrecord(r))
-            return tmp
+            if hasattr(cls, 'fromrecord'):
+                tmp = []
+                for r in result:
+                    tmp.append(cls().fromrecord(r))
+                return tmp
+            return [cls(**dict(r)) for r in result]
         return result

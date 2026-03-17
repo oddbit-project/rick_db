@@ -74,15 +74,27 @@ if record is not None:
     print("record 32 exists")
 ```
 
-### Repository.**fetch_one(qry: Select)**
+### Repository.**fetch_one(qry: Select, cls=None)**
 
 Execute the *qry* [Select](select.md) statement and return a single record. If there is no record to return, will return None.
+If a record class is specified in *cls*, this class will be used as record_type instead of the repository definition.
+Supports both `@fieldmapper` classes and plain classes such as dataclasses.
 
 Example:
 ```python
 (...)
 # fetch record if exists, else returns None
 user = repo.fetch_one(repo.select().where('login', '=', 'gandalf@lotr'))
+
+# fetch using a dataclass
+from dataclasses import dataclass
+
+@dataclass
+class UserInfo:
+    name: str
+    email: str
+
+user = repo.fetch_one(repo.select(cols=['name', 'email']).where('login', '=', 'gandalf@lotr'), cls=UserInfo)
 ```
 
 ### Repository.**fetch(qry: Select, cls=None)**
@@ -113,9 +125,11 @@ for r in repo.fetch_raw(repo.select().where('name', 'like', 'gandalf%')):
     print(r['name'])
 ```
 
-### Repository.**fetch_by_field(field, value, cols=None)**
+### Repository.**fetch_by_field(field, value, cols=None, cls=None)**
 
 Fetch a list of rows where field matches a value. An optional list of fields to be returned can be defined with *cols*.
+If a record class is specified in *cls*, this class will be used as record_type instead of the repository definition.
+Supports both `@fieldmapper` classes and plain classes such as dataclasses.
 It returns a record list, or an empty list if no match is found.
 
 Example:
@@ -125,11 +139,13 @@ Example:
 user = repo.fetch_by_field('login', 'gandalf@lotr')
 ```
 
-### Repository.**fetch_where(where_clauses: list, cols=None)**
+### Repository.**fetch_where(where_clauses: list, cols=None, cls=None)**
 
 Fetch a list of rows that match a list of **WHERE** clauses. If more than one clause is present, they are concatenated
-with **AND**.  An optional list of fields to be returned can be defined with *cols*.  It returns a record list, or an 
-empty list if no match is found.
+with **AND**.  An optional list of fields to be returned can be defined with *cols*.
+If a record class is specified in *cls*, this class will be used as record_type instead of the repository definition.
+Supports both `@fieldmapper` classes and plain classes such as dataclasses.
+It returns a record list, or an empty list if no match is found.
 
 A where clause is a list of tuples in the form of *(field, operator, value)*. See the example below for more details.
 
@@ -141,10 +157,11 @@ for r in repo.fetch_where([('name', 'like', 'gandalf%'), ], cols=['name']):
     print(r.name)
 ```
 
-### Repository.**fetch_all()**
+### Repository.**fetch_all(cls=None)**
 
-Fetch all rows; equivalent to a **SELECT * FROM <record_type_table>**. It returns a record list, or an empty list if 
-the table is empty.
+Fetch all rows; equivalent to a **SELECT * FROM <record_type_table>**. It returns a record list, or an empty list if
+the table is empty. If a record class is specified in *cls*, this class will be used as record_type instead of the
+repository definition. Supports both `@fieldmapper` classes and plain classes such as dataclasses.
 
 Example:
 ```python
@@ -154,10 +171,12 @@ for r in repo.fetch_all():
     print(r.name)
 ```
 
-### Repository.**fetch_all_ordered(col_name:str, order=Sql.SQL_ASC)**
+### Repository.**fetch_all_ordered(col_name:str, order=Sql.SQL_ASC, cls=None)**
 
 Fetch all rows ordered by col_name and order direction; equivalent to a **SELECT * FROM <record_type_table> ORDER BY col_name order**.
-It returns a record list, or an empty list if the table is empty.
+It returns a record list, or an empty list if the table is empty. If a record class is specified in *cls*, this class
+will be used as record_type instead of the repository definition. Supports both `@fieldmapper` classes and plain classes
+such as dataclasses.
 
 Example:
 ```python

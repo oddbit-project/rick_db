@@ -66,6 +66,17 @@ repo.update(user)
 
 # Delete
 repo.delete_pk(user_id)
+
+# Fetch with a dataclass instead of fieldmapper record
+from dataclasses import dataclass
+
+@dataclass
+class UserInfo:
+    name: str
+    email: str
+
+users = repo.fetch_where([("active", "=", True)], cols=["name", "email"], cls=UserInfo)
+user = repo.fetch_one(repo.select(cols=["name", "email"]), cls=UserInfo)
 ```
 
 ## SQL Query Builder
@@ -89,6 +100,10 @@ Select(dialect).from_(User, [User.id, User.name]).assemble()
 
 # WHERE
 Select(dialect).from_(User).where(User.name, "=", "Alice").assemble()
+
+# WHERE IN / NOT IN (parameterized)
+Select(dialect).from_(User).where(User.id, "in", [1, 2, 3]).assemble()
+Select(dialect).from_(User).where(User.id, "not in", [4, 5]).assemble()
 
 # JOIN
 Select(dialect).from_(User).join(Order, User.id, Order, Order.user_id).assemble()
