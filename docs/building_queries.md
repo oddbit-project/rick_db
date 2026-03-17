@@ -214,6 +214,26 @@ qry, values = (
 print(qry)
 ```
 
+**WHERE IN / NOT IN** with a list of values generates properly parameterized queries:
+
+```python
+from rick_db.sql import Select, PgSqlDialect
+
+# WHERE IN with a list
+qry, values = Select(PgSqlDialect()).from_("table").where("id", "IN", [1, 2, 3]).assemble()
+# output: SELECT "table".* FROM "table" WHERE ("id" IN (%s, %s, %s))
+# values: [1, 2, 3]
+print(qry)
+
+# WHERE NOT IN with a list
+qry, values = Select(PgSqlDialect()).from_("table").where("status", "NOT IN", ["inactive", "deleted"]).assemble()
+# output: SELECT "table".* FROM "table" WHERE ("status" NOT IN (%s, %s))
+# values: ['inactive', 'deleted']
+print(qry)
+```
+
+Tuples are also accepted as value lists. An empty list will raise `SqlError`.
+
 It is also possible to use subselects:
 
 ```python
@@ -351,6 +371,16 @@ qry = (
 )
 # output: ('UPDATE "table" SET "field"=%s WHERE "id" = %s AND "name" ILIKE %s', ['value', 7, 'john%'])
 print(qry.assemble())
+
+# UPDATE WHERE... IN with a list
+qry = (
+    Update(PgSqlDialect())
+    .table("table")
+    .values({"field": "value"})
+    .where("id", "IN", [1, 2, 3])
+)
+# output: ('UPDATE "table" SET "field"=%s WHERE "id" IN (%s, %s, %s)', ['value', 1, 2, 3])
+print(qry.assemble())
 ```
 
 ## Delete
@@ -379,6 +409,11 @@ qry = (
     .where("name", "ILIKE", "john%")
 )
 # output: ('DELETE FROM "table" WHERE "id" = %s AND "name" ILIKE %s', [7, 'john%'])
+print(qry.assemble())
+
+# DELETE WHERE... IN with a list
+qry = Delete(PgSqlDialect()).from_("table").where("id", "IN", [1, 2, 3])
+# output: ('DELETE FROM "table" WHERE "id" IN (%s, %s, %s)', [1, 2, 3])
 print(qry.assemble())
 ```
 

@@ -104,6 +104,25 @@ def delete_cases_or():
     ]
 
 
+def delete_cases_in():
+    return [
+        [
+            "table1",
+            [("id", "in", [1, 2, 3])],
+            None,
+            'DELETE FROM "table1" WHERE "id" IN (?, ?, ?)',
+            [1, 2, 3],
+        ],
+        [
+            "table1",
+            [("id", "not in", [4, 5])],
+            None,
+            'DELETE FROM "table1" WHERE "id" NOT IN (?, ?)',
+            [4, 5],
+        ],
+    ]
+
+
 def delete_cases_and_or():
     sample_query = Select().from_("test", ["id"]).where("field", "=", "abcd")
     return [
@@ -129,6 +148,16 @@ class TestDelete:
 
         sql, _ = qry.assemble()
         assert sql == result
+
+    @pytest.mark.parametrize("table, where_list, schema, result, expected_values", delete_cases_in())
+    def test_delete_where_in(self, table, where_list, schema, result, expected_values):
+        qry = Delete().from_(table, schema)
+        for item in where_list:
+            field, operator, value = item
+            qry.where(field, operator, value)
+        sql, values = qry.assemble()
+        assert sql == result
+        assert values == expected_values
 
     @pytest.mark.parametrize("table, where_list, schema, result", delete_cases_or())
     def test_delete_or(self, table, where_list, schema, result):

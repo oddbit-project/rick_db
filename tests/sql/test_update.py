@@ -259,6 +259,18 @@ class TestUpdate:
         sql, _ = qry.assemble()
         assert sql == result
 
+    def test_update_where_in(self):
+        qry = Update().table("table1").values({"field1": "value1"}).where("id", "in", [1, 2, 3])
+        sql, values = qry.assemble()
+        assert sql == 'UPDATE "table1" SET "field1"=? WHERE "id" IN (?, ?, ?)'
+        assert values == ["value1", 1, 2, 3]
+
+    def test_update_where_not_in(self):
+        qry = Update().table("table1").values({"field1": "value1"}).where("id", "not in", [4, 5])
+        sql, values = qry.assemble()
+        assert sql == 'UPDATE "table1" SET "field1"=? WHERE "id" NOT IN (?, ?)'
+        assert values == ["value1", 4, 5]
+
     @pytest.mark.parametrize(
         "table, fields, where_list, returning_list, schema, result", return_cases()
     )

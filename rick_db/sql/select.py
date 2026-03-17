@@ -929,7 +929,17 @@ class Select(SqlStatement):
                     fld=field, ph=self._dialect.placeholder
                 )
             else:
-                if isinstance(value, Select):
+                if isinstance(value, (list, tuple)) and operator is not None and operator.lower() in ("in", "not in"):
+                    if len(value) == 0:
+                        raise SqlError("_where(): empty list for IN clause")
+                    placeholders = ", ".join([self._dialect.placeholder] * len(value))
+                    expression = "{fld} {op} ({phs})".format(
+                        fld=field, op=operator.upper(), phs=placeholders
+                    )
+                    for v in value:
+                        self._query_values[Sql.WHERE].append(v)
+                    value = None
+                elif isinstance(value, Select):
                     sql, value = value.assemble()
                     expression = "{fld} {op} ({query})".format(
                         fld=field, op=operator, query=sql

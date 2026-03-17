@@ -173,7 +173,15 @@ qry = (
     .where('name', 'IS NOT NULL')
     .where('cp', 'IN', [100, 200, 300, 400])
 )
-# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) AND ("name" IS NOT NULL) AND ("cp" IN %s)', [5, [100, 200, 300, 400]])
+# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) AND ("name" IS NOT NULL) AND ("cp" IN (%s, %s, %s, %s))', [5, 100, 200, 300, 400])
+print(qry.assemble())
+
+# WHERE NOT IN with a list of values
+qry = (
+    Select(PgSqlDialect()).from_("foo")
+    .where('status', 'NOT IN', ['inactive', 'deleted'])
+)
+# output: ('SELECT "foo".* FROM "foo" WHERE ("status" NOT IN (%s, %s))', ['inactive', 'deleted'])
 print(qry.assemble())
 ```
 
@@ -203,7 +211,7 @@ qry = (
     .orwhere("cp", "IN", [100, 200, 300, 400])
     .where_end()
 )
-# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) AND ( ("name" IS NOT NULL) OR ("cp" IN %s) )', [5, [100, 200, 300, 400]])
+# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) AND ( ("name" IS NOT NULL) OR ("cp" IN (%s, %s, %s, %s)) )', [5, 100, 200, 300, 400])
 print(qry.assemble())
 
 ```
@@ -220,7 +228,7 @@ Example:
 
 ```python
 # showcase WHERE clause OR ( clause AND clause)
-qry = ( 
+qry = (
     Select(PgSqlDialect())
     .from_("foo")
     .where('id', '>', 5)
@@ -229,7 +237,7 @@ qry = (
     .where('cp', 'IN', [100, 200, 300, 400])
     .where_end()
 )
-# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) OR ( ("name" IS NOT NULL) AND ("cp" IN %s) )', [5, [100, 200, 300, 400]])
+# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) OR ( ("name" IS NOT NULL) AND ("cp" IN (%s, %s, %s, %s)) )', [5, 100, 200, 300, 400])
 print(qry.assemble())
 
 ```
@@ -261,7 +269,7 @@ qry = (
     .orwhere('name', 'IS NOT NULL')
     .where('cp', 'IN', [100, 200, 300, 400])
 )
-# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) OR ("name" IS NOT NULL) AND ("cp" IN %s)', [5, [100, 200, 300, 400]])
+# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) OR ("name" IS NOT NULL) AND ("cp" IN (%s, %s, %s, %s))', [5, 100, 200, 300, 400])
 print(qry.assemble())
 ```
 
