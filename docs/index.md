@@ -5,38 +5,125 @@
 [![license](https://img.shields.io/pypi/l/rick-db.svg)](https://git.oddbit.org/OddBit/rick_db/src/branch/master/LICENSE)
 
 RickDb is a SQL database layer for Python3. It includes connection management, Object Mapper, Query Builder,
-and a Repository pattern implementation.  
+and a Repository pattern implementation.
 
 ## Features
-- Object Mapper
-- Fluent SQL Query builder with schema support
-- Comprehensive JSON operations support
-- High level connectors for PostgreSQL, SQLite, ClickHouse
-- SQL query builder dialect for MySQL
-- Pluggable SQL query profiler
-- Grid helper
-- Migration Manager
 
-> Note: SQLite may have different behaviour based on Python versions; notably, DDL statements in a transaction 
-> may not be affected by rollback on Python <3.12. Also, there are limitations on text search when using the Grid helper
+- **[Object Mapper](object_mapper.md)** — map database rows to Python objects using the `@fieldmapper` decorator. Attributes
+  are independent of column names, making records portable across architectural boundaries and easy to serialize.
+
+- **[Fluent Query Builder](building_queries.md)** — build SELECT, INSERT, UPDATE, DELETE, and CTE queries
+  programmatically with a chainable API. Supports column aliases, type casting, JOINs (inner, left, right, full, cross,
+  natural, lateral), grouped WHERE logic with parentheses, subqueries, UNION, and pagination. All values are parameterized.
+
+- **[SQL Functions (Fn)](classes/fn.md)** — helper class for common SQL aggregate (`COUNT`, `SUM`, `AVG`, `MIN`, `MAX`),
+  math (`ROUND`, `ABS`, `CEIL`, `FLOOR`, `SQRT`, etc.), and general (`COALESCE`, `CAST`) functions. Functions are nestable
+  and work anywhere a column expression is accepted.
+
+- **[JSON Operations](json_operations.md)** — query and extract JSON/JSONB data with `JsonField` and `PgJsonField`
+  classes. Supports PostgreSQL operators (`->`, `->>`, `@>`, `@?`), bracket notation for nested access, and
+  dialect-aware extraction for SQLite and ClickHouse.
+
+- **[Repository Pattern](repository.md)** — provides CRUD operations (`insert`, `fetch_all`, `fetch_pk`, `fetch_where`,
+  `update`, `delete`), transactions with automatic commit/rollback, built-in query caching, and pagination helpers.
+  Extend with custom methods for domain-specific queries.
+
+- **[DbGrid](grid.md)** — searchable, filterable, paginated data listings. Supports text search (`LIKE`/`ILIKE` with
+  configurable patterns), exact-match filtering, multi-field sorting, and returns both total count and paginated results.
+
+- **[Connections](connection.md)** — high-level connectors for **PostgreSQL** (psycopg2, with thread-safe
+  connection pooling), **SQLite3** (stdlib), and **ClickHouse** (clickhouse-connect). All connectors share a common
+  interface with cursor management, transaction support, and pluggable query profiling.
+
+- **[SQL Dialects](classes/sqldialect.md)** — dialect objects handle database-specific differences (placeholder syntax,
+  identifier quoting, type casting, JSON operators). Available for PostgreSQL, SQLite, ClickHouse, and
+  [MySQL](classes/mysql_dialect.md) (SQL generation only, no connection backend).
+
+- **[Database Introspection](classes/managerinterface.md)** — Manager classes for each backend expose schema metadata:
+  list tables/views, inspect columns and primary keys, manage databases and schemas. PostgreSQL additionally provides
+  [PgInfo](classes/pgmanager.md#pginfo) for detailed introspection of foreign keys, sequences, indexes, roles, and
+  server settings.
+
+- **[Migrations](migrations.md)** — forward-only migration manager with CLI (`rickdb`) and
+  [Python API](migrations.md#python-api). Supports PostgreSQL, SQLite, and ClickHouse. Includes migration tracking,
+  idempotent re-runs, history flattening, and DTO code generation from existing tables.
+
+- **[Query Profiler](connection.md#using-a-profiler)** — pluggable profiler interface for logging queries, parameters,
+  and execution times. Attach a `DefaultProfiler` to any connection or pool to capture events.
+
+> **Note:** SQLite may have different behaviour based on Python versions; notably, DDL statements in a transaction
+> may not be affected by rollback on Python <3.12. Also, there are limitations on text search when using the Grid helper.
 
 ## Purpose
 
-RickDb was designed to be used in schema-first scenarios: Database schema is built and managed directly with SQL DDL commands,
-and there is a clear segregation of concerns - the application layer has no responsibility on the structure of the database.
+RickDb was designed to be used in **schema-first** scenarios: the database structure is built and managed directly
+with SQL DDL, and there is a clear segregation of concerns — the application layer has no responsibility for the
+structure of the database.
 
-This approach is the direct opposite of most available ORMS, but allows complete control over how the database is queried
-and how results are processed within the application, favoring cache-friendly multi-tier/service-oriented implementations.
+This approach is the direct opposite of most available ORMs, but allows complete control over how the database
+is queried and how results are processed within the application, favoring cache-friendly multi-tier and
+service-oriented implementations.
 
-However, it can also be used to consume information from existing databases, implement lightweight middleware services, or
-to perform some quick application prototyping. 
+It can also be used to consume information from existing databases, implement lightweight middleware services, or
+perform quick application prototyping.
 
-Please note, RickDb does not implement any async functionality, and there are no plans to support it in the near future.
+RickDb does not implement any async functionality, and there are no plans to support it in the near future.
 
+## Quick Start
 
-## TL;DR; example
+### 1. Install
 
-A simple bookstore DTO and Repository example, with a custom query via QueryBuilder:
+```shell
+pip install rick-db
+```
+
+### 2. Define a Record
+
+```python
+from rick_db import fieldmapper
+
+@fieldmapper(tablename='users', pk='id_user')
+class User:
+    id = 'id_user'
+    name = 'name'
+    email = 'email'
+```
+
+### 3. Connect and Use
+
+```python
+from rick_db import Repository
+from rick_db.backend.sqlite import Sqlite3Connection
+
+conn = Sqlite3Connection(":memory:")
+
+# create table (schema-first — you manage the DDL)
+with conn.cursor() as c:
+    c.exec("CREATE TABLE users (id_user INTEGER PRIMARY KEY, name TEXT, email TEXT)")
+    c.close()
+
+repo = Repository(conn, User)
+
+# insert
+user_id = repo.insert_pk(User(name="Alice", email="alice@example.com"))
+
+# fetch
+user = repo.fetch_pk(user_id)
+print(user.name, user.email)
+
+# query builder
+from rick_db.sql import Select, Fn
+
+qry = repo.select(cols=[User.name, User.email]).where(User.name, "LIKE", "A%")
+users = repo.fetch(qry)
+```
+
+See the [Examples](examples.md) page for more complete, runnable examples.
+
+## Bookstore Example
+
+A more realistic example showing a custom repository with JOINs and aggregate queries:
+
 ```python
 from rick_db import fieldmapper, Repository
 from rick_db.backend.pg import PgConnectionPool
@@ -81,32 +168,17 @@ class AuthorRepository(Repository):
         super().__init__(db, Author)
 
     def calc_avg_rating(self, id_author: int):
-        """
-        Calculate average rating for a given author
-        :param id_author:
-        :return: average rating, if any
-        """
-
-        # generated query:
-        # SELECT avg(rating) AS "rating" FROM "book" INNER JOIN "book_author" ON 
-        # "book"."id_book"="book_author"."fk_book" WHERE ("fk_author" = %s)
         qry = Select(self.dialect). \
             from_(Book, {Fn.avg(Book.rating): 'rating'}). \
             join(BookAuthor, BookAuthor.fk_book, Book, Book.id). \
             where(BookAuthor.fk_author, '=', id_author)
 
-        # retrieve result as list of type Book (to get the rating field)
         rset = self.fetch(qry, cls=Book)
         if len(rset) > 0:
             return rset.pop(0).rating
         return 0
 
     def books(self, id_author: int) -> list[Book]:
-        """
-        Retrieve all books for the given author
-        :return: list[Book]
-        """
-
         qry = Select(self.dialect). \
             from_(Book). \
             join(BookAuthor, BookAuthor.fk_book, Book, Book.id). \
@@ -115,35 +187,19 @@ class AuthorRepository(Repository):
         return self.fetch(qry, cls=Book)
 
 
-def dump_author_rating(repo: AuthorRepository):
-    for author in repo.fetch_all():
-
-        # calculate average
-        rating = repo.calc_avg_rating(author.id)
-
-        # print book list
-        print("Books by {firstname} {lastname}:".format(firstname=author.first_name, lastname=author.last_name))
-        for book in repo.books(author.id):
-            print(book.title)
-
-        # print average rating           
-        print("Average rating for {firstname} {lastname} is {rating}".
-              format(firstname=author.first_name, lastname=author.last_name, rating=rating))
-
-
 if __name__ == '__main__':
-    db_cfg = {
-        'dbname': "rickdb-bookstore",
-        'user': "rickdb_user",
-        'password': "rickdb_pass",
-        'host': "localhost",
-        'port': 5432,
-        'sslmode': 'require'
-    }
-
-    pool = PgConnectionPool(**db_cfg)
+    pool = PgConnectionPool(
+        dbname="rickdb-bookstore", user="rickdb_user",
+        password="rickdb_pass", host="localhost", port=5432, sslmode='require'
+    )
     repo = AuthorRepository(pool)
-    dump_author_rating(repo)
+
+    for author in repo.fetch_all():
+        rating = repo.calc_avg_rating(author.id)
+        print("Books by {} {}:".format(author.first_name, author.last_name))
+        for book in repo.books(author.id):
+            print("  ", book.title)
+        print("Average rating:", rating)
 ```
 
 ## Migrating from previous versions (<2.0.0)
@@ -159,11 +215,9 @@ code changes; The major changes to take into account are:
 - Cache query is now per-repository object, not globally shared;
 - Connections are no longer stored as attributes; instead, connections should be handled via context managers:
 ```python
-...
 pool = PgConnectionPool(**connection_params)
-...
-with pool.connection() as conn: # fetch a connection
-    with conn.cursor() as c: # fetch a cursor
+
+with pool.connection() as conn:
+    with conn.cursor() as c:
         pass # do stuff
 ```
-
