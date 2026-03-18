@@ -40,7 +40,7 @@ A simple bookstore DTO and Repository example, with a custom query via QueryBuil
 ```python
 from rick_db import fieldmapper, Repository
 from rick_db.backend.pg import PgConnectionPool
-from rick_db.sql import Select, Literal
+from rick_db.sql import Select, Fn
 
 
 @fieldmapper(tablename='publisher', pk='id_publisher')
@@ -91,7 +91,7 @@ class AuthorRepository(Repository):
         # SELECT avg(rating) AS "rating" FROM "book" INNER JOIN "book_author" ON 
         # "book"."id_book"="book_author"."fk_book" WHERE ("fk_author" = %s)
         qry = Select(self.dialect). \
-            from_(Book, {Literal("avg({})".format(Book.rating)): 'rating'}). \
+            from_(Book, {Fn.avg(Book.rating): 'rating'}). \
             join(BookAuthor, BookAuthor.fk_book, Book, Book.id). \
             where(BookAuthor.fk_author, '=', id_author)
 

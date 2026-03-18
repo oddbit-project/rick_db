@@ -498,8 +498,8 @@ print(qry)
 
 **`limit(limit, offset=None)`** sets LIMIT and optionally OFFSET directly.
 
-**`page(page_number, rows_per_page)`** is a convenience method that calculates the offset from a 0-indexed
-page number: `offset = page_number * rows_per_page`.
+**`page(page_number, rows_per_page)`** is a convenience method that calculates the offset from a 1-indexed
+page number (first page is 1): `offset = (page_number - 1) * rows_per_page`.
 
 ```python
 from rick_db.sql import Select, PgSqlDialect
@@ -525,8 +525,8 @@ qry, _ = Select(PgSqlDialect()).from_("users").order("id").limit(10, offset=20).
 print(qry)
 
 # Page helper (page 3 with 10 rows per page = offset 20, limit 10)
-# Pages are 0-indexed, so page(0, 10) is the first page
-qry, _ = Select(PgSqlDialect()).from_("users").order("id").page(2, 10).assemble()
+# Pages are 1-indexed, so page(1, 10) is the first page
+qry, _ = Select(PgSqlDialect()).from_("users").order("id").page(3, 10).assemble()
 # output: SELECT "users".* FROM "users" ORDER BY "id" ASC LIMIT 10 OFFSET 20
 print(qry)
 ```

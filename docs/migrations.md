@@ -219,7 +219,9 @@ class Page:
     breadcrumbs = 'breadcrumbs'
 ```
 
-And, of course, PostgreSQL schemas are supported out-of-the-box, too:
+The first argument is the table (or `schema.table`) name, and the second argument is the output file path.
+
+PostgreSQL schemas are supported out-of-the-box, too:
 ```python
 $ rickdb dto test.some_page page.py
 DAO written to file page.py
@@ -237,3 +239,48 @@ class SomePage:
     description = 'description'
     breadcrumbs = 'breadcrumbs'
 ```
+
+## Python API
+
+Migrations can also be managed programmatically. Each backend provides a Manager and a MigrationManager class:
+
+| Backend | Manager | MigrationManager |
+|---------|---------|-----------------|
+| PostgreSQL | `PgManager` | `PgMigrationManager` |
+| SQLite | `Sqlite3Manager` | `Sqlite3MigrationManager` |
+
+```python
+from rick_db.backend.sqlite import Sqlite3Connection, Sqlite3Manager, Sqlite3MigrationManager
+from rick_db.migrations import MigrationRecord
+
+conn = Sqlite3Connection("mydb.db")
+mgr = Sqlite3Manager(conn)
+mm = Sqlite3MigrationManager(mgr)
+
+# Install migration tracking table
+result = mm.install()
+print(result.success, result.error)
+
+# Check if already installed
+if mm.is_installed():
+    print("Migration table exists")
+
+# Execute a migration
+record = MigrationRecord(name="001_create_users")
+sql = "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL);"
+result = mm.execute(record, sql)
+
+# List applied migrations
+for m in mm.list():
+    print(m.name, m.applied)
+
+# Check if a specific migration was applied
+record = mm.fetch_by_name("001_create_users")
+
+# Flatten all migrations into a single entry
+mm.flatten(MigrationRecord(name="schema.sql"))
+```
+
+For PostgreSQL, use `PgManager` and `PgMigrationManager` from `rick_db.backend.pg` with the same API.
+
+See [Examples](examples.md#migration-workflow) for a complete runnable example.

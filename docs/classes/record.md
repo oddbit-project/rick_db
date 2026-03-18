@@ -102,7 +102,7 @@ print(r1.asrecord())
 
 ### Record.**fields()**
 
-Alias function to Record.asdict().items()
+Returns a list of attribute names that have values set.
 
 Example:
 ```python
@@ -118,6 +118,19 @@ r1 = MyRecord(id=1, name='Sarah Connor')
 # output: ['id', 'name']
 print(r1.fields())
 ```
+
+### Record.**items()**
+
+Returns the items from `asdict()` — equivalent to `Record.asdict().items()`.
+
+### Record.**fieldmap()**
+
+Returns the internal mapping dictionary from attribute names to database field names.
+
+### Record.**add(\*\*kwargs)**
+
+Adds new attribute values from named parameters. Similar to `load()` but intended for adding
+values after initial construction.
 
 ### Record.**values()**
 

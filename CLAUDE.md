@@ -365,7 +365,7 @@ Select(dialect).from_(User)\
 
 #### ORDER BY, LIMIT, pagination
 
-`order(fields, order=ASC)` adds ORDER BY. Accepts a single field, a list of fields (all same direction), or a dict `{field: "ASC"|"DESC"}` for mixed ordering. `limit(n, offset=None)` sets LIMIT/OFFSET directly. `page(page_number, rows_per_page)` is a convenience that calculates the offset from the page number (0-indexed pages).
+`order(fields, order=ASC)` adds ORDER BY. Accepts a single field, a list of fields (all same direction), or a dict `{field: "ASC"|"DESC"}` for mixed ordering. `limit(n, offset=None)` sets LIMIT/OFFSET directly. `page(page_number, rows_per_page)` is a convenience that calculates the offset from a 1-indexed page number (first page is 1).
 
 ```python
 # Order ASC (default) / DESC
@@ -378,8 +378,8 @@ Select(dialect).from_(User).order({User.name: "ASC", User.id: "DESC"}).assemble(
 # Limit and offset
 Select(dialect).from_(User).limit(10, offset=20).assemble()
 
-# Page helper (page number, rows per page)
-Select(dialect).from_(User).page(3, 10).assemble()  # offset=20, limit=10
+# Page helper (1-indexed page number, rows per page)
+Select(dialect).from_(User).page(3, 10).assemble()  # page 3 -> offset=20, limit=10
 ```
 
 #### UNION

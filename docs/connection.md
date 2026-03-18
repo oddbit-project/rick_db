@@ -41,7 +41,7 @@ config = {
 # create connection
 conn = PgConnection(**config)
 with conn.cursor() as c:
-    # to stuff
+    # do stuff
 ```
 
 Using PgConnectionPool:
@@ -62,7 +62,7 @@ config = {
 pool = PgConnectionPool(**config)
 with pool.connection() as conn:     # fetch a connection from the pool
     with conn.cursor() as c:        # create a cursor
-        # to stuff
+        # do stuff
         pass
 ```
 
