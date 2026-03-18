@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
     
     
       
@@ -1312,6 +1312,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../fn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../jsonfield/" class="md-nav__link">
         
   
@@ -1544,10 +1572,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_20" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_21" >
         
           
-          <label class="md-nav__link" for="__nav_10_20" id="__nav_10_20_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_21" id="__nav_10_21_label" tabindex="0">
             
   
   
@@ -1565,8 +1593,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_20_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_20">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_21">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2232,6 +2260,24 @@ be:</p>
 <p>A column identifier can be None ('*' will be used), a string with a field name, a list of field names, a
 {'field': 'alias'} dict, a {'field': None, 'other_field':'alias} dict, or a [{'field': 'alias'}, 'field', ] list
 of mixed string and dict values.</p>
+<p><a href="../fn/">Fn</a> helpers can be used as dict keys for SQL functions with aliases:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Fn</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+
+<span class="c1"># Multiple columns with aggregates</span>
+<span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span>
+    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">():</span> <span class="s2">&quot;order_count&quot;</span><span class="p">,</span>
+        <span class="n">Fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">):</span> <span class="s2">&quot;total_amount&quot;</span><span class="p">,</span>
+        <span class="n">Fn</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Fn</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span> <span class="s2">&quot;avg_rounded&quot;</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="c1"># output: SELECT &quot;category&quot;,COUNT(*) AS &quot;order_count&quot;,SUM(amount) AS &quot;total_amount&quot;,ROUND(AVG(amount), 2) AS &quot;avg_rounded&quot; FROM &quot;orders&quot; GROUP BY &quot;category&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
+</code></pre></div>
 <h3 id="selectlimitlimit-int-offset-int-none">Select.<strong>limit(limit: int, offset: int = None)</strong><a class="headerlink" href="#selectlimitlimit-int-offset-int-none" title="Permanent link">&para;</a></h3>
 <p>Adds an <strong>LIMIT</strong>/<strong>OFFSET</strong> clause.</p>
 <p>Example:</p>
@@ -2282,7 +2328,15 @@ object, and finally <em>value</em>, if specified, is the operand.</p>
     <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;IS NOT NULL&#39;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;cp&#39;</span><span class="p">,</span> <span class="s1">&#39;IN&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">])</span>
 <span class="p">)</span>
-<span class="c1"># output: (&#39;SELECT &quot;foo&quot;.* FROM &quot;foo&quot; WHERE (&quot;id&quot; &gt; %s) AND (&quot;name&quot; IS NOT NULL) AND (&quot;cp&quot; IN %s)&#39;, [5, [100, 200, 300, 400]])</span>
+<span class="c1"># output: (&#39;SELECT &quot;foo&quot;.* FROM &quot;foo&quot; WHERE (&quot;id&quot; &gt; %s) AND (&quot;name&quot; IS NOT NULL) AND (&quot;cp&quot; IN (%s, %s, %s, %s))&#39;, [5, 100, 200, 300, 400])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
+
+<span class="c1"># WHERE NOT IN with a list of values</span>
+<span class="n">qry</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;NOT IN&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;inactive&#39;</span><span class="p">,</span> <span class="s1">&#39;deleted&#39;</span><span class="p">])</span>
+<span class="p">)</span>
+<span class="c1"># output: (&#39;SELECT &quot;foo&quot;.* FROM &quot;foo&quot; WHERE (&quot;status&quot; NOT IN (%s, %s))&#39;, [&#39;inactive&#39;, &#39;deleted&#39;])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
 </code></pre></div>
 <h4 id="field-identifier">Field identifier<a class="headerlink" href="#field-identifier" title="Permanent link">&para;</a></h4>
@@ -2305,7 +2359,7 @@ with <a href="#selectwhere_end">where_end()</a>.</p>
     <span class="o">.</span><span class="n">orwhere</span><span class="p">(</span><span class="s2">&quot;cp&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">])</span>
     <span class="o">.</span><span class="n">where_end</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="c1"># output: (&#39;SELECT &quot;foo&quot;.* FROM &quot;foo&quot; WHERE (&quot;id&quot; &gt; %s) AND ( (&quot;name&quot; IS NOT NULL) OR (&quot;cp&quot; IN %s) )&#39;, [5, [100, 200, 300, 400]])</span>
+<span class="c1"># output: (&#39;SELECT &quot;foo&quot;.* FROM &quot;foo&quot; WHERE (&quot;id&quot; &gt; %s) AND ( (&quot;name&quot; IS NOT NULL) OR (&quot;cp&quot; IN (%s, %s, %s, %s)) )&#39;, [5, 100, 200, 300, 400])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
 </code></pre></div>
 <h3 id="selectwhere_or">Select.<strong>where_or()</strong><a class="headerlink" href="#selectwhere_or" title="Permanent link">&para;</a></h3>
@@ -2316,7 +2370,7 @@ closed
 with <a href="#selectwhere_end">where_end()</a>.</p>
 <p>Example:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># showcase WHERE clause OR ( clause AND clause)</span>
-<span class="n">qry</span> <span class="o">=</span> <span class="p">(</span> 
+<span class="n">qry</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span>
     <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
@@ -2325,7 +2379,7 @@ with <a href="#selectwhere_end">where_end()</a>.</p>
     <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;cp&#39;</span><span class="p">,</span> <span class="s1">&#39;IN&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">])</span>
     <span class="o">.</span><span class="n">where_end</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="c1"># output: (&#39;SELECT &quot;foo&quot;.* FROM &quot;foo&quot; WHERE (&quot;id&quot; &gt; %s) OR ( (&quot;name&quot; IS NOT NULL) AND (&quot;cp&quot; IN %s) )&#39;, [5, [100, 200, 300, 400]])</span>
+<span class="c1"># output: (&#39;SELECT &quot;foo&quot;.* FROM &quot;foo&quot; WHERE (&quot;id&quot; &gt; %s) OR ( (&quot;name&quot; IS NOT NULL) AND (&quot;cp&quot; IN (%s, %s, %s, %s)) )&#39;, [5, 100, 200, 300, 400])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
 </code></pre></div>
 <h3 id="selectwhere_end">Select.<strong>where_end()</strong><a class="headerlink" href="#selectwhere_end" title="Permanent link">&para;</a></h3>
@@ -2348,7 +2402,7 @@ object, and finally <em>value</em>, if specified, is the operand.</p>
     <span class="o">.</span><span class="n">orwhere</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;IS NOT NULL&#39;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;cp&#39;</span><span class="p">,</span> <span class="s1">&#39;IN&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">])</span>
 <span class="p">)</span>
-<span class="c1"># output: (&#39;SELECT &quot;foo&quot;.* FROM &quot;foo&quot; WHERE (&quot;id&quot; &gt; %s) OR (&quot;name&quot; IS NOT NULL) AND (&quot;cp&quot; IN %s)&#39;, [5, [100, 200, 300, 400]])</span>
+<span class="c1"># output: (&#39;SELECT &quot;foo&quot;.* FROM &quot;foo&quot; WHERE (&quot;id&quot; &gt; %s) OR (&quot;name&quot; IS NOT NULL) AND (&quot;cp&quot; IN (%s, %s, %s, %s))&#39;, [5, 100, 200, 300, 400])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
 </code></pre></div>
 <h3 id="selectgroupfields">Select.<strong>group(fields)</strong><a class="headerlink" href="#selectgroupfields" title="Permanent link">&para;</a></h3>

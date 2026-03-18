@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
     
     
       
@@ -434,6 +434,17 @@
     <span class="md-ellipsis">
       
         Select
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sql-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQL Functions
       
     </span>
   </a>
@@ -973,6 +984,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../classes/fn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../classes/jsonfield/" class="md-nav__link">
         
   
@@ -1205,10 +1244,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_20" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_21" >
         
           
-          <label class="md-nav__link" for="__nav_10_20" id="__nav_10_20_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_21" id="__nav_10_21_label" tabindex="0">
             
   
   
@@ -1226,8 +1265,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_20_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_20">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_21">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1395,6 +1434,17 @@
     <span class="md-ellipsis">
       
         Select
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sql-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQL Functions
       
     </span>
   </a>
@@ -1667,6 +1717,22 @@ object. Check the class documentation for more details on all available methods.
 <span class="c1"># output: SELECT &quot;table1&quot;.* FROM &quot;table1&quot; RIGHT JOIN &quot;table2&quot; ON &quot;table1&quot;.&quot;fk_table2&quot;=&quot;table2&quot;.&quot;id&quot; INNER JOIN &quot;table3&quot; ON &quot;table2&quot;.&quot;fk_table3&quot;=&quot;table3&quot;.&quot;id&quot; INNER JOIN &quot;table4&quot; ON &quot;table3&quot;.&quot;fk_table4&quot;=&quot;table4&quot;.&quot;id&quot;</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
 </code></pre></div>
+<p><strong>WHERE IN / NOT IN</strong> with a list of values generates properly parameterized queries:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+
+<span class="c1"># WHERE IN with a list</span>
+<span class="n">qry</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<span class="c1"># output: SELECT &quot;table&quot;.* FROM &quot;table&quot; WHERE (&quot;id&quot; IN (%s, %s, %s))</span>
+<span class="c1"># values: [1, 2, 3]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
+
+<span class="c1"># WHERE NOT IN with a list</span>
+<span class="n">qry</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;NOT IN&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;inactive&quot;</span><span class="p">,</span> <span class="s2">&quot;deleted&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<span class="c1"># output: SELECT &quot;table&quot;.* FROM &quot;table&quot; WHERE (&quot;status&quot; NOT IN (%s, %s))</span>
+<span class="c1"># values: [&#39;inactive&#39;, &#39;deleted&#39;]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
+</code></pre></div>
+<p>Tuples are also accepted as value lists. An empty list will raise <code>SqlError</code>.</p>
 <p>It is also possible to use subselects:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
 
@@ -1696,6 +1762,69 @@ object. Check the class documentation for more details on all available methods.
 <span class="c1"># output: SELECT COUNT(*) AS &quot;total&quot; FROM &quot;table&quot;</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
 </code></pre></div></p>
+<h2 id="sql-functions">SQL Functions<a class="headerlink" href="#sql-functions" title="Permanent link">&para;</a></h2>
+<p>The <a href="../classes/fn/">Fn</a> class provides helpers for common SQL functions. Each method returns a
+<a href="../classes/literal/">Literal</a>, so they work anywhere a Literal is accepted. Use dict-style column definitions
+to alias the results:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Fn</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+
+<span class="c1"># Single aggregate with alias</span>
+<span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">():</span> <span class="s2">&quot;total&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<span class="c1"># output: SELECT COUNT(*) AS &quot;total&quot; FROM &quot;orders&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
+
+<span class="c1"># Multiple columns: regular fields and aggregates together</span>
+<span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span>
+    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">():</span> <span class="s2">&quot;order_count&quot;</span><span class="p">,</span>
+        <span class="n">Fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">):</span> <span class="s2">&quot;total_amount&quot;</span><span class="p">,</span>
+        <span class="n">Fn</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">):</span> <span class="s2">&quot;avg_amount&quot;</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="c1"># output: SELECT &quot;category&quot;,COUNT(*) AS &quot;order_count&quot;,SUM(amount) AS &quot;total_amount&quot;,AVG(amount) AS &quot;avg_amount&quot; FROM &quot;orders&quot; GROUP BY &quot;category&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
+
+<span class="c1"># Nested functions</span>
+<span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span>
+    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Fn</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Fn</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span> <span class="s2">&quot;avg_rounded&quot;</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="c1"># output: SELECT &quot;category&quot;,ROUND(AVG(amount), 2) AS &quot;avg_rounded&quot; FROM &quot;orders&quot; GROUP BY &quot;category&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
+
+<span class="c1"># Multiple aggregates with HAVING</span>
+<span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span>
+    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">():</span> <span class="s2">&quot;cnt&quot;</span><span class="p">,</span>
+        <span class="n">Fn</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">):</span> <span class="s2">&quot;cheapest&quot;</span><span class="p">,</span>
+        <span class="n">Fn</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">):</span> <span class="s2">&quot;priciest&quot;</span><span class="p">,</span>
+        <span class="n">Fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">):</span> <span class="s2">&quot;total&quot;</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">having</span><span class="p">(</span><span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="c1"># output: SELECT &quot;category&quot;,COUNT(*) AS &quot;cnt&quot;,MIN(price) AS &quot;cheapest&quot;,MAX(price) AS &quot;priciest&quot;,SUM(amount) AS &quot;total&quot; FROM &quot;orders&quot; GROUP BY &quot;category&quot; HAVING (COUNT(*) &gt; %s)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
+</code></pre></div>
+<p>Available functions:</p>
+<ul>
+<li><strong>Aggregate</strong>: <code>count</code>, <code>sum</code>, <code>avg</code>, <code>min</code>, <code>max</code></li>
+<li><strong>Math</strong>: <code>abs</code>, <code>ceil</code>, <code>floor</code>, <code>round</code>, <code>power</code>, <code>sqrt</code>, <code>mod</code>, <code>sign</code>, <code>trunc</code></li>
+<li><strong>General</strong>: <code>coalesce</code>, <code>cast</code></li>
+</ul>
+<p>See <a href="../classes/fn/">Fn class documentation</a> for full reference.</p>
 <h2 id="insert">Insert<a class="headerlink" href="#insert" title="Permanent link">&para;</a></h2>
 <p><a href="../classes/insert/">Insert</a> objects can be used to generate SQL <strong>INSERT</strong> statements, with optional <strong>RETURNING</strong> clause,
 and with full support for <a href="../object_mapper/">Record</a> objects:</p>
@@ -1787,6 +1916,16 @@ object support:</p>
 <span class="p">)</span>
 <span class="c1"># output: (&#39;UPDATE &quot;table&quot; SET &quot;field&quot;=%s WHERE &quot;id&quot; = %s AND &quot;name&quot; ILIKE %s&#39;, [&#39;value&#39;, 7, &#39;john%&#39;])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
+
+<span class="c1"># UPDATE WHERE... IN with a list</span>
+<span class="n">qry</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Update</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span>
+    <span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">values</span><span class="p">({</span><span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">})</span>
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="p">)</span>
+<span class="c1"># output: (&#39;UPDATE &quot;table&quot; SET &quot;field&quot;=%s WHERE &quot;id&quot; IN (%s, %s, %s)&#39;, [&#39;value&#39;, 1, 2, 3])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
 </code></pre></div></p>
 <h2 id="delete">Delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h2>
 <p><a href="../classes/delete/">Delete</a> objects can be used to generate SQL <strong>DELETE</strong> statements:</p>
@@ -1810,6 +1949,11 @@ object support:</p>
     <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;ILIKE&quot;</span><span class="p">,</span> <span class="s2">&quot;john%&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; = %s AND &quot;name&quot; ILIKE %s&#39;, [7, &#39;john%&#39;])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
+
+<span class="c1"># DELETE WHERE... IN with a list</span>
+<span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; IN (%s, %s, %s)&#39;, [1, 2, 3])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
 </code></pre></div>
 <h2 id="json-operations">JSON Operations<a class="headerlink" href="#json-operations" title="Permanent link">&para;</a></h2>
