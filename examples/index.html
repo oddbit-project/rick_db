@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/grid/">
+        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/examples/">
       
       
-        <link rel="prev" href="../repository/">
+        <link rel="prev" href="../migrations/">
       
       
-        <link rel="next" href="../migrations/">
+        <link rel="next" href="../classes/record/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>DbGrid - RickDb</title>
+        <title>Examples - RickDb</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#dbgrid" class="md-skip">
+        <a href="#examples" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              DbGrid
+              Examples
             
           </span>
         </div>
@@ -448,37 +448,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    DbGrid
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../grid/" class="md-nav__link">
         
   
   
@@ -494,59 +467,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#search-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Search types
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sorting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sorting
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#limitations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Limitations
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -582,10 +502,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../examples/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -601,6 +548,232 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repository
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Repository">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crud-with-sqlite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CRUD with SQLite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dbgrid-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DbGrid Search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bookstore-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bookstore (PostgreSQL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Builder
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Builder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-helper-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fn Helper Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recursive-ctes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recursive CTEs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json-queries-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JSON Queries (PostgreSQL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complex-query-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complex Query (PostgreSQL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migrations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migrations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#migration-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clickhouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClickHouse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ClickHouse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clickhouse-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClickHouse Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running the Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1552,35 +1725,208 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#search-types" class="md-nav__link">
+  <a href="#repository" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Search types
+        Repository
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Repository">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crud-with-sqlite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CRUD with SQLite
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#sorting" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#transactions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sorting
+        Transactions
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#limitations" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#dbgrid-search" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Limitations
+        DbGrid Search
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bookstore-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bookstore (PostgreSQL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Builder
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Builder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fn-helper-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fn Helper Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recursive-ctes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recursive CTEs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json-queries-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JSON Queries (PostgreSQL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complex-query-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complex Query (PostgreSQL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migrations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migrations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#migration-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clickhouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClickHouse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ClickHouse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clickhouse-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClickHouse Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running the Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1601,106 +1947,120 @@
 
 
 
-<h1 id="dbgrid">DbGrid<a class="headerlink" href="#dbgrid" title="Permanent link">&para;</a></h1>
-<p><a href="../classes/dbgrid/">DbGrid</a> is a helper class to aid the creation of table-like listings(grids). It provides a clean,
-programmatic way of searching a given database object (or use a custom query) with string search, exact matching and
-pagination. </p>
-<p>It returns the total row count (without applying pagination), and the filtered row subset matching the pagination results.</p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span><span class="p">,</span> <span class="n">Repository</span><span class="p">,</span> <span class="n">DbGrid</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.pg</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgConnectionPool</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;product&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_product&#39;</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">class</span><span class="w"> </span><span class="nc">Product</span><span class="p">:</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_product&#39;</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">short_description</span> <span class="o">=</span> <span class="s1">&#39;short_description&#39;</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">brand</span> <span class="o">=</span> <span class="s1">&#39;brand_id&#39;</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">db_config</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="s2">&quot;dbname&quot;</span><span class="p">:</span> <span class="s2">&quot;products&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="s2">&quot;someUser&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;somePassword&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">5432</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">}</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="c1"># create connection</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="n">pool</span> <span class="o">=</span> <span class="n">PgConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">db_config</span><span class="p">)</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="c1"># create a repository</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="n">repo</span> <span class="o">=</span> <span class="n">Repository</span><span class="p">(</span><span class="n">pool</span><span class="p">,</span> <span class="n">Product</span><span class="p">)</span>
-<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
-<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="c1"># create a grid</span>
-<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="n">grid</span> <span class="o">=</span> <span class="n">DbGrid</span><span class="p">(</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    <span class="n">repo</span><span class="p">,</span>                           <span class="c1"># repository to use</span>
-<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>    <span class="p">[</span><span class="n">Product</span><span class="o">.</span><span class="n">short_description</span><span class="p">],</span>    <span class="c1"># fields to perform text search</span>
-<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>    <span class="n">DbGrid</span><span class="o">.</span><span class="n">SEARCH_ANY</span>               <span class="c1"># type of search</span>
-<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="p">)</span>
-<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>
-<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="c1"># retrieve first 10 results</span>
-<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="c1"># total will have the total row count that matches the filters, without limit</span>
-<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="n">total</span><span class="p">,</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">search_text</span><span class="o">=</span><span class="s1">&#39;bag&#39;</span><span class="p">,</span> <span class="n">match_fields</span><span class="o">=</span><span class="p">{</span><span class="n">Product</span><span class="o">.</span><span class="n">brand</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;total matches:&quot;</span><span class="p">,</span> <span class="n">total</span><span class="p">)</span>
-<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
-<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">short_description</span><span class="p">)</span>
-<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>
-<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="c1"># retrieve second page of results</span>
-<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="n">total</span><span class="p">,</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">search_text</span><span class="o">=</span><span class="s1">&#39;bag&#39;</span><span class="p">,</span> <span class="n">match_fields</span><span class="o">=</span><span class="p">{</span><span class="n">Product</span><span class="o">.</span><span class="n">brand</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
-<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">short_description</span><span class="p">)</span>
+<h1 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h1>
+<p>Complete, runnable examples are available in the
+<a href="https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples">examples/</a> directory. SQLite and query
+builder examples run standalone with no external dependencies. PostgreSQL, ClickHouse, and bookstore examples
+require a running database server.</p>
+<h2 id="repository">Repository<a class="headerlink" href="#repository" title="Permanent link">&para;</a></h2>
+<h3 id="crud-with-sqlite">CRUD with SQLite<a class="headerlink" href="#crud-with-sqlite" title="Permanent link">&para;</a></h3>
+<p>Basic insert, fetch, update, and delete operations using an in-memory SQLite database. No external
+dependencies required.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span><span class="o">%</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">include</span> <span class="s2">&quot;../examples/repository/crud_sqlite.py&quot;</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">%</span><span class="p">}</span>
 </code></pre></div>
-<h3 id="search-types">Search types<a class="headerlink" href="#search-types" title="Permanent link">&para;</a></h3>
-<p>The <code>search_type</code> parameter controls how text search patterns are generated:</p>
-<table>
-<thead>
-<tr>
-<th>Constant</th>
-<th>Value</th>
-<th>Pattern</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>DbGrid.SEARCH_ANY</code></td>
-<td>1</td>
-<td><code>%text%</code></td>
-<td>Match anywhere in the field (default)</td>
-</tr>
-<tr>
-<td><code>DbGrid.SEARCH_START</code></td>
-<td>2</td>
-<td><code>text%</code></td>
-<td>Match at the beginning of the field</td>
-</tr>
-<tr>
-<td><code>DbGrid.SEARCH_END</code></td>
-<td>3</td>
-<td><code>%text</code></td>
-<td>Match at the end of the field</td>
-</tr>
-<tr>
-<td><code>DbGrid.SEARCH_NONE</code></td>
-<td>0</td>
-<td>—</td>
-<td>Disable text search</td>
-</tr>
-</tbody>
-</table>
-<h3 id="sorting">Sorting<a class="headerlink" href="#sorting" title="Permanent link">&para;</a></h3>
-<p>The <code>sort_fields</code> parameter accepts a dict of <code>{field: direction}</code> pairs, where direction is <code>"ASC"</code> or <code>"DESC"</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">total</span><span class="p">,</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sort_fields</span><span class="o">=</span><span class="p">{</span><span class="n">Product</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="s2">&quot;ASC&quot;</span><span class="p">,</span> <span class="n">Product</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="s2">&quot;DESC&quot;</span><span class="p">},</span> <span class="n">limit</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<p><strong>Source:</strong> <a href="https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/repository/crud_sqlite.py">examples/repository/crud_sqlite.py</a></p>
+<h3 id="transactions">Transactions<a class="headerlink" href="#transactions" title="Permanent link">&para;</a></h3>
+<p>Transaction context manager with automatic commit on success and rollback on exception. Demonstrates
+a funds transfer between accounts.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span><span class="o">%</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">include</span> <span class="s2">&quot;../examples/repository/transactions.py&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">%</span><span class="p">}</span>
 </code></pre></div>
-<h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h3>
-<p><strong>SQLite3</strong></p>
-<p>On SQLite3, case-insensitive search is done via UPPER(), since no ILIKE equivalent is available.
-This may trigger a full table scan and will not use indexes if they are available for the specific field. Additionally,
-this method only works with ASCII chars.</p>
-<p>It is therefore recommended to avoid the usage of case-sensitive search with this driver.</p>
-<p>As an option, one can instead use COLLATE NOCASE on the creation of the required fields, and use DbGrid with case_sensitive=True.
-This way, search will be case-insensitive on the fields created with the COLLATE NOCASE option.</p>
+<p><strong>Source:</strong> <a href="https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/repository/transactions.py">examples/repository/transactions.py</a></p>
+<h3 id="dbgrid-search">DbGrid Search<a class="headerlink" href="#dbgrid-search" title="Permanent link">&para;</a></h3>
+<p>Searchable, filterable, paginated data listings using DbGrid. Shows text search, match filters,
+sorting, pagination, and search types.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span><span class="o">%</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">include</span> <span class="s2">&quot;../examples/repository/dbgrid_search.py&quot;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="o">%</span><span class="p">}</span>
+</code></pre></div>
+<p><strong>Source:</strong> <a href="https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/repository/dbgrid_search.py">examples/repository/dbgrid_search.py</a></p>
+<h3 id="bookstore-postgresql">Bookstore (PostgreSQL)<a class="headerlink" href="#bookstore-postgresql" title="Permanent link">&para;</a></h3>
+<p>Custom repository with JOINs and aggregate queries. Requires a running PostgreSQL instance.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span><span class="o">%</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">include</span> <span class="s2">&quot;../examples/repository/example_bookstore.py&quot;</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="o">%</span><span class="p">}</span>
+</code></pre></div>
+<p><strong>Source:</strong> <a href="https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/repository/example_bookstore.py">examples/repository/example_bookstore.py</a></p>
+<h2 id="query-builder">Query Builder<a class="headerlink" href="#query-builder" title="Permanent link">&para;</a></h2>
+<h3 id="fn-helper-functions">Fn Helper Functions<a class="headerlink" href="#fn-helper-functions" title="Permanent link">&para;</a></h3>
+<p>Aggregate, math, and general SQL functions using the <code>Fn</code> class. Covers <code>COUNT</code>, <code>SUM</code>, <code>AVG</code>,
+<code>ROUND</code>, <code>COALESCE</code>, <code>CAST</code>, nesting, GROUP BY with HAVING, and dict-style column aliases.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span><span class="o">%</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">include</span> <span class="s2">&quot;../examples/query_builder/fn_aggregation.py&quot;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="o">%</span><span class="p">}</span>
+</code></pre></div>
+<p><strong>Source:</strong> <a href="https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/query_builder/fn_aggregation.py">examples/query_builder/fn_aggregation.py</a></p>
+<h3 id="recursive-ctes">Recursive CTEs<a class="headerlink" href="#recursive-ctes" title="Permanent link">&para;</a></h3>
+<p>Common Table Expressions with the <code>With</code> builder. Includes recursive tree walks, number series
+generation, non-recursive CTEs, and multiple CTE clauses.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span><span class="o">%</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">include</span> <span class="s2">&quot;../examples/query_builder/cte_recursive.py&quot;</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="o">%</span><span class="p">}</span>
+</code></pre></div>
+<p><strong>Source:</strong> <a href="https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/query_builder/cte_recursive.py">examples/query_builder/cte_recursive.py</a></p>
+<h3 id="json-queries-postgresql">JSON Queries (PostgreSQL)<a class="headerlink" href="#json-queries-postgresql" title="Permanent link">&para;</a></h3>
+<p>JSON field operations using <code>PgJsonField</code>. Covers text extraction (<code>-&gt;&gt;</code>), object extraction (<code>-&gt;</code>),
+bracket notation for nested access, <code>json_where()</code>, <code>json_extract()</code>, contains checks, and path queries.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span><span class="o">%</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">include</span> <span class="s2">&quot;../examples/query_builder/json_queries.py&quot;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="o">%</span><span class="p">}</span>
+</code></pre></div>
+<p><strong>Source:</strong> <a href="https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/query_builder/json_queries.py">examples/query_builder/json_queries.py</a></p>
+<h3 id="complex-query-postgresql">Complex Query (PostgreSQL)<a class="headerlink" href="#complex-query-postgresql" title="Permanent link">&para;</a></h3>
+<p>Advanced SELECT with subquery joins, Literal expressions for multi-condition ON clauses, and
+PostgreSQL system catalog introspection.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span><span class="o">%</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">include</span> <span class="s2">&quot;../examples/query_builder/complex_query_01.py&quot;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="o">%</span><span class="p">}</span>
+</code></pre></div>
+<p><strong>Source:</strong> <a href="https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/query_builder/complex_query_01.py">examples/query_builder/complex_query_01.py</a></p>
+<h2 id="migrations">Migrations<a class="headerlink" href="#migrations" title="Permanent link">&para;</a></h2>
+<h3 id="migration-workflow">Migration Workflow<a class="headerlink" href="#migration-workflow" title="Permanent link">&para;</a></h3>
+<p>Programmatic migration workflow using SQLite. Demonstrates installing the migration table, executing
+migrations, idempotent re-runs, and schema verification.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span><span class="o">%</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">include</span> <span class="s2">&quot;../examples/migrations/migration_workflow.py&quot;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="o">%</span><span class="p">}</span>
+</code></pre></div>
+<p><strong>Source:</strong> <a href="https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/migrations/migration_workflow.py">examples/migrations/migration_workflow.py</a></p>
+<h2 id="clickhouse">ClickHouse<a class="headerlink" href="#clickhouse" title="Permanent link">&para;</a></h2>
+<h3 id="clickhouse-example">ClickHouse Example<a class="headerlink" href="#clickhouse-example" title="Permanent link">&para;</a></h3>
+<p>Connection setup, schema introspection with <code>ClickHouseManager</code>, repository CRUD, and aggregate
+queries using the query builder. Requires a running ClickHouse server.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span><span class="o">%</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">include</span> <span class="s2">&quot;../examples/clickhouse/clickhouse_example.py&quot;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="o">%</span><span class="p">}</span>
+</code></pre></div>
+<p><strong>Source:</strong> <a href="https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/clickhouse/clickhouse_example.py">examples/clickhouse/clickhouse_example.py</a></p>
+<h2 id="running-the-examples">Running the Examples<a class="headerlink" href="#running-the-examples" title="Permanent link">&para;</a></h2>
+<p>SQLite and query builder examples run directly:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>python<span class="w"> </span>examples/repository/crud_sqlite.py
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>python<span class="w"> </span>examples/query_builder/fn_aggregation.py
+</code></pre></div>
+<p>For PostgreSQL and ClickHouse examples, a Docker Compose file is provided:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Start database services</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>examples/docker-compose.yml<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--wait
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Run an example</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>python<span class="w"> </span>examples/clickhouse/clickhouse_example.py
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="c1"># Stop services</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>examples/docker-compose.yml<span class="w"> </span>down
+</code></pre></div>
+<h3 id="test-harness">Test Harness<a class="headerlink" href="#test-harness" title="Permanent link">&para;</a></h3>
+<p>A pytest test harness validates all examples:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Run only SQLite/query builder tests (no Docker needed)</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>./examples/run_tests.sh<span class="w"> </span>sqlite
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Run all tests (starts and stops Docker automatically)</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>./examples/run_tests.sh
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1"># Run all tests, keep containers running afterward</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>./examples/run_tests.sh<span class="w"> </span>--no-teardown
+</code></pre></div>
 
 
 

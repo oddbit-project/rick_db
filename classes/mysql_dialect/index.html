@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/delete/">
+        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/mysql_dialect/">
       
       
-        <link rel="prev" href="../update/">
+        <link rel="prev" href="../sqldialect/">
       
       
-        <link rel="next" href="../literal/">
+        <link rel="next" href="../select/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Delete - RickDb</title>
+        <title>MySqlSqlDialect - RickDb</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-rick_dbsqldelete" class="md-skip">
+        <a href="#class-rick_dbsqlmysqlsqldialect" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Delete
+              MySqlSqlDialect
             
           </span>
         </div>
@@ -774,10 +774,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../mysql_dialect/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySqlSqlDialect
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -793,6 +820,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dialect-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dialect properties
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#identifier-quoting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identifier quoting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-with-other-dialects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison with other dialects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage example
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -886,37 +977,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Delete
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../delete/" class="md-nav__link">
         
   
   
@@ -932,81 +996,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#delete__init__dialect-sqldialect-none" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.__init__(dialect: SqlDialect = None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deletefrom_table-schemanone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.from_(table, schema=None):
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deletewherefield-operatornone-valuenone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.where(field, operator=None, value=None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deleteorwherefield-operatornone-valuenone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.orwhere(field, operator=None, value=None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deleteassemble" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.assemble()
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1576,10 +1565,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#delete__init__dialect-sqldialect-none" class="md-nav__link">
+  <a href="#dialect-properties" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete.__init__(dialect: SqlDialect = None)
+        Dialect properties
       
     </span>
   </a>
@@ -1587,10 +1576,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deletefrom_table-schemanone" class="md-nav__link">
+  <a href="#identifier-quoting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete.from_(table, schema=None):
+        Identifier quoting
       
     </span>
   </a>
@@ -1598,10 +1587,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deletewherefield-operatornone-valuenone" class="md-nav__link">
+  <a href="#comparison-with-other-dialects" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete.where(field, operator=None, value=None)
+        Comparison with other dialects
       
     </span>
   </a>
@@ -1609,21 +1598,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deleteorwherefield-operatornone-valuenone" class="md-nav__link">
+  <a href="#usage-example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete.orwhere(field, operator=None, value=None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deleteassemble" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.assemble()
+        Usage example
       
     </span>
   </a>
@@ -1647,78 +1625,157 @@
 
 
 
-<h1 id="class-rick_dbsqldelete">Class rick_db.sql.<strong>Delete</strong><a class="headerlink" href="#class-rick_dbsqldelete" title="Permanent link">&para;</a></h1>
-<h3 id="delete__init__dialect-sqldialect-none">Delete.<strong>__init__(dialect: SqlDialect = None)</strong><a class="headerlink" href="#delete__init__dialect-sqldialect-none" title="Permanent link">&para;</a></h3>
-<p>Initialize a Delete() object, using a database <em>dialect</em>. If no <em>dialect</em> is provided, a default dialect will be used.
-Check <a href="../sqldialect/">SqlDialect</a> for more details.</p>
-<h3 id="deletefrom_table-schemanone">Delete.<strong>from_(table, schema=None):</strong><a class="headerlink" href="#deletefrom_table-schemanone" title="Permanent link">&para;</a></h3>
-<p>Defines the target <em>table</em> name and <em>schema</em> for deletion. <em>table</em> can be a <a href="../record/">Record</a> object.</p>
-<p>Example:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># simple DELETE example</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot;&#39;, [])</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># DELETE w/ Record object</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">record</span> <span class="o">=</span> <span class="n">Publisher</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;some publisher name&#39;</span><span class="p">)</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># output: (&#39;DELETE FROM &quot;publisher&quot;&#39;, [])</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-</code></pre></div></p>
-<h3 id="deletewherefield-operatornone-valuenone">Delete.<strong>where(field, operator=None, value=None)</strong><a class="headerlink" href="#deletewherefield-operatornone-valuenone" title="Permanent link">&para;</a></h3>
-<p>Adds a <strong>WHERE</strong> clause to the <strong>DELETE</strong> clause. It requires a mandatory <em>field</em> name and an <em>operator</em>, and allows
-an optional <em>value</em>. Clauses generated by multiple calls to this method are concatenated with <strong>AND</strong>. </p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># DELETE WHERE... common usage</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; = %s&#39;, [7])</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># DELETE WHERE... no value</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;IS NOT NULL&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; IS NOT NULL&#39;, [])</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># DELETE WHERE... with multiple clauses</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">qry</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;ILIKE&quot;</span><span class="p">,</span> <span class="s2">&quot;john%&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="p">)</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; = %s AND &quot;name&quot; ILIKE %s&#39;, [7, &#39;john%&#39;])</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="c1"># DELETE WHERE... IN with a list of values</span>
-<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; IN (%s, %s, %s)&#39;, [1, 2, 3])</span>
-<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="c1"># DELETE WHERE... NOT IN</span>
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;NOT IN&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;archived&quot;</span><span class="p">,</span> <span class="s2">&quot;deleted&quot;</span><span class="p">])</span>
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;status&quot; NOT IN (%s, %s)&#39;, [&#39;archived&#39;, &#39;deleted&#39;])</span>
-<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
+<h1 id="class-rick_dbsqlmysqlsqldialect">Class rick_db.sql.<strong>MySqlSqlDialect</strong><a class="headerlink" href="#class-rick_dbsqlmysqlsqldialect" title="Permanent link">&para;</a></h1>
+<p>MySQL dialect implementation for the query builder. Extends <a href="../sqldialect/">SqlDialect</a>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Insert</span><span class="p">,</span> <span class="n">Update</span><span class="p">,</span> <span class="n">Delete</span><span class="p">,</span> <span class="n">MySqlSqlDialect</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">dialect</span> <span class="o">=</span> <span class="n">MySqlSqlDialect</span><span class="p">()</span>
 </code></pre></div>
-<h3 id="deleteorwherefield-operatornone-valuenone">Delete.<strong>orwhere(field, operator=None, value=None)</strong><a class="headerlink" href="#deleteorwherefield-operatornone-valuenone" title="Permanent link">&para;</a></h3>
-<p>Adds a <strong>WHERE</strong> clause to the <strong>DELETE</strong> clause. It requires a mandatory <em>field</em> name and an <em>operator</em>, and allows
-an optional <em>value</em>. Clauses generated by multiple calls to this method are concatenated with <strong>OR</strong>. </p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">qry</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="o">.</span><span class="n">orwhere</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;ILIKE&quot;</span><span class="p">,</span> <span class="s2">&quot;john%&quot;</span><span class="p">)</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="p">)</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; = %s OR &quot;name&quot; ILIKE %s&#39;, [7, &#39;john%&#39;])</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
+<blockquote>
+<p><strong>Note:</strong> RickDb does not include a MySQL connection backend. This dialect is provided for SQL
+generation only — you must execute the generated SQL using your own MySQL connection library
+(e.g. <code>mysql-connector-python</code>, <code>PyMySQL</code>, or <code>mysqlclient</code>).</p>
+</blockquote>
+<h3 id="dialect-properties">Dialect properties<a class="headerlink" href="#dialect-properties" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>placeholder</code></td>
+<td><code>%s</code></td>
+<td>Parameter placeholder</td>
+</tr>
+<tr>
+<td><code>insert_returning</code></td>
+<td><code>False</code></td>
+<td><code>INSERT...RETURNING</code> not supported</td>
+</tr>
+<tr>
+<td><code>ilike</code></td>
+<td><code>False</code></td>
+<td><code>ILIKE</code> not supported (use <code>LIKE</code> with <code>COLLATE</code>)</td>
+</tr>
+<tr>
+<td><code>json_support</code></td>
+<td><code>True</code></td>
+<td>JSON operations supported</td>
+</tr>
+</tbody>
+</table>
+<h3 id="identifier-quoting">Identifier quoting<a class="headerlink" href="#identifier-quoting" title="Permanent link">&para;</a></h3>
+<p>MySqlSqlDialect uses <strong>backticks</strong> for identifier quoting, unlike PostgreSQL's double quotes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">MySqlSqlDialect</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># MySQL: backticks</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">MySqlSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;users&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># SELECT `name` FROM `users`</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># PostgreSQL: double quotes</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;users&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># SELECT &quot;name&quot; FROM &quot;users&quot;</span>
 </code></pre></div>
-<h3 id="deleteassemble">Delete.<strong>assemble()</strong><a class="headerlink" href="#deleteassemble" title="Permanent link">&para;</a></h3>
-<p>Assembles <strong>DELETE</strong> SQL string and returns a tuple with (sql_string, list_of_values). If an error occurs, <em>SqlError</em> is raised.</p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># simple DELETE example</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot;&#39;, [])</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
+<h3 id="comparison-with-other-dialects">Comparison with other dialects<a class="headerlink" href="#comparison-with-other-dialects" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>MySqlSqlDialect</th>
+<th>PgSqlDialect</th>
+<th>Sqlite3SqlDialect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Placeholder</td>
+<td><code>%s</code></td>
+<td><code>%s</code></td>
+<td><code>?</code></td>
+</tr>
+<tr>
+<td>Identifier quoting</td>
+<td>Backticks (<code>`</code>)</td>
+<td>Double quotes (<code>"</code>)</td>
+<td>Double quotes (<code>"</code>)</td>
+</tr>
+<tr>
+<td><code>INSERT...RETURNING</code></td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes (3.35+)</td>
+</tr>
+<tr>
+<td><code>ILIKE</code></td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Type casting</td>
+<td><code>CAST(x AS type)</code></td>
+<td><code>x::type</code></td>
+<td><code>CAST(x AS type)</code></td>
+</tr>
+<tr>
+<td>JSON extract text</td>
+<td><code>JSON_UNQUOTE(JSON_EXTRACT(...))</code></td>
+<td><code>-&gt;&gt;</code></td>
+<td><code>JSON_EXTRACT(...)</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="usage-example">Usage example<a class="headerlink" href="#usage-example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Insert</span><span class="p">,</span> <span class="n">Update</span><span class="p">,</span> <span class="n">Delete</span><span class="p">,</span> <span class="n">Fn</span><span class="p">,</span> <span class="n">MySqlSqlDialect</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">dialect</span> <span class="o">=</span> <span class="n">MySqlSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s2">&quot;users&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">User</span><span class="p">:</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;id&quot;</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;email&quot;</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="c1"># SELECT</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="n">qry</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    <span class="n">Select</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="p">[</span><span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">User</span><span class="o">.</span><span class="n">email</span><span class="p">])</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;LIKE&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%a</span><span class="s2">lice%&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>    <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="p">)</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="c1"># SELECT `name`,`email` FROM `users` WHERE (`name` LIKE %s) ORDER BY `name` ASC LIMIT 10</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="c1"># INSERT</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="n">qry</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">Insert</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span><span class="o">.</span><span class="n">into</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;bob@test.com&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="c1"># INSERT INTO `users` (`name`, `email`) VALUES (%s, %s)</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="c1"># UPDATE</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="n">qry</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">Update</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="c1"># UPDATE `users` SET `name`=%s WHERE `id` = %s</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="c1"># DELETE</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="n">qry</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="c1"># DELETE FROM `users` WHERE `id` = %s</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="c1"># Aggregation</span>
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>    <span class="n">Select</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span>
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="p">{</span><span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">():</span> <span class="s2">&quot;total&quot;</span><span class="p">})</span>
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="p">)</span>
+<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a><span class="c1"># SELECT COUNT(*) AS `total` FROM `users`</span>
+<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
 </code></pre></div>
 
 

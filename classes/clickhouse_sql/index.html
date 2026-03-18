@@ -10,13 +10,11 @@
       
       
       
-        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/delete/">
+        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/clickhouse_sql/">
       
       
-        <link rel="prev" href="../update/">
+        <link rel="prev" href="../clickhousemanager/">
       
-      
-        <link rel="next" href="../literal/">
       
       
         
@@ -27,7 +25,7 @@
     
     
       
-        <title>Delete - RickDb</title>
+        <title>ClickHouse SQL & Repository - RickDb</title>
       
     
     
@@ -78,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-rick_dbsqldelete" class="md-skip">
+        <a href="#clickhouse-sql-builders" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Delete
+              ClickHouse SQL & Repository
             
           </span>
         </div>
@@ -886,37 +884,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Delete
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../delete/" class="md-nav__link">
         
   
   
@@ -932,81 +903,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#delete__init__dialect-sqldialect-none" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.__init__(dialect: SqlDialect = None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deletefrom_table-schemanone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.from_(table, schema=None):
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deletewherefield-operatornone-valuenone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.where(field, operator=None, value=None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deleteorwherefield-operatornone-valuenone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.orwhere(field, operator=None, value=None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deleteassemble" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.assemble()
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1463,18 +1359,20 @@
                 
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_24" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_24" checked>
         
           
           <label class="md-nav__link" for="__nav_11_24" id="__nav_11_24_label" tabindex="0">
@@ -1495,7 +1393,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_24_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_24_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_11_24">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1510,10 +1408,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../clickhouse_sql/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClickHouse SQL & Repository
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1529,6 +1454,87 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#class-rick_dbbackendclickhouseclickhouseupdate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Class rick_db.backend.clickhouse.ClickHouseUpdate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-rick_dbbackendclickhouseclickhousedelete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Class rick_db.backend.clickhouse.ClickHouseDelete
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-rick_dbbackendclickhouseclickhouserepository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Class rick_db.backend.clickhouse.ClickHouseRepository
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Class rick_db.backend.clickhouse.ClickHouseRepository">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overridden-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overridden methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#important-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Important notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1576,10 +1582,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#delete__init__dialect-sqldialect-none" class="md-nav__link">
+  <a href="#class-rick_dbbackendclickhouseclickhouseupdate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete.__init__(dialect: SqlDialect = None)
+        Class rick_db.backend.clickhouse.ClickHouseUpdate
       
     </span>
   </a>
@@ -1587,10 +1593,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deletefrom_table-schemanone" class="md-nav__link">
+  <a href="#class-rick_dbbackendclickhouseclickhousedelete" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete.from_(table, schema=None):
+        Class rick_db.backend.clickhouse.ClickHouseDelete
       
     </span>
   </a>
@@ -1598,35 +1604,41 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deletewherefield-operatornone-valuenone" class="md-nav__link">
+  <a href="#class-rick_dbbackendclickhouseclickhouserepository" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete.where(field, operator=None, value=None)
+        Class rick_db.backend.clickhouse.ClickHouseRepository
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Class rick_db.backend.clickhouse.ClickHouseRepository">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overridden-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overridden methods
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#deleteorwherefield-operatornone-valuenone" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#important-notes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete.orwhere(field, operator=None, value=None)
+        Important notes
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#deleteassemble" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.assemble()
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1647,79 +1659,105 @@
 
 
 
-<h1 id="class-rick_dbsqldelete">Class rick_db.sql.<strong>Delete</strong><a class="headerlink" href="#class-rick_dbsqldelete" title="Permanent link">&para;</a></h1>
-<h3 id="delete__init__dialect-sqldialect-none">Delete.<strong>__init__(dialect: SqlDialect = None)</strong><a class="headerlink" href="#delete__init__dialect-sqldialect-none" title="Permanent link">&para;</a></h3>
-<p>Initialize a Delete() object, using a database <em>dialect</em>. If no <em>dialect</em> is provided, a default dialect will be used.
-Check <a href="../sqldialect/">SqlDialect</a> for more details.</p>
-<h3 id="deletefrom_table-schemanone">Delete.<strong>from_(table, schema=None):</strong><a class="headerlink" href="#deletefrom_table-schemanone" title="Permanent link">&para;</a></h3>
-<p>Defines the target <em>table</em> name and <em>schema</em> for deletion. <em>table</em> can be a <a href="../record/">Record</a> object.</p>
-<p>Example:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># simple DELETE example</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot;&#39;, [])</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
+<h1 id="clickhouse-sql-builders">ClickHouse SQL Builders<a class="headerlink" href="#clickhouse-sql-builders" title="Permanent link">&para;</a></h1>
+<p>ClickHouse does not support standard SQL <code>UPDATE</code> and <code>DELETE</code> statements. Instead, it uses
+<code>ALTER TABLE ... UPDATE</code> and <code>ALTER TABLE ... DELETE</code> mutation syntax. RickDb provides
+<code>ClickHouseUpdate</code> and <code>ClickHouseDelete</code> builders that generate the correct syntax.</p>
+<h2 id="class-rick_dbbackendclickhouseclickhouseupdate">Class rick_db.backend.clickhouse.<strong>ClickHouseUpdate</strong><a class="headerlink" href="#class-rick_dbbackendclickhouseclickhouseupdate" title="Permanent link">&para;</a></h2>
+<p>Extends <a href="../update/">Update</a>. Generates <code>ALTER TABLE ... UPDATE ... WHERE</code> instead of
+<code>UPDATE ... SET ... WHERE</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.clickhouse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseUpdate</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseSqlDialect</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">dialect</span> <span class="o">=</span> <span class="n">ClickHouseSqlDialect</span><span class="p">()</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># DELETE w/ Record object</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">record</span> <span class="o">=</span> <span class="n">Publisher</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;some publisher name&#39;</span><span class="p">)</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># output: (&#39;DELETE FROM &quot;publisher&quot;&#39;, [])</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-</code></pre></div></p>
-<h3 id="deletewherefield-operatornone-valuenone">Delete.<strong>where(field, operator=None, value=None)</strong><a class="headerlink" href="#deletewherefield-operatornone-valuenone" title="Permanent link">&para;</a></h3>
-<p>Adds a <strong>WHERE</strong> clause to the <strong>DELETE</strong> clause. It requires a mandatory <em>field</em> name and an <em>operator</em>, and allows
-an optional <em>value</em>. Clauses generated by multiple calls to this method are concatenated with <strong>AND</strong>. </p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># DELETE WHERE... common usage</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; = %s&#39;, [7])</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">qry</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">ClickHouseUpdate</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="o">.</span><span class="n">values</span><span class="p">({</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;processed&quot;</span><span class="p">})</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">)</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># ALTER TABLE &quot;events&quot; UPDATE &quot;status&quot;=%s WHERE &quot;id&quot; = %s</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
+</code></pre></div>
+<p>All <a href="../update/">Update</a> methods are available (<code>table()</code>, <code>values()</code>, <code>where()</code>, <code>orwhere()</code>).
+Only <code>assemble()</code> is overridden to produce <code>ALTER TABLE</code> syntax. <code>returning()</code> is not supported
+by ClickHouse.</p>
+<h2 id="class-rick_dbbackendclickhouseclickhousedelete">Class rick_db.backend.clickhouse.<strong>ClickHouseDelete</strong><a class="headerlink" href="#class-rick_dbbackendclickhouseclickhousedelete" title="Permanent link">&para;</a></h2>
+<p>Extends <a href="../delete/">Delete</a>. Generates <code>ALTER TABLE ... DELETE WHERE</code> instead of
+<code>DELETE FROM ... WHERE</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.clickhouse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseDelete</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseSqlDialect</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">dialect</span> <span class="o">=</span> <span class="n">ClickHouseSqlDialect</span><span class="p">()</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># DELETE WHERE... no value</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;IS NOT NULL&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; IS NOT NULL&#39;, [])</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># DELETE WHERE... with multiple clauses</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">qry</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;ILIKE&quot;</span><span class="p">,</span> <span class="s2">&quot;john%&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="p">)</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; = %s AND &quot;name&quot; ILIKE %s&#39;, [7, &#39;john%&#39;])</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="c1"># DELETE WHERE... IN with a list of values</span>
-<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; IN (%s, %s, %s)&#39;, [1, 2, 3])</span>
-<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="c1"># DELETE WHERE... NOT IN</span>
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;NOT IN&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;archived&quot;</span><span class="p">,</span> <span class="s2">&quot;deleted&quot;</span><span class="p">])</span>
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;status&quot; NOT IN (%s, %s)&#39;, [&#39;archived&#39;, &#39;deleted&#39;])</span>
-<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">qry</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">ClickHouseDelete</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;expired&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">)</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1"># ALTER TABLE &quot;events&quot; DELETE WHERE &quot;status&quot; = %s</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="deleteorwherefield-operatornone-valuenone">Delete.<strong>orwhere(field, operator=None, value=None)</strong><a class="headerlink" href="#deleteorwherefield-operatornone-valuenone" title="Permanent link">&para;</a></h3>
-<p>Adds a <strong>WHERE</strong> clause to the <strong>DELETE</strong> clause. It requires a mandatory <em>field</em> name and an <em>operator</em>, and allows
-an optional <em>value</em>. Clauses generated by multiple calls to this method are concatenated with <strong>OR</strong>. </p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">qry</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="o">.</span><span class="n">orwhere</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;ILIKE&quot;</span><span class="p">,</span> <span class="s2">&quot;john%&quot;</span><span class="p">)</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="p">)</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; = %s OR &quot;name&quot; ILIKE %s&#39;, [7, &#39;john%&#39;])</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
+<p>All <a href="../delete/">Delete</a> methods are available (<code>from_()</code>, <code>where()</code>, <code>orwhere()</code>).
+Only <code>assemble()</code> is overridden to produce <code>ALTER TABLE</code> syntax.</p>
+<h2 id="class-rick_dbbackendclickhouseclickhouserepository">Class rick_db.backend.clickhouse.<strong>ClickHouseRepository</strong><a class="headerlink" href="#class-rick_dbbackendclickhouseclickhouserepository" title="Permanent link">&para;</a></h2>
+<p>Extends <a href="../repository/">Repository</a>. Overrides mutation methods to use ClickHouse-specific
+SQL builders.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.clickhouse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseConnection</span><span class="p">,</span> <span class="n">ClickHouseRepository</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s2">&quot;events&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">Event</span><span class="p">:</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;id&quot;</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">event_type</span> <span class="o">=</span> <span class="s2">&quot;event_type&quot;</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">amount</span> <span class="o">=</span> <span class="s2">&quot;amount&quot;</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="n">conn</span> <span class="o">=</span> <span class="n">ClickHouseConnection</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8123</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s2">&quot;mydb&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">repo</span> <span class="o">=</span> <span class="n">ClickHouseRepository</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">Event</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="deleteassemble">Delete.<strong>assemble()</strong><a class="headerlink" href="#deleteassemble" title="Permanent link">&para;</a></h3>
-<p>Assembles <strong>DELETE</strong> SQL string and returns a tuple with (sql_string, list_of_values). If an error occurs, <em>SqlError</em> is raised.</p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># simple DELETE example</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot;&#39;, [])</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-</code></pre></div>
+<h3 id="overridden-methods">Overridden methods<a class="headerlink" href="#overridden-methods" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Difference from base Repository</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>insert_pk(record)</code></td>
+<td>Always returns <code>None</code> (ClickHouse has no <code>RETURNING</code> or auto-increment)</td>
+</tr>
+<tr>
+<td><code>update(record, pk_value=None)</code></td>
+<td>Uses <code>ALTER TABLE ... UPDATE</code> syntax</td>
+</tr>
+<tr>
+<td><code>update_where(record, where_list)</code></td>
+<td>Uses <code>ALTER TABLE ... UPDATE</code> syntax</td>
+</tr>
+<tr>
+<td><code>delete_pk(pk_value)</code></td>
+<td>Uses <code>ALTER TABLE ... DELETE</code> syntax</td>
+</tr>
+<tr>
+<td><code>delete_where(where_clauses)</code></td>
+<td>Uses <code>ALTER TABLE ... DELETE</code> syntax</td>
+</tr>
+</tbody>
+</table>
+<p>All read methods (<code>fetch_all()</code>, <code>fetch_pk()</code>, <code>fetch_where()</code>, <code>fetch_one()</code>, <code>fetch()</code>, <code>select()</code>, <code>list()</code>)
+are inherited from the base <a href="../repository/">Repository</a> unchanged.</p>
+<h3 id="important-notes">Important notes<a class="headerlink" href="#important-notes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>ClickHouse mutations (<code>ALTER TABLE ... UPDATE/DELETE</code>) are <strong>asynchronous</strong> by default. They are
+  scheduled and executed in the background. Use <code>MUTATIONS_SYNC</code> settings if synchronous behavior is needed.</li>
+<li><code>insert_pk()</code> always returns <code>None</code>. You must supply primary key values explicitly when inserting.</li>
+<li><code>transaction()</code> context manager works without errors but provides <strong>no atomicity guarantees</strong>.</li>
+</ul>
 
 
 

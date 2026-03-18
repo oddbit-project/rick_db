@@ -16,6 +16,8 @@
         <link rel="prev" href="../sqlite3manager/">
       
       
+        <link rel="next" href="../clickhouse_sql/">
+      
       
         
       
@@ -500,6 +502,33 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -513,10 +542,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
         
           
-          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
             
   
   
@@ -534,8 +563,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -692,6 +721,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../sqldialect/" class="md-nav__link">
         
   
@@ -700,6 +757,34 @@
     
   
     SqlDialect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mysql_dialect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySqlSqlDialect
   
 
     
@@ -1122,10 +1207,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_21" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_23" checked>
         
           
-          <label class="md-nav__link" for="__nav_10_21" id="__nav_10_21_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_23" id="__nav_11_23_label" tabindex="0">
             
   
   
@@ -1143,8 +1228,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_21_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_10_21">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_23_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11_23">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1196,7 +1281,7 @@
   <span class="md-ellipsis">
     
   
-    PgManager
+    PgManager & PgInfo
   
 
     
@@ -1254,6 +1339,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClickHouseManager
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1271,6 +1374,152 @@
 
       </a>
       
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#clickhousemanager__init__db" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClickHouseManager.__init__(db)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schemadatabase-equivalence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema/database equivalence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unsupported-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unsupported methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_24" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_24" id="__nav_11_24_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClickHouse
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_24_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_24">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ClickHouse
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../clickhouse_sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClickHouse SQL & Repository
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1311,6 +1560,58 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#clickhousemanager__init__db" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClickHouseManager.__init__(db)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schemadatabase-equivalence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema/database equivalence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unsupported-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unsupported methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1330,17 +1631,56 @@
 <p>This class extends <a href="../managerinterface/">ManagerInterface</a> to provide a specific ClickHouse implementation.
 It uses ClickHouse <code>system.*</code> tables for introspection. The <code>schema</code> parameter maps to ClickHouse <code>database</code>;
 when <code>None</code>, the connection's current database is used.</p>
-<p>The following methods are <strong>NOT</strong> supported, and either return empty lists or raise a <em>NotImplementedError</em> exception:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.clickhouse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseConnection</span><span class="p">,</span> <span class="n">ClickHouseManager</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">conn</span> <span class="o">=</span> <span class="n">ClickHouseConnection</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8123</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s2">&quot;mydb&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">mgr</span> <span class="o">=</span> <span class="n">ClickHouseManager</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="clickhousemanager__init__db">ClickHouseManager.<strong>__init__(db)</strong><a class="headerlink" href="#clickhousemanager__init__db" title="Permanent link">&para;</a></h3>
+<p>Creates a new ClickHouseManager instance. Accepts a <code>ClickHouseConnection</code>.</p>
+<h3 id="supported-methods">Supported methods<a class="headerlink" href="#supported-methods" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># List tables and views</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">tables</span> <span class="o">=</span> <span class="n">mgr</span><span class="o">.</span><span class="n">tables</span><span class="p">()</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">views</span> <span class="o">=</span> <span class="n">mgr</span><span class="o">.</span><span class="n">views</span><span class="p">()</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># Check existence</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">mgr</span><span class="o">.</span><span class="n">table_exists</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">mgr</span><span class="o">.</span><span class="n">view_exists</span><span class="p">(</span><span class="s2">&quot;events_summary&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># Inspect table structure</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="n">fields</span> <span class="o">=</span> <span class="n">mgr</span><span class="o">.</span><span class="n">table_fields</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">)</span>           <span class="c1"># list of FieldRecord</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">field</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">primary</span><span class="p">)</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="n">pk</span> <span class="o">=</span> <span class="n">mgr</span><span class="o">.</span><span class="n">table_pk</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">)</span>                   <span class="c1"># FieldRecord or None</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="n">indexes</span> <span class="o">=</span> <span class="n">mgr</span><span class="o">.</span><span class="n">table_indexes</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">)</span>         <span class="c1"># list of FieldRecord</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1"># Database management</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="n">databases</span> <span class="o">=</span> <span class="n">mgr</span><span class="o">.</span><span class="n">databases</span><span class="p">()</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="n">mgr</span><span class="o">.</span><span class="n">database_exists</span><span class="p">(</span><span class="s2">&quot;mydb&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="n">mgr</span><span class="o">.</span><span class="n">create_database</span><span class="p">(</span><span class="s2">&quot;newdb&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="n">mgr</span><span class="o">.</span><span class="n">drop_database</span><span class="p">(</span><span class="s2">&quot;olddb&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="c1"># Users</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="n">users</span> <span class="o">=</span> <span class="n">mgr</span><span class="o">.</span><span class="n">users</span><span class="p">()</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="c1"># Drop operations</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="n">mgr</span><span class="o">.</span><span class="n">drop_table</span><span class="p">(</span><span class="s2">&quot;old_table&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="n">mgr</span><span class="o">.</span><span class="n">drop_view</span><span class="p">(</span><span class="s2">&quot;old_view&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="schemadatabase-equivalence">Schema/database equivalence<a class="headerlink" href="#schemadatabase-equivalence" title="Permanent link">&para;</a></h3>
+<p>In ClickHouse, databases serve the role of schemas. The following methods delegate accordingly:</p>
 <ul>
-<li>ClickHouseManager.user_groups()</li>
-<li>ClickHouseManager.create_schema()</li>
-<li>ClickHouseManager.drop_schema()</li>
-<li>ClickHouseManager.kill_clients()</li>
+<li><code>schemas()</code> — delegates to <code>databases()</code></li>
+<li><code>schema_exists(name)</code> — delegates to <code>database_exists(name)</code></li>
 </ul>
-<p>The following methods delegate to their database equivalents (ClickHouse databases are equivalent to schemas):</p>
+<h3 id="unsupported-methods">Unsupported methods<a class="headerlink" href="#unsupported-methods" title="Permanent link">&para;</a></h3>
+<p>The following methods are <strong>not supported</strong> and will raise <code>NotImplementedError</code>:</p>
 <ul>
-<li>ClickHouseManager.schemas() — delegates to databases()</li>
-<li>ClickHouseManager.schema_exists() — delegates to database_exists()</li>
+<li><code>user_groups()</code></li>
+<li><code>create_schema()</code></li>
+<li><code>drop_schema()</code></li>
+<li><code>kill_clients()</code></li>
 </ul>
 
 

@@ -595,6 +595,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -604,10 +631,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
         
           
-          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
             
   
   
@@ -625,8 +652,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -783,6 +810,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../classes/errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../classes/sqldialect/" class="md-nav__link">
         
   
@@ -791,6 +846,34 @@
     
   
     SqlDialect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/mysql_dialect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySqlSqlDialect
   
 
     
@@ -1211,10 +1294,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_21" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_23" >
         
           
-          <label class="md-nav__link" for="__nav_10_21" id="__nav_10_21_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_23" id="__nav_11_23_label" tabindex="0">
             
   
   
@@ -1232,8 +1315,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_21_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_21">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_23">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1285,7 +1368,7 @@
   <span class="md-ellipsis">
     
   
-    PgManager
+    PgManager & PgInfo
   
 
     
@@ -1342,6 +1425,89 @@
     
   
     ClickHouseManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_24" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_24" id="__nav_11_24_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClickHouse
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_24_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_24">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ClickHouse
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/clickhouse_sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClickHouse SQL & Repository
   
 
     
@@ -1510,7 +1676,7 @@ functionality. However, the methods should be designed to be stateless - they sh
 attributes, nor depend on previous or future executions to carry their functions. By respecting this, Repository objects
 can be instantiated or reused in different contexts without any extra supervision:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span><span class="p">,</span> <span class="n">Repository</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Literal</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Fn</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;book&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_book&#39;</span><span class="p">)</span>
@@ -1551,10 +1717,10 @@ can be instantiated or reused in different contexts without any extra supervisio
 <a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="sd">        &quot;&quot;&quot;</span>
 <a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>
 <a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>        <span class="c1"># generated query:</span>
-<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>        <span class="c1"># SELECT avg(rating) AS &quot;rating&quot; FROM &quot;book&quot; INNER JOIN &quot;book_author&quot; ON </span>
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>        <span class="c1"># SELECT AVG(rating) AS &quot;rating&quot; FROM &quot;book&quot; INNER JOIN &quot;book_author&quot; ON</span>
 <a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>        <span class="c1"># &quot;book&quot;.&quot;id_book&quot;=&quot;book_author&quot;.&quot;fk_book&quot; WHERE (&quot;fk_author&quot; = %s)</span>
 <a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>        <span class="n">qry</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dialect</span><span class="p">)</span><span class="o">.</span> \
-<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>            <span class="n">from_</span><span class="p">(</span><span class="n">Book</span><span class="p">,</span> <span class="p">{</span><span class="n">Literal</span><span class="p">(</span><span class="s2">&quot;avg(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">rating</span><span class="p">)):</span> <span class="s1">&#39;rating&#39;</span><span class="p">})</span><span class="o">.</span> \
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>            <span class="n">from_</span><span class="p">(</span><span class="n">Book</span><span class="p">,</span> <span class="p">{</span><span class="n">Fn</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">rating</span><span class="p">):</span> <span class="s1">&#39;rating&#39;</span><span class="p">})</span><span class="o">.</span> \
 <a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>            <span class="n">join</span><span class="p">(</span><span class="n">BookAuthor</span><span class="p">,</span> <span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_book</span><span class="p">,</span> <span class="n">Book</span><span class="p">,</span> <span class="n">Book</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span> \
 <a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>            <span class="n">where</span><span class="p">(</span><span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_author</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="n">id_author</span><span class="p">)</span>
 <a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>

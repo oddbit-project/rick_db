@@ -584,6 +584,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -593,10 +620,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
         
           
-          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
             
   
   
@@ -614,8 +641,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -772,6 +799,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../classes/errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../classes/sqldialect/" class="md-nav__link">
         
   
@@ -780,6 +835,34 @@
     
   
     SqlDialect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/mysql_dialect/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySqlSqlDialect
   
 
     
@@ -1200,10 +1283,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_21" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_23" >
         
           
-          <label class="md-nav__link" for="__nav_10_21" id="__nav_10_21_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_11_23" id="__nav_11_23_label" tabindex="0">
             
   
   
@@ -1221,8 +1304,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_21_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_21">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_23">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1274,7 +1357,7 @@
   <span class="md-ellipsis">
     
   
-    PgManager
+    PgManager & PgInfo
   
 
     
@@ -1331,6 +1414,89 @@
     
   
     ClickHouseManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_24" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_24" id="__nav_11_24_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClickHouse
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_24_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_24">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ClickHouse
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/clickhouse_sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClickHouse SQL & Repository
   
 
     
@@ -1483,42 +1649,82 @@ file is loaded, instead of handling it in runtime. </p>
 <a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="c1"># output: {&#39;id_customer&#39;: 3, &#39;name&#39;: &#39;John Doe&#39;, &#39;address&#39;: &#39;Obere Str.&#39;, &#39;city&#39;: &#39;Berlin&#39;}</span>
 <a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">asrecord</span><span class="p">())</span>
 </code></pre></div>
-<p>As mentioned previously, it is possible to also provide optional details, such as table or view name, schema and primary
+<p>It is possible to also provide optional details, such as table or view name, schema and primary
 key name; these details are quite useful when using RickDb's <a href="../repository/">Repository</a> or <a href="../building_queries/">Query Builder</a> to
 provide context for operations. This is probably the most common usage scenario, when designing a multi-tier application:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;customers&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_customer&#39;</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="s1">&#39;public&#39;</span><span class="p">)</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">Customer</span><span class="p">:</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_customer&#39;</span>  <span class="c1"># attribute &#39;id&#39; maps to field &#39;id_customer&#39;</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>       <span class="c1"># attribute &#39;name&#39; maps to field &#39;name&#39;</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">address</span> <span class="o">=</span> <span class="s1">&#39;address&#39;</span> <span class="c1"># attribute &#39;address&#39; maps to field &#39;address&#39;</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">city</span> <span class="o">=</span> <span class="s1">&#39;city&#39;</span>       <span class="c1"># attribute &#39;city&#39; maps to field &#39;city&#39;</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">id_country</span> <span class="o">=</span> <span class="s1">&#39;fk_country&#39;</span> <span class="c1"># attribute &#39;id_country&#39; maps to field &#39;fk_country&#39;</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># access class-level attributes</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="nb">print</span><span class="p">(</span><span class="n">Customer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1"># outputs  &#39;name&#39;</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1"># access object-level attributes</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="c1"># customer data is loaded via __init__; The key names must match the defined attributes</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="s2">&quot;Obere Str.&quot;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Berlin&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="c1"># output: John Doe</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="c1"># output: &#39;None&#39;</span>
-<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">id_country</span><span class="p">)</span>  
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>
-<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="c1"># output: {&#39;address&#39;: &#39;Obere Str.&#39;, &#39;city&#39;: &#39;Berlin&#39;, &#39;id&#39;: 3, &#39;name&#39;: &#39;John Doe&#39;}</span>
-<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">asdict</span><span class="p">())</span>
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="c1"># output: {&#39;id_customer&#39;: 3, &#39;name&#39;: &#39;John Doe&#39;, &#39;address&#39;: &#39;Obere Str.&#39;, &#39;city&#39;: &#39;Berlin&#39;}</span>
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">asrecord</span><span class="p">())</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_customer&#39;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">address</span> <span class="o">=</span> <span class="s1">&#39;address&#39;</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">city</span> <span class="o">=</span> <span class="s1">&#39;city&#39;</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">id_country</span> <span class="o">=</span> <span class="s1">&#39;fk_country&#39;</span>
 </code></pre></div>
 <h2 id="available-methods">Available methods<a class="headerlink" href="#available-methods" title="Permanent link">&para;</a></h2>
 <p>The patching process performed by <strong>@fieldmapper</strong> copies all the available methods in the base <a href="../classes/record/">Record</a>
-class to the defined class. As a result, all <a href="../classes/record/">Record</a> methods can be used on a <strong>@fieldmapper</strong> patched 
-class.</p>
+class to the defined class. As a result, all <a href="../classes/record/">Record</a> methods can be used on a <strong>@fieldmapper</strong> patched
+class:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>load(**kwargs)</code></td>
+<td>Load attribute values from named parameters</td>
+</tr>
+<tr>
+<td><code>fromrecord(record: dict)</code></td>
+<td>Load attribute values from a database row dict</td>
+</tr>
+<tr>
+<td><code>has_pk()</code></td>
+<td>Returns True if a primary key definition exists</td>
+</tr>
+<tr>
+<td><code>pk()</code></td>
+<td>Returns the primary key value</td>
+</tr>
+<tr>
+<td><code>dbfields()</code></td>
+<td>Returns a list of database field names</td>
+</tr>
+<tr>
+<td><code>asdict()</code></td>
+<td>Converts to a dict using attribute names as keys</td>
+</tr>
+<tr>
+<td><code>asrecord()</code></td>
+<td>Converts to a dict using database field names as keys</td>
+</tr>
+<tr>
+<td><code>fields()</code></td>
+<td>Returns a list of attribute names that have values set</td>
+</tr>
+<tr>
+<td><code>items()</code></td>
+<td>Returns <code>asdict().items()</code></td>
+</tr>
+<tr>
+<td><code>values()</code></td>
+<td>Returns a list of stored values</td>
+</tr>
+<tr>
+<td><code>fieldmap()</code></td>
+<td>Returns the internal attribute-to-field mapping dict</td>
+</tr>
+<tr>
+<td><code>add(**kwargs)</code></td>
+<td>Add new attribute values from named parameters</td>
+</tr>
+</tbody>
+</table>
+<p>See the <a href="../classes/record/">Record</a> class documentation for full details and examples.</p>
 
 
 

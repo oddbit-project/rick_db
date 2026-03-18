@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/delete/">
+        <link rel="canonical" href="https://git.oddbit.org/OddBit/rick_db/classes/errors/">
       
       
-        <link rel="prev" href="../update/">
+        <link rel="prev" href="../repository/">
       
       
-        <link rel="next" href="../literal/">
+        <link rel="next" href="../sqldialect/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Delete - RickDb</title>
+        <title>Errors - RickDb</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-rick_dbsqldelete" class="md-skip">
+        <a href="#error-classes" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Delete
+              Errors
             
           </span>
         </div>
@@ -718,10 +718,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../errors/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errors
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -737,6 +764,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rick_dbrecorderror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rick_db.RecordError
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rick_dbdbconnectionerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rick_db.DbConnectionError
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rick_dbsqlsqlerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rick_db.sql.SqlError
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exception-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exception hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -886,37 +977,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Delete
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../delete/" class="md-nav__link">
         
   
   
@@ -932,81 +996,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#delete__init__dialect-sqldialect-none" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.__init__(dialect: SqlDialect = None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deletefrom_table-schemanone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.from_(table, schema=None):
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deletewherefield-operatornone-valuenone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.where(field, operator=None, value=None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deleteorwherefield-operatornone-valuenone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.orwhere(field, operator=None, value=None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deleteassemble" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.assemble()
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1576,10 +1565,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#delete__init__dialect-sqldialect-none" class="md-nav__link">
+  <a href="#rick_dbrecorderror" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete.__init__(dialect: SqlDialect = None)
+        rick_db.RecordError
       
     </span>
   </a>
@@ -1587,10 +1576,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deletefrom_table-schemanone" class="md-nav__link">
+  <a href="#rick_dbdbconnectionerror" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete.from_(table, schema=None):
+        rick_db.DbConnectionError
       
     </span>
   </a>
@@ -1598,10 +1587,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deletewherefield-operatornone-valuenone" class="md-nav__link">
+  <a href="#rick_dbsqlsqlerror" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete.where(field, operator=None, value=None)
+        rick_db.sql.SqlError
       
     </span>
   </a>
@@ -1609,21 +1598,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deleteorwherefield-operatornone-valuenone" class="md-nav__link">
+  <a href="#exception-hierarchy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete.orwhere(field, operator=None, value=None)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deleteassemble" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Delete.assemble()
+        Exception hierarchy
       
     </span>
   </a>
@@ -1647,78 +1625,93 @@
 
 
 
-<h1 id="class-rick_dbsqldelete">Class rick_db.sql.<strong>Delete</strong><a class="headerlink" href="#class-rick_dbsqldelete" title="Permanent link">&para;</a></h1>
-<h3 id="delete__init__dialect-sqldialect-none">Delete.<strong>__init__(dialect: SqlDialect = None)</strong><a class="headerlink" href="#delete__init__dialect-sqldialect-none" title="Permanent link">&para;</a></h3>
-<p>Initialize a Delete() object, using a database <em>dialect</em>. If no <em>dialect</em> is provided, a default dialect will be used.
-Check <a href="../sqldialect/">SqlDialect</a> for more details.</p>
-<h3 id="deletefrom_table-schemanone">Delete.<strong>from_(table, schema=None):</strong><a class="headerlink" href="#deletefrom_table-schemanone" title="Permanent link">&para;</a></h3>
-<p>Defines the target <em>table</em> name and <em>schema</em> for deletion. <em>table</em> can be a <a href="../record/">Record</a> object.</p>
-<p>Example:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># simple DELETE example</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot;&#39;, [])</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># DELETE w/ Record object</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">record</span> <span class="o">=</span> <span class="n">Publisher</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;some publisher name&#39;</span><span class="p">)</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># output: (&#39;DELETE FROM &quot;publisher&quot;&#39;, [])</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-</code></pre></div></p>
-<h3 id="deletewherefield-operatornone-valuenone">Delete.<strong>where(field, operator=None, value=None)</strong><a class="headerlink" href="#deletewherefield-operatornone-valuenone" title="Permanent link">&para;</a></h3>
-<p>Adds a <strong>WHERE</strong> clause to the <strong>DELETE</strong> clause. It requires a mandatory <em>field</em> name and an <em>operator</em>, and allows
-an optional <em>value</em>. Clauses generated by multiple calls to this method are concatenated with <strong>AND</strong>. </p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># DELETE WHERE... common usage</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; = %s&#39;, [7])</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># DELETE WHERE... no value</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;IS NOT NULL&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; IS NOT NULL&#39;, [])</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># DELETE WHERE... with multiple clauses</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">qry</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;ILIKE&quot;</span><span class="p">,</span> <span class="s2">&quot;john%&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="p">)</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; = %s AND &quot;name&quot; ILIKE %s&#39;, [7, &#39;john%&#39;])</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="c1"># DELETE WHERE... IN with a list of values</span>
-<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; IN (%s, %s, %s)&#39;, [1, 2, 3])</span>
-<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
-<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="c1"># DELETE WHERE... NOT IN</span>
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="s2">&quot;NOT IN&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;archived&quot;</span><span class="p">,</span> <span class="s2">&quot;deleted&quot;</span><span class="p">])</span>
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;status&quot; NOT IN (%s, %s)&#39;, [&#39;archived&#39;, &#39;deleted&#39;])</span>
-<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
+<h1 id="error-classes">Error Classes<a class="headerlink" href="#error-classes" title="Permanent link">&para;</a></h1>
+<p>RickDb defines three exception classes for different error categories.</p>
+<h2 id="rick_dbrecorderror">rick_db.<strong>RecordError</strong><a class="headerlink" href="#rick_dbrecorderror" title="Permanent link">&para;</a></h2>
+<p>Raised by the object mapper when record operations fail.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">RecordError</span>
 </code></pre></div>
-<h3 id="deleteorwherefield-operatornone-valuenone">Delete.<strong>orwhere(field, operator=None, value=None)</strong><a class="headerlink" href="#deleteorwherefield-operatornone-valuenone" title="Permanent link">&para;</a></h3>
-<p>Adds a <strong>WHERE</strong> clause to the <strong>DELETE</strong> clause. It requires a mandatory <em>field</em> name and an <em>operator</em>, and allows
-an optional <em>value</em>. Clauses generated by multiple calls to this method are concatenated with <strong>OR</strong>. </p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">qry</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="o">.</span><span class="n">orwhere</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;ILIKE&quot;</span><span class="p">,</span> <span class="s2">&quot;john%&quot;</span><span class="p">)</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="p">)</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot; WHERE &quot;id&quot; = %s OR &quot;name&quot; ILIKE %s&#39;, [7, &#39;john%&#39;])</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
+<p><strong>Raised when:</strong></p>
+<ul>
+<li><code>load()</code> is called with an unknown attribute name</li>
+<li><code>pk()</code> is called on a record without a primary key definition</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span><span class="p">,</span> <span class="n">RecordError</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s2">&quot;users&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s2">&quot;id_user&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">User</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;id_user&quot;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">user</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">nonexistent_field</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">except</span> <span class="n">RecordError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record error:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="deleteassemble">Delete.<strong>assemble()</strong><a class="headerlink" href="#deleteassemble" title="Permanent link">&para;</a></h3>
-<p>Assembles <strong>DELETE</strong> SQL string and returns a tuple with (sql_string, list_of_values). If an error occurs, <em>SqlError</em> is raised.</p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># simple DELETE example</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Delete</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># output: (&#39;DELETE FROM &quot;table&quot;&#39;, [])</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">())</span>
+<h2 id="rick_dbdbconnectionerror">rick_db.<strong>DbConnectionError</strong><a class="headerlink" href="#rick_dbdbconnectionerror" title="Permanent link">&para;</a></h2>
+<p>Raised for connection and transaction errors.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">DbConnectionError</span>
+</code></pre></div>
+<p><strong>Raised when:</strong></p>
+<ul>
+<li><code>begin()</code> is called while autocommit is enabled</li>
+<li><code>begin()</code> is called when a transaction is already open</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">DbConnectionError</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">conn</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">conn</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>  <span class="c1"># raises DbConnectionError: transaction already open</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">except</span> <span class="n">DbConnectionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connection error:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+</code></pre></div>
+<p>A backward-compatibility alias <code>ConnectionError</code> exists but should not be used in new code, as it
+shadows Python's builtin <code>ConnectionError</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">DbConnectionError</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># Preferred</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">conn</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">except</span> <span class="n">DbConnectionError</span><span class="p">:</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="k">pass</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="c1"># Deprecated alias (avoid — shadows builtin)</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="c1"># from rick_db import ConnectionError</span>
+</code></pre></div>
+<h2 id="rick_dbsqlsqlerror">rick_db.sql.<strong>SqlError</strong><a class="headerlink" href="#rick_dbsqlsqlerror" title="Permanent link">&para;</a></h2>
+<p>Raised by the query builder for SQL generation errors.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SqlError</span>
+</code></pre></div>
+<p><strong>Raised when:</strong></p>
+<ul>
+<li><code>where()</code> receives an invalid field type</li>
+<li><code>where()</code> receives an empty list for <code>IN</code>/<code>NOT IN</code></li>
+<li><code>group()</code> detects duplicate group fields</li>
+<li><code>assemble()</code> is called with unbalanced <code>where_and()</code>/<code>where_or()</code>/<code>where_end()</code> blocks</li>
+<li><code>Insert.assemble()</code> detects a field/value count mismatch</li>
+<li><code>page()</code> receives a page number less than 1</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgSqlDialect</span><span class="p">,</span> <span class="n">SqlError</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="c1"># Empty IN list raises SqlError</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;users&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">except</span> <span class="n">SqlError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SQL error:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="c1"># Unbalanced parentheses</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    <span class="n">Select</span><span class="p">(</span><span class="n">PgSqlDialect</span><span class="p">())</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;users&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">where_and</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="k">except</span> <span class="n">SqlError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SQL error:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="exception-hierarchy">Exception hierarchy<a class="headerlink" href="#exception-hierarchy" title="Permanent link">&para;</a></h2>
+<p>All three exceptions extend Python's <code>Exception</code> directly:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Exception
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>├── RecordError       (rick_db)
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>├── DbConnectionError (rick_db)
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>└── SqlError          (rick_db.sql)
 </code></pre></div>
 
 

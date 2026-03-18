@@ -13,6 +13,10 @@
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
+         <loc>https://git.oddbit.org/OddBit/rick_db/examples/</loc>
+         <lastmod>2026-03-18</lastmod>
+    </url>
+    <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/grid/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
@@ -37,6 +41,10 @@
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
+         <loc>https://git.oddbit.org/OddBit/rick_db/classes/clickhouse_sql/</loc>
+         <lastmod>2026-03-18</lastmod>
+    </url>
+    <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/clickhousemanager/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
@@ -54,6 +62,10 @@
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/delete/</loc>
+         <lastmod>2026-03-18</lastmod>
+    </url>
+    <url>
+         <loc>https://git.oddbit.org/OddBit/rick_db/classes/errors/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
@@ -78,6 +90,10 @@
     </url>
     <url>
          <loc>https://git.oddbit.org/OddBit/rick_db/classes/managerinterface/</loc>
+         <lastmod>2026-03-18</lastmod>
+    </url>
+    <url>
+         <loc>https://git.oddbit.org/OddBit/rick_db/classes/mysql_dialect/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
