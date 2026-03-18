@@ -235,7 +235,7 @@ The `where(field, operator=None, value=None)` method adds a condition to the WHE
   like `IS NULL` / `IS NOT NULL`, omit the value.
 
 Each scalar value becomes a parameterized placeholder in the generated SQL. Multiple `where()` calls are joined
-with `AND` (see [AND / OR WHERE](#and--or-where) for alternatives).
+with `AND` (see [AND / OR WHERE](#and-or-where) for alternatives).
 
 ```python
 from rick_db.sql import Select, PgSqlDialect

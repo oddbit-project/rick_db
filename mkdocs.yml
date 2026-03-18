@@ -40,6 +40,7 @@ nav:
 - repository.md
 - grid.md
 - migrations.md
+- Examples: examples.md
 - Class List:
   - Record: 'classes/record.md'
   - Connection: 'classes/connection.md'
