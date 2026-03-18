@@ -1,7 +1,7 @@
 # Examples
 
 Complete, runnable examples are available in the
-[examples/](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples) directory. SQLite and query
+[examples/](https://github.com/oddbit-project/rick_db/blob/master/examples) directory. SQLite and query
 builder examples run standalone with no external dependencies. PostgreSQL, ClickHouse, and bookstore examples
 require a running database server.
 
@@ -16,7 +16,7 @@ dependencies required.
 {! ../examples/repository/crud_sqlite.py !}
 ```
 
-**Source:** [examples/repository/crud_sqlite.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/repository/crud_sqlite.py)
+**Source:** [examples/repository/crud_sqlite.py](https://github.com/oddbit-project/rick_db/blob/master/examples/repository/crud_sqlite.py)
 
 ### Transactions
 
@@ -27,7 +27,7 @@ a funds transfer between accounts.
 {! ../examples/repository/transactions.py !}
 ```
 
-**Source:** [examples/repository/transactions.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/repository/transactions.py)
+**Source:** [examples/repository/transactions.py](https://github.com/oddbit-project/rick_db/blob/master/examples/repository/transactions.py)
 
 ### DbGrid Search
 
@@ -38,7 +38,7 @@ sorting, pagination, and search types.
 {! ../examples/repository/dbgrid_search.py !}
 ```
 
-**Source:** [examples/repository/dbgrid_search.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/repository/dbgrid_search.py)
+**Source:** [examples/repository/dbgrid_search.py](https://github.com/oddbit-project/rick_db/blob/master/examples/repository/dbgrid_search.py)
 
 ### Bookstore (PostgreSQL)
 
@@ -48,7 +48,7 @@ Custom repository with JOINs and aggregate queries. Requires a running PostgreSQ
 {! ../examples/repository/example_bookstore.py !}
 ```
 
-**Source:** [examples/repository/example_bookstore.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/repository/example_bookstore.py)
+**Source:** [examples/repository/example_bookstore.py](https://github.com/oddbit-project/rick_db/blob/master/examples/repository/example_bookstore.py)
 
 ## Query Builder
 
@@ -61,7 +61,7 @@ Aggregate, math, and general SQL functions using the `Fn` class. Covers `COUNT`,
 {! ../examples/query_builder/fn_aggregation.py !}
 ```
 
-**Source:** [examples/query_builder/fn_aggregation.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/query_builder/fn_aggregation.py)
+**Source:** [examples/query_builder/fn_aggregation.py](https://github.com/oddbit-project/rick_db/blob/master/examples/query_builder/fn_aggregation.py)
 
 ### Recursive CTEs
 
@@ -72,7 +72,7 @@ generation, non-recursive CTEs, and multiple CTE clauses.
 {! ../examples/query_builder/cte_recursive.py !}
 ```
 
-**Source:** [examples/query_builder/cte_recursive.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/query_builder/cte_recursive.py)
+**Source:** [examples/query_builder/cte_recursive.py](https://github.com/oddbit-project/rick_db/blob/master/examples/query_builder/cte_recursive.py)
 
 ### JSON Queries (PostgreSQL)
 
@@ -83,7 +83,7 @@ bracket notation for nested access, `json_where()`, `json_extract()`, contains c
 {! ../examples/query_builder/json_queries.py !}
 ```
 
-**Source:** [examples/query_builder/json_queries.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/query_builder/json_queries.py)
+**Source:** [examples/query_builder/json_queries.py](https://github.com/oddbit-project/rick_db/blob/master/examples/query_builder/json_queries.py)
 
 ### Complex Query (PostgreSQL)
 
@@ -94,7 +94,7 @@ PostgreSQL system catalog introspection.
 {! ../examples/query_builder/complex_query_01.py !}
 ```
 
-**Source:** [examples/query_builder/complex_query_01.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/query_builder/complex_query_01.py)
+**Source:** [examples/query_builder/complex_query_01.py](https://github.com/oddbit-project/rick_db/blob/master/examples/query_builder/complex_query_01.py)
 
 ## Migrations
 
@@ -107,7 +107,7 @@ migrations, idempotent re-runs, and schema verification.
 {! ../examples/migrations/migration_workflow.py !}
 ```
 
-**Source:** [examples/migrations/migration_workflow.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/migrations/migration_workflow.py)
+**Source:** [examples/migrations/migration_workflow.py](https://github.com/oddbit-project/rick_db/blob/master/examples/migrations/migration_workflow.py)
 
 ## ClickHouse
 
@@ -120,7 +120,7 @@ queries using the query builder. Requires a running ClickHouse server.
 {! ../examples/clickhouse/clickhouse_example.py !}
 ```
 
-**Source:** [examples/clickhouse/clickhouse_example.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/clickhouse/clickhouse_example.py)
+**Source:** [examples/clickhouse/clickhouse_example.py](https://github.com/oddbit-project/rick_db/blob/master/examples/clickhouse/clickhouse_example.py)
 
 ## Running the Examples
 
