@@ -1,4 +1,4 @@
-from .common import SqlError, SqlStatement, Sql, Literal, L, JsonField, PgJsonField
+from .common import SqlError, SqlStatement, Sql, Literal, L, Fn, JsonField, PgJsonField
 from .dialect import SqlDialect, Sqlite3SqlDialect, PgSqlDialect, DefaultSqlDialect, ClickHouseSqlDialect, MySqlSqlDialect
 from .select import Select
 from .insert import Insert
@@ -12,6 +12,7 @@ __all__ = [
     "Sql",
     "Literal",
     "L",
+    "Fn",
     "JsonField",
     "PgJsonField",
     "SqlDialect",

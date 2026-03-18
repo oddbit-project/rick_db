@@ -214,6 +214,26 @@ qry, values = (
 print(qry)
 ```
 
+**WHERE IN / NOT IN** with a list of values generates properly parameterized queries:
+
+```python
+from rick_db.sql import Select, PgSqlDialect
+
+# WHERE IN with a list
+qry, values = Select(PgSqlDialect()).from_("table").where("id", "IN", [1, 2, 3]).assemble()
+# output: SELECT "table".* FROM "table" WHERE ("id" IN (%s, %s, %s))
+# values: [1, 2, 3]
+print(qry)
+
+# WHERE NOT IN with a list
+qry, values = Select(PgSqlDialect()).from_("table").where("status", "NOT IN", ["inactive", "deleted"]).assemble()
+# output: SELECT "table".* FROM "table" WHERE ("status" NOT IN (%s, %s))
+# values: ['inactive', 'deleted']
+print(qry)
+```
+
+Tuples are also accepted as value lists. An empty list will raise `SqlError`.
+
 It is also possible to use subselects:
 
 ```python
@@ -247,6 +267,74 @@ qry, _ = Select(PgSqlDialect()).from_('table', {Literal('COUNT(*)'):'total'}).as
 # output: SELECT COUNT(*) AS "total" FROM "table"
 print(qry)
 ```
+
+## SQL Functions
+
+The [Fn](classes/fn.md) class provides helpers for common SQL functions. Each method returns a
+[Literal](classes/literal.md), so they work anywhere a Literal is accepted. Use dict-style column definitions
+to alias the results:
+
+```python
+from rick_db.sql import Select, Fn, PgSqlDialect
+
+# Single aggregate with alias
+qry, _ = Select(PgSqlDialect()).from_("orders", {Fn.count(): "total"}).assemble()
+# output: SELECT COUNT(*) AS "total" FROM "orders"
+print(qry)
+
+# Multiple columns: regular fields and aggregates together
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("orders", {
+        "category": None,
+        Fn.count(): "order_count",
+        Fn.sum("amount"): "total_amount",
+        Fn.avg("amount"): "avg_amount",
+    })
+    .group("category")
+    .assemble()
+)
+# output: SELECT "category",COUNT(*) AS "order_count",SUM(amount) AS "total_amount",AVG(amount) AS "avg_amount" FROM "orders" GROUP BY "category"
+print(qry)
+
+# Nested functions
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("orders", {
+        "category": None,
+        Fn.round(Fn.avg("amount"), 2): "avg_rounded",
+    })
+    .group("category")
+    .assemble()
+)
+# output: SELECT "category",ROUND(AVG(amount), 2) AS "avg_rounded" FROM "orders" GROUP BY "category"
+print(qry)
+
+# Multiple aggregates with HAVING
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("orders", {
+        "category": None,
+        Fn.count(): "cnt",
+        Fn.min("price"): "cheapest",
+        Fn.max("price"): "priciest",
+        Fn.sum("amount"): "total",
+    })
+    .group("category")
+    .having(Fn.count(), ">", 5)
+    .assemble()
+)
+# output: SELECT "category",COUNT(*) AS "cnt",MIN(price) AS "cheapest",MAX(price) AS "priciest",SUM(amount) AS "total" FROM "orders" GROUP BY "category" HAVING (COUNT(*) > %s)
+print(qry)
+```
+
+Available functions:
+
+- **Aggregate**: `count`, `sum`, `avg`, `min`, `max`
+- **Math**: `abs`, `ceil`, `floor`, `round`, `power`, `sqrt`, `mod`, `sign`, `trunc`
+- **General**: `coalesce`, `cast`
+
+See [Fn class documentation](classes/fn.md) for full reference.
 
 ## Insert
 
@@ -351,6 +439,16 @@ qry = (
 )
 # output: ('UPDATE "table" SET "field"=%s WHERE "id" = %s AND "name" ILIKE %s', ['value', 7, 'john%'])
 print(qry.assemble())
+
+# UPDATE WHERE... IN with a list
+qry = (
+    Update(PgSqlDialect())
+    .table("table")
+    .values({"field": "value"})
+    .where("id", "IN", [1, 2, 3])
+)
+# output: ('UPDATE "table" SET "field"=%s WHERE "id" IN (%s, %s, %s)', ['value', 1, 2, 3])
+print(qry.assemble())
 ```
 
 ## Delete
@@ -379,6 +477,11 @@ qry = (
     .where("name", "ILIKE", "john%")
 )
 # output: ('DELETE FROM "table" WHERE "id" = %s AND "name" ILIKE %s', [7, 'john%'])
+print(qry.assemble())
+
+# DELETE WHERE... IN with a list
+qry = Delete(PgSqlDialect()).from_("table").where("id", "IN", [1, 2, 3])
+# output: ('DELETE FROM "table" WHERE "id" IN (%s, %s, %s)', [1, 2, 3])
 print(qry.assemble())
 ```
 

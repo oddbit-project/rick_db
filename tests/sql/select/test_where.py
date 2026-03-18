@@ -415,3 +415,36 @@ class TestWhere:
         with pytest.raises(SqlError) as excinfo:
             select.assemble()
         assert "Unclosed AND block" in str(excinfo.value)
+
+    def test_where_in_list(self):
+        qry = Select(PgSqlDialect()).from_(SomeRecord).where(SomeRecord.field, "in", [1, 2, 3])
+        sql, values = qry.assemble()
+        assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ("field" IN (%s, %s, %s))'
+        assert values == [1, 2, 3]
+
+    def test_where_not_in_list(self):
+        qry = Select(PgSqlDialect()).from_(SomeRecord).where(SomeRecord.field, "not in", [4, 5])
+        sql, values = qry.assemble()
+        assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ("field" NOT IN (%s, %s))'
+        assert values == [4, 5]
+
+    def test_where_in_tuple(self):
+        qry = Select(PgSqlDialect()).from_(SomeRecord).where(SomeRecord.field, "in", (1, 2))
+        sql, values = qry.assemble()
+        assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ("field" IN (%s, %s))'
+        assert values == [1, 2]
+
+    def test_where_in_empty_list(self):
+        with pytest.raises(SqlError):
+            Select(PgSqlDialect()).from_(SomeRecord).where(SomeRecord.field, "in", [])
+
+    def test_where_in_with_other_clauses(self):
+        qry = (
+            Select(PgSqlDialect())
+            .from_(SomeRecord)
+            .where(SomeRecord.field, "in", [1, 2, 3])
+            .where("other", "=", "abc")
+        )
+        sql, values = qry.assemble()
+        assert sql == 'SELECT "test_table".* FROM "test_table" WHERE ("field" IN (%s, %s, %s)) AND ("other" = %s)'
+        assert values == [1, 2, 3, "abc"]

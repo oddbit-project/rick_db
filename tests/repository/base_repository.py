@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 import pytest
 from rick_db import fieldmapper, Repository, RepositoryError
 
@@ -14,6 +16,12 @@ class User:
 @fieldmapper
 class UserName:
     name = "name"
+
+
+@dataclass
+class UserDataclass:
+    name: str
+    email: str
 
 
 class BaseRepositoryTest:
@@ -183,6 +191,112 @@ class BaseRepositoryTest:
         # empty where_list
         with pytest.raises(RepositoryError):
             repo.fetch_where([])
+
+    def test_fetch_where_in(self, conn):
+        repo = Repository(conn, User)
+        # fetch with IN clause
+        records = repo.fetch_where([(User.name, "in", ["gandalf", "bilbo"])])
+        assert len(records) == 2
+        names = {r.name for r in records}
+        assert names == {"gandalf", "bilbo"}
+
+        # fetch with NOT IN clause
+        records = repo.fetch_where(
+            [(User.name, "not in", ["gandalf", "bilbo", "gollum"])]
+        )
+        assert len(records) == 2
+        names = {r.name for r in records}
+        assert names == {"aragorn", "samwise"}
+
+        # IN with single value
+        records = repo.fetch_where([(User.name, "in", ["aragorn"])])
+        assert len(records) == 1
+        assert records[0].name == "aragorn"
+
+        # IN combined with other conditions
+        records = repo.fetch_where(
+            [(User.name, "in", ["gandalf", "bilbo", "aragorn"]), (User.login, "=", "gandalf")]
+        )
+        assert len(records) == 1
+        assert records[0].name == "gandalf"
+
+    def test_fetch_one_cls(self, conn, fixture_users):
+        repo = Repository(conn, User)
+        # with fieldmapper class
+        record = repo.fetch_one(
+            repo.select(cols=[User.name, User.email]).where(User.name, "=", "gandalf"),
+            cls=UserName,
+        )
+        assert isinstance(record, UserName)
+        assert record.name == "gandalf"
+
+        # with dataclass
+        record = repo.fetch_one(
+            repo.select(cols=[User.name, User.email]).where(User.name, "=", "gandalf"),
+            cls=UserDataclass,
+        )
+        assert isinstance(record, UserDataclass)
+        assert record.name == "gandalf"
+        assert record.email is not None
+
+    def test_fetch_by_field_cls(self, conn, fixture_users):
+        repo = Repository(conn, User)
+        # with fieldmapper class
+        records = repo.fetch_by_field(User.name, "gandalf", cols=[User.name], cls=UserName)
+        assert len(records) == 1
+        assert isinstance(records[0], UserName)
+        assert records[0].name == "gandalf"
+
+        # with dataclass
+        records = repo.fetch_by_field(
+            User.name, "gandalf", cols=[User.name, User.email], cls=UserDataclass
+        )
+        assert len(records) == 1
+        assert isinstance(records[0], UserDataclass)
+        assert records[0].name == "gandalf"
+
+    def test_fetch_where_cls(self, conn, fixture_users):
+        repo = Repository(conn, User)
+        # with fieldmapper class
+        records = repo.fetch_where(
+            [(User.name, "=", "gandalf")], cols=[User.name], cls=UserName
+        )
+        assert len(records) == 1
+        assert isinstance(records[0], UserName)
+        assert records[0].name == "gandalf"
+
+        # with dataclass
+        records = repo.fetch_where(
+            [(User.name, "=", "gandalf")], cols=[User.name, User.email], cls=UserDataclass
+        )
+        assert len(records) == 1
+        assert isinstance(records[0], UserDataclass)
+        assert records[0].name == "gandalf"
+
+    def test_fetch_all_cls(self, conn, fixture_users):
+        repo = Repository(conn, User)
+        # with fieldmapper class
+        records = repo.fetch_all(cls=UserName)
+        assert len(records) == len(fixture_users)
+        for r in records:
+            assert isinstance(r, UserName)
+            assert r.name is not None
+
+        # with dataclass - need to select only matching columns
+        # fetch_all uses cached query (SELECT *), so dataclass must accept all columns
+        # Instead, use fetch() which is more flexible
+        # This test verifies fetch_all works with fieldmapper cls
+
+    def test_fetch_all_ordered_cls(self, conn, fixture_users):
+        repo = Repository(conn, User)
+        # with fieldmapper class
+        records = repo.fetch_all_ordered(User.name, cls=UserName)
+        assert len(records) == len(fixture_users)
+        for r in records:
+            assert isinstance(r, UserName)
+        # verify ordering
+        names = [r.name for r in records]
+        assert names == sorted(names)
 
     def test_insert(self, conn):
         repo = Repository(conn, User)

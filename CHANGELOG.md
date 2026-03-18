@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.2.1]
+
+### Added
+- `Fn` helper class for common SQL functions in the query builder, returning `Literal` instances for use in column definitions
+  - Aggregate: `count`, `sum`, `avg`, `min`, `max`
+  - Math: `abs`, `ceil`, `floor`, `round`, `power`, `sqrt`, `mod`, `sign`, `trunc`
+  - General: `coalesce`, `cast`
+- `WHERE IN` / `WHERE NOT IN` support for `Select`, `Update`, and `Delete` query builders with parameterized list/tuple values
+- `cls` parameter on `Repository.fetch_one()`, `fetch_by_field()`, `fetch_where()`, `fetch_all()`, and `fetch_all_ordered()` to override the default record class
+- Dataclass and plain class support in `Cursor.fetchone()`, `fetchall()`, and `exec()` — classes without `fromrecord` are instantiated via `cls(**dict(row))`
+
 ## [2.2.0]
 
 ### Added

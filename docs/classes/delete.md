@@ -50,6 +50,16 @@ qry = (
 )
 # output: ('DELETE FROM "table" WHERE "id" = %s AND "name" ILIKE %s', [7, 'john%'])
 print(qry.assemble())
+
+# DELETE WHERE... IN with a list of values
+qry = Delete(PgSqlDialect()).from_("table").where("id", "IN", [1, 2, 3])
+# output: ('DELETE FROM "table" WHERE "id" IN (%s, %s, %s)', [1, 2, 3])
+print(qry.assemble())
+
+# DELETE WHERE... NOT IN
+qry = Delete(PgSqlDialect()).from_("table").where("status", "NOT IN", ["archived", "deleted"])
+# output: ('DELETE FROM "table" WHERE "status" NOT IN (%s, %s)', ['archived', 'deleted'])
+print(qry.assemble())
 ```
 
 

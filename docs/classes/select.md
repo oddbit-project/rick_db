@@ -102,6 +102,27 @@ A column identifier can be None ('*' will be used), a string with a field name, 
 {'field': 'alias'} dict, a {'field': None, 'other_field':'alias} dict, or a [{'field': 'alias'}, 'field', ] list
 of mixed string and dict values.
 
+[Fn](fn.md) helpers can be used as dict keys for SQL functions with aliases:
+
+```python
+from rick_db.sql import Select, Fn, PgSqlDialect
+
+# Multiple columns with aggregates
+qry, _ = (
+    Select(PgSqlDialect())
+    .from_("orders", {
+        "category": None,
+        Fn.count(): "order_count",
+        Fn.sum("amount"): "total_amount",
+        Fn.round(Fn.avg("amount"), 2): "avg_rounded",
+    })
+    .group("category")
+    .assemble()
+)
+# output: SELECT "category",COUNT(*) AS "order_count",SUM(amount) AS "total_amount",ROUND(AVG(amount), 2) AS "avg_rounded" FROM "orders" GROUP BY "category"
+print(qry)
+```
+
 ### Select.**limit(limit: int, offset: int = None)**
 
 Adds an **LIMIT**/**OFFSET** clause.
@@ -173,7 +194,15 @@ qry = (
     .where('name', 'IS NOT NULL')
     .where('cp', 'IN', [100, 200, 300, 400])
 )
-# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) AND ("name" IS NOT NULL) AND ("cp" IN %s)', [5, [100, 200, 300, 400]])
+# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) AND ("name" IS NOT NULL) AND ("cp" IN (%s, %s, %s, %s))', [5, 100, 200, 300, 400])
+print(qry.assemble())
+
+# WHERE NOT IN with a list of values
+qry = (
+    Select(PgSqlDialect()).from_("foo")
+    .where('status', 'NOT IN', ['inactive', 'deleted'])
+)
+# output: ('SELECT "foo".* FROM "foo" WHERE ("status" NOT IN (%s, %s))', ['inactive', 'deleted'])
 print(qry.assemble())
 ```
 
@@ -203,7 +232,7 @@ qry = (
     .orwhere("cp", "IN", [100, 200, 300, 400])
     .where_end()
 )
-# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) AND ( ("name" IS NOT NULL) OR ("cp" IN %s) )', [5, [100, 200, 300, 400]])
+# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) AND ( ("name" IS NOT NULL) OR ("cp" IN (%s, %s, %s, %s)) )', [5, 100, 200, 300, 400])
 print(qry.assemble())
 
 ```
@@ -220,7 +249,7 @@ Example:
 
 ```python
 # showcase WHERE clause OR ( clause AND clause)
-qry = ( 
+qry = (
     Select(PgSqlDialect())
     .from_("foo")
     .where('id', '>', 5)
@@ -229,7 +258,7 @@ qry = (
     .where('cp', 'IN', [100, 200, 300, 400])
     .where_end()
 )
-# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) OR ( ("name" IS NOT NULL) AND ("cp" IN %s) )', [5, [100, 200, 300, 400]])
+# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) OR ( ("name" IS NOT NULL) AND ("cp" IN (%s, %s, %s, %s)) )', [5, 100, 200, 300, 400])
 print(qry.assemble())
 
 ```
@@ -261,7 +290,7 @@ qry = (
     .orwhere('name', 'IS NOT NULL')
     .where('cp', 'IN', [100, 200, 300, 400])
 )
-# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) OR ("name" IS NOT NULL) AND ("cp" IN %s)', [5, [100, 200, 300, 400]])
+# output: ('SELECT "foo".* FROM "foo" WHERE ("id" > %s) OR ("name" IS NOT NULL) AND ("cp" IN (%s, %s, %s, %s))', [5, 100, 200, 300, 400])
 print(qry.assemble())
 ```
 

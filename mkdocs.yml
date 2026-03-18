@@ -50,6 +50,7 @@ nav:
   - Update: 'classes/update.md'
   - Delete: 'classes/delete.md'
   - Literal: 'classes/literal.md'
+  - Fn: 'classes/fn.md'
   - JsonField: 'classes/jsonfield.md'
   - PgJsonField: 'classes/pgjsonfield.md'
   - CTEs (With): 'classes/with.md'

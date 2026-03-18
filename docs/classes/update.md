@@ -101,6 +101,26 @@ qry = (
 )
 # output: ('UPDATE "table" SET "field"=%s WHERE "id" = %s AND "name" ILIKE %s', ['value', 7, 'john%'])
 print(qry.assemble())
+
+# UPDATE WHERE... IN with a list of values
+qry = (
+    Update(PgSqlDialect())
+    .table("table")
+    .values({"field": "value"})
+    .where("id", "IN", [1, 2, 3])
+)
+# output: ('UPDATE "table" SET "field"=%s WHERE "id" IN (%s, %s, %s)', ['value', 1, 2, 3])
+print(qry.assemble())
+
+# UPDATE WHERE... NOT IN
+qry = (
+    Update(PgSqlDialect())
+    .table("table")
+    .values({"field": "value"})
+    .where("status", "NOT IN", ["archived", "deleted"])
+)
+# output: ('UPDATE "table" SET "field"=%s WHERE "status" NOT IN (%s, %s)', ['value', 'archived', 'deleted'])
+print(qry.assemble())
 ```
 
 

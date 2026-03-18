@@ -108,8 +108,7 @@ class Delete(SqlStatement):
                 expression = "{fld} {op}".format(fld=field, op=operator)
             self._clauses.append([expression, concat])
         else:
-            # sanity check, as we actually may have value list if subquery is in use
-            if isinstance(value, (list, tuple, dict)):
+            if isinstance(value, dict):
                 raise SqlError("_where(): invalid value type: %s" % str(type(value)))
 
             if operator is None:
@@ -117,7 +116,18 @@ class Delete(SqlStatement):
                     fld=field, ph=self._dialect.placeholder
                 )
             else:
-                if isinstance(value, Select):
+                if isinstance(value, (list, tuple)) and operator.lower() in ("in", "not in"):
+                    if len(value) == 0:
+                        raise SqlError("_where(): empty list for IN clause")
+                    placeholders = ", ".join([self._dialect.placeholder] * len(value))
+                    expression = "{fld} {op} ({phs})".format(
+                        fld=field, op=operator.upper(), phs=placeholders
+                    )
+                    self._values.extend(value)
+                    value = None
+                elif isinstance(value, (list, tuple)):
+                    raise SqlError("_where(): invalid value type: %s" % str(type(value)))
+                elif isinstance(value, Select):
                     sql, value = value.assemble()
                     expression = "{fld} {op} ({query})".format(
                         fld=field, op=operator, query=sql
@@ -128,10 +138,11 @@ class Delete(SqlStatement):
                     )
 
             self._clauses.append([expression, concat])
-            if isinstance(value, list):
-                self._values.extend(value)
-            else:
-                self._values.append(value)
+            if value is not None:
+                if isinstance(value, list):
+                    self._values.extend(value)
+                else:
+                    self._values.append(value)
         return self
 
     def assemble(self):

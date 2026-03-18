@@ -193,6 +193,87 @@ class PgJsonField(JsonField):
         return f"{self.field_name}::json"
 
 
+class Fn:
+    """
+    SQL function helpers that return Literal instances.
+
+    Use with dict-style column definitions for aliasing:
+        Select(dialect).from_(User, {Fn.count("*"): "total"})
+        Select(dialect).from_(User, {User.name: None, Fn.sum("amount"): "total_amount"})
+    """
+
+    # Aggregate functions
+    @staticmethod
+    def count(field="*"):
+        return Literal("COUNT({})".format(field))
+
+    @staticmethod
+    def sum(field):
+        return Literal("SUM({})".format(field))
+
+    @staticmethod
+    def avg(field):
+        return Literal("AVG({})".format(field))
+
+    @staticmethod
+    def min(field):
+        return Literal("MIN({})".format(field))
+
+    @staticmethod
+    def max(field):
+        return Literal("MAX({})".format(field))
+
+    # Math functions
+    @staticmethod
+    def abs(field):
+        return Literal("ABS({})".format(field))
+
+    @staticmethod
+    def ceil(field):
+        return Literal("CEIL({})".format(field))
+
+    @staticmethod
+    def floor(field):
+        return Literal("FLOOR({})".format(field))
+
+    @staticmethod
+    def round(field, decimals=None):
+        if decimals is not None:
+            return Literal("ROUND({}, {})".format(field, int(decimals)))
+        return Literal("ROUND({})".format(field))
+
+    @staticmethod
+    def power(field, exponent):
+        return Literal("POWER({}, {})".format(field, exponent))
+
+    @staticmethod
+    def sqrt(field):
+        return Literal("SQRT({})".format(field))
+
+    @staticmethod
+    def mod(field, divisor):
+        return Literal("MOD({}, {})".format(field, divisor))
+
+    @staticmethod
+    def sign(field):
+        return Literal("SIGN({})".format(field))
+
+    @staticmethod
+    def trunc(field, decimals=None):
+        if decimals is not None:
+            return Literal("TRUNC({}, {})".format(field, int(decimals)))
+        return Literal("TRUNC({})".format(field))
+
+    # General functions
+    @staticmethod
+    def coalesce(*fields):
+        return Literal("COALESCE({})".format(", ".join(str(f) for f in fields)))
+
+    @staticmethod
+    def cast(field, type_name):
+        return Literal("CAST({} AS {})".format(field, type_name))
+
+
 class Sql:
     DISTINCT = "distinct"
     COLUMNS = "columns"
