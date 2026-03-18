@@ -88,7 +88,8 @@ markdown_extensions:
 - pymdownx.tabbed:
     alternate_style: true
 - pymdownx.details
-- mdx_include
+- mdx_include:
+    base_path: docs
 
 extra:
   social:

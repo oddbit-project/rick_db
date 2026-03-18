@@ -13,9 +13,7 @@ Basic insert, fetch, update, and delete operations using an in-memory SQLite dat
 dependencies required.
 
 ```python
-{%
-include "../examples/repository/crud_sqlite.py"
-%}
+{! ../examples/repository/crud_sqlite.py !}
 ```
 
 **Source:** [examples/repository/crud_sqlite.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/repository/crud_sqlite.py)
@@ -26,9 +24,7 @@ Transaction context manager with automatic commit on success and rollback on exc
 a funds transfer between accounts.
 
 ```python
-{%
-include "../examples/repository/transactions.py"
-%}
+{! ../examples/repository/transactions.py !}
 ```
 
 **Source:** [examples/repository/transactions.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/repository/transactions.py)
@@ -39,9 +35,7 @@ Searchable, filterable, paginated data listings using DbGrid. Shows text search,
 sorting, pagination, and search types.
 
 ```python
-{%
-include "../examples/repository/dbgrid_search.py"
-%}
+{! ../examples/repository/dbgrid_search.py !}
 ```
 
 **Source:** [examples/repository/dbgrid_search.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/repository/dbgrid_search.py)
@@ -51,9 +45,7 @@ include "../examples/repository/dbgrid_search.py"
 Custom repository with JOINs and aggregate queries. Requires a running PostgreSQL instance.
 
 ```python
-{%
-include "../examples/repository/example_bookstore.py"
-%}
+{! ../examples/repository/example_bookstore.py !}
 ```
 
 **Source:** [examples/repository/example_bookstore.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/repository/example_bookstore.py)
@@ -66,9 +58,7 @@ Aggregate, math, and general SQL functions using the `Fn` class. Covers `COUNT`,
 `ROUND`, `COALESCE`, `CAST`, nesting, GROUP BY with HAVING, and dict-style column aliases.
 
 ```python
-{%
-include "../examples/query_builder/fn_aggregation.py"
-%}
+{! ../examples/query_builder/fn_aggregation.py !}
 ```
 
 **Source:** [examples/query_builder/fn_aggregation.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/query_builder/fn_aggregation.py)
@@ -79,9 +69,7 @@ Common Table Expressions with the `With` builder. Includes recursive tree walks,
 generation, non-recursive CTEs, and multiple CTE clauses.
 
 ```python
-{%
-include "../examples/query_builder/cte_recursive.py"
-%}
+{! ../examples/query_builder/cte_recursive.py !}
 ```
 
 **Source:** [examples/query_builder/cte_recursive.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/query_builder/cte_recursive.py)
@@ -92,9 +80,7 @@ JSON field operations using `PgJsonField`. Covers text extraction (`->>`), objec
 bracket notation for nested access, `json_where()`, `json_extract()`, contains checks, and path queries.
 
 ```python
-{%
-include "../examples/query_builder/json_queries.py"
-%}
+{! ../examples/query_builder/json_queries.py !}
 ```
 
 **Source:** [examples/query_builder/json_queries.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/query_builder/json_queries.py)
@@ -105,9 +91,7 @@ Advanced SELECT with subquery joins, Literal expressions for multi-condition ON 
 PostgreSQL system catalog introspection.
 
 ```python
-{%
-include "../examples/query_builder/complex_query_01.py"
-%}
+{! ../examples/query_builder/complex_query_01.py !}
 ```
 
 **Source:** [examples/query_builder/complex_query_01.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/query_builder/complex_query_01.py)
@@ -120,9 +104,7 @@ Programmatic migration workflow using SQLite. Demonstrates installing the migrat
 migrations, idempotent re-runs, and schema verification.
 
 ```python
-{%
-include "../examples/migrations/migration_workflow.py"
-%}
+{! ../examples/migrations/migration_workflow.py !}
 ```
 
 **Source:** [examples/migrations/migration_workflow.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/migrations/migration_workflow.py)
@@ -135,9 +117,7 @@ Connection setup, schema introspection with `ClickHouseManager`, repository CRUD
 queries using the query builder. Requires a running ClickHouse server.
 
 ```python
-{%
-include "../examples/clickhouse/clickhouse_example.py"
-%}
+{! ../examples/clickhouse/clickhouse_example.py !}
 ```
 
 **Source:** [examples/clickhouse/clickhouse_example.py](https://git.oddbit.org/OddBit/rick_db/src/branch/master/examples/clickhouse/clickhouse_example.py)
