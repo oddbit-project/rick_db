@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USER: some_user
+      POSTGRES_PASSWORD: somePassword
+      POSTGRES_DB: testdb
+    ports:
+      - "15432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U some_user -d testdb"]
+      interval: 1s
+      timeout: 1s
+      retries: 30
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.8-alpine
+    environment:
+      CLICKHOUSE_USER: some_user
+      CLICKHOUSE_PASSWORD: somePassword
+      CLICKHOUSE_DB: testdb
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    ports:
+      - "18123:8123"
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:8123/ping || exit 1"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+      start_period: 10s

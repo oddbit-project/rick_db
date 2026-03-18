@@ -54,16 +54,35 @@ for r in rows:
     print(r.id, r.short_description)
 ```
 
-### Limitations:
+### Search types
 
-**Sqlite3**
+The `search_type` parameter controls how text search patterns are generated:
 
-On Sqlite3, case-insensitive search is done via UPPER(), since no ILIKE equivalent is available. 
-This is may trigger a full table scan and will not use indexes if they are available for the specific field. Additionally,
-this method only works with ASCII chars. 
+| Constant | Value | Pattern | Description |
+|----------|-------|---------|-------------|
+| `DbGrid.SEARCH_ANY` | 1 | `%text%` | Match anywhere in the field (default) |
+| `DbGrid.SEARCH_START` | 2 | `text%` | Match at the beginning of the field |
+| `DbGrid.SEARCH_END` | 3 | `%text` | Match at the end of the field |
+| `DbGrid.SEARCH_NONE` | 0 | — | Disable text search |
 
-It its therefore recommended to avoid the usage of case-sensitive search with this driver.
+### Sorting
+
+The `sort_fields` parameter accepts a dict of `{field: direction}` pairs, where direction is `"ASC"` or `"DESC"`:
+
+```python
+total, rows = grid.run(sort_fields={Product.name: "ASC", Product.id: "DESC"}, limit=20)
+```
+
+### Limitations
+
+**SQLite3**
+
+On SQLite3, case-insensitive search is done via UPPER(), since no ILIKE equivalent is available.
+This may trigger a full table scan and will not use indexes if they are available for the specific field. Additionally,
+this method only works with ASCII chars.
+
+It is therefore recommended to avoid the usage of case-sensitive search with this driver.
 
 As an option, one can instead use COLLATE NOCASE on the creation of the required fields, and use DbGrid with case_sensitive=True.
-This way, search will be case-insensitive on the fields created with the COLLATE NOCASE option.  
+This way, search will be case-insensitive on the fields created with the COLLATE NOCASE option.
 

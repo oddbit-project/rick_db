@@ -18,7 +18,7 @@ Example:
 union = Select().union([
     Literal("VALUES(1)"),
     Select().from_("t", cols=[Literal("n+1")]).where("n", "<", 100)
-], Sql.UNION_ALL)
+], Sql.SQL_UNION_ALL)
 
 # assemble a recursive CTE
 with_qry = (
@@ -37,7 +37,9 @@ sql, values = with_qry.assemble()
 True)**
 
 Adds a CTE expression with the format WITH *name*(*columns*) AS (*with_query*); The *columns* parameter is optional.
-If *materialized* is False, WITH...NOT MATERIALIZED AS () is generated instead.
+If *materialized* is False, `NOT MATERIALIZED` is added: `WITH name AS NOT MATERIALIZED (...)`. This hints the
+query planner to re-evaluate the CTE each time it is referenced, rather than computing it once and caching the
+result. This is a PostgreSQL 12+ feature and may not be supported by all databases.
 
 ### With.**query(query: SqlStatement)**
 

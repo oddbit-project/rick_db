@@ -57,7 +57,7 @@ print(customer.asdict())
 print(customer.asrecord())
 ```
 
-As mentioned previously, it is possible to also provide optional details, such as table or view name, schema and primary
+It is possible to also provide optional details, such as table or view name, schema and primary
 key name; these details are quite useful when using RickDb's [Repository](repository.md) or [Query Builder](building_queries.md) to
 provide context for operations. This is probably the most common usage scenario, when designing a multi-tier application:
 
@@ -66,40 +66,34 @@ from rick_db import fieldmapper
 
 @fieldmapper(tablename='customers', pk='id_customer', schema='public')
 class Customer:
-    id = 'id_customer'  # attribute 'id' maps to field 'id_customer'
-    name = 'name'       # attribute 'name' maps to field 'name'
-    address = 'address' # attribute 'address' maps to field 'address'
-    city = 'city'       # attribute 'city' maps to field 'city'
-    id_country = 'fk_country' # attribute 'id_country' maps to field 'fk_country'
-
-# access class-level attributes
-print(Customer.name) # outputs  'name'
-
-# access object-level attributes
-# customer data is loaded via __init__; The key names must match the defined attributes
-customer = Customer(id=3, name="John Doe", address="Obere Str.", city="Berlin")
-
-# output: John Doe
-print(customer.name)  
-
-# output: 'None'
-print(customer.id_country)  
-
-# output: {'address': 'Obere Str.', 'city': 'Berlin', 'id': 3, 'name': 'John Doe'}
-print(customer.asdict())
-
-# output: {'id_customer': 3, 'name': 'John Doe', 'address': 'Obere Str.', 'city': 'Berlin'}
-print(customer.asrecord())
+    id = 'id_customer'
+    name = 'name'
+    address = 'address'
+    city = 'city'
+    id_country = 'fk_country'
 ```
 
 ## Available methods
 
 The patching process performed by **@fieldmapper** copies all the available methods in the base [Record](classes/record.md)
-class to the defined class. As a result, all [Record](classes/record.md) methods can be used on a **@fieldmapper** patched 
-class.
+class to the defined class. As a result, all [Record](classes/record.md) methods can be used on a **@fieldmapper** patched
+class:
 
+| Method | Description |
+|--------|-------------|
+| `load(**kwargs)` | Load attribute values from named parameters |
+| `fromrecord(record: dict)` | Load attribute values from a database row dict |
+| `has_pk()` | Returns True if a primary key definition exists |
+| `pk()` | Returns the primary key value |
+| `dbfields()` | Returns a list of database field names |
+| `asdict()` | Converts to a dict using attribute names as keys |
+| `asrecord()` | Converts to a dict using database field names as keys |
+| `fields()` | Returns a list of attribute names that have values set |
+| `items()` | Returns `asdict().items()` |
+| `values()` | Returns a list of stored values |
+| `fieldmap()` | Returns the internal attribute-to-field mapping dict |
+| `add(**kwargs)` | Add new attribute values from named parameters |
 
-
-
+See the [Record](classes/record.md) class documentation for full details and examples.
 
 

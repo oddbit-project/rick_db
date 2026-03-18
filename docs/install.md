@@ -6,11 +6,13 @@ The recommended installation procedure is to use the available pip package.
 
 RickDb requires the following dependencies:
 
-- psycopg2
+- psycopg2 (for PostgreSQL support)
 - toml
 - setuptools
 
-For ClickHouse support, install the optional `clickhouse-connect` dependency:
+**SQLite3** support is included in Python's standard library — no additional dependencies are needed.
+
+For **ClickHouse** support, install the optional `clickhouse-connect` dependency:
 
 - clickhouse-connect
 

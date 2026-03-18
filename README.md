@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/oddbit-project/rick_db/workflows/Tests/badge.svg)](https://github.com/oddbit-project/rick_db/actions)
 [![pypi](https://img.shields.io/pypi/v/rick_db.svg)](https://pypi.org/project/rick_db/)
-[![license](https://img.shields.io/pypi/l/rick-db.svg)](https://git.oddbit.org/OddBit/rick_db/src/branch/master/LICENSE)
+[![license](https://img.shields.io/pypi/l/rick-db.svg)](https://github.com/oddbit-project/rick_db/blob/master/LICENSE)
 
 rick_db is a simple SQL database layer for Python3. It includes connection management, Object Mapper, Query Builder,
 and a Repository pattern implementation. It is **not** an ORM, and it's not meant to replace one. 
