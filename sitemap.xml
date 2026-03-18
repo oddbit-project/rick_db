@@ -1,151 +1,151 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/building_queries/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/building_queries/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/connection/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/connection/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/examples/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/examples/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/grid/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/grid/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/install/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/install/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/json_operations/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/json_operations/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/migrations/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/migrations/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/object_mapper/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/object_mapper/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/repository/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/repository/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/clickhouse_sql/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/clickhouse_sql/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/clickhousemanager/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/clickhousemanager/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/connection/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/connection/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/cursor/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/cursor/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/dbgrid/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/dbgrid/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/delete/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/delete/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/errors/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/errors/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/fieldrecord/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/fieldrecord/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/fn/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/fn/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/insert/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/insert/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/jsonfield/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/jsonfield/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/literal/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/literal/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/managerinterface/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/managerinterface/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/mysql_dialect/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/mysql_dialect/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/pgjsonfield/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/pgjsonfield/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/pgmanager/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/pgmanager/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/poolinterface/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/poolinterface/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/profiler/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/profiler/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/querycache/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/querycache/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/record/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/record/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/repository/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/repository/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/select/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/select/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/sqldialect/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/sqldialect/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/sqlite3manager/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/sqlite3manager/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/update/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/update/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/userrecord/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/userrecord/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/rick_db/classes/with/</loc>
+         <loc>https://github.com/oddbit-project/rick_db/classes/with/</loc>
          <lastmod>2026-03-18</lastmod>
     </url>
 </urlset>
