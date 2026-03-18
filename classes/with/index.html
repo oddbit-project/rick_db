@@ -137,9 +137,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
     
-      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
       </label>
     
@@ -1490,22 +1490,22 @@ Check <a href="../sqldialect/">SqlDialect</a> for more details.</p>
 <h3 id="withrecursivestatustrue">With.<strong>recursive(status=True)</strong><a class="headerlink" href="#withrecursivestatustrue" title="Permanent link">&para;</a></h3>
 <p>Creates a recursive CTE if status is True, or an ordinary CTE if status is False</p>
 <p>Example:</p>
-<div class="highlight"><pre><span></span><code><span class="n">union</span> <span class="o">=</span> <span class="n">Select</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">([</span>
-    <span class="n">Literal</span><span class="p">(</span><span class="s2">&quot;VALUES(1)&quot;</span><span class="p">),</span>
-    <span class="n">Select</span><span class="p">()</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="n">Literal</span><span class="p">(</span><span class="s2">&quot;n+1&quot;</span><span class="p">)])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="p">],</span> <span class="n">Sql</span><span class="o">.</span><span class="n">UNION_ALL</span><span class="p">)</span>
-
-<span class="c1"># assemble a recursive CTE</span>
-<span class="n">with_qry</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">With</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">clause</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">union</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Select</span><span class="p">()</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="p">{</span><span class="n">Literal</span><span class="p">(</span><span class="s2">&quot;SUM(n)&quot;</span><span class="p">):</span> <span class="s2">&quot;total&quot;</span><span class="p">}))</span>
-    <span class="o">.</span><span class="n">recursive</span><span class="p">()</span>
-<span class="p">)</span>
-
-<span class="n">sql</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">with_qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
-<span class="c1"># sql: WITH RECURSIVE &quot;t&quot;(&quot;n&quot;) AS (VALUES(1) UNION SELECT n+1 FROM &quot;t&quot; WHERE (&quot;n&quot; &lt; %s)) SELECT SUM(n) AS &quot;total&quot; FROM &quot;t&quot;</span>
-<span class="c1"># values: [100]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">union</span> <span class="o">=</span> <span class="n">Select</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">([</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">Literal</span><span class="p">(</span><span class="s2">&quot;VALUES(1)&quot;</span><span class="p">),</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">Select</span><span class="p">()</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="n">Literal</span><span class="p">(</span><span class="s2">&quot;n+1&quot;</span><span class="p">)])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">],</span> <span class="n">Sql</span><span class="o">.</span><span class="n">UNION_ALL</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># assemble a recursive CTE</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">with_qry</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">With</span><span class="p">()</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="o">.</span><span class="n">clause</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">union</span><span class="p">)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Select</span><span class="p">()</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="p">{</span><span class="n">Literal</span><span class="p">(</span><span class="s2">&quot;SUM(n)&quot;</span><span class="p">):</span> <span class="s2">&quot;total&quot;</span><span class="p">}))</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="o">.</span><span class="n">recursive</span><span class="p">()</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">)</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="n">sql</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">with_qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="c1"># sql: WITH RECURSIVE &quot;t&quot;(&quot;n&quot;) AS (VALUES(1) UNION SELECT n+1 FROM &quot;t&quot; WHERE (&quot;n&quot; &lt; %s)) SELECT SUM(n) AS &quot;total&quot; FROM &quot;t&quot;</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="c1"># values: [100]</span>
 </code></pre></div>
 <h3 id="withclausename-str-with_query-unionsqlstatement-literal-columns-list-none-materialized-bool">With.**clause(name: str, with_query: Union[SqlStatement, Literal], columns: list = None, materialized: bool =<a class="headerlink" href="#withclausename-str-with_query-unionsqlstatement-literal-columns-list-none-materialized-bool" title="Permanent link">&para;</a></h3>
 <p>True)**</p>
@@ -1536,6 +1536,12 @@ If <em>materialized</em> is False, WITH...NOT MATERIALIZED AS () is generated in
 
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
         
       </main>
       
@@ -1582,7 +1588,7 @@ If <em>materialized</em> is False, WITH...NOT MATERIALIZED AS () is generated in
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "content.code.copy", "navigation.top"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

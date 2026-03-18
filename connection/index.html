@@ -137,9 +137,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
     
-      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
       </label>
     
@@ -1517,40 +1517,40 @@ usage is to use <strong>PgConnectionPool</strong>.</p>
 </table>
 <p>*More details on sslmode operation are available in the <a href="https://www.postgresql.org/docs/current/libpq-ssl.html">libpq documentation</a>. </p>
 <p>Using PgConnection:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.pg</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgConnection</span>
-
-<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;some_user&gt;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;some_password&gt;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">,</span>
-    <span class="s1">&#39;sslmode&#39;</span><span class="p">:</span> <span class="s1">&#39;require&#39;</span>    
-<span class="p">}</span>
-
-<span class="c1"># create connection</span>
-<span class="n">conn</span> <span class="o">=</span> <span class="n">PgConnection</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
-    <span class="c1"># to stuff</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.pg</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgConnection</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;some_user&gt;&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;some_password&gt;&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="s1">&#39;sslmode&#39;</span><span class="p">:</span> <span class="s1">&#39;require&#39;</span>    
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">}</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1"># create connection</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="n">conn</span> <span class="o">=</span> <span class="n">PgConnection</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="c1"># to stuff</span>
 </code></pre></div>
 <p>Using PgConnectionPool:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.pg</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgConnectionPool</span>
-
-<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;some_user&gt;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;some_password&gt;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">,</span>
-    <span class="s1">&#39;minconn&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-<span class="p">}</span>
-
-<span class="c1"># create connection</span>
-<span class="n">pool</span> <span class="o">=</span> <span class="n">PgConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">pool</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>     <span class="c1"># fetch a connection from the pool</span>
-    <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>        <span class="c1"># create a cursor</span>
-        <span class="c1"># to stuff</span>
-        <span class="k">pass</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.pg</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgConnectionPool</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;some_user&gt;&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;some_password&gt;&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">,</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="s1">&#39;minconn&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">}</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1"># create connection</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">pool</span> <span class="o">=</span> <span class="n">PgConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="k">with</span> <span class="n">pool</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>     <span class="c1"># fetch a connection from the pool</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>        <span class="c1"># create a cursor</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>        <span class="c1"># to stuff</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>        <span class="k">pass</span>
 </code></pre></div>
 <h2 id="connecting-to-sqlite">Connecting to SQLite<a class="headerlink" href="#connecting-to-sqlite" title="Permanent link">&para;</a></h2>
 <p>Available connection parameters:</p>
@@ -1577,18 +1577,18 @@ usage is to use <strong>PgConnectionPool</strong>.</p>
 </tbody>
 </table>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sqlite3Connection</span>
-
-<span class="c1"># create or open a sqlite database</span>
-<span class="n">conn</span> <span class="o">=</span> <span class="n">Sqlite3Connection</span><span class="p">(</span><span class="s1">&#39;my_database.db&#39;</span><span class="p">)</span>
-
-<span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
-    <span class="c1"># do stuff</span>
-    <span class="k">pass</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sqlite3Connection</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># create or open a sqlite database</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">conn</span> <span class="o">=</span> <span class="n">Sqlite3Connection</span><span class="p">(</span><span class="s1">&#39;my_database.db&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="c1"># do stuff</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="k">pass</span>
 </code></pre></div></p>
 <h2 id="connecting-to-clickhouse">Connecting to ClickHouse<a class="headerlink" href="#connecting-to-clickhouse" title="Permanent link">&para;</a></h2>
 <p>ClickHouse is supported via the <code>clickhouse-connect</code> HTTP client. Install the optional dependency:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>clickhouse-connect
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>clickhouse-connect
 </code></pre></div>
 <p>Available connection parameters:</p>
 <table>
@@ -1623,21 +1623,21 @@ usage is to use <strong>PgConnectionPool</strong>.</p>
 </table>
 <p>Any additional keyword arguments are passed directly to <code>clickhouse_connect.get_client()</code>.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.clickhouse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseConnection</span>
-
-<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">8123</span><span class="p">,</span>
-    <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
-<span class="p">}</span>
-
-<span class="c1"># create connection</span>
-<span class="n">conn</span> <span class="o">=</span> <span class="n">ClickHouseConnection</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
-    <span class="c1"># do stuff</span>
-    <span class="k">pass</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.clickhouse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseConnection</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">8123</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">}</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1"># create connection</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="n">conn</span> <span class="o">=</span> <span class="n">ClickHouseConnection</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="c1"># do stuff</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="k">pass</span>
 </code></pre></div></p>
 <blockquote>
 <p>Note: ClickHouse has no real transactions. <code>commit()</code> and <code>rollback()</code> are no-ops. The <code>Repository.transaction()</code>
@@ -1650,51 +1650,51 @@ context manager will work without errors but provides no atomicity guarantees. E
 as a simple in-memory profiler implementation, <a href="../classes/profiler/#class-rick_dbprofilerdefaultprofiler">DefaultProfiler</a>.</p>
 <p>To use a <a href="../classes/profiler/#class-rick_dbprofilerdefaultprofiler">DefaultProfiler</a> instance on a connection,
 just assign the desired instance to the <strong>profiler</strong> property:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.pg</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgConnection</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.profiler</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefaultProfiler</span>
-
-<span class="n">db_cfg</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s2">&quot;rick_test&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_user&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_password&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;sslmode&#39;</span><span class="p">:</span> <span class="s1">&#39;require&#39;</span>
-<span class="p">}</span>
-
-<span class="n">conn</span> <span class="o">=</span> <span class="n">PgConnection</span><span class="p">(</span><span class="o">**</span><span class="n">db_cfg</span><span class="p">)</span>
-<span class="c1"># instantiate profiler, and use it on conn object</span>
-<span class="n">conn</span><span class="o">.</span><span class="n">profiler</span> <span class="o">=</span> <span class="n">DefaultProfiler</span><span class="p">()</span>
-
-<span class="c1"># perform some queries we can profile</span>
-<span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
-    <span class="n">c</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;SELECT 1&quot;</span><span class="p">)</span>
-
-<span class="c1"># output: SELECT 1 0.00012579001486301422</span>
-<span class="k">for</span> <span class="n">evt</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">profiler</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">elapsed</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.pg</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgConnection</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.profiler</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefaultProfiler</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">db_cfg</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s2">&quot;rick_test&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_user&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_password&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="s1">&#39;sslmode&#39;</span><span class="p">:</span> <span class="s1">&#39;require&#39;</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="p">}</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="n">conn</span> <span class="o">=</span> <span class="n">PgConnection</span><span class="p">(</span><span class="o">**</span><span class="n">db_cfg</span><span class="p">)</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="c1"># instantiate profiler, and use it on conn object</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="n">conn</span><span class="o">.</span><span class="n">profiler</span> <span class="o">=</span> <span class="n">DefaultProfiler</span><span class="p">()</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="c1"># perform some queries we can profile</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>    <span class="n">c</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;SELECT 1&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="c1"># output: SELECT 1 0.00012579001486301422</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="k">for</span> <span class="n">evt</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">profiler</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">elapsed</span><span class="p">)</span>
 </code></pre></div>
 <p>Example using PgConnectionPool:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.pg</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgConnectionPool</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.profiler</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefaultProfiler</span>
-
-<span class="n">db_cfg</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s2">&quot;rick_test&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_user&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_password&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;sslmode&#39;</span><span class="p">:</span> <span class="s1">&#39;require&#39;</span>
-<span class="p">}</span>
-
-<span class="n">pool</span> <span class="o">=</span> <span class="n">PgConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">db_cfg</span><span class="p">)</span>
-<span class="c1"># instantiate profiler, and use it on pool object</span>
-<span class="n">pool</span><span class="o">.</span><span class="n">profiler</span> <span class="o">=</span> <span class="n">DefaultProfiler</span><span class="p">()</span>
-
-<span class="c1"># perform some queries we can profile</span>
-<span class="k">with</span> <span class="n">pool</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
-    <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
-        <span class="n">c</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;SELECT 1&quot;</span><span class="p">)</span>
-
-<span class="c1"># output: SELECT 1 0.00012579001486301422</span>
-<span class="k">for</span> <span class="n">evt</span> <span class="ow">in</span> <span class="n">pool</span><span class="o">.</span><span class="n">profiler</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">elapsed</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.pg</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgConnectionPool</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.profiler</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefaultProfiler</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">db_cfg</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s2">&quot;rick_test&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_user&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_password&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="s1">&#39;sslmode&#39;</span><span class="p">:</span> <span class="s1">&#39;require&#39;</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="p">}</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="n">pool</span> <span class="o">=</span> <span class="n">PgConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">db_cfg</span><span class="p">)</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="c1"># instantiate profiler, and use it on pool object</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="n">pool</span><span class="o">.</span><span class="n">profiler</span> <span class="o">=</span> <span class="n">DefaultProfiler</span><span class="p">()</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="c1"># perform some queries we can profile</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="k">with</span> <span class="n">pool</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>    <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>        <span class="n">c</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;SELECT 1&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="c1"># output: SELECT 1 0.00012579001486301422</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="k">for</span> <span class="n">evt</span> <span class="ow">in</span> <span class="n">pool</span><span class="o">.</span><span class="n">profiler</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">evt</span><span class="o">.</span><span class="n">elapsed</span><span class="p">)</span>
 </code></pre></div></p>
 
 
@@ -1717,6 +1717,12 @@ just assign the desired instance to the <strong>profiler</strong> property:</p>
 
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
         
       </main>
       
@@ -1763,7 +1769,7 @@ just assign the desired instance to the <strong>profiler</strong> property:</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "content.code.copy", "navigation.top"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>

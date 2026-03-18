@@ -137,9 +137,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
     
-      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
       </label>
     
@@ -1578,18 +1578,18 @@ usage such as serialization/deserialization or type conversion.</p>
 <p>Loads attribute values from the provided named parameters. 
 Note: loading can also be done via constructor</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
-
-<span class="nd">@fieldmapper</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">MyRecord</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_record&#39;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
-
-<span class="c1"># load values via constructor</span>
-<span class="n">r1</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">)</span>
-
-<span class="c1"># load values via load()</span>
-<span class="n">r2</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;John Connor&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nd">@fieldmapper</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyRecord</span><span class="p">:</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_record&#39;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># load values via constructor</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">r1</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># load values via load()</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">r2</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;John Connor&#39;</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="recordfromrecordrecord-dict">Record.<strong>fromrecord(record: dict)</strong><a class="headerlink" href="#recordfromrecordrecord-dict" title="Permanent link">&para;</a></h3>
 <p>Load attribute values from a source dict. This method is used to load database row results into Record objects, and it
@@ -1603,78 +1603,78 @@ is present, raises <strong>AttributeError</strong> instead.</p>
 <h3 id="recorddbfields">Record.<strong>dbfields()</strong><a class="headerlink" href="#recorddbfields" title="Permanent link">&para;</a></h3>
 <p>Returns a list of the database field names, defined in the class declaration.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
-
-<span class="nd">@fieldmapper</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">MyRecord</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_record&#39;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
-
-<span class="n">r1</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">)</span>
-
-<span class="c1"># output: [&#39;id_record&#39;, &#39;name&#39;]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">dbfields</span><span class="p">())</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nd">@fieldmapper</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyRecord</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_record&#39;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">r1</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">)</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># output: [&#39;id_record&#39;, &#39;name&#39;]</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">dbfields</span><span class="p">())</span>
 </code></pre></div></p>
 <h3 id="recordasdict">Record.<strong>asdict()</strong><a class="headerlink" href="#recordasdict" title="Permanent link">&para;</a></h3>
 <p>Converts the Record object to a dictionary and returns it. Attribute names are used as keys for existing values.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
-
-<span class="nd">@fieldmapper</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">MyRecord</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_record&#39;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
-
-<span class="n">r1</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">)</span>
-
-<span class="c1"># output: {&#39;id&#39;: 1, &#39;name&#39;: &#39;Sarah Connor&#39;}</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">asdict</span><span class="p">())</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nd">@fieldmapper</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyRecord</span><span class="p">:</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_record&#39;</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">r1</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1"># output: {&#39;id&#39;: 1, &#39;name&#39;: &#39;Sarah Connor&#39;}</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">asdict</span><span class="p">())</span>
 </code></pre></div></p>
 <h3 id="recordasrecord">Record.<strong>asrecord()</strong><a class="headerlink" href="#recordasrecord" title="Permanent link">&para;</a></h3>
 <p>Converts the Record object to a database-compatible dictionary and returns it. Field names are used as keys for
 existing values.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
-
-<span class="nd">@fieldmapper</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">MyRecord</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_record&#39;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
-
-<span class="n">r1</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">)</span>
-
-<span class="c1"># output: {&#39;id_record&#39;: 1, &#39;name&#39;: &#39;Sarah Connor&#39;}</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">asrecord</span><span class="p">())</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nd">@fieldmapper</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyRecord</span><span class="p">:</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_record&#39;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">r1</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">)</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1"># output: {&#39;id_record&#39;: 1, &#39;name&#39;: &#39;Sarah Connor&#39;}</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">asrecord</span><span class="p">())</span>
 </code></pre></div></p>
 <h3 id="recordfields">Record.<strong>fields()</strong><a class="headerlink" href="#recordfields" title="Permanent link">&para;</a></h3>
 <p>Alias function to Record.asdict().items()</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
-
-<span class="nd">@fieldmapper</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">MyRecord</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_record&#39;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
-
-<span class="n">r1</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">)</span>
-
-<span class="c1"># output: [&#39;id&#39;, &#39;name&#39;]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">fields</span><span class="p">())</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nd">@fieldmapper</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyRecord</span><span class="p">:</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_record&#39;</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="n">r1</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="c1"># output: [&#39;id&#39;, &#39;name&#39;]</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">fields</span><span class="p">())</span>
 </code></pre></div></p>
 <h3 id="recordvalues">Record.<strong>values()</strong><a class="headerlink" href="#recordvalues" title="Permanent link">&para;</a></h3>
 <p>Returns a list with stored values.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
-
-<span class="nd">@fieldmapper</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">MyRecord</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_record&#39;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
-
-<span class="n">r1</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">)</span>
-
-<span class="c1"># output: [1, &#39;Sarah Connor&#39;]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nd">@fieldmapper</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyRecord</span><span class="p">:</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_record&#39;</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="n">r1</span> <span class="o">=</span> <span class="n">MyRecord</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">)</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1"># output: [1, &#39;Sarah Connor&#39;]</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 </code></pre></div></p>
 
 
@@ -1697,6 +1697,12 @@ existing values.</p>
 
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
         
       </main>
       
@@ -1743,7 +1749,7 @@ existing values.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "content.code.copy", "navigation.top"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

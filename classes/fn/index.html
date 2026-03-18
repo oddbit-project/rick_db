@@ -137,9 +137,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
     
-      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
       </label>
     
@@ -1855,8 +1855,8 @@ definitions for aliasing.</p>
 <h2 id="aggregate-functions">Aggregate Functions<a class="headerlink" href="#aggregate-functions" title="Permanent link">&para;</a></h2>
 <h3 id="fncountfield">Fn.<strong>count(field="*")</strong><a class="headerlink" href="#fncountfield" title="Permanent link">&para;</a></h3>
 <p>Returns <code>Literal("COUNT(field)")</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>          <span class="c1"># COUNT(*)</span>
-<span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>      <span class="c1"># COUNT(id)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>          <span class="c1"># COUNT(*)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>      <span class="c1"># COUNT(id)</span>
 </code></pre></div>
 <h3 id="fnsumfield">Fn.<strong>sum(field)</strong><a class="headerlink" href="#fnsumfield" title="Permanent link">&para;</a></h3>
 <p>Returns <code>Literal("SUM(field)")</code>.</p>
@@ -1875,8 +1875,8 @@ definitions for aliasing.</p>
 <p>Returns <code>Literal("FLOOR(field)")</code>.</p>
 <h3 id="fnroundfield-decimalsnone">Fn.<strong>round(field, decimals=None)</strong><a class="headerlink" href="#fnroundfield-decimalsnone" title="Permanent link">&para;</a></h3>
 <p>Returns <code>Literal("ROUND(field)")</code> or <code>Literal("ROUND(field, decimals)")</code> if <em>decimals</em> is specified.</p>
-<div class="highlight"><pre><span></span><code><span class="n">Fn</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span>       <span class="c1"># ROUND(price)</span>
-<span class="n">Fn</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="c1"># ROUND(price, 2)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">Fn</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span>       <span class="c1"># ROUND(price)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">Fn</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="c1"># ROUND(price, 2)</span>
 </code></pre></div>
 <h3 id="fnpowerfield-exponent">Fn.<strong>power(field, exponent)</strong><a class="headerlink" href="#fnpowerfield-exponent" title="Permanent link">&para;</a></h3>
 <p>Returns <code>Literal("POWER(field, exponent)")</code>.</p>
@@ -1888,82 +1888,82 @@ definitions for aliasing.</p>
 <p>Returns <code>Literal("SIGN(field)")</code>.</p>
 <h3 id="fntruncfield-decimalsnone">Fn.<strong>trunc(field, decimals=None)</strong><a class="headerlink" href="#fntruncfield-decimalsnone" title="Permanent link">&para;</a></h3>
 <p>Returns <code>Literal("TRUNC(field)")</code> or <code>Literal("TRUNC(field, decimals)")</code> if <em>decimals</em> is specified.</p>
-<div class="highlight"><pre><span></span><code><span class="n">Fn</span><span class="o">.</span><span class="n">trunc</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span>       <span class="c1"># TRUNC(price)</span>
-<span class="n">Fn</span><span class="o">.</span><span class="n">trunc</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>    <span class="c1"># TRUNC(price, 1)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">Fn</span><span class="o">.</span><span class="n">trunc</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span>       <span class="c1"># TRUNC(price)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">Fn</span><span class="o">.</span><span class="n">trunc</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>    <span class="c1"># TRUNC(price, 1)</span>
 </code></pre></div>
 <h2 id="general-functions">General Functions<a class="headerlink" href="#general-functions" title="Permanent link">&para;</a></h2>
 <h3 id="fncoalescefields">Fn.<strong>coalesce(*fields)</strong><a class="headerlink" href="#fncoalescefields" title="Permanent link">&para;</a></h3>
 <p>Returns <code>Literal("COALESCE(field1, field2, ...)")</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">Fn</span><span class="o">.</span><span class="n">coalesce</span><span class="p">(</span><span class="s2">&quot;nickname&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;unknown&#39;&quot;</span><span class="p">)</span>   <span class="c1"># COALESCE(nickname, name, &#39;unknown&#39;)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">Fn</span><span class="o">.</span><span class="n">coalesce</span><span class="p">(</span><span class="s2">&quot;nickname&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;unknown&#39;&quot;</span><span class="p">)</span>   <span class="c1"># COALESCE(nickname, name, &#39;unknown&#39;)</span>
 </code></pre></div>
 <h3 id="fncastfield-type_name">Fn.<strong>cast(field, type_name)</strong><a class="headerlink" href="#fncastfield-type_name" title="Permanent link">&para;</a></h3>
 <p>Returns <code>Literal("CAST(field AS type_name)")</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">Fn</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">)</span>   <span class="c1"># CAST(price AS integer)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">Fn</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">)</span>   <span class="c1"># CAST(price AS integer)</span>
 </code></pre></div>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <p><code>Fn</code> helpers return <code>Literal</code> objects, so they are used with dict-style column definitions where the key is the
 expression and the value is the alias (or <code>None</code> for no alias):</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Fn</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
-
-<span class="n">dialect</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-
-<span class="c1"># Single aggregate</span>
-<span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">():</span> <span class="s2">&quot;total&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
-<span class="c1"># output: SELECT COUNT(*) AS &quot;total&quot; FROM &quot;orders&quot;</span>
-
-<span class="c1"># Multiple columns with aggregates</span>
-<span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">Select</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="p">{</span>
-        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">():</span> <span class="s2">&quot;order_count&quot;</span><span class="p">,</span>
-        <span class="n">Fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">):</span> <span class="s2">&quot;total_amount&quot;</span><span class="p">,</span>
-        <span class="n">Fn</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">):</span> <span class="s2">&quot;avg_amount&quot;</span><span class="p">,</span>
-    <span class="p">})</span>
-    <span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="c1"># output: SELECT &quot;category&quot;,COUNT(*) AS &quot;order_count&quot;,SUM(amount) AS &quot;total_amount&quot;,AVG(amount) AS &quot;avg_amount&quot; FROM &quot;orders&quot; GROUP BY &quot;category&quot;</span>
-
-<span class="c1"># Nested functions</span>
-<span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">Select</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="p">{</span>
-        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">Fn</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Fn</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span> <span class="s2">&quot;avg_rounded&quot;</span><span class="p">,</span>
-    <span class="p">})</span>
-    <span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="c1"># output: SELECT &quot;category&quot;,ROUND(AVG(amount), 2) AS &quot;avg_rounded&quot; FROM &quot;orders&quot; GROUP BY &quot;category&quot;</span>
-
-<span class="c1"># With HAVING</span>
-<span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">Select</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="p">{</span>
-        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">Fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">):</span> <span class="s2">&quot;total&quot;</span><span class="p">,</span>
-    <span class="p">})</span>
-    <span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">having</span><span class="p">(</span><span class="n">Fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">),</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="c1"># output: SELECT &quot;category&quot;,SUM(amount) AS &quot;total&quot; FROM &quot;orders&quot; GROUP BY &quot;category&quot; HAVING (SUM(amount) &gt; %s)</span>
-
-<span class="c1"># With fieldmapper Record classes</span>
-<span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">Select</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">Order</span><span class="p">,</span> <span class="p">{</span>
-        <span class="n">Order</span><span class="o">.</span><span class="n">category</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">():</span> <span class="s2">&quot;cnt&quot;</span><span class="p">,</span>
-        <span class="n">Fn</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">Order</span><span class="o">.</span><span class="n">price</span><span class="p">):</span> <span class="s2">&quot;cheapest&quot;</span><span class="p">,</span>
-        <span class="n">Fn</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Order</span><span class="o">.</span><span class="n">price</span><span class="p">):</span> <span class="s2">&quot;priciest&quot;</span><span class="p">,</span>
-        <span class="n">Fn</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Fn</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="n">Order</span><span class="o">.</span><span class="n">price</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span> <span class="s2">&quot;avg_price&quot;</span><span class="p">,</span>
-    <span class="p">})</span>
-    <span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">Order</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">Order</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
-<span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Fn</span><span class="p">,</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">dialect</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># Single aggregate</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">():</span> <span class="s2">&quot;total&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># output: SELECT COUNT(*) AS &quot;total&quot; FROM &quot;orders&quot;</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># Multiple columns with aggregates</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="n">Select</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="p">{</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>        <span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">():</span> <span class="s2">&quot;order_count&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>        <span class="n">Fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">):</span> <span class="s2">&quot;total_amount&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>        <span class="n">Fn</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">):</span> <span class="s2">&quot;avg_amount&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>    <span class="p">})</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>    <span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="p">)</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="c1"># output: SELECT &quot;category&quot;,COUNT(*) AS &quot;order_count&quot;,SUM(amount) AS &quot;total_amount&quot;,AVG(amount) AS &quot;avg_amount&quot; FROM &quot;orders&quot; GROUP BY &quot;category&quot;</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="c1"># Nested functions</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>    <span class="n">Select</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="p">{</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>        <span class="n">Fn</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Fn</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span> <span class="s2">&quot;avg_rounded&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>    <span class="p">})</span>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>    <span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="p">)</span>
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="c1"># output: SELECT &quot;category&quot;,ROUND(AVG(amount), 2) AS &quot;avg_rounded&quot; FROM &quot;orders&quot; GROUP BY &quot;category&quot;</span>
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="c1"># With HAVING</span>
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a>    <span class="n">Select</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span>
+<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="p">{</span>
+<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a>        <span class="n">Fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">):</span> <span class="s2">&quot;total&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a>    <span class="p">})</span>
+<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a>    <span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a>    <span class="o">.</span><span class="n">having</span><span class="p">(</span><span class="n">Fn</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">),</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a>    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a><span class="p">)</span>
+<a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a><span class="c1"># output: SELECT &quot;category&quot;,SUM(amount) AS &quot;total&quot; FROM &quot;orders&quot; GROUP BY &quot;category&quot; HAVING (SUM(amount) &gt; %s)</span>
+<a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a>
+<a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a><span class="c1"># With fieldmapper Record classes</span>
+<a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a><span class="n">qry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a>    <span class="n">Select</span><span class="p">(</span><span class="n">dialect</span><span class="p">)</span>
+<a id="__codelineno-5-51" name="__codelineno-5-51" href="#__codelineno-5-51"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">Order</span><span class="p">,</span> <span class="p">{</span>
+<a id="__codelineno-5-52" name="__codelineno-5-52" href="#__codelineno-5-52"></a>        <span class="n">Order</span><span class="o">.</span><span class="n">category</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-5-53" name="__codelineno-5-53" href="#__codelineno-5-53"></a>        <span class="n">Fn</span><span class="o">.</span><span class="n">count</span><span class="p">():</span> <span class="s2">&quot;cnt&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-54" name="__codelineno-5-54" href="#__codelineno-5-54"></a>        <span class="n">Fn</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">Order</span><span class="o">.</span><span class="n">price</span><span class="p">):</span> <span class="s2">&quot;cheapest&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-55" name="__codelineno-5-55" href="#__codelineno-5-55"></a>        <span class="n">Fn</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Order</span><span class="o">.</span><span class="n">price</span><span class="p">):</span> <span class="s2">&quot;priciest&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-56" name="__codelineno-5-56" href="#__codelineno-5-56"></a>        <span class="n">Fn</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Fn</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="n">Order</span><span class="o">.</span><span class="n">price</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span> <span class="s2">&quot;avg_price&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-57" name="__codelineno-5-57" href="#__codelineno-5-57"></a>    <span class="p">})</span>
+<a id="__codelineno-5-58" name="__codelineno-5-58" href="#__codelineno-5-58"></a>    <span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">Order</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+<a id="__codelineno-5-59" name="__codelineno-5-59" href="#__codelineno-5-59"></a>    <span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">Order</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
+<a id="__codelineno-5-60" name="__codelineno-5-60" href="#__codelineno-5-60"></a>    <span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-5-61" name="__codelineno-5-61" href="#__codelineno-5-61"></a><span class="p">)</span>
 </code></pre></div>
 
 
@@ -1986,6 +1986,12 @@ expression and the value is the alias (or <code>None</code> for no alias):</p>
 
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
         
       </main>
       
@@ -2032,7 +2038,7 @@ expression and the value is the alias (or <code>None</code> for no alias):</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "content.code.copy", "navigation.top"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -137,9 +137,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
     
-      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
       </label>
     
@@ -1793,236 +1793,236 @@
 <h2 id="jsonfield">JsonField<a class="headerlink" href="#jsonfield" title="Permanent link">&para;</a></h2>
 <p>The <code>JsonField</code> class wraps a JSON column name and provides methods that generate SQL expressions as <code>Literal</code> objects,
 suitable for use in <code>Select</code>, <code>where()</code>, and other query builder methods.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
-
-<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-<span class="n">json_field</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">json_field</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
 </code></pre></div>
 <p>When no dialect is provided (or the dialect does not have <code>json_support</code>), fallback expressions using <code>JSON_EXTRACT()</code>
 and <code>JSON_CONTAINS()</code> are generated instead.</p>
 <h3 id="extracting-values">Extracting values<a class="headerlink" href="#extracting-values" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
-
-<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-<span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
-
-<span class="c1"># Extract as text using -&gt;&gt; (PostgreSQL)</span>
-<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
-<span class="c1"># output: &quot;data&quot;-&gt;&gt;&#39;name&#39;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
-
-<span class="c1"># Extract with alias</span>
-<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;user_name&#39;</span><span class="p">)</span>
-<span class="c1"># output: &quot;data&quot;-&gt;&gt;&#39;name&#39; AS &quot;user_name&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
-
-<span class="c1"># Extract as text (same as extract for PostgreSQL)</span>
-<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract_text</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;user_email&#39;</span><span class="p">)</span>
-<span class="c1"># output: &quot;data&quot;-&gt;&gt;&#39;email&#39; AS &quot;user_email&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Extract as text using -&gt;&gt; (PostgreSQL)</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># output: &quot;data&quot;-&gt;&gt;&#39;name&#39;</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1"># Extract with alias</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;user_name&#39;</span><span class="p">)</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1"># output: &quot;data&quot;-&gt;&gt;&#39;name&#39; AS &quot;user_name&quot;</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1"># Extract as text (same as extract for PostgreSQL)</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract_text</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;user_email&#39;</span><span class="p">)</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="c1"># output: &quot;data&quot;-&gt;&gt;&#39;email&#39; AS &quot;user_email&quot;</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
 </code></pre></div>
 <p>Without a dialect, generic <code>JSON_EXTRACT()</code> syntax is used:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
-
-<span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
-
-<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;$.name&#39;</span><span class="p">)</span>
-<span class="c1"># output: JSON_EXTRACT(data, &#39;$.name&#39;)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="s1">&#39;$.name&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># output: JSON_EXTRACT(data, &#39;$.name&#39;)</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="checking-containment-and-paths">Checking containment and paths<a class="headerlink" href="#checking-containment-and-paths" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
-
-<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-<span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
-
-<span class="c1"># Check if JSON contains a value (generates parameterized SQL)</span>
-<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
-<span class="c1"># output: &quot;data&quot; @&gt; %s::jsonb</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
-
-<span class="c1"># Check if a path exists</span>
-<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">has_path</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
-<span class="c1"># output: &quot;data&quot; ?? &#39;name&#39;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Check if JSON contains a value (generates parameterized SQL)</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="c1"># output: &quot;data&quot; @&gt; %s::jsonb</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="c1"># Check if a path exists</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">has_path</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="c1"># output: &quot;data&quot; ?? &#39;name&#39;</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="bracket-notation">Bracket notation<a class="headerlink" href="#bracket-notation" title="Permanent link">&para;</a></h3>
 <p><code>JsonField</code> supports bracket notation for path access. Each bracket returns a new <code>JsonField</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
-
-<span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
-
-<span class="n">nested</span> <span class="o">=</span> <span class="n">jf</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
-<span class="c1"># output: data-&gt;&gt;&quot;name&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">nested</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonField</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">jf</span> <span class="o">=</span> <span class="n">JsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">nested</span> <span class="o">=</span> <span class="n">jf</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># output: data-&gt;&gt;&quot;name&quot;</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">nested</span><span class="p">)</span>
 </code></pre></div>
 <p>For more details, see the <a href="../classes/jsonfield/">JsonField</a> class reference.</p>
 <h2 id="pgjsonfield">PgJsonField<a class="headerlink" href="#pgjsonfield" title="Permanent link">&para;</a></h2>
 <p><code>PgJsonField</code> extends <code>JsonField</code> with PostgreSQL-specific features for JSON and JSONB columns.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgJsonField</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
-
-<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-<span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgJsonField</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="extracting-json-objects">Extracting JSON objects<a class="headerlink" href="#extracting-json-objects" title="Permanent link">&para;</a></h3>
 <p>The <code>extract_object()</code> method uses the <code>-&gt;</code> operator, which preserves the JSON type (unlike <code>-&gt;&gt;</code> which returns text):</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgJsonField</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
-
-<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-<span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
-
-<span class="c1"># Extract as JSON object (preserves type)</span>
-<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract_object</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">)</span>
-<span class="c1"># output: &quot;data&quot;-&gt;&#39;config&#39;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
-
-<span class="c1"># With alias</span>
-<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract_object</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;cfg&#39;</span><span class="p">)</span>
-<span class="c1"># output: &quot;data&quot;-&gt;&#39;config&#39; AS &quot;cfg&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgJsonField</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1"># Extract as JSON object (preserves type)</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract_object</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">)</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1"># output: &quot;data&quot;-&gt;&#39;config&#39;</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="c1"># With alias</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract_object</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;cfg&#39;</span><span class="p">)</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="c1"># output: &quot;data&quot;-&gt;&#39;config&#39; AS &quot;cfg&quot;</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="jsonpath-queries-postgresql-12">jsonpath queries (PostgreSQL 12+)<a class="headerlink" href="#jsonpath-queries-postgresql-12" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgJsonField</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
-
-<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-<span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
-
-<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">path_query</span><span class="p">(</span><span class="s1">&#39;$.name&#39;</span><span class="p">)</span>
-<span class="c1"># output: &quot;data&quot;::jsonb @? &#39;$.name&#39;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgJsonField</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">path_query</span><span class="p">(</span><span class="s1">&#39;$.name&#39;</span><span class="p">)</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># output: &quot;data&quot;::jsonb @? &#39;$.name&#39;</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="type-casting">Type casting<a class="headerlink" href="#type-casting" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgJsonField</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
-
-<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-<span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
-
-<span class="c1"># Default is JSONB</span>
-<span class="c1"># output: data::jsonb</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">jf</span><span class="p">)</span>
-
-<span class="c1"># Cast to JSON</span>
-<span class="n">jf</span><span class="o">.</span><span class="n">as_json</span><span class="p">()</span>
-<span class="c1"># output: data::json</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">jf</span><span class="p">)</span>
-
-<span class="c1"># Cast back to JSONB</span>
-<span class="n">jf</span><span class="o">.</span><span class="n">as_jsonb</span><span class="p">()</span>
-<span class="c1"># output: data::jsonb</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">jf</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgJsonField</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="c1"># Default is JSONB</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="c1"># output: data::jsonb</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">jf</span><span class="p">)</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="c1"># Cast to JSON</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="n">jf</span><span class="o">.</span><span class="n">as_json</span><span class="p">()</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="c1"># output: data::json</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="nb">print</span><span class="p">(</span><span class="n">jf</span><span class="p">)</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="c1"># Cast back to JSONB</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="n">jf</span><span class="o">.</span><span class="n">as_jsonb</span><span class="p">()</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="c1"># output: data::jsonb</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="nb">print</span><span class="p">(</span><span class="n">jf</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="bracket-notation-postgresql">Bracket notation (PostgreSQL)<a class="headerlink" href="#bracket-notation-postgresql" title="Permanent link">&para;</a></h3>
 <p><code>PgJsonField</code> brackets use the <code>-&gt;</code> operator (preserving JSON type), unlike <code>JsonField</code> which uses <code>-&gt;&gt;</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgJsonField</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
-
-<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-<span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
-
-<span class="c1"># Single level</span>
-<span class="n">nested</span> <span class="o">=</span> <span class="n">jf</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">]</span>
-<span class="c1"># output: data-&gt;&quot;address&quot;::jsonb</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">nested</span><span class="p">)</span>
-
-<span class="c1"># Nested access</span>
-<span class="n">nested</span> <span class="o">=</span> <span class="n">jf</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">][</span><span class="s1">&#39;city&#39;</span><span class="p">]</span>
-<span class="c1"># output: data-&gt;&quot;address&quot;-&gt;&quot;city&quot;::jsonb</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">nested</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgJsonField</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># Single level</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="n">nested</span> <span class="o">=</span> <span class="n">jf</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">]</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="c1"># output: data-&gt;&quot;address&quot;::jsonb</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">nested</span><span class="p">)</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="c1"># Nested access</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="n">nested</span> <span class="o">=</span> <span class="n">jf</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">][</span><span class="s1">&#39;city&#39;</span><span class="p">]</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="c1"># output: data-&gt;&quot;address&quot;-&gt;&quot;city&quot;::jsonb</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">nested</span><span class="p">)</span>
 </code></pre></div>
 <p>For more details, see the <a href="../classes/pgjsonfield/">PgJsonField</a> class reference.</p>
 <h3 id="array-index-access">Array index access<a class="headerlink" href="#array-index-access" title="Permanent link">&para;</a></h3>
 <p>PostgreSQL JSON operators also support numeric indices for arrays:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgJsonField</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
-
-<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-<span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="s1">&#39;tags&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
-
-<span class="c1"># Extract first element as text</span>
-<span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="c1"># output: &quot;tags&quot;-&gt;&gt;0</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgJsonField</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="s1">&#39;tags&#39;</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># Extract first element as text</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="n">expr</span> <span class="o">=</span> <span class="n">jf</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="c1"># output: &quot;tags&quot;-&gt;&gt;0</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="select-helper-methods">Select helper methods<a class="headerlink" href="#select-helper-methods" title="Permanent link">&para;</a></h2>
 <p>The <code>Select</code> query builder provides convenience methods for JSON operations.</p>
 <h3 id="json_field">json_field()<a class="headerlink" href="#json_field" title="Permanent link">&para;</a></h3>
 <p>Creates a <code>JsonField</code> or <code>PgJsonField</code> instance bound to the current query's dialect:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
-
-<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-<span class="n">qry</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">pg</span><span class="p">)</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-
-<span class="c1"># Creates a PgJsonField (since dialect is PgSqlDialect)</span>
-<span class="n">jf</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">json_field</span><span class="p">(</span><span class="s1">&#39;user_data&#39;</span><span class="p">)</span>
-
-<span class="c1"># With table qualifier</span>
-<span class="n">jf</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">json_field</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;users&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">pg</span><span class="p">)</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="c1"># Creates a PgJsonField (since dialect is PgSqlDialect)</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="n">jf</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">json_field</span><span class="p">(</span><span class="s1">&#39;user_data&#39;</span><span class="p">)</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="c1"># With table qualifier</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="n">jf</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">json_field</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;users&#39;</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="json_extract">json_extract()<a class="headerlink" href="#json_extract" title="Permanent link">&para;</a></h3>
 <p>Adds a JSON extraction expression to the SELECT column list:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
-
-<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-<span class="n">qry</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">pg</span><span class="p">)</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">json_extract</span><span class="p">(</span><span class="s1">&#39;user_data&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;user_name&#39;</span><span class="p">)</span>
-<span class="n">sql</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
-<span class="c1"># output: SELECT &quot;users&quot;.*,&quot;user_data&quot;-&gt;&gt;&#39;name&#39; AS &quot;user_name&quot; FROM &quot;users&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">pg</span><span class="p">)</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">json_extract</span><span class="p">(</span><span class="s1">&#39;user_data&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;user_name&#39;</span><span class="p">)</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="n">sql</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1"># output: SELECT &quot;users&quot;.*,&quot;user_data&quot;-&gt;&gt;&#39;name&#39; AS &quot;user_name&quot; FROM &quot;users&quot;</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="json_where">json_where()<a class="headerlink" href="#json_where" title="Permanent link">&para;</a></h3>
 <p>Adds a WHERE condition on a JSON field:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
-
-<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-<span class="n">qry</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">pg</span><span class="p">)</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">json_where</span><span class="p">(</span><span class="s1">&#39;user_data&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-<span class="n">sql</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
-<span class="c1"># output: SELECT &quot;users&quot;.* FROM &quot;users&quot; WHERE (&quot;user_data&quot;-&gt;&gt;&#39;active&#39; = %s)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
-<span class="c1"># values: [True]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="n">qry</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">pg</span><span class="p">)</span><span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">json_where</span><span class="p">(</span><span class="s1">&#39;user_data&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="n">sql</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1"># output: SELECT &quot;users&quot;.* FROM &quot;users&quot; WHERE (&quot;user_data&quot;-&gt;&gt;&#39;active&#39; = %s)</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="c1"># values: [True]</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="complete-example">Complete example<a class="headerlink" href="#complete-example" title="Permanent link">&para;</a></h2>
 <p>Combining JSON operations in a full query:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgJsonField</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
-
-<span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_user&#39;</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">User</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_user&#39;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
-    <span class="n">profile</span> <span class="o">=</span> <span class="s1">&#39;profile&#39;</span>  <span class="c1"># JSONB column</span>
-
-<span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
-
-<span class="c1"># Create a JSON field helper</span>
-<span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
-
-<span class="c1"># Build a query that extracts JSON data and filters by JSON values</span>
-<span class="n">qry</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">Select</span><span class="p">(</span><span class="n">pg</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="p">[</span><span class="n">User</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
-    <span class="o">.</span><span class="n">json_extract</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;user_email&#39;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">json_where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="n">sql</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
-<span class="c1"># output: SELECT &quot;id_user&quot;,&quot;name&quot;,&quot;profile&quot;-&gt;&gt;&#39;email&#39; AS &quot;user_email&quot; FROM &quot;users&quot;</span>
-<span class="c1">#         WHERE (&quot;profile&quot;-&gt;&gt;&#39;active&#39; = %s) ORDER BY &quot;name&quot; ASC LIMIT 10</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
-<span class="c1"># values: [True]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">PgJsonField</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql.dialect</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlDialect</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_user&#39;</span><span class="p">)</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="k">class</span><span class="w"> </span><span class="nc">User</span><span class="p">:</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_user&#39;</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    <span class="n">profile</span> <span class="o">=</span> <span class="s1">&#39;profile&#39;</span>  <span class="c1"># JSONB column</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="n">pg</span> <span class="o">=</span> <span class="n">PgSqlDialect</span><span class="p">()</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="c1"># Create a JSON field helper</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="n">jf</span> <span class="o">=</span> <span class="n">PgJsonField</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">pg</span><span class="p">)</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="c1"># Build a query that extracts JSON data and filters by JSON values</span>
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="n">qry</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>    <span class="n">Select</span><span class="p">(</span><span class="n">pg</span><span class="p">)</span>
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a>    <span class="o">.</span><span class="n">from_</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="p">[</span><span class="n">User</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>    <span class="o">.</span><span class="n">json_extract</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;user_email&#39;</span><span class="p">)</span>
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>    <span class="o">.</span><span class="n">json_where</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a>    <span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a>    <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a><span class="p">)</span>
+<a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a>
+<a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a><span class="n">sql</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">qry</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<a id="__codelineno-14-27" name="__codelineno-14-27" href="#__codelineno-14-27"></a><span class="c1"># output: SELECT &quot;id_user&quot;,&quot;name&quot;,&quot;profile&quot;-&gt;&gt;&#39;email&#39; AS &quot;user_email&quot; FROM &quot;users&quot;</span>
+<a id="__codelineno-14-28" name="__codelineno-14-28" href="#__codelineno-14-28"></a><span class="c1">#         WHERE (&quot;profile&quot;-&gt;&gt;&#39;active&#39; = %s) ORDER BY &quot;name&quot; ASC LIMIT 10</span>
+<a id="__codelineno-14-29" name="__codelineno-14-29" href="#__codelineno-14-29"></a><span class="nb">print</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+<a id="__codelineno-14-30" name="__codelineno-14-30" href="#__codelineno-14-30"></a><span class="c1"># values: [True]</span>
+<a id="__codelineno-14-31" name="__codelineno-14-31" href="#__codelineno-14-31"></a><span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="dialect-support">Dialect support<a class="headerlink" href="#dialect-support" title="Permanent link">&para;</a></h2>
 <table>
@@ -2112,6 +2112,12 @@ so JSON operations will fall back to generic syntax if used with a <code>JsonFie
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
       </main>
       
         <footer class="md-footer">
@@ -2157,7 +2163,7 @@ so JSON operations will fall back to generic syntax if used with a <code>JsonFie
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "content.code.copy", "navigation.top"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -137,9 +137,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
     
-      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
       </label>
     
@@ -2263,50 +2263,50 @@ methods that return records or collections.</p>
 <p>Attempt to read a record  from the database by primary key value. It will return a record of the defined record_type on 
 success, None if no record exists. Will raise <strong>RepositoryError</strong> if the record_type doesn't have a primary key definition.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="c1"># try to fetch record with pk=32</span>
-<span class="n">record</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_pk</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">record</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;record 32 exists&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># try to fetch record with pk=32</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">record</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_pk</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">if</span> <span class="n">record</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;record 32 exists&quot;</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositoryfetch_oneqry-select-clsnone">Repository.<strong>fetch_one(qry: Select, cls=None)</strong><a class="headerlink" href="#repositoryfetch_oneqry-select-clsnone" title="Permanent link">&para;</a></h3>
 <p>Execute the <em>qry</em> <a href="../select/">Select</a> statement and return a single record. If there is no record to return, will return None.
 If a record class is specified in <em>cls</em>, this class will be used as record_type instead of the repository definition.
 Supports both <code>@fieldmapper</code> classes and plain classes such as dataclasses.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="c1"># fetch record if exists, else returns None</span>
-<span class="n">user</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_one</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">select</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf@lotr&#39;</span><span class="p">))</span>
-
-<span class="c1"># fetch using a dataclass</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
-
-<span class="nd">@dataclass</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">UserInfo</span><span class="p">:</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
-
-<span class="n">user</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_one</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf@lotr&#39;</span><span class="p">),</span> <span class="bp">cls</span><span class="o">=</span><span class="n">UserInfo</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># fetch record if exists, else returns None</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">user</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_one</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">select</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf@lotr&#39;</span><span class="p">))</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># fetch using a dataclass</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="nd">@dataclass</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="k">class</span><span class="w"> </span><span class="nc">UserInfo</span><span class="p">:</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">user</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_one</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf@lotr&#39;</span><span class="p">),</span> <span class="bp">cls</span><span class="o">=</span><span class="n">UserInfo</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositoryfetchqry-select-clsnone">Repository.<strong>fetch(qry: Select, cls=None)</strong><a class="headerlink" href="#repositoryfetchqry-select-clsnone" title="Permanent link">&para;</a></h3>
 <p>Execute the <em>qry</em> <a href="../select/">Select</a> statement and return a list of records. If there is nothing to return, will return
 and empty list. If a record class is specified in <em>cls</em>, this class will be used as record_type instead of the repository
 definition. This is useful to e.g. return join results that may return a different record type. </p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="c1"># fetch a list of records from a query</span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">select</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf%&#39;</span><span class="p">)):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># fetch a list of records from a query</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">select</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf%&#39;</span><span class="p">)):</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositoryfetch_rawqry-select">Repository.<strong>fetch_raw(qry: Select)</strong><a class="headerlink" href="#repositoryfetch_rawqry-select" title="Permanent link">&para;</a></h3>
 <p>Execute the <em>qry</em> <a href="../select/">Select</a> statement, but no record conversion is performed on the result - it will return 
 the raw result dataset, a collection of dict-like structures, from the database connection. If there is nothing to return, will return
 and empty list. </p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="c1"># fetch a list of records from a query</span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_raw</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">select</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf%&#39;</span><span class="p">)):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># fetch a list of records from a query</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_raw</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">select</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf%&#39;</span><span class="p">)):</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
 </code></pre></div></p>
 <h3 id="repositoryfetch_by_fieldfield-value-colsnone-clsnone">Repository.<strong>fetch_by_field(field, value, cols=None, cls=None)</strong><a class="headerlink" href="#repositoryfetch_by_fieldfield-value-colsnone-clsnone" title="Permanent link">&para;</a></h3>
 <p>Fetch a list of rows where field matches a value. An optional list of fields to be returned can be defined with <em>cols</em>.
@@ -2314,9 +2314,9 @@ If a record class is specified in <em>cls</em>, this class will be used as recor
 Supports both <code>@fieldmapper</code> classes and plain classes such as dataclasses.
 It returns a record list, or an empty list if no match is found.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="c1"># fetch records where login=&#39;gandalf@lotr&#39;</span>
-<span class="n">user</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_by_field</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf@lotr&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># fetch records where login=&#39;gandalf@lotr&#39;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">user</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_by_field</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf@lotr&#39;</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositoryfetch_wherewhere_clauses-list-colsnone-clsnone">Repository.<strong>fetch_where(where_clauses: list, cols=None, cls=None)</strong><a class="headerlink" href="#repositoryfetch_wherewhere_clauses-list-colsnone-clsnone" title="Permanent link">&para;</a></h3>
 <p>Fetch a list of rows that match a list of <strong>WHERE</strong> clauses. If more than one clause is present, they are concatenated
@@ -2326,20 +2326,20 @@ Supports both <code>@fieldmapper</code> classes and plain classes such as datacl
 It returns a record list, or an empty list if no match is found.</p>
 <p>A where clause is a list of tuples in the form of <em>(field, operator, value)</em>. See the example below for more details.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="c1"># fetch &#39;name&#39; field from records matching a where clause </span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_where</span><span class="p">([(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf%&#39;</span><span class="p">),</span> <span class="p">],</span> <span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># fetch &#39;name&#39; field from records matching a where clause </span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_where</span><span class="p">([(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf%&#39;</span><span class="p">),</span> <span class="p">],</span> <span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]):</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositoryfetch_allclsnone">Repository.<strong>fetch_all(cls=None)</strong><a class="headerlink" href="#repositoryfetch_allclsnone" title="Permanent link">&para;</a></h3>
 <p>Fetch all rows; equivalent to a <strong>SELECT * FROM <record_type_table></strong>. It returns a record list, or an empty list if
 the table is empty. If a record class is specified in <em>cls</em>, this class will be used as record_type instead of the
 repository definition. Supports both <code>@fieldmapper</code> classes and plain classes such as dataclasses.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="c1"># fetch all records </span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># fetch all records </span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">():</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositoryfetch_all_orderedcol_namestr-ordersqlsql_asc-clsnone">Repository.<strong>fetch_all_ordered(col_name:str, order=Sql.SQL_ASC, cls=None)</strong><a class="headerlink" href="#repositoryfetch_all_orderedcol_namestr-ordersqlsql_asc-clsnone" title="Permanent link">&para;</a></h3>
 <p>Fetch all rows ordered by col_name and order direction; equivalent to a <strong>SELECT * FROM <record_type_table> ORDER BY col_name order</strong>.
@@ -2347,87 +2347,87 @@ It returns a record list, or an empty list if the table is empty. If a record cl
 will be used as record_type instead of the repository definition. Supports both <code>@fieldmapper</code> classes and plain classes
 such as dataclasses.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="c1"># fetch all records </span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_all_ordered</span><span class="p">(</span><span class="n">Character</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">Sql</span><span class="o">.</span><span class="n">SQL_DESC</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># fetch all records </span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_all_ordered</span><span class="p">(</span><span class="n">Character</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">Sql</span><span class="o">.</span><span class="n">SQL_DESC</span><span class="p">):</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositoryinsertrecord-colsnone">Repository.<strong>insert(record, cols=None)</strong><a class="headerlink" href="#repositoryinsertrecord-colsnone" title="Permanent link">&para;</a></h3>
 <p>Insert a new record, optionally returning values. If the database does not support INSERT...RETURNING, <em>cols</em> can only
 have one entry, and the primary key will be returned regardless of the actual field name.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="c1"># insert a new record, returns None</span>
-<span class="n">repo</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;John Connor&quot;</span><span class="p">))</span>
-
-<span class="c1"># insert a new record, returns a record with id filled</span>
-<span class="n">record</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Sarah Connor&quot;</span><span class="p">),</span> <span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
-<span class="k">if</span> <span class="n">record</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># insert a new record, returns None</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">repo</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;John Connor&quot;</span><span class="p">))</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># insert a new record, returns a record with id filled</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">record</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Sarah Connor&quot;</span><span class="p">),</span> <span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">if</span> <span class="n">record</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositoryinsert_pkrecord">Repository.<strong>insert_pk(record)</strong><a class="headerlink" href="#repositoryinsert_pkrecord" title="Permanent link">&para;</a></h3>
 <p>Insert a new record and return the primary key value, or None if database doesn't return any value. If no primary key 
 is defined, will raise <strong>RepositoryError</strong>. </p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="c1"># insert a new record, returns a record with id filled</span>
-<span class="nb">id</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">insert_pk</span><span class="p">(</span><span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;John Connor&quot;</span><span class="p">))</span>
-<span class="k">if</span> <span class="nb">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># insert a new record, returns a record with id filled</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">id</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">insert_pk</span><span class="p">(</span><span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;John Connor&quot;</span><span class="p">))</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">if</span> <span class="nb">id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositorydelete_pkpk_value">Repository.<strong>delete_pk(pk_value)</strong><a class="headerlink" href="#repositorydelete_pkpk_value" title="Permanent link">&para;</a></h3>
 <p>Remove a record identified by primary key value.  If no primary key is defined, will raise <strong>RepositoryError</strong>. </p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="c1"># remove record #32</span>
-<span class="n">repo</span><span class="o">.</span><span class="n">delete_pk</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># remove record #32</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">repo</span><span class="o">.</span><span class="n">delete_pk</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositorydelete_wherewhere_clauses-list">Repository.<strong>delete_where(where_clauses: list)</strong><a class="headerlink" href="#repositorydelete_wherewhere_clauses-list" title="Permanent link">&para;</a></h3>
 <p>Remove records matching a list of <strong>WHERE</strong> clauses. If more than one clause is present, they are concatenated
 with <strong>AND</strong>.</p>
 <p>A where clause is a list of tuples in the form of <em>(field, operator, value)</em>. See the example below for more details.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="c1"># remove records WHERE name=&#39;gandalf&#39; AND name=&#39;frodo&#39;</span>
-<span class="n">repo</span><span class="o">.</span><span class="n">delete_where</span><span class="p">([(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;frodo&#39;</span><span class="p">)])</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># remove records WHERE name=&#39;gandalf&#39; AND name=&#39;frodo&#39;</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">repo</span><span class="o">.</span><span class="n">delete_where</span><span class="p">([(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;frodo&#39;</span><span class="p">)])</span>
 </code></pre></div></p>
 <h3 id="repositorymap_result_idresult-list">Repository.<strong>map_result_id(result: list)</strong><a class="headerlink" href="#repositorymap_result_idresult-list" title="Permanent link">&para;</a></h3>
 <p>Transform a list of records into a dict indexed by primary key. If no primary key is defined, raises <strong>RepositoryError</strong>.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="n">records</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">Character</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;John Connor&quot;</span><span class="p">),</span>
-    <span class="n">Character</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Sarah Connor&quot;</span><span class="p">),</span>
-<span class="p">]</span>
-
-<span class="c1"># idx_records = { 1: Character(id=1, name=&quot;John Connor&quot;), 2: Character(id=2, name=&quot;Sarah Connor&quot;) } </span>
-<span class="n">idx_records</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">map_result_id</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">records</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="n">Character</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;John Connor&quot;</span><span class="p">),</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">Character</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Sarah Connor&quot;</span><span class="p">),</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="p">]</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="c1"># idx_records = { 1: Character(id=1, name=&quot;John Connor&quot;), 2: Character(id=2, name=&quot;Sarah Connor&quot;) } </span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="n">idx_records</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">map_result_id</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositoryvalid_pkpk_value">Repository.<strong>valid_pk(pk_value)</strong><a class="headerlink" href="#repositoryvalid_pkpk_value" title="Permanent link">&para;</a></h3>
 <p>Returns True if a row exists with a primary key value matching <em>pk_value</em>, or False otherwise. If no primary key is
 defined, raises <strong>RepositoryError</strong>.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="n">repo</span><span class="o">.</span><span class="n">valid_pk</span><span class="p">(</span><span class="mi">32</span><span class="p">):</span>
-    <span class="c1"># record with pk=32 exists</span>
-    <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">if</span> <span class="n">repo</span><span class="o">.</span><span class="n">valid_pk</span><span class="p">(</span><span class="mi">32</span><span class="p">):</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="c1"># record with pk=32 exists</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositoryexecsql-valuesnone-clsnone-useclstrue">Repository.<strong>exec(sql, values=None, cls=None, useCls=True)</strong><a class="headerlink" href="#repositoryexecsql-valuesnone-clsnone-useclstrue" title="Permanent link">&para;</a></h3>
 <p>Execute a raw SQL query. Query values must be passed via <em>values</em>. If <em>useCls</em> is True (default), returned database rows
 are converted to a list of records. If a Record class is specified via <em>cls</em>, it will be used instead of the internal
 record_type for record serialization.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM characters WHERE id=</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">32</span><span class="p">,]):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM characters WHERE id=</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">32</span><span class="p">,]):</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositoryexistsfield-value-pk_to_skip">Repository.<strong>exists(field, value, pk_to_skip)</strong><a class="headerlink" href="#repositoryexistsfield-value-pk_to_skip" title="Permanent link">&para;</a></h3>
 <p>Returns True if a record exists <strong>WHERE field=value AND primary_key &lt;&gt; pk_to_skip</strong>. If no primary key is
 defined, raises <strong>RepositoryError</strong>. This is useful to check for uniqueness.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="n">can_update</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf@lotr&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">can_update</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A record already exists with the same login value&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">can_update</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="s1">&#39;gandalf@lotr&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="k">if</span> <span class="ow">not</span> <span class="n">can_update</span><span class="p">:</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A record already exists with the same login value&quot;</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositoryupdaterecord-pk_valuenone">Repository.<strong>update(record, pk_value=None)</strong><a class="headerlink" href="#repositoryupdaterecord-pk_valuenone" title="Permanent link">&para;</a></h3>
 <p>Updates a record on the database by primary key. If <em>record</em> contains a primary key value, it will be used instead 
 of <em>pk_value</em>. If <em>record</em> doesn't contain a primary key value, <em>pk_value</em> is required.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="n">record</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;T-1000&#39;</span><span class="p">)</span>
-<span class="n">repo</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">record</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;T-1000&#39;</span><span class="p">)</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">repo</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositoryupdate_whererecord-where_list-list">Repository.<strong>update_where(record, where_list: list)</strong><a class="headerlink" href="#repositoryupdate_whererecord-where_list-list" title="Permanent link">&para;</a></h3>
 <p>Updates a record matching a list of <strong>WHERE</strong> clauses defined by <em>where_list</em>.  If more than one clause is present, 
@@ -2435,14 +2435,14 @@ they are concatenated with <strong>AND</strong>.</p>
 <p>A where clause is a list of tuples in the form of <em>(field, value)</em> or <em>(field, operator, value)</em>.  See the example 
 below for more details. </p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="n">record</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;T-1000&#39;</span><span class="p">)</span>
-<span class="n">repo</span><span class="o">.</span><span class="n">update_where</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="p">[(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;John Connor&#39;</span><span class="p">)])</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">record</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;T-1000&#39;</span><span class="p">)</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">repo</span><span class="o">.</span><span class="n">update_where</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="p">[(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;John Connor&#39;</span><span class="p">)])</span>
 </code></pre></div></p>
 <h3 id="repositorycount">Repository.<strong>count()</strong><a class="headerlink" href="#repositorycount" title="Permanent link">&para;</a></h3>
 <p>Returns the number of records in the table. Equivalent of <strong>SELECT COUNT(1) FROM <table_name></strong>. </p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="n">record</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;T-1000&#39;</span><span class="p">)</span>
-<span class="n">total</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">record</span> <span class="o">=</span> <span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;T-1000&#39;</span><span class="p">)</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="n">total</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 </code></pre></div></p>
 <h3 id="repositorycount_wherewhere_list-list">Repository.<strong>count_where(where_list: list)</strong><a class="headerlink" href="#repositorycount_wherewhere_list-list" title="Permanent link">&para;</a></h3>
 <p>Returns the number of records matching a list of <strong>WHERE</strong> clauses. If more than one clause is present, 
@@ -2450,7 +2450,7 @@ they are concatenated with <strong>AND</strong>.</p>
 <p>A where clause is a list of tuples in the form of <em>(field, value)</em> or <em>(field, operator, value)</em>.  See the example 
 below for more details. </p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="n">total_johns</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">count_where</span><span class="p">([(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;John %&#39;</span><span class="p">),</span> <span class="p">])</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">total_johns</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">count_where</span><span class="p">([(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;like&#39;</span><span class="p">,</span> <span class="s1">&#39;John %&#39;</span><span class="p">),</span> <span class="p">])</span>
 </code></pre></div></p>
 <h3 id="repositorylistqry-select-limitnone-offsetnone-clsnone">Repository.<strong>list(qry: Select, limit=None, offset=None, cls=None)</strong><a class="headerlink" href="#repositorylistqry-select-limitnone-offsetnone-clsnone" title="Permanent link">&para;</a></h3>
 <p>Performs a query <em>qry</em>, with an optional <em>offset</em> and <em>limit</em>, and returns a tuple with the total row count for the query
@@ -2458,19 +2458,19 @@ below for more details. </p>
 <p>If a Record class <em>cls</em> is specified, it will be used instead of the predefined <em>record_type</em>.</p>
 <p>Note: The original <em>qry</em> object is left intact.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="n">total_records</span><span class="p">,</span> <span class="n">recordset</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">select</span><span class="p">(),</span> <span class="mi">10</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">total_records</span><span class="p">,</span> <span class="n">recordset</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">select</span><span class="p">(),</span> <span class="mi">10</span><span class="p">)</span>
 </code></pre></div></p>
 <h3 id="repositorybegin">Repository.<strong>begin()</strong><a class="headerlink" href="#repositorybegin" title="Permanent link">&para;</a></h3>
 <p>Starts a repository transaction. Raises <strong>RepositoryError</strong> if a transaction is already in progress.
 When using a pool, a connection is acquired from the pool and held until the transaction is committed or rolled back.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="n">repo</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">repo</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">))</span>
-    <span class="n">repo</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-    <span class="n">repo</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
-    <span class="k">raise</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">repo</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="n">repo</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">))</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="n">repo</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>    <span class="n">repo</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>    <span class="k">raise</span>
 </code></pre></div></p>
 <h3 id="repositorycommit">Repository.<strong>commit()</strong><a class="headerlink" href="#repositorycommit" title="Permanent link">&para;</a></h3>
 <p>Commits the current repository transaction. Raises <strong>RepositoryError</strong> if no transaction is in progress.
@@ -2481,10 +2481,10 @@ When using a pool, the connection is returned to the pool after rollback.</p>
 <h3 id="repositorytransaction">Repository.<strong>transaction()</strong><a class="headerlink" href="#repositorytransaction" title="Permanent link">&para;</a></h3>
 <p>Context manager for repository transactions. Commits on successful exit, rolls back on exception.</p>
 <p>Example:
-<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="n">repo</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
-    <span class="n">repo</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">))</span>
-    <span class="n">repo</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;John Connor&#39;</span><span class="p">))</span>
-    <span class="c1"># auto-commits on success, auto-rolls back on exception</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">with</span> <span class="n">repo</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>    <span class="n">repo</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sarah Connor&#39;</span><span class="p">))</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    <span class="n">repo</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Character</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;John Connor&#39;</span><span class="p">))</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    <span class="c1"># auto-commits on success, auto-rolls back on exception</span>
 </code></pre></div></p>
 
 
@@ -2507,6 +2507,12 @@ When using a pool, the connection is returned to the pool after rollback.</p>
 
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
         
       </main>
       
@@ -2553,7 +2559,7 @@ When using a pool, the connection is returned to the pool after rollback.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "content.code.copy", "navigation.top"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

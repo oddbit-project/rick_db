@@ -135,9 +135,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
     
-      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
       </label>
     
@@ -1486,112 +1486,112 @@ to perform some quick application prototyping. </p>
 <p>Please note, RickDb does not implement any async functionality, and there are no plans to support it in the near future.</p>
 <h2 id="tldr-example">TL;DR; example<a class="headerlink" href="#tldr-example" title="Permanent link">&para;</a></h2>
 <p>A simple bookstore DTO and Repository example, with a custom query via QueryBuilder:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span><span class="p">,</span> <span class="n">Repository</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.pg</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgConnectionPool</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Literal</span>
-
-
-<span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;publisher&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_publisher&#39;</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Publisher</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_publisher&#39;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
-
-
-<span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;book&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_book&#39;</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Book</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_book&#39;</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;title&#39;</span>
-    <span class="n">total_pages</span> <span class="o">=</span> <span class="s1">&#39;total_pages&#39;</span>
-    <span class="n">rating</span> <span class="o">=</span> <span class="s1">&#39;rating&#39;</span>
-    <span class="n">isbn</span> <span class="o">=</span> <span class="s1">&#39;isbn&#39;</span>
-    <span class="n">published</span> <span class="o">=</span> <span class="s1">&#39;published_date&#39;</span>
-    <span class="n">fk_publisher</span> <span class="o">=</span> <span class="s1">&#39;fk_publisher&#39;</span>
-
-
-<span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_author&#39;</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Author</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_author&#39;</span>
-    <span class="n">first_name</span> <span class="o">=</span> <span class="s1">&#39;first_name&#39;</span>
-    <span class="n">middle_name</span> <span class="o">=</span> <span class="s1">&#39;middle_name&#39;</span>
-    <span class="n">last_name</span> <span class="o">=</span> <span class="s1">&#39;last_name&#39;</span>
-
-
-<span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;book_author&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_book_author&#39;</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">BookAuthor</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_book_author&#39;</span>
-    <span class="n">fk_book</span> <span class="o">=</span> <span class="s1">&#39;fk_book&#39;</span>
-    <span class="n">fk_author</span> <span class="o">=</span> <span class="s1">&#39;fk_author&#39;</span>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">AuthorRepository</span><span class="p">(</span><span class="n">Repository</span><span class="p">):</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">Author</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">calc_avg_rating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_author</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate average rating for a given author</span>
-<span class="sd">        :param id_author:</span>
-<span class="sd">        :return: average rating, if any</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># generated query:</span>
-        <span class="c1"># SELECT avg(rating) AS &quot;rating&quot; FROM &quot;book&quot; INNER JOIN &quot;book_author&quot; ON </span>
-        <span class="c1"># &quot;book&quot;.&quot;id_book&quot;=&quot;book_author&quot;.&quot;fk_book&quot; WHERE (&quot;fk_author&quot; = %s)</span>
-        <span class="n">qry</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dialect</span><span class="p">)</span><span class="o">.</span> \
-            <span class="n">from_</span><span class="p">(</span><span class="n">Book</span><span class="p">,</span> <span class="p">{</span><span class="n">Literal</span><span class="p">(</span><span class="s2">&quot;avg(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">rating</span><span class="p">)):</span> <span class="s1">&#39;rating&#39;</span><span class="p">})</span><span class="o">.</span> \
-            <span class="n">join</span><span class="p">(</span><span class="n">BookAuthor</span><span class="p">,</span> <span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_book</span><span class="p">,</span> <span class="n">Book</span><span class="p">,</span> <span class="n">Book</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span> \
-            <span class="n">where</span><span class="p">(</span><span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_author</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="n">id_author</span><span class="p">)</span>
-
-        <span class="c1"># retrieve result as list of type Book (to get the rating field)</span>
-        <span class="n">rset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">qry</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">Book</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rset</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">rset</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rating</span>
-        <span class="k">return</span> <span class="mi">0</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">books</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_author</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Book</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Retrieve all books for the given author</span>
-<span class="sd">        :return: list[Book]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">qry</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dialect</span><span class="p">)</span><span class="o">.</span> \
-            <span class="n">from_</span><span class="p">(</span><span class="n">Book</span><span class="p">)</span><span class="o">.</span> \
-            <span class="n">join</span><span class="p">(</span><span class="n">BookAuthor</span><span class="p">,</span> <span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_book</span><span class="p">,</span> <span class="n">Book</span><span class="p">,</span> <span class="n">Book</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span> \
-            <span class="n">where</span><span class="p">(</span><span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_author</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="n">id_author</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">qry</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">Book</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">dump_author_rating</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">AuthorRepository</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">():</span>
-
-        <span class="c1"># calculate average</span>
-        <span class="n">rating</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">calc_avg_rating</span><span class="p">(</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-
-        <span class="c1"># print book list</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Books by </span><span class="si">{firstname}</span><span class="s2"> </span><span class="si">{lastname}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="n">author</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="n">author</span><span class="o">.</span><span class="n">last_name</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">book</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">books</span><span class="p">(</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">book</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-
-        <span class="c1"># print average rating           </span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average rating for </span><span class="si">{firstname}</span><span class="s2"> </span><span class="si">{lastname}</span><span class="s2"> is </span><span class="si">{rating}</span><span class="s2">&quot;</span><span class="o">.</span>
-              <span class="nb">format</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="n">author</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="n">author</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span> <span class="n">rating</span><span class="o">=</span><span class="n">rating</span><span class="p">))</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">db_cfg</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb-bookstore&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_user&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_pass&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
-        <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">,</span>
-        <span class="s1">&#39;sslmode&#39;</span><span class="p">:</span> <span class="s1">&#39;require&#39;</span>
-    <span class="p">}</span>
-
-    <span class="n">pool</span> <span class="o">=</span> <span class="n">PgConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">db_cfg</span><span class="p">)</span>
-    <span class="n">repo</span> <span class="o">=</span> <span class="n">AuthorRepository</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span>
-    <span class="n">dump_author_rating</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span><span class="p">,</span> <span class="n">Repository</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.pg</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgConnectionPool</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Literal</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;publisher&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_publisher&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">Publisher</span><span class="p">:</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_publisher&#39;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;book&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_book&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">class</span><span class="w"> </span><span class="nc">Book</span><span class="p">:</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_book&#39;</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;title&#39;</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="n">total_pages</span> <span class="o">=</span> <span class="s1">&#39;total_pages&#39;</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">rating</span> <span class="o">=</span> <span class="s1">&#39;rating&#39;</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="n">isbn</span> <span class="o">=</span> <span class="s1">&#39;isbn&#39;</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="n">published</span> <span class="o">=</span> <span class="s1">&#39;published_date&#39;</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="n">fk_publisher</span> <span class="o">=</span> <span class="s1">&#39;fk_publisher&#39;</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_author&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="k">class</span><span class="w"> </span><span class="nc">Author</span><span class="p">:</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_author&#39;</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    <span class="n">first_name</span> <span class="o">=</span> <span class="s1">&#39;first_name&#39;</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    <span class="n">middle_name</span> <span class="o">=</span> <span class="s1">&#39;middle_name&#39;</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    <span class="n">last_name</span> <span class="o">=</span> <span class="s1">&#39;last_name&#39;</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;book_author&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_book_author&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="k">class</span><span class="w"> </span><span class="nc">BookAuthor</span><span class="p">:</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_book_author&#39;</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>    <span class="n">fk_book</span> <span class="o">=</span> <span class="s1">&#39;fk_book&#39;</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>    <span class="n">fk_author</span> <span class="o">=</span> <span class="s1">&#39;fk_author&#39;</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="k">class</span><span class="w"> </span><span class="nc">AuthorRepository</span><span class="p">(</span><span class="n">Repository</span><span class="p">):</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">Author</span><span class="p">)</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>
+<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">calc_avg_rating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_author</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="sd">        Calculate average rating for a given author</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="sd">        :param id_author:</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="sd">        :return: average rating, if any</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a>
+<a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a>        <span class="c1"># generated query:</span>
+<a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a>        <span class="c1"># SELECT avg(rating) AS &quot;rating&quot; FROM &quot;book&quot; INNER JOIN &quot;book_author&quot; ON </span>
+<a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a>        <span class="c1"># &quot;book&quot;.&quot;id_book&quot;=&quot;book_author&quot;.&quot;fk_book&quot; WHERE (&quot;fk_author&quot; = %s)</span>
+<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a>        <span class="n">qry</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dialect</span><span class="p">)</span><span class="o">.</span> \
+<a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a>            <span class="n">from_</span><span class="p">(</span><span class="n">Book</span><span class="p">,</span> <span class="p">{</span><span class="n">Literal</span><span class="p">(</span><span class="s2">&quot;avg(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">rating</span><span class="p">)):</span> <span class="s1">&#39;rating&#39;</span><span class="p">})</span><span class="o">.</span> \
+<a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a>            <span class="n">join</span><span class="p">(</span><span class="n">BookAuthor</span><span class="p">,</span> <span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_book</span><span class="p">,</span> <span class="n">Book</span><span class="p">,</span> <span class="n">Book</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span> \
+<a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a>            <span class="n">where</span><span class="p">(</span><span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_author</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="n">id_author</span><span class="p">)</span>
+<a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a>
+<a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a>        <span class="c1"># retrieve result as list of type Book (to get the rating field)</span>
+<a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a>        <span class="n">rset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">qry</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">Book</span><span class="p">)</span>
+<a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rset</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a>            <span class="k">return</span> <span class="n">rset</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rating</span>
+<a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a>        <span class="k">return</span> <span class="mi">0</span>
+<a id="__codelineno-0-63" name="__codelineno-0-63" href="#__codelineno-0-63"></a>
+<a id="__codelineno-0-64" name="__codelineno-0-64" href="#__codelineno-0-64"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">books</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_author</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Book</span><span class="p">]:</span>
+<a id="__codelineno-0-65" name="__codelineno-0-65" href="#__codelineno-0-65"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-66" name="__codelineno-0-66" href="#__codelineno-0-66"></a><span class="sd">        Retrieve all books for the given author</span>
+<a id="__codelineno-0-67" name="__codelineno-0-67" href="#__codelineno-0-67"></a><span class="sd">        :return: list[Book]</span>
+<a id="__codelineno-0-68" name="__codelineno-0-68" href="#__codelineno-0-68"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-69" name="__codelineno-0-69" href="#__codelineno-0-69"></a>
+<a id="__codelineno-0-70" name="__codelineno-0-70" href="#__codelineno-0-70"></a>        <span class="n">qry</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dialect</span><span class="p">)</span><span class="o">.</span> \
+<a id="__codelineno-0-71" name="__codelineno-0-71" href="#__codelineno-0-71"></a>            <span class="n">from_</span><span class="p">(</span><span class="n">Book</span><span class="p">)</span><span class="o">.</span> \
+<a id="__codelineno-0-72" name="__codelineno-0-72" href="#__codelineno-0-72"></a>            <span class="n">join</span><span class="p">(</span><span class="n">BookAuthor</span><span class="p">,</span> <span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_book</span><span class="p">,</span> <span class="n">Book</span><span class="p">,</span> <span class="n">Book</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span> \
+<a id="__codelineno-0-73" name="__codelineno-0-73" href="#__codelineno-0-73"></a>            <span class="n">where</span><span class="p">(</span><span class="n">BookAuthor</span><span class="o">.</span><span class="n">fk_author</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="n">id_author</span><span class="p">)</span>
+<a id="__codelineno-0-74" name="__codelineno-0-74" href="#__codelineno-0-74"></a>
+<a id="__codelineno-0-75" name="__codelineno-0-75" href="#__codelineno-0-75"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">qry</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">Book</span><span class="p">)</span>
+<a id="__codelineno-0-76" name="__codelineno-0-76" href="#__codelineno-0-76"></a>
+<a id="__codelineno-0-77" name="__codelineno-0-77" href="#__codelineno-0-77"></a>
+<a id="__codelineno-0-78" name="__codelineno-0-78" href="#__codelineno-0-78"></a><span class="k">def</span><span class="w"> </span><span class="nf">dump_author_rating</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">AuthorRepository</span><span class="p">):</span>
+<a id="__codelineno-0-79" name="__codelineno-0-79" href="#__codelineno-0-79"></a>    <span class="k">for</span> <span class="n">author</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">():</span>
+<a id="__codelineno-0-80" name="__codelineno-0-80" href="#__codelineno-0-80"></a>
+<a id="__codelineno-0-81" name="__codelineno-0-81" href="#__codelineno-0-81"></a>        <span class="c1"># calculate average</span>
+<a id="__codelineno-0-82" name="__codelineno-0-82" href="#__codelineno-0-82"></a>        <span class="n">rating</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">calc_avg_rating</span><span class="p">(</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<a id="__codelineno-0-83" name="__codelineno-0-83" href="#__codelineno-0-83"></a>
+<a id="__codelineno-0-84" name="__codelineno-0-84" href="#__codelineno-0-84"></a>        <span class="c1"># print book list</span>
+<a id="__codelineno-0-85" name="__codelineno-0-85" href="#__codelineno-0-85"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Books by </span><span class="si">{firstname}</span><span class="s2"> </span><span class="si">{lastname}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="n">author</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="n">author</span><span class="o">.</span><span class="n">last_name</span><span class="p">))</span>
+<a id="__codelineno-0-86" name="__codelineno-0-86" href="#__codelineno-0-86"></a>        <span class="k">for</span> <span class="n">book</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">books</span><span class="p">(</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p">):</span>
+<a id="__codelineno-0-87" name="__codelineno-0-87" href="#__codelineno-0-87"></a>            <span class="nb">print</span><span class="p">(</span><span class="n">book</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+<a id="__codelineno-0-88" name="__codelineno-0-88" href="#__codelineno-0-88"></a>
+<a id="__codelineno-0-89" name="__codelineno-0-89" href="#__codelineno-0-89"></a>        <span class="c1"># print average rating           </span>
+<a id="__codelineno-0-90" name="__codelineno-0-90" href="#__codelineno-0-90"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average rating for </span><span class="si">{firstname}</span><span class="s2"> </span><span class="si">{lastname}</span><span class="s2"> is </span><span class="si">{rating}</span><span class="s2">&quot;</span><span class="o">.</span>
+<a id="__codelineno-0-91" name="__codelineno-0-91" href="#__codelineno-0-91"></a>              <span class="nb">format</span><span class="p">(</span><span class="n">firstname</span><span class="o">=</span><span class="n">author</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">lastname</span><span class="o">=</span><span class="n">author</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span> <span class="n">rating</span><span class="o">=</span><span class="n">rating</span><span class="p">))</span>
+<a id="__codelineno-0-92" name="__codelineno-0-92" href="#__codelineno-0-92"></a>
+<a id="__codelineno-0-93" name="__codelineno-0-93" href="#__codelineno-0-93"></a>
+<a id="__codelineno-0-94" name="__codelineno-0-94" href="#__codelineno-0-94"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<a id="__codelineno-0-95" name="__codelineno-0-95" href="#__codelineno-0-95"></a>    <span class="n">db_cfg</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-0-96" name="__codelineno-0-96" href="#__codelineno-0-96"></a>        <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb-bookstore&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-97" name="__codelineno-0-97" href="#__codelineno-0-97"></a>        <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_user&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-98" name="__codelineno-0-98" href="#__codelineno-0-98"></a>        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s2">&quot;rickdb_pass&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-99" name="__codelineno-0-99" href="#__codelineno-0-99"></a>        <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-100" name="__codelineno-0-100" href="#__codelineno-0-100"></a>        <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">,</span>
+<a id="__codelineno-0-101" name="__codelineno-0-101" href="#__codelineno-0-101"></a>        <span class="s1">&#39;sslmode&#39;</span><span class="p">:</span> <span class="s1">&#39;require&#39;</span>
+<a id="__codelineno-0-102" name="__codelineno-0-102" href="#__codelineno-0-102"></a>    <span class="p">}</span>
+<a id="__codelineno-0-103" name="__codelineno-0-103" href="#__codelineno-0-103"></a>
+<a id="__codelineno-0-104" name="__codelineno-0-104" href="#__codelineno-0-104"></a>    <span class="n">pool</span> <span class="o">=</span> <span class="n">PgConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">db_cfg</span><span class="p">)</span>
+<a id="__codelineno-0-105" name="__codelineno-0-105" href="#__codelineno-0-105"></a>    <span class="n">repo</span> <span class="o">=</span> <span class="n">AuthorRepository</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span>
+<a id="__codelineno-0-106" name="__codelineno-0-106" href="#__codelineno-0-106"></a>    <span class="n">dump_author_rating</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
 </code></pre></div></p>
 <h2 id="migrating-from-previous-versions-200">Migrating from previous versions (&lt;2.0.0)<a class="headerlink" href="#migrating-from-previous-versions-200" title="Permanent link">&para;</a></h2>
 <p>rick_db version 2.0.0 or later is incompatible with previous 1.x.x version, and migration will almost certainly require
@@ -1604,12 +1604,12 @@ code changes; The major changes to take into account are:</p>
 <li>All connection-dependant classes now support both pooled and non-pooled connectors;</li>
 <li>Cache query is now per-repository object, not globally shared;</li>
 <li>Connections are no longer stored as attributes; instead, connections should be handled via context managers:
-<div class="highlight"><pre><span></span><code><span class="o">...</span>
-<span class="n">pool</span> <span class="o">=</span> <span class="n">PgConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">connection_params</span><span class="p">)</span>
-<span class="o">...</span>
-<span class="k">with</span> <span class="n">pool</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span> <span class="c1"># fetch a connection</span>
-    <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span> <span class="c1"># fetch a cursor</span>
-        <span class="k">pass</span> <span class="c1"># do stuff</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">...</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">pool</span> <span class="o">=</span> <span class="n">PgConnectionPool</span><span class="p">(</span><span class="o">**</span><span class="n">connection_params</span><span class="p">)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">...</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">with</span> <span class="n">pool</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span> <span class="c1"># fetch a connection</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span> <span class="c1"># fetch a cursor</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        <span class="k">pass</span> <span class="c1"># do stuff</span>
 </code></pre></div></li>
 </ul>
 
@@ -1633,6 +1633,12 @@ code changes; The major changes to take into account are:</p>
 
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
         
       </main>
       
@@ -1679,7 +1685,7 @@ code changes; The major changes to take into account are:</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["search.suggest", "search.highlight", "content.tabs.link", "content.code.copy", "navigation.top"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>

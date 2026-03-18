@@ -137,9 +137,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
     
-      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
       </label>
     
@@ -1454,66 +1454,66 @@ the class declaration context; a decorator patches the class definition with the
 file is loaded, instead of handling it in runtime. </p>
 <h2 id="declaring-records">Declaring Records<a class="headerlink" href="#declaring-records" title="Permanent link">&para;</a></h2>
 <p>Record classes are declared using the <strong>@fieldmapper</strong> decorator:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
-
-<span class="nd">@fieldmapper</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Customer</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_customer&#39;</span>  <span class="c1"># attribute &#39;id&#39; maps to field &#39;id_customer&#39;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>       <span class="c1"># attribute &#39;name&#39; maps to field &#39;name&#39;</span>
-    <span class="n">address</span> <span class="o">=</span> <span class="s1">&#39;address&#39;</span> <span class="c1"># attribute &#39;address&#39; maps to field &#39;address&#39;</span>
-    <span class="n">city</span> <span class="o">=</span> <span class="s1">&#39;city&#39;</span>       <span class="c1"># attribute &#39;city&#39; maps to field &#39;city&#39;</span>
-    <span class="n">id_country</span> <span class="o">=</span> <span class="s1">&#39;fk_country&#39;</span> <span class="c1"># attribute &#39;id_country&#39; maps to field &#39;fk_country&#39;</span>
-
-<span class="c1"># access class-level attributes</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">Customer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1"># outputs  &#39;name&#39;</span>
-
-<span class="c1"># access object-level attributes</span>
-<span class="c1"># customer data is loaded via __init__; The key names must match the defined attributes</span>
-<span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="s2">&quot;Obere Str.&quot;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Berlin&quot;</span><span class="p">)</span>
-
-<span class="c1"># output: John Doe</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  
-
-<span class="c1"># output: &#39;None&#39;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">id_country</span><span class="p">)</span>  
-
-<span class="c1"># output: {&#39;address&#39;: &#39;Obere Str.&#39;, &#39;city&#39;: &#39;Berlin&#39;, &#39;id&#39;: 3, &#39;name&#39;: &#39;John Doe&#39;}</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">asdict</span><span class="p">())</span>
-
-<span class="c1"># output: {&#39;id_customer&#39;: 3, &#39;name&#39;: &#39;John Doe&#39;, &#39;address&#39;: &#39;Obere Str.&#39;, &#39;city&#39;: &#39;Berlin&#39;}</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">asrecord</span><span class="p">())</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nd">@fieldmapper</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">Customer</span><span class="p">:</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_customer&#39;</span>  <span class="c1"># attribute &#39;id&#39; maps to field &#39;id_customer&#39;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>       <span class="c1"># attribute &#39;name&#39; maps to field &#39;name&#39;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">address</span> <span class="o">=</span> <span class="s1">&#39;address&#39;</span> <span class="c1"># attribute &#39;address&#39; maps to field &#39;address&#39;</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">city</span> <span class="o">=</span> <span class="s1">&#39;city&#39;</span>       <span class="c1"># attribute &#39;city&#39; maps to field &#39;city&#39;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">id_country</span> <span class="o">=</span> <span class="s1">&#39;fk_country&#39;</span> <span class="c1"># attribute &#39;id_country&#39; maps to field &#39;fk_country&#39;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># access class-level attributes</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="nb">print</span><span class="p">(</span><span class="n">Customer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1"># outputs  &#39;name&#39;</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1"># access object-level attributes</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="c1"># customer data is loaded via __init__; The key names must match the defined attributes</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="s2">&quot;Obere Str.&quot;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Berlin&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="c1"># output: John Doe</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="c1"># output: &#39;None&#39;</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">id_country</span><span class="p">)</span>  
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="c1"># output: {&#39;address&#39;: &#39;Obere Str.&#39;, &#39;city&#39;: &#39;Berlin&#39;, &#39;id&#39;: 3, &#39;name&#39;: &#39;John Doe&#39;}</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">asdict</span><span class="p">())</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="c1"># output: {&#39;id_customer&#39;: 3, &#39;name&#39;: &#39;John Doe&#39;, &#39;address&#39;: &#39;Obere Str.&#39;, &#39;city&#39;: &#39;Berlin&#39;}</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">asrecord</span><span class="p">())</span>
 </code></pre></div>
 <p>As mentioned previously, it is possible to also provide optional details, such as table or view name, schema and primary
 key name; these details are quite useful when using RickDb's <a href="../repository/">Repository</a> or <a href="../building_queries/">Query Builder</a> to
 provide context for operations. This is probably the most common usage scenario, when designing a multi-tier application:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
-
-<span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;customers&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_customer&#39;</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="s1">&#39;public&#39;</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Customer</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_customer&#39;</span>  <span class="c1"># attribute &#39;id&#39; maps to field &#39;id_customer&#39;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>       <span class="c1"># attribute &#39;name&#39; maps to field &#39;name&#39;</span>
-    <span class="n">address</span> <span class="o">=</span> <span class="s1">&#39;address&#39;</span> <span class="c1"># attribute &#39;address&#39; maps to field &#39;address&#39;</span>
-    <span class="n">city</span> <span class="o">=</span> <span class="s1">&#39;city&#39;</span>       <span class="c1"># attribute &#39;city&#39; maps to field &#39;city&#39;</span>
-    <span class="n">id_country</span> <span class="o">=</span> <span class="s1">&#39;fk_country&#39;</span> <span class="c1"># attribute &#39;id_country&#39; maps to field &#39;fk_country&#39;</span>
-
-<span class="c1"># access class-level attributes</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">Customer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1"># outputs  &#39;name&#39;</span>
-
-<span class="c1"># access object-level attributes</span>
-<span class="c1"># customer data is loaded via __init__; The key names must match the defined attributes</span>
-<span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="s2">&quot;Obere Str.&quot;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Berlin&quot;</span><span class="p">)</span>
-
-<span class="c1"># output: John Doe</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  
-
-<span class="c1"># output: &#39;None&#39;</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">id_country</span><span class="p">)</span>  
-
-<span class="c1"># output: {&#39;address&#39;: &#39;Obere Str.&#39;, &#39;city&#39;: &#39;Berlin&#39;, &#39;id&#39;: 3, &#39;name&#39;: &#39;John Doe&#39;}</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">asdict</span><span class="p">())</span>
-
-<span class="c1"># output: {&#39;id_customer&#39;: 3, &#39;name&#39;: &#39;John Doe&#39;, &#39;address&#39;: &#39;Obere Str.&#39;, &#39;city&#39;: &#39;Berlin&#39;}</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">asrecord</span><span class="p">())</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;customers&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;id_customer&#39;</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="s1">&#39;public&#39;</span><span class="p">)</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">Customer</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;id_customer&#39;</span>  <span class="c1"># attribute &#39;id&#39; maps to field &#39;id_customer&#39;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>       <span class="c1"># attribute &#39;name&#39; maps to field &#39;name&#39;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">address</span> <span class="o">=</span> <span class="s1">&#39;address&#39;</span> <span class="c1"># attribute &#39;address&#39; maps to field &#39;address&#39;</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">city</span> <span class="o">=</span> <span class="s1">&#39;city&#39;</span>       <span class="c1"># attribute &#39;city&#39; maps to field &#39;city&#39;</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">id_country</span> <span class="o">=</span> <span class="s1">&#39;fk_country&#39;</span> <span class="c1"># attribute &#39;id_country&#39; maps to field &#39;fk_country&#39;</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># access class-level attributes</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="nb">print</span><span class="p">(</span><span class="n">Customer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1"># outputs  &#39;name&#39;</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1"># access object-level attributes</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="c1"># customer data is loaded via __init__; The key names must match the defined attributes</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="s2">&quot;Obere Str.&quot;</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Berlin&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="c1"># output: John Doe</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="c1"># output: &#39;None&#39;</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">id_country</span><span class="p">)</span>  
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="c1"># output: {&#39;address&#39;: &#39;Obere Str.&#39;, &#39;city&#39;: &#39;Berlin&#39;, &#39;id&#39;: 3, &#39;name&#39;: &#39;John Doe&#39;}</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">asdict</span><span class="p">())</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="c1"># output: {&#39;id_customer&#39;: 3, &#39;name&#39;: &#39;John Doe&#39;, &#39;address&#39;: &#39;Obere Str.&#39;, &#39;city&#39;: &#39;Berlin&#39;}</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="o">.</span><span class="n">asrecord</span><span class="p">())</span>
 </code></pre></div>
 <h2 id="available-methods">Available methods<a class="headerlink" href="#available-methods" title="Permanent link">&para;</a></h2>
 <p>The patching process performed by <strong>@fieldmapper</strong> copies all the available methods in the base <a href="../classes/record/">Record</a>
@@ -1540,6 +1540,12 @@ class.</p>
 
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
         
       </main>
       
@@ -1586,7 +1592,7 @@ class.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "content.code.copy", "navigation.top"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
