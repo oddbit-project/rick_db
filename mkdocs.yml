@@ -19,11 +19,13 @@ theme:
     accent: amber
     toggle:
       icon: material/lightbulb-outline
-      name: Switch to light mode
+      name: Switch to dark mode
   features:
   - search.suggest
   - search.highlight
   - content.tabs.link
+  - content.code.copy
+  - navigation.top
   icon:
     repo: fontawesome/brands/github-alt
   language: en
@@ -68,11 +70,11 @@ nav:
 markdown_extensions:
 - toc:
     permalink: true
-- markdown.extensions.codehilite:
-    guess_lang: false
 - admonition
-- codehilite
 - extra
+- pymdownx.highlight:
+    anchor_linenums: true
+- pymdownx.inlinehilite
 - pymdownx.superfences:
     custom_fences:
     - name: mermaid
@@ -80,6 +82,7 @@ markdown_extensions:
       format: !!python/name:pymdownx.superfences.fence_code_format ''
 - pymdownx.tabbed:
     alternate_style: true
+- pymdownx.details
 - mdx_include
 
 extra:
