@@ -47,7 +47,9 @@ nav:
   - Cursor: 'classes/cursor.md'
   - Profiler: 'classes/profiler.md'
   - Repository: 'classes/repository.md'
+  - Errors: 'classes/errors.md'
   - SqlDialect: 'classes/sqldialect.md'
+  - MySqlSqlDialect: 'classes/mysql_dialect.md'
   - Select: 'classes/select.md'
   - Insert: 'classes/insert.md'
   - Update: 'classes/update.md'
@@ -64,9 +66,11 @@ nav:
   - UserRecord: 'classes/userrecord.md'
   - Manager:
     - Manager: 'classes/managerinterface.md'
-    - PgManager: 'classes/pgmanager.md'
+    - PgManager & PgInfo: 'classes/pgmanager.md'
     - Sqlite3Manager: 'classes/sqlite3manager.md'
     - ClickHouseManager: 'classes/clickhousemanager.md'
+  - ClickHouse:
+    - ClickHouse SQL & Repository: 'classes/clickhouse_sql.md'
 
 markdown_extensions:
 - toc:
