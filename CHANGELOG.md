@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.2.1]
+## [2.2.2]
 
 ### Performance
 - Cache SQL identifier quoting (`_qi()`) with `@lru_cache` across all dialects, eliminating redundant string work on repeated field/table references
@@ -15,6 +15,8 @@
 - Replace `_valid_joins`/`_valid_unions`/`_valid_order` lists with `frozenset` for O(1) membership checks
 - Remove redundant `.strip()` from `Select.assemble()` by filtering empty parts and fixing root cause in `_render_order()`
 - Use `.extend()` instead of per-element `.append()` loops for value list copying
+
+## [2.2.1]
 
 ### Added
 - `Fn` helper class for common SQL functions in the query builder, returning `Literal` instances for use in column definitions
