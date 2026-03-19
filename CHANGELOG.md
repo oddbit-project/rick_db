@@ -2,6 +2,20 @@
 
 ## [2.2.1]
 
+### Performance
+- Cache SQL identifier quoting (`_qi()`) with `@lru_cache` across all dialects, eliminating redundant string work on repeated field/table references
+- Replace `.format()` string building with f-strings throughout query builders (`select.py`, `insert.py`, `update.py`, `delete.py`, `dialect.py`, `common.py`)
+- Replace `list(dict.items()).pop()` anti-pattern with `next(iter(dict.items()))` in `Select._where()`, `having()`, `_join()`, `_parse_table_def()`
+- Remove unnecessary `.keys()` calls from dict membership tests in `Select` and `BaseRecord`
+- Single-pass `_render_from()` replaces three separate classification loops plus three rendering loops
+- Use `isinstance()` instead of `type() in [list, tuple]` checks in `Select`
+- Cache `Fn.count()` singleton for the common no-arg `COUNT(*)` case
+- Optimize `BaseRecord.asrecord()` to use dict comprehension instead of copy-and-pop loop
+- Simplify `BaseRecord.__getattribute__()` to use `dict.get()` instead of `in .keys()` + lookup
+- Replace `_valid_joins`/`_valid_unions`/`_valid_order` lists with `frozenset` for O(1) membership checks
+- Remove redundant `.strip()` from `Select.assemble()` by filtering empty parts and fixing root cause in `_render_order()`
+- Use `.extend()` instead of per-element `.append()` loops for value list copying
+
 ### Added
 - `Fn` helper class for common SQL functions in the query builder, returning `Literal` instances for use in column definitions
   - Aggregate: `count`, `sum`, `avg`, `min`, `max`

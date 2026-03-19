@@ -1,4 +1,4 @@
-import collections
+import collections.abc
 from inspect import isclass
 from typing import Union
 
@@ -144,9 +144,9 @@ class Insert(SqlStatement):
             fields.append(self._dialect.field(name))
             placeholders.append(self._dialect.placeholder)
 
-        parts.append("({})".format(", ".join(fields)))
+        parts.append(f"({', '.join(fields)})")
         parts.append(Sql.SQL_VALUES)
-        parts.append("({})".format(", ".join(placeholders)))
+        parts.append(f"({', '.join(placeholders)})")
 
         # optional returning clause
         if self._returning:

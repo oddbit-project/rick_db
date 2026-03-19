@@ -1,4 +1,4 @@
-import collections
+import collections.abc
 from inspect import isclass
 from typing import Union
 
@@ -150,39 +150,36 @@ class Update(SqlStatement):
 
         if value is None:
             if operator is None:
-                expression = "{fld}".format(fld=field)
+                expression = field
             else:
-                expression = "{fld} {op}".format(fld=field, op=operator)
+                expression = f"{field} {operator}"
             self._clauses.append([expression, concat])
         else:
             if isinstance(value, dict):
                 raise SqlError("_where(): invalid value type: %s" % str(type(value)))
 
             if operator is None:
-                expression = "{fld} {ph}".format(
-                    fld=field, ph=self._dialect.placeholder
-                )
+                expression = f"{field} {self._dialect.placeholder}"
             else:
-                if isinstance(value, (list, tuple)) and operator.lower() in ("in", "not in"):
+                if isinstance(value, (list, tuple)) and operator.lower() in (
+                    "in",
+                    "not in",
+                ):
                     if len(value) == 0:
                         raise SqlError("_where(): empty list for IN clause")
                     placeholders = ", ".join([self._dialect.placeholder] * len(value))
-                    expression = "{fld} {op} ({phs})".format(
-                        fld=field, op=operator.upper(), phs=placeholders
-                    )
+                    expression = f"{field} {operator.upper()} ({placeholders})"
                     self._clause_values.extend(value)
                     value = None
                 elif isinstance(value, (list, tuple)):
-                    raise SqlError("_where(): invalid value type: %s" % str(type(value)))
+                    raise SqlError(
+                        "_where(): invalid value type: %s" % str(type(value))
+                    )
                 elif isinstance(value, Select):
                     sql, value = value.assemble()
-                    expression = "{fld} {op} ({query})".format(
-                        fld=field, op=operator, query=sql
-                    )
+                    expression = f"{field} {operator} ({sql})"
                 else:
-                    expression = "{fld} {op} {ph}".format(
-                        fld=field, op=operator, ph=self._dialect.placeholder
-                    )
+                    expression = f"{field} {operator} {self._dialect.placeholder}"
 
             self._clauses.append([expression, concat])
             if value is not None:
@@ -233,18 +230,17 @@ class Update(SqlStatement):
         # generate field list and placeholder list
         fields = []
         values = []
-        expression = "{}={}"
         for i in range(0, lf):
             name = self._dialect.field(self._fields[i])
             value = self._values[i]
             if isinstance(value, Literal):
-                fields.append(expression.format(name, str(value)))
+                fields.append(f"{name}={value}")
             elif isinstance(value, Select):
                 value, sql_values = value.assemble()
                 values.extend(sql_values)
-                fields.append(expression.format(name, value))
+                fields.append(f"{name}={value}")
             else:
-                fields.append(expression.format(name, self._dialect.placeholder))
+                fields.append(f"{name}={self._dialect.placeholder}")
                 values.append(value)
 
         parts.append(", ".join(fields))
@@ -266,9 +262,7 @@ class Update(SqlStatement):
         if len(self._returning) > 0:
             parts.append(Sql.SQL_RETURNING)
 
-            fields = []
-            for name in self._returning:
-                fields.append("{field}".format(field=self._dialect.field(name)))
+            fields = [self._dialect.field(name) for name in self._returning]
             parts.append(", ".join(fields))
 
         return " ".join(parts), values

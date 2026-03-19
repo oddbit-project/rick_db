@@ -202,76 +202,80 @@ class Fn:
         Select(dialect).from_(User, {User.name: None, Fn.sum("amount"): "total_amount"})
     """
 
+    _COUNT_STAR = Literal("COUNT(*)")
+
     # Aggregate functions
     @staticmethod
     def count(field="*"):
-        return Literal("COUNT({})".format(field))
+        if field == "*":
+            return Fn._COUNT_STAR
+        return Literal(f"COUNT({field})")
 
     @staticmethod
     def sum(field):
-        return Literal("SUM({})".format(field))
+        return Literal(f"SUM({field})")
 
     @staticmethod
     def avg(field):
-        return Literal("AVG({})".format(field))
+        return Literal(f"AVG({field})")
 
     @staticmethod
     def min(field):
-        return Literal("MIN({})".format(field))
+        return Literal(f"MIN({field})")
 
     @staticmethod
     def max(field):
-        return Literal("MAX({})".format(field))
+        return Literal(f"MAX({field})")
 
     # Math functions
     @staticmethod
     def abs(field):
-        return Literal("ABS({})".format(field))
+        return Literal(f"ABS({field})")
 
     @staticmethod
     def ceil(field):
-        return Literal("CEIL({})".format(field))
+        return Literal(f"CEIL({field})")
 
     @staticmethod
     def floor(field):
-        return Literal("FLOOR({})".format(field))
+        return Literal(f"FLOOR({field})")
 
     @staticmethod
     def round(field, decimals=None):
         if decimals is not None:
-            return Literal("ROUND({}, {})".format(field, int(decimals)))
-        return Literal("ROUND({})".format(field))
+            return Literal(f"ROUND({field}, {int(decimals)})")
+        return Literal(f"ROUND({field})")
 
     @staticmethod
     def power(field, exponent):
-        return Literal("POWER({}, {})".format(field, exponent))
+        return Literal(f"POWER({field}, {exponent})")
 
     @staticmethod
     def sqrt(field):
-        return Literal("SQRT({})".format(field))
+        return Literal(f"SQRT({field})")
 
     @staticmethod
     def mod(field, divisor):
-        return Literal("MOD({}, {})".format(field, divisor))
+        return Literal(f"MOD({field}, {divisor})")
 
     @staticmethod
     def sign(field):
-        return Literal("SIGN({})".format(field))
+        return Literal(f"SIGN({field})")
 
     @staticmethod
     def trunc(field, decimals=None):
         if decimals is not None:
-            return Literal("TRUNC({}, {})".format(field, int(decimals)))
-        return Literal("TRUNC({})".format(field))
+            return Literal(f"TRUNC({field}, {int(decimals)})")
+        return Literal(f"TRUNC({field})")
 
     # General functions
     @staticmethod
     def coalesce(*fields):
-        return Literal("COALESCE({})".format(", ".join(str(f) for f in fields)))
+        return Literal(f"COALESCE({', '.join(str(f) for f in fields)})")
 
     @staticmethod
     def cast(field, type_name):
-        return Literal("CAST({} AS {})".format(field, type_name))
+        return Literal(f"CAST({field} AS {type_name})")
 
 
 class Sql:

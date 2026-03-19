@@ -4,7 +4,7 @@
 # The Select() implementation is heavily inspired from the Zend_Db_Select approach. You can check the
 # Zend_Db_Select code and licensing at https://github.com/zendframework/zf1/blob/master/library/Zend/Db/Select.php
 
-import collections
+import collections.abc
 from typing import Union
 
 from .common import SqlStatement, Sql, Literal, SqlError, JsonField, PgJsonField
@@ -28,18 +28,20 @@ class Select(SqlStatement):
     WHERE_CLOSE = 3
 
     # validation rules
-    _valid_joins = [
-        Sql.INNER_JOIN,
-        Sql.LEFT_JOIN,
-        Sql.RIGHT_JOIN,
-        Sql.FULL_JOIN,
-        Sql.CROSS_JOIN,
-        Sql.NATURAL_JOIN,
-        Sql.INNER_JOIN_LATERAL,
-        Sql.LEFT_JOIN_LATERAL,
-    ]
-    _valid_unions = [Sql.SQL_UNION, Sql.SQL_UNION_ALL]
-    _valid_order = [Sql.SQL_ASC, Sql.SQL_DESC]
+    _valid_joins = frozenset(
+        {
+            Sql.INNER_JOIN,
+            Sql.LEFT_JOIN,
+            Sql.RIGHT_JOIN,
+            Sql.FULL_JOIN,
+            Sql.CROSS_JOIN,
+            Sql.NATURAL_JOIN,
+            Sql.INNER_JOIN_LATERAL,
+            Sql.LEFT_JOIN_LATERAL,
+        }
+    )
+    _valid_unions = frozenset({Sql.SQL_UNION, Sql.SQL_UNION_ALL})
+    _valid_order = frozenset({Sql.SQL_ASC, Sql.SQL_DESC})
 
     def __init__(self, dialect: SqlDialect = None):
         """
@@ -115,8 +117,8 @@ class Select(SqlStatement):
             .expr({Literal("NEXTVAL('some_sequence_name')": "seq_next") # select NEXTVAL('some_sequence_name') AS "seq_next"
         """
         if not isinstance(cols, collections.abc.Mapping):
-            if type(cols) in [list, tuple]:
-                cols = dict((col, None) for col in cols)
+            if isinstance(cols, (list, tuple)):
+                cols = {col: None for col in cols}
             else:
                 cols = {str(cols): None}
 
@@ -163,7 +165,7 @@ class Select(SqlStatement):
             .from(class_or_object, ["field1"])           # SELECT "field1" FROM "<object_table_name>"
             .from({class_or_object: "bar"}, ["field1"])  # SELECT "bar"."field1" FROM "<object_table_name>" AS "bar"
         """
-        if cols is None or (type(cols) in (list, tuple) and len(cols) == 0):
+        if cols is None or (isinstance(cols, (list, tuple)) and len(cols) == 0):
             cols = Sql.SQL_WILDCARD
 
         return self._join(Sql.FROM, table, None, None, None, None, cols, schema, None)
@@ -179,7 +181,7 @@ class Select(SqlStatement):
         Example:
             .lateral(Select().from_("users"), "u")  # SELECT
         """
-        if cols is None or (type(cols) in (list, tuple) and len(cols) == 0):
+        if cols is None or (isinstance(cols, (list, tuple)) and len(cols) == 0):
             cols = Sql.SQL_WILDCARD
         return self._join(
             Sql.LATERAL, {subquery: alias}, None, None, None, None, cols, None, None
@@ -240,8 +242,8 @@ class Select(SqlStatement):
             .order("id")                            # ORDER BY id ASC
             .order(["id", "a"], Select.ORDER_DESC)  # ORDER BY id DESC, a DESC
         """
-        ftype = type(fields)
-        if ftype not in (list, tuple, dict):
+        is_dict = isinstance(fields, dict)
+        if not isinstance(fields, (list, tuple, dict)):
             fields = [fields]
 
         if order is not None:
@@ -250,7 +252,7 @@ class Select(SqlStatement):
         else:
             order = ""
 
-        if ftype is dict:
+        if is_dict:
             for v in fields.values():
                 if v.upper() not in self._valid_order:
                     raise SqlError("order(): Invalid order direction: %s" % v)
@@ -391,7 +393,7 @@ class Select(SqlStatement):
             .group(Literal('SUM(field)'))       # GROUP BY SUM(field)
             .group(['field1', 'field2'])        # GROUP BY "field1", "field2"
         """
-        if type(fields) not in [list, tuple]:
+        if not isinstance(fields, (list, tuple)):
             fields = [fields]
 
         for field in fields:
@@ -432,7 +434,7 @@ class Select(SqlStatement):
             # field is actually a mapping table:field
             if len(field) != 1:
                 raise SqlError("having(): field collection must have exactly 1 record")
-            table, field = list(field.items()).pop()
+            table, field = next(iter(field.items()))
 
         if table is not None:
             if not isinstance(table, str):
@@ -455,19 +457,15 @@ class Select(SqlStatement):
 
         if value is None:
             if operator is None:
-                expression = "{fld}".format(fld=field)
+                expression = field
             else:
-                expression = "{fld} {op}".format(fld=field, op=operator)
+                expression = f"{field} {operator}"
             self._parts_having.append(expression)
         else:
             if operator is None:
-                expression = "{fld} {ph}".format(
-                    fld=field, ph=self._dialect.placeholder
-                )
+                expression = f"{field} {self._dialect.placeholder}"
             else:
-                expression = "{fld} {op} {ph}".format(
-                    fld=field, op=operator, ph=self._dialect.placeholder
-                )
+                expression = f"{field} {operator} {self._dialect.placeholder}"
             self._parts_having.append(expression)
             self._query_values[Sql.HAVING].append(value)
         return self
@@ -897,7 +895,7 @@ class Select(SqlStatement):
             # field is actually a mapping table:field
             if len(field) != 1:
                 raise SqlError("_where(): field collection must have exactly 1 record")
-            table, field = list(field.items()).pop()
+            table, field = next(iter(field.items()))
 
         if table is not None:
             if not isinstance(table, str):
@@ -919,54 +917,44 @@ class Select(SqlStatement):
 
         if value is None:
             if operator is None:
-                expression = "{fld}".format(fld=field)
+                expression = field
             else:
-                expression = "{fld} {op}".format(fld=field, op=operator)
+                expression = f"{field} {operator}"
             self._parts_where.append([expression, concat_with])
         else:
             if operator is None:
-                expression = "{fld} {ph}".format(
-                    fld=field, ph=self._dialect.placeholder
-                )
+                expression = f"{field} {self._dialect.placeholder}"
             else:
-                if isinstance(value, (list, tuple)) and operator is not None and operator.lower() in ("in", "not in"):
+                if (
+                    isinstance(value, (list, tuple))
+                    and operator is not None
+                    and operator.lower() in ("in", "not in")
+                ):
                     if len(value) == 0:
                         raise SqlError("_where(): empty list for IN clause")
                     placeholders = ", ".join([self._dialect.placeholder] * len(value))
-                    expression = "{fld} {op} ({phs})".format(
-                        fld=field, op=operator.upper(), phs=placeholders
-                    )
-                    for v in value:
-                        self._query_values[Sql.WHERE].append(v)
+                    expression = f"{field} {operator.upper()} ({placeholders})"
+                    self._query_values[Sql.WHERE].extend(value)
                     value = None
                 elif isinstance(value, Select):
                     sql, value = value.assemble()
-                    expression = "{fld} {op} ({query})".format(
-                        fld=field, op=operator, query=sql
-                    )
-                    for v in value:
-                        self._query_values[Sql.WHERE].append(v)
+                    expression = f"{field} {operator} ({sql})"
+                    self._query_values[Sql.WHERE].extend(value)
                     value = None
                 elif isinstance(value, collections.abc.Mapping):
                     if len(value) != 1:
                         raise SqlError(
                             "_where(): value collection must have exactly 1 record"
                         )
-                    tgt_tbl, tgt_field = list(value.items()).pop()
+                    tgt_tbl, tgt_field = next(iter(value.items()))
                     tmp_field_expr = self._dialect.field(tgt_field, None, tgt_tbl)
-                    expression = "{fld} {op} {to_fld}".format(
-                        fld=field, op=operator, to_fld=tmp_field_expr
-                    )
+                    expression = f"{field} {operator} {tmp_field_expr}"
                     value = None
                 elif isinstance(value, Literal):
-                    expression = "{fld} {op} {lit}".format(
-                        fld=field, op=operator, lit=str(value)
-                    )
+                    expression = f"{field} {operator} {value}"
                     value = None
                 else:
-                    expression = "{fld} {op} {ph}".format(
-                        fld=field, op=operator, ph=self._dialect.placeholder
-                    )
+                    expression = f"{field} {operator} {self._dialect.placeholder}"
             self._parts_where.append([expression, concat_with])
             if value is not None:
                 self._query_values[Sql.WHERE].append(value)
@@ -1008,7 +996,7 @@ class Select(SqlStatement):
 
         # join table
         join_table, alias, schema = self._parse_table_def(join_table, schema)
-        if alias in self._parts_from.keys():
+        if alias in self._parts_from:
             raise SqlError(f"_join(): duplicate alias for table {alias}")
 
         # join expression (if necessary)
@@ -1027,7 +1015,7 @@ class Select(SqlStatement):
                     raise SqlError(
                         "_join(): atmost one name:alias mapping per call is required"
                     )
-                from_table, expr_alias = list(from_table.items()).pop()
+                from_table, expr_alias = next(iter(from_table.items()))
                 if not isinstance(expr_alias, str):
                     raise SqlError("_join(): invalid alias type")
 
@@ -1049,7 +1037,7 @@ class Select(SqlStatement):
 
             if expr_alias is None:
                 expr_alias = from_table
-            if expr_alias not in self._parts_from.keys():
+            if expr_alias not in self._parts_from:
                 raise SqlError("_join(): table {} not found".format(expr_alias))
 
             if operator is None:
@@ -1097,7 +1085,7 @@ class Select(SqlStatement):
                 raise SqlError(
                     "_join(): atmost one name:alias mapping per call is required"
                 )
-            table, alias = list(table.items()).pop()
+            table, alias = next(iter(table.items()))
             if not isinstance(alias, str):
                 raise SqlError("_join(): invalid alias type")
 
@@ -1144,8 +1132,8 @@ class Select(SqlStatement):
         """
         i = 2
         alias = name
-        while alias in self._parts_from.keys():
-            alias = "_".join([name, str(i)])
+        while alias in self._parts_from:
+            alias = f"{name}_{i}"
             i += 1
         return alias
 
@@ -1157,7 +1145,7 @@ class Select(SqlStatement):
         :param alias: str, table alias
         :return: self
         """
-        if table_name in self._parts_columns.keys():
+        if table_name in self._parts_columns:
             if table_name == Sql.ANONYMOUS:
                 raise SqlError("Columns for anonymous expression table already exist")
             raise SqlError("Columns for table %s already exist" % table_name)
@@ -1213,75 +1201,50 @@ class Select(SqlStatement):
         :return: string
         """
         parts = [Sql.SQL_FROM]
-        from_parts = {}
-        join_parts = {}
-        lateral_parts = {}
+        from_names = []
+        join_stmts = []
+
         for alias, details in self._parts_from.items():
-            if details["joinType"] == Sql.FROM:
-                from_parts[alias] = details
-            elif details["joinType"] == Sql.LATERAL:
-                lateral_parts[alias] = details
-            else:
-                join_parts[alias] = details
+            join_type = details["joinType"]
+            tbl_alias = alias if alias != details["tableName"] else None
 
-        # FROM clause
-        names = []
-        for alias, details in from_parts.items():
-            tbl_alias = None
-            if alias != details["tableName"]:
-                tbl_alias = alias
-            names.append(
-                self._dialect.table(details["tableName"], tbl_alias, details["schema"])
-            )
-
-        # LATERAL clause
-        if len(lateral_parts) > 0:
-            for alias, details in lateral_parts.items():
-                tbl_alias = None
-                if alias != details["tableName"]:
-                    tbl_alias = alias
-                names.append(
-                    " ".join(
-                        [
-                            Sql.SQL_LATERAL,
-                            self._dialect.table(details["tableName"], tbl_alias),
-                        ]
+            if join_type == Sql.FROM:
+                from_names.append(
+                    self._dialect.table(
+                        details["tableName"], tbl_alias, details["schema"]
                     )
                 )
+            elif join_type == Sql.LATERAL:
+                from_names.append(
+                    f"{Sql.SQL_LATERAL} {self._dialect.table(details['tableName'], tbl_alias)}"
+                )
+            else:
+                stmt = [
+                    join_type,
+                    self._dialect.table(
+                        details["tableName"], tbl_alias, details["schema"]
+                    ),
+                ]
+
+                if details["joinCondition"] is not None:
+                    stmt.append(Sql.SQL_ON)
+                    cond = details["joinCondition"]
+                    if isinstance(cond, Literal):
+                        stmt.append(f"({cond})")
+                    else:
+                        stmt.append(cond)
+
+                join_stmts.append(" ".join(stmt))
 
         # build FROM, LATERAL
-        parts.append(", ".join(names))
+        parts.append(", ".join(from_names))
 
         # JOIN clauses
-        names = []
-        for alias, details in join_parts.items():
-            stmt = []
-            tbl_alias = None
-            stmt.append(details["joinType"])
-            if alias != details["tableName"]:
-                tbl_alias = alias
-            stmt.append(
-                self._dialect.table(details["tableName"], tbl_alias, details["schema"])
-            )
-
-            if details["joinCondition"] is not None:
-                stmt.append(Sql.SQL_ON)
-                stmt.append(details["joinCondition"])
-
-            # convert possible literals to self-contained clauses
-            _stmt = []
-            for s in stmt:
-                if isinstance(s, Literal):
-                    _stmt.append("({})".format(str(s)))
-                else:
-                    _stmt.append(s)
-            names.append(" ".join(_stmt))  # complete join statement
-        if len(names) > 0:
-            parts.append(" ".join(names))  # combine all join statements
+        if join_stmts:
+            parts.append(" ".join(join_stmts))
 
         # copy values that may have been passed by subqueries in joins
-        for v in self._query_values[Sql.JOIN]:
-            self._values.append(v)
+        self._values.extend(self._query_values[Sql.JOIN])
 
         return " ".join(parts)
 
@@ -1353,11 +1316,14 @@ class Select(SqlStatement):
                     parts.append(" ".join(stmt))
             elif isinstance(expr, (list, tuple)):
                 for field in expr:
-                    parts.append(" ".join([self._dialect.field(field), order]))
+                    rendered = self._dialect.field(field)
+                    parts.append(f"{rendered} {order}" if order else rendered)
             elif isinstance(expr, Literal):
-                parts.append(" ".join([str(expr), order]))
+                rendered = str(expr)
+                parts.append(f"{rendered} {order}" if order else rendered)
             elif isinstance(expr, str):
-                parts.append(" ".join([self._dialect.field(expr), order]))
+                rendered = self._dialect.field(expr)
+                parts.append(f"{rendered} {order}" if order else rendered)
             else:
                 raise SqlError("order(): invalid field type: %s" % str(type(expr)))
 
@@ -1399,8 +1365,7 @@ class Select(SqlStatement):
                 i += 1
 
         # copy values so they match the rendering sequence
-        for v in self._query_values[Sql.WHERE]:
-            self._values.append(v)
+        self._values.extend(self._query_values[Sql.WHERE])
 
         return " ".join(parts)
 
@@ -1433,8 +1398,7 @@ class Select(SqlStatement):
             )
             parts.append(clause)
 
-        for v in self._query_values[Sql.HAVING]:
-            self._values.append(v)
+        self._values.extend(self._query_values[Sql.HAVING])
 
         glue = " " + Sql.SQL_AND + " "
         return " ".join([Sql.SQL_HAVING, glue.join(parts)])
@@ -1489,7 +1453,7 @@ class Select(SqlStatement):
             if isinstance(v, Literal):
                 self._values[k] = str(v)
 
-        return " ".join(parts).strip(), self._values
+        return " ".join(p for p in parts if p), self._values
 
     def dialect(self) -> SqlDialect:
         """
