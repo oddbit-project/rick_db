@@ -114,7 +114,7 @@ class BaseRecord(Record):
         if pk is None:
             raise RecordError("primary key is not defined")
         row = self._row
-        if pk in row.keys():
+        if pk in row:
             return row[pk]
         raise AttributeError("primary key value is not set")
 
@@ -126,24 +126,21 @@ class BaseRecord(Record):
         result = {}
         data = self._row
         for key, dbfield in self._fieldmap.items():
-            if key not in skip and dbfield in data.keys():
+            if key not in skip and dbfield in data:
                 result[key] = data[dbfield]
         return result
 
     def asrecord(self):
-        dbfieldnames = object.__getattribute__(self, ATTR_FIELDS).values()
-        data = object.__getattribute__(self, ATTR_ROW).copy()
-        # remove entries that may exist in _row but do not map to allowed fields
-        for key in list(data.keys()):
-            if key not in dbfieldnames:
-                data.pop(key)
-        return data
+        fieldmap = object.__getattribute__(self, ATTR_FIELDS)
+        data = object.__getattribute__(self, ATTR_ROW)
+        dbfieldnames = fieldmap.values()
+        return {key: val for key, val in data.items() if key in dbfieldnames}
 
     def fields(self):
         result = []
         data = self._row
         for key, dbfield in self._fieldmap.items():
-            if dbfield in data.keys():
+            if dbfield in data:
                 result.append(key)
         return result
 
@@ -154,7 +151,7 @@ class BaseRecord(Record):
         result = []
         data = self._row
         for key, dbfield in self._fieldmap.items():
-            if dbfield in data.keys():
+            if dbfield in data:
                 result.append(data[dbfield])
         return result
 
@@ -178,12 +175,9 @@ class BaseRecord(Record):
         if attr in fieldmap:
             field = fieldmap[attr]
             data = object.__getattribute__(self, ATTR_ROW)
-            if field in data.keys():
-                return data[field]
-            return None
+            return data.get(field)
 
-        attribute = object.__getattribute__(self, attr)
-        return attribute
+        return object.__getattribute__(self, attr)
 
     def __setattr__(self, key, value):
         fm = object.__getattribute__(self, ATTR_FIELDS)
@@ -210,7 +204,9 @@ def _base_record_method_map() -> dict:
     return methods
 
 
-def fieldmapper(cls=None, pk=None, tablename=None, schema=None, clsonly=False, json_exclude=None):
+def fieldmapper(
+    cls=None, pk=None, tablename=None, schema=None, clsonly=False, json_exclude=None
+):
     def wrap(cls):
         fieldmap = {}
         if clsonly:

@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from rick_db.sql import SqlError, Literal
 
 
@@ -34,6 +36,7 @@ class SqlDialect:
             "JSON_CONTAINS_PATH({field}, 'one', {path})"  # Check if path exists
         )
 
+    @lru_cache(maxsize=256)
     def _qi(self, identifier):
         """
         Quote a SQL identifier, escaping embedded double-quotes by doubling them
@@ -43,7 +46,7 @@ class SqlDialect:
         :return: quoted identifier string, e.g. '"my_table"'
         """
         escaped = identifier.replace('"', '""')
-        return '"{}"'.format(escaped)
+        return f'"{escaped}"'
 
     def table(self, table_name, alias=None, schema=None):
         """
@@ -62,14 +65,10 @@ class SqlDialect:
             table_name = self._qi(table_name)
 
             if schema is not None:
-                table_name = (
-                    self._qi(schema)
-                    + self._separator
-                    + table_name
-                )
+                table_name = self._qi(schema) + self._separator + table_name
         else:
             # table_name is actually a Literal expression, just add parenthesis
-            table_name = "({table})".format(table=table_name)
+            table_name = f"({table_name})"
 
         if alias is None:
             return table_name
@@ -96,9 +95,7 @@ class SqlDialect:
         if table is not None:
             table = self._qi(table) + self._separator
             if schema is not None:
-                table = (
-                    self._qi(schema) + self._separator + table
-                )
+                table = self._qi(schema) + self._separator + table
         else:
             table = ""
 
@@ -119,9 +116,7 @@ class SqlDialect:
                 raise SqlError("Alias for field %s cannot be empty" % field)
             field = self._cast.format(field=field, cast=field_alias[0])
             if _len > 1:
-                return self._as.join(
-                    [field, self._qi(field_alias[1])]
-                )
+                return self._as.join([field, self._qi(field_alias[1])])
             else:
                 return field
         else:
@@ -143,13 +138,11 @@ class SqlDialect:
             database_name = self._qi(database_name)
         else:
             # database_name is actually a Literal expression, just add parenthesis
-            database_name = "({database})".format(database=database_name)
+            database_name = f"({database_name})"
 
         if alias is None:
             return database_name
-        return self._as.join(
-            [database_name, self._qi(alias)]
-        )
+        return self._as.join([database_name, self._qi(alias)])
 
     def _json_field_expr(self, field):
         """
@@ -194,7 +187,7 @@ class SqlDialect:
             and not path.startswith("'")
             and not path.startswith('"')
         ):
-            path = "'{}'".format(path)
+            path = f"'{path}'"
 
         expr = self._json_extract.format(field=field_expr, path=path)
 
@@ -226,7 +219,7 @@ class SqlDialect:
             and not path.startswith("'")
             and not path.startswith('"')
         ):
-            path = "'{}'".format(path)
+            path = f"'{path}'"
 
         expr = self._json_extract_text.format(field=field_expr, path=path)
 
@@ -283,7 +276,7 @@ class SqlDialect:
             and not path.startswith("'")
             and not path.startswith('"')
         ):
-            path = "'{}'".format(path)
+            path = f"'{path}'"
 
         expr = self._json_contains_path.format(field=field_expr, path=path)
 
@@ -351,9 +344,7 @@ class PgSqlDialect(SqlDialect):
         if table is not None:
             table = self._qi(table) + self._separator
             if schema is not None:
-                table = (
-                    self._qi(schema) + self._separator + table
-                )
+                table = self._qi(schema) + self._separator + table
         else:
             table = ""
 
@@ -375,9 +366,7 @@ class PgSqlDialect(SqlDialect):
             # generate pg-style cast with ::<type>
             cast = self._cast + field_alias[0]
             if _len > 1:
-                return self._as.join(
-                    [field + cast, self._qi(field_alias[1])]
-                )
+                return self._as.join([field + cast, self._qi(field_alias[1])])
             else:
                 return field + cast
         else:
@@ -397,7 +386,7 @@ class PgSqlDialect(SqlDialect):
             if path.startswith("$."):
                 path = path[2:]
             path = path.strip("'\"")
-            return "'{}'".format(path)
+            return f"'{path}'"
         return str(path)
 
     def json_extract(self, field, path, alias=None):
@@ -490,9 +479,9 @@ class PgSqlDialect(SqlDialect):
         field_expr = self._json_field_expr(field)
 
         if not path.startswith("'"):
-            path = "'{}'".format(path)
+            path = f"'{path}'"
 
-        expr = "{}::jsonb @? {}".format(field_expr, path)
+        expr = f"{field_expr}::jsonb @? {path}"
 
         if alias:
             return self._as.join([expr, self._qi(alias)])
@@ -514,6 +503,7 @@ class MySqlSqlDialect(SqlDialect):
         # Override only _json_extract_text for unquoted text extraction
         self._json_extract_text = "JSON_UNQUOTE(JSON_EXTRACT({field}, {path}))"
 
+    @lru_cache(maxsize=256)
     def _qi(self, identifier):
         """
         Quote a SQL identifier with backticks, escaping embedded backticks by doubling.
@@ -521,8 +511,8 @@ class MySqlSqlDialect(SqlDialect):
         :param identifier: identifier name (table, field, schema, database)
         :return: quoted identifier string, e.g. `my_table`
         """
-        escaped = identifier.replace('`', '``')
-        return '`{}`'.format(escaped)
+        escaped = identifier.replace("`", "``")
+        return f"`{escaped}`"
 
 
 class ClickHouseSqlDialect(SqlDialect):
@@ -557,7 +547,7 @@ class ClickHouseSqlDialect(SqlDialect):
             if path.startswith("$."):
                 path = path[2:]
             path = path.strip("'\"")
-            return "'{}'".format(path)
+            return f"'{path}'"
         return str(path)
 
     def json_extract(self, field, path, alias=None):
