@@ -32,10 +32,8 @@ class ProfilerInterface:
 
 
 class NullProfiler(ProfilerInterface):
-    _empty = EventCollection()
-
     def get_events(self) -> EventCollection:
-        return self._empty
+        return EventCollection()
 
 
 class DefaultProfiler(ProfilerInterface):
