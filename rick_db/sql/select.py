@@ -927,7 +927,6 @@ class Select(SqlStatement):
             else:
                 if (
                     isinstance(value, (list, tuple))
-                    and operator is not None
                     and operator.lower() in ("in", "not in")
                 ):
                     if len(value) == 0:
@@ -1062,7 +1061,7 @@ class Select(SqlStatement):
         # always alias wildcard tables
         has_alias = False
         if join_type in (Sql.FROM, Sql.LATERAL):
-            has_alias = (join_table != alias) or str(cols) == "*"
+            has_alias = (join_table != alias) or cols == "*"
         else:
             # in joins, cols are always prefixed by alias
             if cols is not None:

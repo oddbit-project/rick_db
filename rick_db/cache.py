@@ -26,7 +26,7 @@ class QueryCache(CacheInterface):
 
     def get(self, key: str, default: Any = None) -> Optional[str]:
         with self._lock:
-            if key in self.data.keys():
+            if key in self.data:
                 return self.data[key]
             return default
 
@@ -36,7 +36,7 @@ class QueryCache(CacheInterface):
 
     def has(self, key: str) -> bool:
         with self._lock:
-            return key in self.data.keys()
+            return key in self.data
 
     def remove(self, key: str) -> Any:
         with self._lock:

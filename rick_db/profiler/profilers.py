@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import threading
 import time
 
 
@@ -31,18 +32,25 @@ class ProfilerInterface:
 
 
 class NullProfiler(ProfilerInterface):
-    pass
+    _empty = EventCollection()
+
+    def get_events(self) -> EventCollection:
+        return self._empty
 
 
 class DefaultProfiler(ProfilerInterface):
     def __init__(self):
         self._events = EventCollection()
+        self._lock = threading.Lock()
 
     def add_event(self, query: str, parameters: dict, duration: float):
-        self._events.append(Event(time.time(), query, parameters, duration))
+        with self._lock:
+            self._events.append(Event(time.time(), query, parameters, duration))
 
     def clear(self):
-        self._events.clear()
+        with self._lock:
+            self._events.clear()
 
     def get_events(self) -> EventCollection:
-        return self._events
+        with self._lock:
+            return EventCollection(self._events)

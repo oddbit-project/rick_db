@@ -4,16 +4,29 @@ This class extends [ManagerInterface](managerinterface.md) to provide a specific
 It uses ClickHouse `system.*` tables for introspection. The `schema` parameter maps to ClickHouse `database`;
 when `None`, the connection's current database is used.
 
-```python
-from rick_db.backend.clickhouse import ClickHouseConnection, ClickHouseManager
+Accepts either a `ClickHouseConnection` or a `ClickHouseConnectionPool`.
 
+```python
+from rick_db.backend.clickhouse import ClickHouseConnection, ClickHouseConnectionPool, ClickHouseManager
+
+# With a connection
 conn = ClickHouseConnection(host="localhost", port=8123, database="mydb")
 mgr = ClickHouseManager(conn)
+
+# With a connection pool (recommended for production)
+pool = ClickHouseConnectionPool(host="localhost", port=8123, database="mydb")
+mgr = ClickHouseManager(pool)
+
+# With explicit database name
+mgr = ClickHouseManager(pool, database="other_db")
 ```
 
-### ClickHouseManager.**\_\_init\_\_(db)**
+### ClickHouseManager.**\_\_init\_\_(db, database=None)**
 
-Creates a new ClickHouseManager instance. Accepts a `ClickHouseConnection`.
+Creates a new ClickHouseManager instance.
+
+- `db` — a `ClickHouseConnection` or `ClickHouseConnectionPool`
+- `database` — optional database name override. If not provided, the database is extracted from the connection's client config or the pool's connection parameters.
 
 ### Supported methods
 
@@ -59,7 +72,10 @@ In ClickHouse, databases serve the role of schemas. The following methods delega
 
 The following methods are **not supported** and will raise `NotImplementedError`:
 
-- `user_groups()`
-- `create_schema()`
-- `drop_schema()`
+- `create_schema()` — use `create_database()` instead
+- `drop_schema()` — use `drop_database()` instead
 - `kill_clients()`
+
+The following method returns an empty result (ClickHouse has no group concept):
+
+- `user_groups()` — returns `[]`

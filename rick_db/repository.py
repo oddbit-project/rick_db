@@ -566,7 +566,7 @@ class Repository(GenericRepository):
         data = record.asrecord()  # type: dict
 
         value = pk_value
-        if self.pk in data.keys():
+        if self.pk in data:
             # if primary key already on record, extract it and remove it from update list
             value = data[self.pk]
             del data[self.pk]
@@ -593,14 +593,14 @@ class Repository(GenericRepository):
         :param where_list: list of where conditions
         :return:
         """
-        if type(where_list) not in [list, tuple]:
+        if not isinstance(where_list, (list, tuple)):
             raise RepositoryError("update_where(): invalid type for where clause list")
         if len(where_list) == 0:
             raise RepositoryError("update_where(): where clause list cannot be empty")
 
         qry = Update(self.dialect).table(self.table_name, self.schema).values(record)
         for cond in where_list:
-            if type(cond) not in [list, tuple]:
+            if not isinstance(cond, (list, tuple)):
                 raise RepositoryError(
                     "update_where(): invalid item in where clause list"
                 )
@@ -646,14 +646,14 @@ class Repository(GenericRepository):
         :param where_list: list of where conditions
         :return:
         """
-        if type(where_list) not in [list, tuple]:
+        if not isinstance(where_list, (list, tuple)):
             raise RepositoryError("count_where(): invalid type for where clause list")
         if len(where_list) == 0:
             raise RepositoryError("count_where(): where clause list cannot be empty")
 
         qry = self.select(cols={Literal("COUNT(*)"): "total"})
         for cond in where_list:
-            if type(cond) not in [list, tuple]:
+            if not isinstance(cond, (list, tuple)):
                 raise RepositoryError(
                     "count_where(): invalid item in where clause list"
                 )

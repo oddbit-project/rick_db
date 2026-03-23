@@ -323,3 +323,63 @@ class TestClickHouseExamples:
                 c.exec("DROP TABLE IF EXISTS test_example_events")
                 c.close()
             conn.close()
+
+    def test_clickhouse_pool(self):
+        """Test ClickHouseConnectionPool and ClickHouseManager with pool."""
+        from rick_db.backend.clickhouse import (
+            ClickHouseConnectionPool,
+            ClickHouseManager,
+            ClickHouseRepository,
+        )
+        from rick_db import fieldmapper
+
+        pool = ClickHouseConnectionPool(
+            host=os.environ.get("CLICKHOUSE_HOST", "localhost"),
+            port=int(os.environ.get("CLICKHOUSE_PORT", 18123)),
+            username=os.environ.get("CLICKHOUSE_USER", "some_user"),
+            password=os.environ.get("CLICKHOUSE_PASSWORD", "somePassword"),
+            database=os.environ.get("CLICKHOUSE_DB", "testdb"),
+            minconn=2,
+            maxconn=5,
+        )
+
+        try:
+            # Manager with pool
+            mgr = ClickHouseManager(pool)
+            dbs = mgr.databases()
+            assert isinstance(dbs, list)
+            assert len(dbs) > 0
+
+            # Create table, insert, query via pool
+            with pool.connection() as conn:
+                with conn.cursor() as c:
+                    c.exec(
+                        """
+                        CREATE TABLE IF NOT EXISTS test_pool_events (
+                            id UInt64,
+                            event_type String
+                        ) ENGINE = MergeTree()
+                        ORDER BY id
+                        """
+                    )
+                    c.exec(
+                        "INSERT INTO test_pool_events (id, event_type) VALUES (1, 'test')"
+                    )
+
+            @fieldmapper(tablename="test_pool_events", pk="id")
+            class PoolEvent:
+                id = "id"
+                event_type = "event_type"
+
+            with pool.connection() as conn:
+                repo = ClickHouseRepository(conn, PoolEvent)
+                events = repo.fetch_all()
+                assert len(events) == 1
+                assert events[0].event_type == "test"
+
+            assert mgr.table_exists("test_pool_events")
+            mgr.drop_table("test_pool_events")
+            assert mgr.table_exists("test_pool_events") is False
+
+        finally:
+            pool.close()

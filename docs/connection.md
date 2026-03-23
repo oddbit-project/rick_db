@@ -96,19 +96,25 @@ ClickHouse is supported via the `clickhouse-connect` HTTP client. Install the op
 $ pip install clickhouse-connect
 ```
 
+There are two ClickHouse connectors available - a simple connector and a thread-safe connection pool; the recommended
+usage is to use **ClickHouseConnectionPool**.
+
 Available connection parameters:
 
-|Field| Description |
-|---|---|
-|host| ClickHouse server hostname (defaults to "localhost") |
-|port| HTTP port (defaults to 8123) |
-|username| User name used to authenticate (defaults to "default") |
-|password| Password used to authenticate (defaults to empty) |
-|database| Database name (defaults to "default") |
+|Field| Connector | Description |
+|---|---|---|
+|host| All | ClickHouse server hostname (defaults to "localhost") |
+|port| All | HTTP port (defaults to 8123) |
+|username| All | User name used to authenticate (defaults to "default") |
+|password| All | Password used to authenticate (defaults to empty) |
+|database| All | Database name (defaults to "default") |
+|minconn| ClickHouseConnectionPool | Minimum number of connections to keep, defaults to 5 if not provided |
+|maxconn| ClickHouseConnectionPool | Maximum number of connections to keep, defaults to 25 if not provided |
+|ping| ClickHouseConnectionPool | If true (default), connections are validated before use |
 
 Any additional keyword arguments are passed directly to `clickhouse_connect.get_client()`.
 
-Example:
+Using ClickHouseConnection:
 ```python
 from rick_db.backend.clickhouse import ClickHouseConnection
 
@@ -125,6 +131,27 @@ conn = ClickHouseConnection(**config)
 with conn.cursor() as c:
     # do stuff
     pass
+```
+
+Using ClickHouseConnectionPool:
+```python
+from rick_db.backend.clickhouse import ClickHouseConnectionPool
+
+config = {
+    'host': 'localhost',
+    'port': 8123,
+    'username': 'default',
+    'password': '',
+    'database': 'my_database',
+    'minconn': 4,
+}
+
+# create connection pool
+pool = ClickHouseConnectionPool(**config)
+with pool.connection() as conn:     # fetch a connection from the pool
+    with conn.cursor() as c:        # create a cursor
+        # do stuff
+        pass
 ```
 
 > Note: ClickHouse has no real transactions. `commit()` and `rollback()` are no-ops. The `Repository.transaction()`
@@ -190,3 +217,22 @@ with pool.connection() as conn:
 for evt in pool.profiler.get_events():
     print(evt.query, evt.elapsed)
 ```
+
+Example using ClickHouseConnectionPool:
+```python
+from rick_db.backend.clickhouse import ClickHouseConnectionPool
+from rick_db.profiler import DefaultProfiler
+
+pool = ClickHouseConnectionPool(host="localhost", port=8123, database="mydb")
+pool.profiler = DefaultProfiler()
+
+with pool.connection() as conn:
+    with conn.cursor() as c:
+        c.exec("SELECT 1")
+
+for evt in pool.profiler.get_events():
+    print(evt.query, evt.elapsed)
+```
+
+> Note: The profiler instance is captured at connection checkout time. Reassigning `pool.profiler`
+> after connections are already checked out will not affect those existing connections.

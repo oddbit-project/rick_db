@@ -135,7 +135,7 @@ class TestJsonFieldDefault:
         result = jf["name"]
         assert isinstance(result, JsonField)
         assert not isinstance(result, PgJsonField)
-        assert result.field_name == 'data->>"name"'
+        assert result.field_name == "JSON_EXTRACT(data, '$.name')"
 
     def test_str(self):
         jf = JsonField("data")

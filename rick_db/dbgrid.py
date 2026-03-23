@@ -32,7 +32,7 @@ class DbGrid:
             search_type = self.SEARCH_ANY
         else:
             if search_type != self.SEARCH_NONE:
-                if search_type not in self.search_map.keys():
+                if search_type not in self.search_map:
                     raise ValueError("search type '%s' is not supported" % search_type)
 
         self._repo = repo
