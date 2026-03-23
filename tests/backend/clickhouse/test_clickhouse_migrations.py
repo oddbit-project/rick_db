@@ -148,22 +148,21 @@ class TestClickHouseMigrationManager:
         result = mm.execute(MigrationRecord(name="test"), "")
         assert result.success is False
 
-    def test_exec_multi_statement(self, mm):
-        """Test that _exec splits multi-statement SQL correctly"""
+    def test_execute_single_statement(self, mm):
+        """Each migration file should contain a single SQL statement."""
         mm.install()
 
-        multi_sql = """
+        create_sql = """
         CREATE TABLE IF NOT EXISTS animal (
             id_animal UInt32,
             name String
         ) ENGINE = MergeTree()
-        ORDER BY id_animal;
-        INSERT INTO animal VALUES (1, 'cat');
-        INSERT INTO animal VALUES (2, 'dog')
+        ORDER BY id_animal
         """
 
-        mig = MigrationRecord(name="multi_stmt")
-        result = mm.execute(mig, multi_sql)
+        mig = MigrationRecord(name="single_stmt")
+        result = mm.execute(mig, create_sql)
         assert result.success is True
+        assert mm.manager.table_exists("animal") is True
 
         mm.manager.drop_table("animal")

@@ -77,7 +77,7 @@ class Connection(ConnectionInterface):
         pool: Optional[PoolInterface],
         db_connection,
         dialect: SqlDialect,
-        profiler: ProfilerInterface = NullProfiler(),
+        profiler: ProfilerInterface = None,
     ):
         """
         Initializes a connection
@@ -91,7 +91,7 @@ class Connection(ConnectionInterface):
         self._dialect = dialect
         self._in_transaction = False
         self._cursor_factory = Cursor
-        self.profiler = profiler
+        self.profiler = profiler if profiler is not None else NullProfiler()
         # autocommit can either be defined at inherited instances or
         # imported from the database adapter
         if getattr(self, "autocommit", None) is None:

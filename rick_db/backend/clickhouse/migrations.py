@@ -42,16 +42,3 @@ class ClickHouseMigrationManager(BaseMigrationManager):
             return MigrationResult(success=True, error="")
         except Exception as e:
             return MigrationResult(success=False, error=str(e))
-
-    def _exec(self, content):
-        """
-        Execute migration using a cursor.
-        Splits multi-statement SQL on ';' since clickhouse-connect's
-        command() only accepts one statement at a time.
-        """
-        with self.manager.conn() as conn:
-            with conn.cursor() as c:
-                for statement in content.split(";"):
-                    statement = statement.strip()
-                    if statement:
-                        c.exec(statement)

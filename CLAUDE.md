@@ -68,9 +68,11 @@ conn = Sqlite3Connection("mydb.db")       # file-based
 conn = Sqlite3Connection(":memory:")       # in-memory
 
 # ClickHouse
-from rick_db.backend.clickhouse import ClickHouseConnection
+from rick_db.backend.clickhouse import ClickHouseConnection, ClickHouseConnectionPool
 
 conn = ClickHouseConnection(host="localhost", port=8123, database="mydb")
+# or with pooling (recommended for production)
+pool = ClickHouseConnectionPool(host="localhost", port=8123, database="mydb")
 ```
 
 ### Use the Repository
@@ -618,10 +620,11 @@ from rick_db.backend.sqlite import Sqlite3Manager
 mgr = Sqlite3Manager(conn)
 mgr.tables(), mgr.views(), mgr.table_fields("users"), mgr.table_pk("users")
 
-# ClickHouse
+# ClickHouse (accepts connection or pool)
 from rick_db.backend.clickhouse import ClickHouseManager
 
 mgr = ClickHouseManager(conn)
+mgr = ClickHouseManager(pool)  # also works with ClickHouseConnectionPool
 mgr.tables(), mgr.views(), mgr.table_fields("users"), mgr.table_pk("users")
 mgr.databases(), mgr.users()
 ```
@@ -660,5 +663,5 @@ tox -e flake
 - `DbConnectionError` is the correct name; `ConnectionError` alias exists for backward compatibility
 - SQLite has no `ILIKE`; DbGrid uses `UPPER()` for case-insensitive search
 - Migration `execute()` is not fully transactional between SQL execution and registration
-- `DefaultProfiler` is not thread-safe
+- `DefaultProfiler` is thread-safe (protected by lock); `get_events()` returns a snapshot copy
 - Supports Python 3.9+

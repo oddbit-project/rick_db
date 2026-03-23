@@ -44,8 +44,13 @@ Return internal profiling event collection.
 ## Class rick_db.profiler.**NullProfiler**
 
 A [ProfilerInterface](#class-rick_dbprofilerprofilerinterface)-based class with dummy behaviour, to be used when no profiler is desired.
+All methods are no-ops. `get_events()` returns a fresh empty [EventCollection](#class-rick_dbprofilereventcollection) on each call.
 
 
 ## Class rick_db.profiler.**DefaultProfiler**
 
 A [ProfilerInterface](#class-rick_dbprofilerprofilerinterface)-based class. Events are kept in-memory.
+
+Thread-safe: all methods are protected by a lock, making it safe to share a single `DefaultProfiler` instance
+across multiple connections (e.g. via a connection pool). `get_events()` returns a snapshot copy of the internal
+collection, so iterating over events is not affected by concurrent `add_event()` calls.

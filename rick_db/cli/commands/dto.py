@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 from typing import List
 from rick_db.cli.command import BaseCommand
@@ -91,6 +92,10 @@ class Command(BaseCommand):
 
         # build fieldmapper decorator fields
         name = table_name.title().replace("_", "")
+        # sanitize: remove chars invalid in Python identifiers, ensure starts with letter
+        name = re.sub(r"[^a-zA-Z0-9]", "", name)
+        if not name or not name[0].isalpha():
+            name = "T" + name
         line = ["tablename='{name}'".format(name=table_name)]
         if schema is not None:
             line.append("schema='{schema}'".format(schema=schema))

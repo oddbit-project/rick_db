@@ -1,7 +1,7 @@
 from contextlib import contextmanager
-from typing import Optional, List
+from typing import Optional, List, Union
 
-from rick_db import Connection
+from rick_db import Connection, PoolInterface
 from rick_db.manager import ManagerInterface, FieldRecord, UserRecord
 
 
@@ -12,20 +12,51 @@ class ClickHouseManager(ManagerInterface):
     Uses ClickHouse system.* tables for metadata queries.
     The schema parameter maps to ClickHouse database; when None,
     uses the connection's current database.
+
+    Accepts either a ClickHouseConnection or ClickHouseConnectionPool.
     """
 
-    def __init__(self, db):
-        self._db = db
-        self.dialect = db.dialect()
-        # extract current database from client config
-        self._database = db.client.database
+    def __init__(self, db: Union[Connection, PoolInterface], database: str = None):
+        if isinstance(db, Connection):
+            self._db = db
+            self._pool = None
+            self.dialect = db.dialect()
+            if database is not None:
+                self._database = database
+            else:
+                self._database = db.client.database
+        elif isinstance(db, PoolInterface):
+            self._db = None
+            self._pool = db
+            self.dialect = db.dialect()
+            if database is not None:
+                self._database = database
+            else:
+                self._database = db._kwargs.get("database", "default")
+        else:
+            raise TypeError(
+                f"db must be a Connection or PoolInterface, not {type(db).__name__}"
+            )
 
     @contextmanager
     def conn(self) -> Connection:
-        yield self._db
+        if self._db:
+            yield self._db
+        elif self._pool:
+            conn = None
+            try:
+                conn = self._pool.getconn()
+                yield conn
+            finally:
+                if conn is not None:
+                    self._pool.putconn(conn)
+        else:
+            raise RuntimeError("no database connection or pool available")
 
-    def backend(self):
-        return self._db
+    def backend(self) -> Union[Connection, PoolInterface]:
+        if self._db:
+            return self._db
+        return self._pool
 
     def tables(self, schema=None) -> List[str]:
         database = schema or self._database

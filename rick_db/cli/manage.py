@@ -181,7 +181,7 @@ class CliManager:
         cmds = {}
         for p in path.glob("*.py"):
             if p.is_file() and p.name[0] != "_":
-                command_ns = "{}.{}".format(module_prefix, p.name.rsplit(".py")[0])
+                command_ns = "{}.{}".format(module_prefix, p.stem)
                 loaded = command_ns in sys.modules
                 try:
                     module = importlib.import_module(command_ns)

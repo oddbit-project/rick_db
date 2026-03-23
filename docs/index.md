@@ -32,8 +32,9 @@ and a Repository pattern implementation.
   configurable patterns), exact-match filtering, multi-field sorting, and returns both total count and paginated results.
 
 - **[Connections](connection.md)** — high-level connectors for **PostgreSQL** (psycopg2, with thread-safe
-  connection pooling), **SQLite3** (stdlib), and **ClickHouse** (clickhouse-connect). All connectors share a common
-  interface with cursor management, transaction support, and pluggable query profiling.
+  connection pooling), **SQLite3** (stdlib), and **ClickHouse** (clickhouse-connect, with thread-safe
+  connection pooling). All connectors share a common interface with cursor management, transaction support,
+  and pluggable query profiling.
 
 - **[SQL Dialects](classes/sqldialect.md)** — dialect objects handle database-specific differences (placeholder syntax,
   identifier quoting, type casting, JSON operators). Available for PostgreSQL, SQLite, ClickHouse, and

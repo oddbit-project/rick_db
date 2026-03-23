@@ -248,6 +248,7 @@ Migrations can also be managed programmatically. Each backend provides a Manager
 |---------|---------|-----------------|
 | PostgreSQL | `PgManager` | `PgMigrationManager` |
 | SQLite | `Sqlite3Manager` | `Sqlite3MigrationManager` |
+| ClickHouse | `ClickHouseManager` | `ClickHouseMigrationManager` |
 
 ```python
 from rick_db.backend.sqlite import Sqlite3Connection, Sqlite3Manager, Sqlite3MigrationManager
@@ -282,5 +283,27 @@ mm.flatten(MigrationRecord(name="schema.sql"))
 ```
 
 For PostgreSQL, use `PgManager` and `PgMigrationManager` from `rick_db.backend.pg` with the same API.
+
+For ClickHouse:
+```python
+from rick_db.backend.clickhouse import ClickHouseConnection, ClickHouseManager, ClickHouseMigrationManager
+from rick_db.migrations import MigrationRecord
+
+conn = ClickHouseConnection(host="localhost", port=8123, database="mydb")
+mgr = ClickHouseManager(conn)
+mm = ClickHouseMigrationManager(mgr)
+```
+
+ClickHouseManager also accepts a `ClickHouseConnectionPool`:
+```python
+from rick_db.backend.clickhouse import ClickHouseConnectionPool, ClickHouseManager, ClickHouseMigrationManager
+
+pool = ClickHouseConnectionPool(host="localhost", port=8123, database="mydb")
+mgr = ClickHouseManager(pool)
+mm = ClickHouseMigrationManager(mgr)
+```
+
+> **Note:** ClickHouse migration files must contain a single SQL statement each. Multi-statement migrations
+> should be split into separate files.
 
 See [Examples](examples.md#migration-workflow) for a complete runnable example.

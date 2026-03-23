@@ -61,7 +61,11 @@ SQL builders.
 
 ```python
 from rick_db import fieldmapper
-from rick_db.backend.clickhouse import ClickHouseConnection, ClickHouseRepository
+from rick_db.backend.clickhouse import (
+    ClickHouseConnection,
+    ClickHouseConnectionPool,
+    ClickHouseRepository,
+)
 
 @fieldmapper(tablename="events", pk="id")
 class Event:
@@ -69,8 +73,15 @@ class Event:
     event_type = "event_type"
     amount = "amount"
 
+# With a direct connection
 conn = ClickHouseConnection(host="localhost", port=8123, database="mydb")
 repo = ClickHouseRepository(conn, Event)
+
+# With a connection pool (recommended for production)
+pool = ClickHouseConnectionPool(host="localhost", port=8123, database="mydb")
+with pool.connection() as conn:
+    repo = ClickHouseRepository(conn, Event)
+    events = repo.fetch_all()
 ```
 
 ### Overridden methods

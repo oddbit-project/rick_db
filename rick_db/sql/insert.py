@@ -78,7 +78,7 @@ class Insert(SqlStatement):
             self._values = values
 
         elif isinstance(values, collections.abc.Mapping):
-            self._fields = values.keys()
+            self._fields = list(values.keys())
             self._values = list(values.values())
 
         elif isinstance(values, object):
@@ -86,7 +86,7 @@ class Insert(SqlStatement):
             if not callable(getattr(values, "asrecord", None)):
                 raise SqlError("values(): invalid object type for data parameter")
             values = values.asrecord()
-            self._fields = values.keys()
+            self._fields = list(values.keys())
             self._values = list(values.values())
         else:
             raise SqlError("values(): Invalid data type")

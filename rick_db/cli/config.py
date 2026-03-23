@@ -37,7 +37,7 @@ class ConfigFile:
         config = toml.load(self._file)
         for k in config.keys():
             if k.startswith(self.KEY_PREFIX) or k == self.KEY_DEFAULT:
-                if type(config[k]) is dict:
+                if isinstance(config[k], dict):
                     if self.KEY_ENGINE not in config[k].keys():
                         raise RuntimeError(
                             "missing 'engine' parameter in database configuration key '{}' in {}".format(
@@ -57,4 +57,4 @@ class ConfigFile:
         if not p.exists() or not p.is_file():
             raise RuntimeError("could not open passfile '{}'".format(passfile))
         with open(p, encoding="utf-8") as f:
-            return f.readline()
+            return f.readline().rstrip("\n\r")

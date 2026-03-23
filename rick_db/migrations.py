@@ -36,6 +36,7 @@ class BaseMigrationManager:
 
     def __init__(self, mgr: ManagerInterface):
         self.manager = mgr
+        self._repository = None
 
     def is_installed(self) -> bool:
         """
@@ -166,15 +167,16 @@ class BaseMigrationManager:
 
     @property
     def repository(self) -> Repository:
-        # build a patched class based on MigrationRecord, since
-        # existing one has no table name
-        class R(MigrationRecord):
-            pass
+        if self._repository is None:
+            # build a patched class based on MigrationRecord, since
+            # existing one has no table name
+            class R(MigrationRecord):
+                pass
 
-        # define table name
-        setattr(R, ATTR_TABLE, self.MIGRATION_TABLE)
-
-        return Repository(self.manager.backend(), R)
+            # define table name
+            setattr(R, ATTR_TABLE, self.MIGRATION_TABLE)
+            self._repository = Repository(self.manager.backend(), R)
+        return self._repository
 
     @abc.abstractmethod
     def _migration_table_sql(self, table_name: str) -> str:

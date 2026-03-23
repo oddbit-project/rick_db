@@ -2,8 +2,8 @@
 ClickHouse connection, repository, and introspection example.
 
 Demonstrates:
- - ClickHouseConnection setup
- - ClickHouseManager for schema introspection
+ - ClickHouseConnection and ClickHouseConnectionPool setup
+ - ClickHouseManager for schema introspection (with connection and pool)
  - Repository usage with ClickHouse
  - Query builder with ClickHouseSqlDialect
 
@@ -12,7 +12,12 @@ Requirements:
  - pip install clickhouse-connect
 """
 from rick_db import fieldmapper, Repository
-from rick_db.backend.clickhouse import ClickHouseConnection, ClickHouseManager
+from rick_db.backend.clickhouse import (
+    ClickHouseConnection,
+    ClickHouseConnectionPool,
+    ClickHouseManager,
+    ClickHouseRepository,
+)
 from rick_db.sql import Select, Fn
 
 
@@ -84,7 +89,7 @@ def introspect(conn):
     if mgr.table_exists("events"):
         print("\nFields in 'events':")
         for f in mgr.table_fields("events"):
-            print("  {} ({})".format(f.field, f.field_type))
+            print("  {} ({})".format(f.field, f.type))
 
         pk = mgr.table_pk("events")
         if pk:
@@ -159,6 +164,33 @@ def cleanup(conn):
         c.close()
 
 
+def pool_examples():
+    """Connection pool usage with ClickHouseConnectionPool."""
+    pool = ClickHouseConnectionPool(**db_cfg, minconn=2, maxconn=10)
+
+    print("\n=== Connection Pool ===")
+
+    # Manager works with pool directly
+    mgr = ClickHouseManager(pool)
+    print("Tables via pool:", mgr.tables())
+
+    # Repository via pool connection
+    with pool.connection() as conn:
+        repo = ClickHouseRepository(conn, Event)
+        events = repo.fetch_all()
+        print("Events via pool:", len(events))
+
+    # Multiple connections from pool
+    with pool.connection() as conn1:
+        with pool.connection() as conn2:
+            repo1 = ClickHouseRepository(conn1, Event)
+            repo2 = ClickHouseRepository(conn2, Event)
+            print("Conn1 count:", repo1.count())
+            print("Conn2 count:", repo2.count())
+
+    pool.close()
+
+
 def main():
     conn = ClickHouseConnection(**db_cfg)
 
@@ -167,6 +199,7 @@ def main():
         seed_data(conn)
         introspect(conn)
         query_examples(conn)
+        pool_examples()
     finally:
         cleanup(conn)
         conn.close()

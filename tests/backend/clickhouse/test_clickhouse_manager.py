@@ -1,6 +1,10 @@
 import pytest
 
-from rick_db.backend.clickhouse import ClickHouseConnection, ClickHouseManager
+from rick_db.backend.clickhouse import (
+    ClickHouseConnection,
+    ClickHouseConnectionPool,
+    ClickHouseManager,
+)
 
 create_table = """
 CREATE TABLE IF NOT EXISTS animal (
@@ -185,3 +189,70 @@ class TestClickHouseManager:
         assert mgr.view_exists("list_animal") is True
         mgr.drop_view("list_animal")
         assert mgr.view_exists("list_animal") is False
+
+
+class TestClickHouseManagerWithPool:
+    @pytest.fixture
+    def ch_pool(self, ch_settings):
+        try:
+            pool = ClickHouseConnectionPool(**ch_settings, ping=False, minconn=1, maxconn=5)
+        except Exception:
+            pytest.skip("ClickHouse server not available")
+            return
+
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as c:
+                    c.exec("SELECT 1")
+        except Exception:
+            pool.close()
+            pytest.skip("ClickHouse server not available")
+            return
+
+        yield pool
+
+        # cleanup
+        if not pool._closed:
+            mgr = ClickHouseManager(pool)
+            mgr.drop_table("animal")
+            mgr.drop_view("list_animal")
+            pool.close()
+
+    def test_pool_backend(self, ch_pool):
+        mgr = ClickHouseManager(ch_pool)
+        assert mgr.backend() is ch_pool
+
+    def test_pool_tables(self, ch_pool):
+        mgr = ClickHouseManager(ch_pool)
+        with mgr.conn() as conn:
+            with conn.cursor() as c:
+                c.exec(create_table)
+
+        tables = mgr.tables()
+        assert "animal" in tables
+        assert mgr.table_exists("animal") is True
+
+        mgr.drop_table("animal")
+        assert mgr.table_exists("animal") is False
+
+    def test_pool_databases(self, ch_pool):
+        mgr = ClickHouseManager(ch_pool)
+        dbs = mgr.databases()
+        assert "system" in dbs
+
+    def test_pool_table_fields(self, ch_pool):
+        mgr = ClickHouseManager(ch_pool)
+        with mgr.conn() as conn:
+            with conn.cursor() as c:
+                c.exec(create_table)
+
+        fields = mgr.table_fields("animal")
+        assert len(fields) == 2
+        assert fields[0].field == "id_animal"
+        assert fields[0].primary is True
+
+    def test_pool_explicit_database(self, ch_pool):
+        mgr = ClickHouseManager(ch_pool, database="system")
+        tables = mgr.tables()
+        # system database has system tables
+        assert len(tables) > 0

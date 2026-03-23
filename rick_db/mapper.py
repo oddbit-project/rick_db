@@ -163,11 +163,15 @@ class BaseRecord(Record):
         return self._fieldmap
 
     def add(self, name, value, field_name: str = None):
+        # copy-on-write: avoid mutating the class-level _fieldmap
+        if self._fieldmap is self.__class__._fieldmap:
+            object.__setattr__(self, ATTR_FIELDS, dict(self._fieldmap))
+        fm = object.__getattribute__(self, ATTR_FIELDS)
         if not field_name:
-            self._fieldmap[name] = name
+            fm[name] = name
             field_name = name
         else:
-            self._fieldmap[name] = field_name
+            fm[name] = field_name
         self.__setattr__(name, value)
 
     def __getattribute__(self, attr):
@@ -183,7 +187,7 @@ class BaseRecord(Record):
         fm = object.__getattribute__(self, ATTR_FIELDS)
         if key in fm:
             data = object.__getattribute__(self, ATTR_ROW)
-            if type(data) is not dict:
+            if not isinstance(data, dict):
                 # unwrap dict from dict-like record objects, such as psycopg2 results
                 # this is only necessary when setting values, as original object is often read-only
                 data = dict(data)

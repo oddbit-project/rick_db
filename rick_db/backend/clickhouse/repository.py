@@ -90,7 +90,7 @@ class ClickHouseRepository(Repository):
         data = record.asrecord()
 
         value = pk_value
-        if self.pk in data.keys():
+        if self.pk in data:
             value = data[self.pk]
             del data[self.pk]
 
@@ -113,14 +113,14 @@ class ClickHouseRepository(Repository):
         :param record: record to update
         :param where_list: list of where conditions
         """
-        if type(where_list) not in [list, tuple]:
+        if not isinstance(where_list, (list, tuple)):
             raise RepositoryError("update_where(): invalid type for where clause list")
         if len(where_list) == 0:
             raise RepositoryError("update_where(): where clause list cannot be empty")
 
         qry = ClickHouseUpdate(self.dialect).table(self.table_name, self.schema).values(record)
         for cond in where_list:
-            if type(cond) not in [list, tuple]:
+            if not isinstance(cond, (list, tuple)):
                 raise RepositoryError(
                     "update_where(): invalid item in where clause list"
                 )

@@ -1,5 +1,49 @@
 # Changelog
 
+## [2.2.3]
+
+### Added
+- `ClickHouseConnectionPool` — thread-safe connection pool for ClickHouse, with configurable `minconn`/`maxconn`, connection health checks via `ping`, stale connection recovery, custom connection factory support, and profiler passthrough
+- `ClickHouseManager` now accepts both `ClickHouseConnection` and `ClickHouseConnectionPool`, with optional `database` parameter override
+- Integration and concurrency tests for `ClickHouseConnectionPool`
+- Pool-based `ClickHouseManager` integration tests
+
+### Changed
+- Fixed ClickHouse docker image tag in `tox.ini` from non-existent `25.8` to `25.6`
+- **Breaking:** ClickHouse migrations no longer support multiple SQL statements per file. The previous semicolon-based splitting was unreliable (broke on semicolons inside string literals). Each migration file must now contain a single SQL statement.
+
+### Bug Fixes
+
+#### Critical
+- **profiler/profilers.py**: `NullProfiler.get_events()` now returns an empty `EventCollection` instead of `None`, preventing `TypeError` when iterating over profiler events on unprofiled connections
+- **migrations.py**: `BaseMigrationManager.repository` property now caches the repository instance instead of creating a new one on every access, eliminating redundant object creation and enabling query cache reuse
+- **sqlite/migrations.py**: Replaced naive `content.split(";")` with a string-aware statement splitter that respects single-quoted strings, preventing breakage on SQL containing semicolons in string literals
+
+#### High
+- **connection.py**: Replaced mutable default argument `profiler=NullProfiler()` with `None` sentinel pattern to avoid sharing a single profiler instance across all connections
+- **repository.py**: Fixed `type() not in [list, tuple]` checks to use `isinstance()` in `update_where()` and `count_where()` for proper subclass support
+- **repository.py**: Removed redundant `.keys()` call from `self.pk in data.keys()` in `update()`
+- **mapper.py**: `BaseRecord.add()` now copies `_fieldmap` on first write to avoid mutating the class-level dict shared across all instances
+- **profiler/profilers.py**: `DefaultProfiler` is now thread-safe — `add_event()`, `clear()`, and `get_events()` are protected by a lock; `get_events()` returns a snapshot copy
+
+#### Medium
+- **cache.py**: Removed redundant `.keys()` calls in `QueryCache.get()` and `has()`
+- **dbgrid.py**: Removed redundant `.keys()` call in search type validation
+- **insert.py**: `Insert.values()` now stores `list(values.keys())` instead of a `dict_keys` view that could change if the source dict is mutated
+- **cli/config.py**: `type(config[k]) is dict` replaced with `isinstance()` for compatibility with dict subclasses from TOML parsers
+- **cli/config.py**: Password file reader now strips trailing newline/carriage return to prevent authentication failures
+- **cli/manage.py**: Replaced `p.name.rsplit(".py")[0]` with `p.stem` to correctly extract module names from filenames containing `.py` elsewhere
+- **select.py**: Removed redundant `operator is not None` check inside the `else` branch of `_where()` where `operator` is guaranteed non-None
+- **select.py**: Changed `str(cols) == "*"` wildcard check to `cols == "*"` to avoid false negatives when `cols` is a list
+
+#### Low
+- **mapper.py**: `type(data) is not dict` replaced with `not isinstance(data, dict)` in `__setattr__` for proper dict subclass handling
+- **sql/common.py**: `JsonField.__getitem__` now uses dialect-aware JSON extraction instead of hardcoded PostgreSQL `->>`  operator; falls back to `JSON_EXTRACT()` without a dialect
+- **cli/commands/dto.py**: Generated class names are now sanitized — non-alphanumeric characters are stripped and names starting with digits are prefixed with `T`
+- **pool.py**: Fixed race condition in stale connection recovery where releasing the `_used` slot before creating the replacement could allow another thread to exceed `maxconn`
+- **clickhouse/repository.py**: Fixed `type() not in [list, tuple]` checks to use `isinstance()`; removed redundant `.keys()` call
+- **clickhouse_example.py**: Fixed `f.field_type` reference to `f.type` (attribute does not exist on `FieldRecord`)
+
 ## [2.2.2]
 
 ### Performance

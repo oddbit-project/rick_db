@@ -105,10 +105,11 @@ class JsonField:
             json_field = JsonField('data')
             json_field['name']  # Returns the expression to extract the 'name' field
         """
-        # Create a new JsonField with modified field name to represent the JSON path
-        field_path = f'{self.field_name}->>"{key}"'
-        result = JsonField(field_path, self.dialect)
-        return result
+        if self.dialect and self.dialect.json_support:
+            expr = self.dialect.json_extract(self.field_name, key)
+            return JsonField(expr, self.dialect)
+        field_path = f"JSON_EXTRACT({self.field_name}, '$.{key}')"
+        return JsonField(field_path, self.dialect)
 
 
 class PgJsonField(JsonField):
