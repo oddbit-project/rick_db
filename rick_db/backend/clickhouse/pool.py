@@ -35,6 +35,11 @@ class ClickHouseConnectionPool(PoolInterface):
 
         minconn = kwargs.pop("minconn", self.default_min_conn)
         maxconn = kwargs.pop("maxconn", self.default_max_conn)
+        if minconn < 0 or maxconn < 1 or minconn > maxconn:
+            raise ValueError(
+                f"invalid pool size: minconn={minconn}, maxconn={maxconn} "
+                f"(require 0 <= minconn <= maxconn and maxconn >= 1)"
+            )
         self._autocommit = kwargs.pop("autocommit", False)
 
         self._factory = Connection

@@ -25,7 +25,7 @@ class ClickHouseManager(ManagerInterface):
                 self._database = database
             else:
                 self._database = db.client.database
-        else:
+        elif isinstance(db, PoolInterface):
             self._db = None
             self._pool = db
             self.dialect = db.dialect()
@@ -33,6 +33,10 @@ class ClickHouseManager(ManagerInterface):
                 self._database = database
             else:
                 self._database = db._kwargs.get("database", "default")
+        else:
+            raise TypeError(
+                f"db must be a Connection or PoolInterface, not {type(db).__name__}"
+            )
 
     @contextmanager
     def conn(self) -> Connection:
