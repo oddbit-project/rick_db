@@ -242,6 +242,46 @@ class TestClickHousePool:
         pool.putconn(conn)
         pool.close()
 
+    @patch("clickhouse_connect.get_client", side_effect=_mock_get_client)
+    def test_pool_profiler_snapshot_at_checkout(self, mock_client):
+        """Profiler is captured at checkout time; reassigning pool.profiler does not affect existing connections."""
+        pool = ClickHouseConnectionPool(
+            host="localhost", ping=False, minconn=2, maxconn=5
+        )
+        profiler1 = DefaultProfiler()
+        pool.profiler = profiler1
+
+        # checkout conn1 with profiler1
+        conn1 = pool.getconn()
+        assert conn1.profiler is profiler1
+
+        # reassign pool profiler
+        profiler2 = DefaultProfiler()
+        pool.profiler = profiler2
+
+        # checkout conn2 with profiler2
+        conn2 = pool.getconn()
+        assert conn2.profiler is profiler2
+
+        # conn1 still has profiler1
+        assert conn1.profiler is profiler1
+        assert conn1.profiler is not profiler2
+
+        # execute on both — events go to their respective profilers
+        with conn1.cursor() as c:
+            c.exec("SELECT 1")
+        with conn2.cursor() as c:
+            c.exec("SELECT 2")
+
+        assert len(profiler1.get_events()) == 1
+        assert profiler1.get_events()[0].query == "SELECT 1"
+        assert len(profiler2.get_events()) == 1
+        assert profiler2.get_events()[0].query == "SELECT 2"
+
+        pool.putconn(conn1)
+        pool.putconn(conn2)
+        pool.close()
+
 
 class TestClickHousePoolIntegration:
 
