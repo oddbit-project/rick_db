@@ -1996,6 +1996,11 @@ tables and views:</p>
 <td><code>Sqlite3Manager</code></td>
 <td><code>Sqlite3MigrationManager</code></td>
 </tr>
+<tr>
+<td>ClickHouse</td>
+<td><code>ClickHouseManager</code></td>
+<td><code>ClickHouseMigrationManager</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.sqlite</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sqlite3Connection</span><span class="p">,</span> <span class="n">Sqlite3Manager</span><span class="p">,</span> <span class="n">Sqlite3MigrationManager</span>
@@ -2029,6 +2034,25 @@ tables and views:</p>
 <a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a><span class="n">mm</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">MigrationRecord</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;schema.sql&quot;</span><span class="p">))</span>
 </code></pre></div>
 <p>For PostgreSQL, use <code>PgManager</code> and <code>PgMigrationManager</code> from <code>rick_db.backend.pg</code> with the same API.</p>
+<p>For ClickHouse:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.clickhouse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseConnection</span><span class="p">,</span> <span class="n">ClickHouseManager</span><span class="p">,</span> <span class="n">ClickHouseMigrationManager</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.migrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">MigrationRecord</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">conn</span> <span class="o">=</span> <span class="n">ClickHouseConnection</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8123</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s2">&quot;mydb&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="n">mgr</span> <span class="o">=</span> <span class="n">ClickHouseManager</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="n">mm</span> <span class="o">=</span> <span class="n">ClickHouseMigrationManager</span><span class="p">(</span><span class="n">mgr</span><span class="p">)</span>
+</code></pre></div></p>
+<p>ClickHouseManager also accepts a <code>ClickHouseConnectionPool</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.clickhouse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseConnectionPool</span><span class="p">,</span> <span class="n">ClickHouseManager</span><span class="p">,</span> <span class="n">ClickHouseMigrationManager</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">pool</span> <span class="o">=</span> <span class="n">ClickHouseConnectionPool</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8123</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s2">&quot;mydb&quot;</span><span class="p">)</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">mgr</span> <span class="o">=</span> <span class="n">ClickHouseManager</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="n">mm</span> <span class="o">=</span> <span class="n">ClickHouseMigrationManager</span><span class="p">(</span><span class="n">mgr</span><span class="p">)</span>
+</code></pre></div></p>
+<blockquote>
+<p><strong>Note:</strong> ClickHouse migration files must contain a single SQL statement each. Multi-statement migrations
+should be split into separate files.</p>
+</blockquote>
 <p>See <a href="../examples/#migration-workflow">Examples</a> for a complete runnable example.</p>
 
 

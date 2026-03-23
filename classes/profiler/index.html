@@ -1787,9 +1787,13 @@ event collection.</p>
 <h3 id="profilerinterfaceget_events">ProfilerInterface.<strong>get_events()</strong><a class="headerlink" href="#profilerinterfaceget_events" title="Permanent link">&para;</a></h3>
 <p>Return internal profiling event collection.</p>
 <h2 id="class-rick_dbprofilernullprofiler">Class rick_db.profiler.<strong>NullProfiler</strong><a class="headerlink" href="#class-rick_dbprofilernullprofiler" title="Permanent link">&para;</a></h2>
-<p>A <a href="#class-rick_dbprofilerprofilerinterface">ProfilerInterface</a>-based class with dummy behaviour, to be used when no profiler is desired.</p>
+<p>A <a href="#class-rick_dbprofilerprofilerinterface">ProfilerInterface</a>-based class with dummy behaviour, to be used when no profiler is desired.
+All methods are no-ops. <code>get_events()</code> returns a fresh empty <a href="#class-rick_dbprofilereventcollection">EventCollection</a> on each call.</p>
 <h2 id="class-rick_dbprofilerdefaultprofiler">Class rick_db.profiler.<strong>DefaultProfiler</strong><a class="headerlink" href="#class-rick_dbprofilerdefaultprofiler" title="Permanent link">&para;</a></h2>
 <p>A <a href="#class-rick_dbprofilerprofilerinterface">ProfilerInterface</a>-based class. Events are kept in-memory.</p>
+<p>Thread-safe: all methods are protected by a lock, making it safe to share a single <code>DefaultProfiler</code> instance
+across multiple connections (e.g. via a connection pool). <code>get_events()</code> returns a snapshot copy of the internal
+collection, so iterating over events is not affected by concurrent <code>add_event()</code> calls.</p>
 
 
 

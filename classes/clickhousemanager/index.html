@@ -1390,10 +1390,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#clickhousemanager__init__db" class="md-nav__link">
+  <a href="#clickhousemanager__init__db-databasenone" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ClickHouseManager.__init__(db)
+        ClickHouseManager.__init__(db, database=None)
       
     </span>
   </a>
@@ -1567,10 +1567,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#clickhousemanager__init__db" class="md-nav__link">
+  <a href="#clickhousemanager__init__db-databasenone" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ClickHouseManager.__init__(db)
+        ClickHouseManager.__init__(db, database=None)
       
     </span>
   </a>
@@ -1634,13 +1634,26 @@
 <p>This class extends <a href="../managerinterface/">ManagerInterface</a> to provide a specific ClickHouse implementation.
 It uses ClickHouse <code>system.*</code> tables for introspection. The <code>schema</code> parameter maps to ClickHouse <code>database</code>;
 when <code>None</code>, the connection's current database is used.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.clickhouse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseConnection</span><span class="p">,</span> <span class="n">ClickHouseManager</span>
+<p>Accepts either a <code>ClickHouseConnection</code> or a <code>ClickHouseConnectionPool</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db.backend.clickhouse</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClickHouseConnection</span><span class="p">,</span> <span class="n">ClickHouseConnectionPool</span><span class="p">,</span> <span class="n">ClickHouseManager</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">conn</span> <span class="o">=</span> <span class="n">ClickHouseConnection</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8123</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s2">&quot;mydb&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">mgr</span> <span class="o">=</span> <span class="n">ClickHouseManager</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># With a connection</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">conn</span> <span class="o">=</span> <span class="n">ClickHouseConnection</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8123</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s2">&quot;mydb&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">mgr</span> <span class="o">=</span> <span class="n">ClickHouseManager</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># With a connection pool (recommended for production)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">pool</span> <span class="o">=</span> <span class="n">ClickHouseConnectionPool</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8123</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s2">&quot;mydb&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">mgr</span> <span class="o">=</span> <span class="n">ClickHouseManager</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># With explicit database name</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">mgr</span> <span class="o">=</span> <span class="n">ClickHouseManager</span><span class="p">(</span><span class="n">pool</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s2">&quot;other_db&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="clickhousemanager__init__db">ClickHouseManager.<strong>__init__(db)</strong><a class="headerlink" href="#clickhousemanager__init__db" title="Permanent link">&para;</a></h3>
-<p>Creates a new ClickHouseManager instance. Accepts a <code>ClickHouseConnection</code>.</p>
+<h3 id="clickhousemanager__init__db-databasenone">ClickHouseManager.<strong>__init__(db, database=None)</strong><a class="headerlink" href="#clickhousemanager__init__db-databasenone" title="Permanent link">&para;</a></h3>
+<p>Creates a new ClickHouseManager instance.</p>
+<ul>
+<li><code>db</code> — a <code>ClickHouseConnection</code> or <code>ClickHouseConnectionPool</code></li>
+<li><code>database</code> — optional database name override. If not provided, the database is extracted from the connection's client config or the pool's connection parameters.</li>
+</ul>
 <h3 id="supported-methods">Supported methods<a class="headerlink" href="#supported-methods" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># List tables and views</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">tables</span> <span class="o">=</span> <span class="n">mgr</span><span class="o">.</span><span class="n">tables</span><span class="p">()</span>
@@ -1680,10 +1693,13 @@ when <code>None</code>, the connection's current database is used.</p>
 <h3 id="unsupported-methods">Unsupported methods<a class="headerlink" href="#unsupported-methods" title="Permanent link">&para;</a></h3>
 <p>The following methods are <strong>not supported</strong> and will raise <code>NotImplementedError</code>:</p>
 <ul>
-<li><code>user_groups()</code></li>
-<li><code>create_schema()</code></li>
-<li><code>drop_schema()</code></li>
+<li><code>create_schema()</code> — use <code>create_database()</code> instead</li>
+<li><code>drop_schema()</code> — use <code>drop_database()</code> instead</li>
 <li><code>kill_clients()</code></li>
+</ul>
+<p>The following method returns an empty result (ClickHouse has no group concept):</p>
+<ul>
+<li><code>user_groups()</code> — returns <code>[]</code></li>
 </ul>
 
 
