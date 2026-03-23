@@ -1,12 +1,26 @@
 # Changelog
 
-## [2.2.3]
+## [2.2.2]
 
 ### Added
 - `ClickHouseConnectionPool` — thread-safe connection pool for ClickHouse, with configurable `minconn`/`maxconn`, connection health checks via `ping`, stale connection recovery, custom connection factory support, and profiler passthrough
 - `ClickHouseManager` now accepts both `ClickHouseConnection` and `ClickHouseConnectionPool`, with optional `database` parameter override
 - Integration and concurrency tests for `ClickHouseConnectionPool`
 - Pool-based `ClickHouseManager` integration tests
+
+### Performance
+- Cache SQL identifier quoting (`_qi()`) with `@lru_cache` across all dialects, eliminating redundant string work on repeated field/table references
+- Replace `.format()` string building with f-strings throughout query builders (`select.py`, `insert.py`, `update.py`, `delete.py`, `dialect.py`, `common.py`)
+- Replace `list(dict.items()).pop()` anti-pattern with `next(iter(dict.items()))` in `Select._where()`, `having()`, `_join()`, `_parse_table_def()`
+- Remove unnecessary `.keys()` calls from dict membership tests in `Select` and `BaseRecord`
+- Single-pass `_render_from()` replaces three separate classification loops plus three rendering loops
+- Use `isinstance()` instead of `type() in [list, tuple]` checks in `Select`
+- Cache `Fn.count()` singleton for the common no-arg `COUNT(*)` case
+- Optimize `BaseRecord.asrecord()` to use dict comprehension instead of copy-and-pop loop
+- Simplify `BaseRecord.__getattribute__()` to use `dict.get()` instead of `in .keys()` + lookup
+- Replace `_valid_joins`/`_valid_unions`/`_valid_order` lists with `frozenset` for O(1) membership checks
+- Remove redundant `.strip()` from `Select.assemble()` by filtering empty parts and fixing root cause in `_render_order()`
+- Use `.extend()` instead of per-element `.append()` loops for value list copying
 
 ### Changed
 - Fixed ClickHouse docker image tag in `tox.ini` from non-existent `25.8` to `25.6`
@@ -43,22 +57,6 @@
 - **pool.py**: Fixed race condition in stale connection recovery where releasing the `_used` slot before creating the replacement could allow another thread to exceed `maxconn`
 - **clickhouse/repository.py**: Fixed `type() not in [list, tuple]` checks to use `isinstance()`; removed redundant `.keys()` call
 - **clickhouse_example.py**: Fixed `f.field_type` reference to `f.type` (attribute does not exist on `FieldRecord`)
-
-## [2.2.2]
-
-### Performance
-- Cache SQL identifier quoting (`_qi()`) with `@lru_cache` across all dialects, eliminating redundant string work on repeated field/table references
-- Replace `.format()` string building with f-strings throughout query builders (`select.py`, `insert.py`, `update.py`, `delete.py`, `dialect.py`, `common.py`)
-- Replace `list(dict.items()).pop()` anti-pattern with `next(iter(dict.items()))` in `Select._where()`, `having()`, `_join()`, `_parse_table_def()`
-- Remove unnecessary `.keys()` calls from dict membership tests in `Select` and `BaseRecord`
-- Single-pass `_render_from()` replaces three separate classification loops plus three rendering loops
-- Use `isinstance()` instead of `type() in [list, tuple]` checks in `Select`
-- Cache `Fn.count()` singleton for the common no-arg `COUNT(*)` case
-- Optimize `BaseRecord.asrecord()` to use dict comprehension instead of copy-and-pop loop
-- Simplify `BaseRecord.__getattribute__()` to use `dict.get()` instead of `in .keys()` + lookup
-- Replace `_valid_joins`/`_valid_unions`/`_valid_order` lists with `frozenset` for O(1) membership checks
-- Remove redundant `.strip()` from `Select.assemble()` by filtering empty parts and fixing root cause in `_render_order()`
-- Use `.extend()` instead of per-element `.append()` loops for value list copying
 
 ## [2.2.1]
 
