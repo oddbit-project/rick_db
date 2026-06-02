@@ -137,3 +137,10 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+
+# IDE
+.idea/
+
+# pipenv (project uses requirements*.txt / setup.cfg)
+Pipfile
+Pipfile.lock
