@@ -170,12 +170,12 @@ jf = PgJsonField('data', pg)
 
 # Single level
 nested = jf['address']
-# output: data->"address"::jsonb
+# output: data->'address'::jsonb
 print(nested)
 
 # Nested access
 nested = jf['address']['city']
-# output: data->"address"->"city"::jsonb
+# output: data->'address'->'city'::jsonb
 print(nested)
 ```
 

@@ -68,6 +68,10 @@ class TestBaseSqlDialectJson:
         result = self.dialect.json_contains_path("data", "'$.name'")
         assert result == "JSON_CONTAINS_PATH(\"data\", 'one', '$.name')"
 
+    def test_json_extract_escapes_single_quotes(self):
+        result = self.dialect.json_extract("data", "a' OR '1'='1")
+        assert result == "JSON_EXTRACT(\"data\", 'a'' OR ''1''=''1')"
+
 
 class TestSqlDialectFieldErrors:
     """Test SqlDialect.field() and database() error/edge branches"""
@@ -185,6 +189,10 @@ class TestPgSqlDialectJson:
     def test_json_extract_table_qualified(self):
         result = self.dialect.json_extract("t.data", "name")
         assert result == '"t"."data"->>\'name\''
+
+    def test_json_extract_escapes_single_quotes(self):
+        result = self.dialect.json_extract("data", "a' OR '1'='1")
+        assert result == "\"data\"->>'a'' OR ''1''=''1'"
 
     def test_json_extract_literal(self):
         result = self.dialect.json_extract(Literal("my_func()"), "name")
@@ -331,7 +339,12 @@ class TestPgJsonField:
         jf = PgJsonField("data", self.dialect)
         result = jf["name"]
         assert isinstance(result, PgJsonField)
-        assert result.field_name == 'data->"name"'
+        assert result.field_name == "data->'name'"
+
+    def test_getitem_escapes_quotes(self):
+        jf = PgJsonField("data", self.dialect)
+        result = jf["a'b"]
+        assert result.field_name == "data->'a''b'"
 
     def test_str_jsonb(self):
         jf = PgJsonField("data", self.dialect, is_jsonb=True)

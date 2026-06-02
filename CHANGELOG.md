@@ -23,6 +23,10 @@
 ### Changed
 - Dependencies bumped to latest releases: `psycopg2`/`psycopg2-binary` 2.9.12, `toml` 0.10.2, `setuptools` 82.0.1, `clickhouse-connect` >=1.1.1, and dev tooling (`pytest` 9.0.3, `pytest-cov` 7.1.0, `coverage` 7.14.1, `tox` 4.55.0, `mkdocs-material` 9.7.6, `mdx-include` 1.4.2).
 
+### Documentation
+- **docs/json_operations.md**: Added a security warning clarifying that JSON paths are interpolated (not parameterized) and must not be built from untrusted input, and corrected the no-dialect `JsonField['name']` example output.
+- **docs/classes/pgjsonfield.md, docs/json_operations.md**: Updated `PgJsonField` `->` examples to use single-quoted JSON keys (`data->'name'`) to match the corrected operator output.
+
 ## [2.2.2]
 
 ### Added

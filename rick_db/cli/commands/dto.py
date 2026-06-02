@@ -96,11 +96,14 @@ class Command(BaseCommand):
         name = re.sub(r"[^a-zA-Z0-9]", "", name)
         if not name or not name[0].isalpha():
             name = "T" + name
-        line = ["tablename='{name}'".format(name=table_name)]
+        # interpolated identifiers come from database introspection and may
+        # contain quotes; emit them as Python string literals via repr() so a
+        # crafted table/column name cannot break out and inject code
+        line = ["tablename={name}".format(name=repr(table_name))]
         if schema is not None:
-            line.append("schema='{schema}'".format(schema=schema))
+            line.append("schema={schema}".format(schema=repr(schema)))
         if pk is not None:
-            line.append("pk='{pk}'".format(pk=pk))
+            line.append("pk={pk}".format(pk=repr(pk)))
 
         result.append("@fieldmapper({fields})".format(fields=", ".join(line)))
         result.append("class {name}Record:".format(name=name))
@@ -110,8 +113,17 @@ class Command(BaseCommand):
             if f.primary:
                 if not has_id:
                     attr_name = "id"
+            # the attribute name is emitted as a bare Python identifier; reject
+            # anything that is not a valid identifier rather than produce broken
+            # or injectable output
+            if not attr_name.isidentifier():
+                raise ValueError(
+                    "cannot generate DTO: field name '{}' is not a valid Python identifier".format(
+                        attr_name
+                    )
+                )
             result.append(
-                "    {attr} = '{field}'".format(attr=attr_name, field=f.field)
+                "    {attr} = {field}".format(attr=attr_name, field=repr(f.field))
             )
 
         result.append("")
