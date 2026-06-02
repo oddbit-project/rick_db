@@ -650,7 +650,10 @@ for event in conn.profiler.get_events():
     tests/backend/sqlite/ tests/repository/test_sqlite_repository.py \
     tests/dbgrid/test_sqlite_dbgrid.py tests/cursor/test_cursor_sqlite3.py -x -q
 
-# Full suite with PostgreSQL (requires docker)
+# Full suite (PostgreSQL + ClickHouse via testcontainers, requires a docker daemon)
+# Containers are started/stopped automatically from tests/conftest.py — no env vars needed
+pytest
+# or across all supported Python versions
 tox -e py311
 
 # Linting
