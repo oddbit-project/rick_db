@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.2.3]
+
+### Security
+
+#### Medium
+- **sql/dialect.py, sql/common.py**: Fixed SQL injection in JSON path handling. The `path` argument of `json_extract()`, `json_extract_text()`, `json_contains_path()`, `json_path_query()` and the corresponding `JsonField`/`PgJsonField` helpers was interpolated into the generated SQL wrapped in single quotes without escaping embedded quotes. A JSON path sourced from untrusted input could break out of the string literal and inject arbitrary SQL. Embedded single quotes are now escaped (doubled) via a new `SqlDialect._quote_str()` helper across all dialects (PostgreSQL, MySQL, ClickHouse, SQLite, default). Note: JSON paths are still interpolated, not parameterized — callers should continue to treat them as code, not data.
+
+#### Low
+- **sql/common.py**: `PgJsonField.__getitem__` (square-bracket key access) now emits a single-quoted, quote-escaped JSON key (`data->'name'`) instead of a double-quoted one (`data->"name"`). The previous form was parsed by PostgreSQL as an identifier reference rather than a JSON key (a correctness bug) and did not escape the key.
+- **cli/commands/dto.py**: The `dto` code generator interpolated database-derived table, schema, and column names into single-quoted Python string literals without escaping. A maliciously named database object could inject code into the generated DTO module. Identifier string values are now emitted via `repr()`, and attribute names are validated as Python identifiers (raising an error otherwise) before being written.
+
+### Changed
+- Dependencies bumped to latest releases: `psycopg2`/`psycopg2-binary` 2.9.12, `toml` 0.10.2, `setuptools` 82.0.1, `clickhouse-connect` >=1.1.1, and dev tooling (`pytest` 9.0.3, `pytest-cov` 7.1.0, `coverage` 7.14.1, `tox` 4.55.0, `mkdocs-material` 9.7.6, `mdx-include` 1.4.2).
+- **Testing**: Replaced the `tox-docker` setup with [testcontainers](https://testcontainers.com/). The PostgreSQL and ClickHouse containers used by the integration tests are now started and stopped from `tests/conftest.py` (session-scoped fixtures), so the suite can be run with a plain `pytest` invocation and no longer depends on `tox` or environment-variable wiring. Removed the `[docker:*]` sections from `tox.ini` and swapped `tox-docker` for `testcontainers[postgres]` in `requirements-dev.txt`.
+
+### CI
+- Added a `CI` GitHub Actions workflow (test matrix on Python 3.10–3.14, flake8/black lint, build, `pip-audit` + `bandit` security scan, gated by a `ci-success` job).
+- Reworked the SBOM workflow to generate CycloneDX + SPDX SBOMs, scan them with Grype, sign them with Cosign, and upload them to the release (with optional Dependency-Track submission).
+
 ## [2.2.2]
 
 ### Added

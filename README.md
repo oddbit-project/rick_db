@@ -151,9 +151,15 @@ if __name__ == '__main__':
 
 ## Running tests
 
-To run the tests, you should have both tox and tox-docker, as well as a local docker daemon. Make sure the current user has
-access to the docker daemon. The test suite uses PostgreSQL and ClickHouse docker containers.
-```python
+To run the tests, you need a local docker daemon and the current user must have access to it. The PostgreSQL and ClickHouse
+containers are started and stopped automatically by [testcontainers](https://testcontainers.com/) — no manual setup or
+environment variables are required.
+```shell
 $ pip3 install -r requirements-dev.txt
+
+# run the whole suite directly
+$ pytest
+
+# or across all supported Python versions
 $ tox
 ```
