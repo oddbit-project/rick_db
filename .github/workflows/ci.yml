@@ -13,6 +13,10 @@ jobs:
   test:
     name: Test (py${{ matrix.python-version }})
     runs-on: ubuntu-latest
+    # Ryuk (the testcontainers reaper) is unnecessary on ephemeral runners and
+    # its image pull from Docker Hub is a flaky failure point — disable it.
+    env:
+      TESTCONTAINERS_RYUK_DISABLED: "true"
     strategy:
       fail-fast: false
       matrix:
