@@ -48,6 +48,18 @@ class SqlDialect:
         escaped = identifier.replace('"', '""')
         return f'"{escaped}"'
 
+    @staticmethod
+    def _quote_str(value):
+        """
+        Quote a value as a SQL string literal, escaping embedded single quotes by
+        doubling them (SQL standard). Used for non-parameterizable fragments such
+        as JSON paths, where the value is interpolated directly into the SQL text.
+
+        :param value: value to quote
+        :return: quoted string literal, e.g. "'$.name'"
+        """
+        return "'" + str(value).replace("'", "''") + "'"
+
     def table(self, table_name, alias=None, schema=None):
         """
         Quotes a table name
@@ -187,7 +199,7 @@ class SqlDialect:
             and not path.startswith("'")
             and not path.startswith('"')
         ):
-            path = f"'{path}'"
+            path = self._quote_str(path)
 
         expr = self._json_extract.format(field=field_expr, path=path)
 
@@ -219,7 +231,7 @@ class SqlDialect:
             and not path.startswith("'")
             and not path.startswith('"')
         ):
-            path = f"'{path}'"
+            path = self._quote_str(path)
 
         expr = self._json_extract_text.format(field=field_expr, path=path)
 
@@ -276,7 +288,7 @@ class SqlDialect:
             and not path.startswith("'")
             and not path.startswith('"')
         ):
-            path = f"'{path}'"
+            path = self._quote_str(path)
 
         expr = self._json_contains_path.format(field=field_expr, path=path)
 
@@ -386,7 +398,7 @@ class PgSqlDialect(SqlDialect):
             if path.startswith("$."):
                 path = path[2:]
             path = path.strip("'\"")
-            return f"'{path}'"
+            return self._quote_str(path)
         return str(path)
 
     def json_extract(self, field, path, alias=None):
@@ -479,7 +491,7 @@ class PgSqlDialect(SqlDialect):
         field_expr = self._json_field_expr(field)
 
         if not path.startswith("'"):
-            path = f"'{path}'"
+            path = self._quote_str(path)
 
         expr = f"{field_expr}::jsonb @? {path}"
 
@@ -547,7 +559,7 @@ class ClickHouseSqlDialect(SqlDialect):
             if path.startswith("$."):
                 path = path[2:]
             path = path.strip("'\"")
-            return f"'{path}'"
+            return self._quote_str(path)
         return str(path)
 
     def json_extract(self, field, path, alias=None):

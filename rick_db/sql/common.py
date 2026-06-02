@@ -50,7 +50,8 @@ class JsonField:
         if self.dialect and self.dialect.json_support:
             expr = self.dialect.json_extract(self.field_name, path, alias)
             return Literal(expr)
-        return Literal(f"JSON_EXTRACT({self.field_name}, '{path}')")
+        escaped = str(path).replace("'", "''")
+        return Literal(f"JSON_EXTRACT({self.field_name}, '{escaped}')")
 
     def extract_text(self, path, alias=None):
         """
@@ -63,7 +64,8 @@ class JsonField:
         if self.dialect and self.dialect.json_support:
             expr = self.dialect.json_extract_text(self.field_name, path, alias)
             return Literal(expr)
-        return Literal(f"JSON_EXTRACT({self.field_name}, '{path}')")
+        escaped = str(path).replace("'", "''")
+        return Literal(f"JSON_EXTRACT({self.field_name}, '{escaped}')")
 
     def contains(self, value):
         """
@@ -91,7 +93,8 @@ class JsonField:
         if self.dialect and self.dialect.json_support:
             expr = self.dialect.json_contains_path(self.field_name, path)
             return Literal(expr)
-        return Literal(f"JSON_CONTAINS_PATH({self.field_name}, 'one', '{path}')")
+        escaped = str(path).replace("'", "''")
+        return Literal(f"JSON_CONTAINS_PATH({self.field_name}, 'one', '{escaped}')")
 
     def __str__(self):
         return self.field_name
@@ -108,7 +111,8 @@ class JsonField:
         if self.dialect and self.dialect.json_support:
             expr = self.dialect.json_extract(self.field_name, key)
             return JsonField(expr, self.dialect)
-        field_path = f"JSON_EXTRACT({self.field_name}, '$.{key}')"
+        escaped = str(key).replace("'", "''")
+        field_path = f"JSON_EXTRACT({self.field_name}, '$.{escaped}')"
         return JsonField(field_path, self.dialect)
 
 
@@ -178,10 +182,13 @@ class PgJsonField(JsonField):
 
         Example:
             json_field = PgJsonField('data')
-            json_field['name']  # Returns an object representing data->"name"
+            json_field['name']  # Returns an object representing data->'name'
         """
-        # For PostgreSQL we use -> which preserves the JSON type
-        field_path = f'{self.field_name}->"{key}"'
+        # For PostgreSQL we use -> which preserves the JSON type. The key is a
+        # string literal (single-quoted), with embedded quotes escaped; double
+        # quotes would be parsed as an identifier reference, not a JSON key.
+        key_str = str(key).replace("'", "''")
+        field_path = f"{self.field_name}->'{key_str}'"
         result = PgJsonField(field_path, self.dialect, self.is_jsonb)
         return result
 

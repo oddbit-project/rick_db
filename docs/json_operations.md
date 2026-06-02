@@ -12,6 +12,13 @@ JSON support is available at two levels:
   and JSONB type casting
 - **Select helpers** - Convenience methods on the `Select` class: `json_field()`, `json_extract()`, and `json_where()`
 
+!!! warning "JSON paths are interpolated, not parameterized"
+    Unlike scalar values passed to `where()`/`values()` (which always become bound placeholders), the JSON **path**
+    argument is rendered directly into the SQL text. Embedded single quotes are escaped to prevent the path from
+    breaking out of its string literal, but a path is still SQL, not data. **Do not build JSON paths from untrusted
+    input.** If a path must come from user input, validate it against an allow-list of known keys first. The
+    **value** compared against a JSON expression (e.g. in `json_where()` or `contains()`) is parameterized and safe.
+
 ## JsonField
 
 The `JsonField` class wraps a JSON column name and provides methods that generate SQL expressions as `Literal` objects,
@@ -94,7 +101,7 @@ from rick_db.sql import JsonField
 jf = JsonField('data')
 
 nested = jf['name']
-# output: data->>"name"
+# output (no dialect): JSON_EXTRACT(data, '$.name')
 print(nested)
 ```
 
@@ -185,12 +192,12 @@ jf = PgJsonField('data', pg)
 
 # Single level
 nested = jf['address']
-# output: data->"address"::jsonb
+# output: data->'address'::jsonb
 print(nested)
 
 # Nested access
 nested = jf['address']['city']
-# output: data->"address"->"city"::jsonb
+# output: data->'address'->'city'::jsonb
 print(nested)
 ```
 

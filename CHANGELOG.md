@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.2.4]
+
+### Changed
+- **Testing**: Replaced the `tox-docker` setup with [testcontainers](https://testcontainers.com/). The PostgreSQL and ClickHouse containers used by the integration tests are now started and stopped from `tests/conftest.py` (session-scoped fixtures), so the suite can be run with a plain `pytest` invocation and no longer depends on `tox` or environment-variable wiring. Removed the `[docker:*]` sections from `tox.ini` and swapped `tox-docker` for `testcontainers[postgres]` in `requirements-dev.txt`.
+
+### CI
+- Added a `CI` GitHub Actions workflow (test matrix on Python 3.10–3.14, flake8/black lint, build, `pip-audit` + `bandit` security scan, gated by a `ci-success` job), replacing `run-tests.yml`.
+- Reworked the SBOM workflow to generate CycloneDX + SPDX SBOMs, scan them with Grype, sign them with Cosign, and upload them to the release (with optional Dependency-Track submission).
+
 ## [2.2.3]
 
 ### Security
@@ -13,11 +22,10 @@
 
 ### Changed
 - Dependencies bumped to latest releases: `psycopg2`/`psycopg2-binary` 2.9.12, `toml` 0.10.2, `setuptools` 82.0.1, `clickhouse-connect` >=1.1.1, and dev tooling (`pytest` 9.0.3, `pytest-cov` 7.1.0, `coverage` 7.14.1, `tox` 4.55.0, `mkdocs-material` 9.7.6, `mdx-include` 1.4.2).
-- **Testing**: Replaced the `tox-docker` setup with [testcontainers](https://testcontainers.com/). The PostgreSQL and ClickHouse containers used by the integration tests are now started and stopped from `tests/conftest.py` (session-scoped fixtures), so the suite can be run with a plain `pytest` invocation and no longer depends on `tox` or environment-variable wiring. Removed the `[docker:*]` sections from `tox.ini` and swapped `tox-docker` for `testcontainers[postgres]` in `requirements-dev.txt`.
 
-### CI
-- Added a `CI` GitHub Actions workflow (test matrix on Python 3.10–3.14, flake8/black lint, build, `pip-audit` + `bandit` security scan, gated by a `ci-success` job).
-- Reworked the SBOM workflow to generate CycloneDX + SPDX SBOMs, scan them with Grype, sign them with Cosign, and upload them to the release (with optional Dependency-Track submission).
+### Documentation
+- **docs/json_operations.md**: Added a security warning clarifying that JSON paths are interpolated (not parameterized) and must not be built from untrusted input, and corrected the no-dialect `JsonField['name']` example output.
+- **docs/classes/pgjsonfield.md, docs/json_operations.md**: Updated `PgJsonField` `->` examples to use single-quoted JSON keys (`data->'name'`) to match the corrected operator output.
 
 ## [2.2.2]
 
