@@ -32,6 +32,13 @@ and the application layer has no responsibility on the structure of the database
 $ pip3 install rick-db
 ```
 
+To use the PostgreSQL backend, install with one of the optional extras to pull in a
+`psycopg2` driver:
+```
+$ pip3 install rick-db[pgsql]         # builds psycopg2 from source
+$ pip3 install rick-db[pgsql-binary]  # prebuilt psycopg2-binary wheel
+```
+
 ## Documentation
 
 Project documentation can be found on the [Documentation](https://oddbit-project.github.io/rick_db/) website.
