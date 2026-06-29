@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.2.5]
+
+### Changed
+- **Packaging**: The PostgreSQL driver is now an optional dependency exposed via extras instead of a hard `install_requires` pin. Install with `rick-db[pgsql]` (builds `psycopg2` from source) or `rick-db[pgsql-binary]` (prebuilt `psycopg2-binary` wheel) — both satisfy the `psycopg2` import. Dev tooling bumped: `pytest` 9.1.1, `coverage` 7.14.3, `tox` 4.56.1, `clickhouse-connect` >=1.3.0.
+
 ## [2.2.4]
 
 ### Changed
