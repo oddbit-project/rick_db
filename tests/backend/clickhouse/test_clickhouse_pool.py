@@ -9,6 +9,7 @@ from rick_db.backend.clickhouse import ClickHouseConnectionPool, ClickHouseRepos
 from rick_db.backend.clickhouse.pool import PoolError
 from rick_db.profiler import NullProfiler, DefaultProfiler
 from rick_db.sql import ClickHouseSqlDialect
+from tests.helpers import backend_unavailable
 
 
 class SampleConnection(Connection):
@@ -37,7 +38,7 @@ def ch_pool(ch_settings):
     try:
         pool = ClickHouseConnectionPool(**ch_settings, ping=True, minconn=2, maxconn=10)
     except Exception:
-        pytest.skip("ClickHouse server not available")
+        backend_unavailable("ClickHouse")
         return
 
     # verify connectivity
@@ -47,7 +48,7 @@ def ch_pool(ch_settings):
                 c.exec("SELECT 1")
     except Exception:
         pool.close()
-        pytest.skip("ClickHouse server not available")
+        backend_unavailable("ClickHouse")
         return
 
     # setup table

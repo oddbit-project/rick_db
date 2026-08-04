@@ -5,6 +5,7 @@ from rick_db.backend.clickhouse import (
     ClickHouseConnectionPool,
     ClickHouseManager,
 )
+from tests.helpers import backend_unavailable
 
 create_table = """
 CREATE TABLE IF NOT EXISTS animal (
@@ -197,7 +198,7 @@ class TestClickHouseManagerWithPool:
         try:
             pool = ClickHouseConnectionPool(**ch_settings, ping=False, minconn=1, maxconn=5)
         except Exception:
-            pytest.skip("ClickHouse server not available")
+            backend_unavailable("ClickHouse")
             return
 
         try:
@@ -206,7 +207,7 @@ class TestClickHouseManagerWithPool:
                     c.exec("SELECT 1")
         except Exception:
             pool.close()
-            pytest.skip("ClickHouse server not available")
+            backend_unavailable("ClickHouse")
             return
 
         yield pool

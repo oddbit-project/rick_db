@@ -6,6 +6,7 @@ from rick_db.backend.clickhouse import (
     ClickHouseManager,
     ClickHouseRepository,
 )
+from tests.helpers import backend_unavailable
 
 
 @fieldmapper(tablename="users", pk="id_user")
@@ -44,7 +45,7 @@ def conn(ch_settings):
     try:
         conn = ClickHouseConnection(**ch_settings)
     except Exception:
-        pytest.skip("ClickHouse server not available")
+        backend_unavailable("ClickHouse")
         return
 
     # setup

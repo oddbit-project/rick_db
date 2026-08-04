@@ -1,6 +1,7 @@
 import pytest
 
 from rick_db.backend.clickhouse import ClickHouseConnection, ClickHouseManager
+from tests.helpers import backend_unavailable
 
 
 def _clickhouse_available(settings):
@@ -18,7 +19,7 @@ def _clickhouse_available(settings):
 @pytest.fixture
 def ch_backend(ch_settings):
     if not _clickhouse_available(ch_settings):
-        pytest.skip("ClickHouse server not available")
+        backend_unavailable("ClickHouse")
 
     conn = ClickHouseConnection(**ch_settings)
     yield conn

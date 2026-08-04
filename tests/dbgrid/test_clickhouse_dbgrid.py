@@ -1,10 +1,9 @@
-import os
-
 import pytest
 
 from rick_db.backend.clickhouse import ClickHouseConnection, ClickHouseRepository
 from tests.dbgrid.base_dbgrid import GridRecord
 from tests.dbgrid.base_keyset import BaseKeysetTest
+from tests.helpers import backend_unavailable
 
 # MergeTree, ordered by the pk: ClickHouse has no autoincrement, so the ids the
 # keyset walks are supplied explicitly. `content` is identical on every row on
@@ -36,13 +35,7 @@ class TestClickHouseKeyset(BaseKeysetTest):
         try:
             conn = ClickHouseConnection(**ch_settings)
         except Exception as e:  # pragma: no cover - environment guard
-            # Skipping is a convenience for a developer without Docker. In CI it
-            # would be a green build proving nothing, so there it is a failure:
-            # coverage that silently disappears is worse than none, because
-            # nobody goes looking for it.
-            if os.environ.get("CI"):
-                raise
-            pytest.skip("ClickHouse not available: %s" % e)
+            backend_unavailable("ClickHouse", e)
 
         with conn.cursor() as c:
             c.exec(drop_table)

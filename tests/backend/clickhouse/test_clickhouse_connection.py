@@ -2,6 +2,7 @@ import pytest
 
 from rick_db.backend.clickhouse import ClickHouseConnection
 from rick_db.sql import ClickHouseSqlDialect
+from tests.helpers import backend_unavailable
 
 
 @pytest.fixture
@@ -9,7 +10,7 @@ def conn(ch_settings):
     try:
         c = ClickHouseConnection(**ch_settings)
     except Exception:
-        pytest.skip("ClickHouse server not available")
+        backend_unavailable("ClickHouse")
         return
 
     yield c
