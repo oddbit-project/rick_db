@@ -733,6 +733,14 @@ class Repository(GenericRepository):
             raise RepositoryError("seek(): limit must be a positive integer")
 
         qry = copy.deepcopy(qry)
+        # a LIMIT/OFFSET already on the query would be replaced by the probe
+        # below, so a caller who set one would silently get a different page
+        # than the one they asked for; paging is this method's job, not theirs
+        if getattr(qry, "_limit_offset", None):
+            raise RepositoryError(
+                "seek(): the query already has a LIMIT/OFFSET; seek() sets its own "
+                "and would silently discard it"
+            )
         qry.limit(limit + 1)
         rows = self.fetch(qry, cls=cls)
         has_more = len(rows) > limit

@@ -571,7 +571,7 @@ ks = Keyset([User.created], Keyset.DESC, pk=User.id)
 rows, cursor = grid.run_seek(limit=20, keyset=ks)
 ```
 
-No total row count, no jumping to an arbitrary page, and the keyset is the ordering (there is no `sort_fields`). All keyset fields sort in the same direction — a mixed-direction keyset has no seek predicate — and a unique tiebreaker is required, appended automatically via `pk=`. Cursors are opaque, type-preserving, and bound to the ordering that issued them.
+No total row count, no jumping to an arbitrary page, and the keyset is the ordering (there is no `sort_fields`, and a `qry=` must not already be ordered or limited). All keyset fields sort in the same direction — a mixed-direction keyset has no seek predicate — and the ordering must be unique: pass `pk=` to append a tiebreaker or `unique=True` to assert it, or construction is refused. Cursors are type-preserving and carry an unkeyed checksum binding them to their ordering; that is an integrity check against client mistakes, not a security boundary.
 
 `Repository.seek(qry, limit)` exposes the same paging for queries built outside `DbGrid`, returning `(rows, has_more)` and issuing no `COUNT(*)`.
 

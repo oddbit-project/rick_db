@@ -1,3 +1,4 @@
+import copy
 from collections.abc import Mapping
 from rick_db import Repository
 
@@ -80,7 +81,7 @@ class DbGrid:
                 "default_keyset(): Record has no primary key; pass an explicit "
                 "keyset to run_seek()"
             )
-        return Keyset(self._field_pk, Keyset.ASC)
+        return Keyset(self._field_pk, Keyset.ASC, unique=True)
 
     def _assemble(
         self,
@@ -264,6 +265,9 @@ class DbGrid:
         :param search_fields: optional search fields
         :return: tuple(rows, next_cursor)
         """
+        if not isinstance(limit, int) or isinstance(limit, bool) or limit < 1:
+            raise ValueError("run_seek(): limit must be a positive integer")
+
         if keyset is None:
             keyset = self.default_keyset()
 
@@ -273,6 +277,14 @@ class DbGrid:
                     "run_seek(): field '%s' used in keyset does not exist on Record"
                     % name
                 )
+
+        # copy before assembling: _assemble() and Keyset.apply() both mutate the
+        # query in place, and paging a cursor is a LOOP — reusing one caller-held
+        # query across pages would otherwise accumulate a WHERE group and an
+        # ORDER BY term per page until the statement outgrows the backend's
+        # limits. Repository.seek() copies too, but only after this point.
+        if qry is not None:
+            qry = copy.deepcopy(qry)
 
         qry = self._assemble(
             qry=qry,

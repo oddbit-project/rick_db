@@ -142,17 +142,30 @@ rows, cursor = grid.run_seek(limit=20)
 # newest first, with the pk as a tiebreaker
 ks = Keyset([Product.created], Keyset.DESC, pk=Product.id)
 rows, cursor = grid.run_seek(limit=20, keyset=ks)
+
+# fields that are already unique
+ks = Keyset([Product.sku], unique=True)
 ```
 
-Two rules the API enforces rather than documents:
+Three rules the API enforces rather than documents, because all three failure
+modes are silent — the walk still ends cleanly, so the caller believes it saw
+every row:
 
 **Every field sorts in the same direction.** A keyset ordered
 `(a ASC, b DESC)` cannot be expressed as a seek predicate at all, so the
 direction is a single parameter rather than a per-field one.
 
-**A unique tiebreaker is required.** Seeking on a non-unique column alone
-silently skips or repeats rows whenever two of them share a value at a page
-boundary. Pass `pk=` and it is appended automatically when absent.
+**The ordering must be unique.** Seeking on a non-unique ordering skips or
+repeats rows whenever two of them share a value at a page boundary. Uniqueness
+cannot be detected at runtime, so it has to be stated: pass `pk=` to append a
+tiebreaker, or `unique=True` to assert the fields already are. A keyset with
+neither is refused at construction.
+
+**The keyset owns the ordering.** A query passed as `qry=` must not already
+carry an `ORDER BY`: the keyset appends its terms, so a pre-existing sort would
+lead and leave the seek predicate advancing on a trailing term. That is refused
+rather than merged. For the same reason the query must not carry its own
+`LIMIT`/`OFFSET`, which paging would silently replace.
 
 Keyset fields must be non-nullable and orderable scalars (integer, string,
 date/time, decimal, UUID). A `NULL` key cannot be seeked past — every
@@ -161,11 +174,11 @@ one.
 
 ### Cursors
 
-Cursors are opaque. They carry the key values of the last row of a page,
-encoded with their types, plus a signature of the ordering that produced them.
-A cursor presented to a different keyset — different fields, or the same fields
-in the other direction — is rejected rather than silently serving a page from
-the middle of an unrelated ordering:
+A cursor carries the key values of the last row of a page, encoded with their
+types, plus an unkeyed checksum of the ordering that produced it. A cursor
+presented to a different keyset — different fields, or the same fields in the
+other direction — is rejected rather than silently serving a page from the
+middle of an unrelated ordering:
 
 ```python
 cursor = grid.run_seek(limit=10, keyset=Keyset(Product.id, Keyset.ASC))[1]
@@ -175,15 +188,36 @@ grid.run_seek(limit=10, cursor=cursor, keyset=Keyset(Product.id, Keyset.DESC))
 
 Treat them as tokens to hand back, not as values to construct.
 
+**The checksum is an integrity check against client mistakes, not a security
+boundary.** It is not keyed, and the payload is base64 rather than encrypted,
+so a cursor is readable and a client can mint one for an ordering it knows.
+That reaches nothing extra — `match_fields`, `search_text` and any predicate on
+the query are still `AND`-ed with the seek — but it does mean a hostile cursor
+can carry a value whose type does not match the column, which surfaces as a
+backend error rather than a `KeysetError`. Wrap `run_seek()` accordingly if
+cursors arrive from untrusted input.
+
 ### Repository.seek()
 
 `run_seek()` is built on `Repository.seek()`, which is available directly for
 queries that do not go through `DbGrid`:
 
 ```python
-qry = repo.select().where(Product.active, "=", True).order(Product.id, "ASC")
-rows, has_more = repo.seek(qry, limit=20)
+ks = Keyset(Product.id, Keyset.ASC, unique=True)
+
+cursor = None
+while True:
+    qry = repo.select().where(Product.active, "=", True)
+    rows, has_more = repo.seek(ks.apply(qry, cursor), limit=20)
+    if not has_more:
+        break
+    cursor = ks.encode(rows[-1])
 ```
+
+The query is rebuilt inside the loop because `Keyset.apply()` adds its terms in
+place; reusing one query object across pages would accumulate an `ORDER BY`
+term and a `WHERE` group per page. `DbGrid.run_seek()` copies the query for
+you, so this only applies when driving `Repository.seek()` directly.
 
 It fetches one row beyond the limit as a probe and discards it, which is what
 makes `has_more` exact. Unlike `Repository.list()`, it issues no `COUNT(*)`.

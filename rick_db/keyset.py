@@ -43,19 +43,22 @@ class Keyset:
     direction is a single parameter rather than a per-field one — the shape of
     the API refuses what the algorithm cannot do.
 
-    A unique tiebreaker is required, and appended automatically when `pk` is
-    given: seeking on a non-unique column alone silently skips or repeats rows
-    whenever two of them share a value at a page boundary.
+    The ordering must also be unique, and that is required at construction:
+    pass `pk=` to have a tiebreaker appended, or `unique=True` to assert the
+    fields already are. Seeking on a non-unique ordering silently skips or
+    repeats rows whenever two of them share a value at a page boundary, and the
+    walk still ends cleanly — so the caller believes it saw everything.
     """
 
     ASC = "ASC"
     DESC = "DESC"
 
-    def __init__(self, fields, order: str = ASC, pk: str = None):
+    def __init__(self, fields, order: str = ASC, pk: str = None, unique: bool = False):
         """
         :param fields: field name or list of field names, most significant first
         :param order: Keyset.ASC or Keyset.DESC, applied to every field
-        :param pk: optional unique field appended as a tiebreaker if absent
+        :param pk: unique field appended as a tiebreaker if absent
+        :param unique: assert that `fields` is already unique, in place of `pk`
         """
         if isinstance(fields, str):
             fields = [fields]
@@ -68,19 +71,30 @@ class Keyset:
                 raise KeysetError("Keyset(): field names must be strings")
         if len(fields) != len(set(fields)):
             raise KeysetError("Keyset(): duplicate field in keyset")
+        if len(fields) == 0:
+            raise KeysetError("Keyset(): at least one field is required")
 
         order = str(order).upper()
         if order not in (self.ASC, self.DESC):
             raise KeysetError("Keyset(): order must be either ASC or DESC")
 
+        # A keyset whose ordering is not unique silently skips or repeats rows
+        # at any page boundary where the last value repeats, and the walk still
+        # terminates cleanly — so the caller believes it saw everything. There
+        # is no way to detect that at runtime, so uniqueness has to be stated:
+        # either name the tiebreaker with pk=, or assert the fields are already
+        # unique with unique=True.
         if pk is not None:
             if not isinstance(pk, str):
                 raise KeysetError("Keyset(): pk must be a string")
             if pk not in fields:
                 fields.append(pk)
-
-        if len(fields) == 0:
-            raise KeysetError("Keyset(): at least one field is required")
+        elif not unique:
+            raise KeysetError(
+                "Keyset(): a keyset must be unique or it will silently skip rows "
+                "at page boundaries. Pass pk='<unique field>' to append a "
+                "tiebreaker, or unique=True if these fields are already unique."
+            )
 
         self._fields = fields
         self._order = order
@@ -117,10 +131,25 @@ class Keyset:
         backend rick_db targets, and the expanded form needs nothing from the
         query builder that is not already public.
 
-        :param qry: query to extend
+        :param qry: query to extend; must not already carry an ORDER BY
         :param cursor: opaque cursor string, or a sequence of raw key values
         :return: qry
+        :raises KeysetError: if the query is already ordered
         """
+        # A pre-existing ORDER BY would lead the sort, leaving the keyset's
+        # fields as trailing terms while the seek predicate still advances on
+        # them — the walk then skips and repeats rows instead of failing. That
+        # is the worst possible outcome for a pagination primitive, so it is
+        # refused rather than merged or silently discarded: the ordering is the
+        # keyset's to own.
+        if getattr(qry, "_parts_order", None):
+            raise KeysetError(
+                "Keyset.apply(): the query already has an ORDER BY. The keyset "
+                "defines the ordering, and a sort applied ahead of it silently "
+                "breaks the seek — remove the order() call, or fold those fields "
+                "into the keyset."
+            )
+
         for name in self._fields:
             qry.order(name, self._order)
 
@@ -157,16 +186,13 @@ class Keyset:
         """
         if isinstance(row, Mapping):
             data = row
-        elif hasattr(row, "asdict") and hasattr(row, "fieldmap"):
-            # a Record's asdict() is keyed by ATTRIBUTE name, while a keyset is
-            # declared in db field names (the same names DbGrid matches, sorts
-            # and searches on), so translate rather than assume they coincide
-            fieldmap = row.fieldmap()
-            data = {
-                fieldmap[attr]: value
-                for attr, value in row.asdict().items()
-                if attr in fieldmap
-            }
+        elif hasattr(row, "asrecord"):
+            # asrecord(), not asdict(): a keyset is declared in db field names,
+            # and asdict() is the SERIALIZATION view — keyed by attribute name
+            # and filtered by json_exclude, so a keyset on an excluded column
+            # would look like a missing field. asrecord() is keyed by db field
+            # and excludes nothing.
+            data = row.asrecord()
         else:
             raise KeysetError(
                 "Keyset.values_for(): row must be a Record or a Mapping, got %s"
@@ -202,7 +228,17 @@ class Keyset:
             "k": self._signature,
             _VALUE: [_encode_value(v) for v in self.values_for(row)],
         }
-        raw = json.dumps(payload, separators=(",", ":"), sort_keys=True)
+        try:
+            # allow_nan=False: json.dumps would otherwise emit bare NaN /
+            # Infinity, which is not valid JSON and breaks any non-Python
+            # consumer of a cursor that is designed to cross the wire
+            raw = json.dumps(
+                payload, separators=(",", ":"), sort_keys=True, allow_nan=False
+            )
+        except ValueError as e:
+            raise KeysetError(
+                "Keyset.encode(): value cannot be encoded in a cursor"
+            ) from e
         return base64.urlsafe_b64encode(raw.encode("utf-8")).decode("ascii").rstrip("=")
 
     def decode(self, cursor: str) -> list:
@@ -224,7 +260,9 @@ class Keyset:
 
         if not isinstance(payload, dict) or _VALUE not in payload:
             raise KeysetError("Keyset.decode(): malformed cursor")
-        if payload.get("k") != self._signature:
+        if "k" not in payload:
+            raise KeysetError("Keyset.decode(): malformed cursor")
+        if payload["k"] != self._signature:
             raise KeysetError(
                 "Keyset.decode(): cursor does not belong to this ordering; it was "
                 "issued for a different set of fields or a different direction"
