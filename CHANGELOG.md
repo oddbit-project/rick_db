@@ -11,6 +11,8 @@
 
   `Select` gains public `has_order()` / `has_limit()` / `has_joins()` predicates, used by the guards above so they fail closed rather than reaching into internals. `KeysetError` subclasses `ValueError`. It is not the only exception the paging path raises — a bad limit or unknown field is a plain `ValueError`, `Repository.seek()` raises `RepositoryError`, and a forged cursor whose value type does not match the column surfaces as a driver error — so catch by intent rather than by breadth.
 
+  Covered on SQLite, PostgreSQL (connection and pool) and ClickHouse: the keyset tests are split into their own base so ClickHouse can run them without the grid suite's LIKE/ILIKE and autoincrement assumptions. That matters because `ClickHouseRepository` inherits `seek()` unchanged, and because the portability argument for the predicate shape below rests on that backend.
+
   The seek predicate is emitted as an expanded `(a > ?) OR (a = ? AND b > ?)` chain rather than the row-value form `(a, b) > (?, ?)`. Both are correct on PostgreSQL, but row-value comparison is not portable across every supported backend, and the expanded form needs nothing from the query builder that is not already public.
 
 ## [2.2.5]

@@ -3,6 +3,7 @@ import pytest
 from rick_db import Repository, DbGrid
 from rick_db.backend.sqlite import Sqlite3Connection
 from tests.dbgrid.base_dbgrid import BaseDbGridTest, GridRecord
+from tests.dbgrid.base_keyset import BaseKeysetTest
 
 create_table = """
     create table if not exists grid(
@@ -15,7 +16,7 @@ create_table = """
 insert_table = "insert into grid(label, content, odd) values(?,?,?)"
 
 
-class TestSqlite3DbGrid(BaseDbGridTest):
+class TestSqlite3DbGrid(BaseDbGridTest, BaseKeysetTest):
 
     @pytest.fixture
     def conn(self):

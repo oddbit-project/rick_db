@@ -3,6 +3,7 @@ import pytest
 from rick_db import Repository, DbGrid
 from rick_db.backend.pg import PgConnection, PgConnectionPool
 from tests.dbgrid.base_dbgrid import BaseDbGridTest, GridRecord
+from tests.dbgrid.base_keyset import BaseKeysetTest
 
 create_table = """
     create table if not exists grid(
@@ -27,7 +28,7 @@ def _teardown_grid(cursor):
     cursor.exec(drop_table)
 
 
-class TestPgConnDbGrid(BaseDbGridTest):
+class TestPgConnDbGrid(BaseDbGridTest, BaseKeysetTest):
 
     @pytest.fixture
     def conn(self, pg_settings: dict):
