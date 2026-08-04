@@ -260,6 +260,53 @@ class Select(SqlStatement):
         self._parts_order.append([fields, order])
         return self
 
+    def has_order(self) -> bool:
+        """Return whether this query already has an ``ORDER BY`` clause."""
+        return len(self._parts_order) > 0
+
+    def has_limit(self) -> bool:
+        """Return whether this query already has a ``LIMIT`` or ``OFFSET`` clause."""
+        return self._limit_offset is not None
+
+    def where_row(
+        self,
+        fields: collections.abc.Sequence[str],
+        operator: str,
+        values: collections.abc.Sequence[object],
+        table: str | None = None,
+        schema: str | None = None,
+    ) -> "Select":
+        """Add a parameterized row-value comparison predicate.
+
+        ``where_row(["created_at", "id"], ">", [last_created_at, last_id])``
+        renders ``("created_at", "id") > (?, ?)``. This is intended for
+        lexicographic keyset pagination and deliberately does not expand into
+        an OR-of-AND predicate.
+        """
+        if not isinstance(fields, (list, tuple)) or len(fields) == 0:
+            raise SqlError("where_row(): fields must be a non-empty sequence")
+        if not isinstance(values, (list, tuple)) or len(fields) != len(values):
+            raise SqlError("where_row(): fields and values must have the same length")
+        if operator not in ("<", ">"):
+            raise SqlError("where_row(): invalid comparison operator")
+        if table is not None and not isinstance(table, str):
+            raise SqlError("where_row(): table must be a string or None")
+        if schema is not None and not isinstance(schema, str):
+            raise SqlError("where_row(): schema must be a string or None")
+        if any(not isinstance(field, str) or not field for field in fields):
+            raise SqlError("where_row(): fields must contain non-empty strings")
+
+        rendered_fields = [
+            self._dialect.field(field, None, table, schema) for field in fields
+        ]
+        placeholders = ", ".join([self._dialect.placeholder] * len(values))
+        expression = "({}) {} ({})".format(
+            ", ".join(rendered_fields), operator, placeholders
+        )
+        self._parts_where.append([expression, Sql.SQL_AND])
+        self._query_values[Sql.WHERE].extend(values)
+        return self
+
     def where_and(self):
         """
         Starts a parenthesis AND block in the where clause

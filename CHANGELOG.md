@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.3.0]
+
+### Added
+- **Keyset pagination**: Added repository-backed `Keyset` and `Repository.seek()` for forward-only cursor pagination using parameterized SQL row-value comparison. `Keyset.run()` accepts a per-call `qry=` base query, while `default_query()` can be overridden for reusable filtered or joined queries. Keyset fields must be selected, non-null, and collectively unique; all fields share one sort direction.
+- **Query builder**: Added `Select.where_row()` for parameterized row-value comparisons and `Select.has_order()` / `Select.has_limit()` for pagination-query validation.
+
+### Testing
+- **Keyset integration**: Added dedicated full-walk coverage for SQLite, PostgreSQL connections, PostgreSQL pools, and ClickHouse. The suite covers tied composite keys, ascending and descending traversal, explicit base queries, and overridden cached base queries.
+
 ## [2.2.5]
 
 ### Changed

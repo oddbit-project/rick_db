@@ -1,5 +1,17 @@
 # Class rick_db.sql.**Select**
 
+### Select.**where_row(fields, operator, values, table=None, schema=None)**
+
+Append a parameterized lexicographic row-value comparison, such as
+`("created_at", "id") > (?, ?)`. *fields* and *values* must have equal,
+non-zero lengths; *operator* is `<` or `>`. This is the query-builder primitive
+used by [Keyset](keyset.md).
+
+### Select.**has_order()** and Select.**has_limit()**
+
+Return whether the query already has an `ORDER BY` or `LIMIT`/`OFFSET` clause.
+They allow pagination helpers to reject incompatible caller-supplied queries.
+
 ### Select.**\_\_init\_\_(dialect: SqlDialect = None)**
 
 Initialize a Select() object, using a database *dialect*. If no *dialect* is provided, a default dialect will be used.

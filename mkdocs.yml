@@ -39,6 +39,7 @@ nav:
 - JSON Operations: json_operations.md
 - repository.md
 - grid.md
+- Keyset pagination: keyset.md
 - migrations.md
 - Examples: examples.md
 - Class List:
@@ -60,6 +61,7 @@ nav:
   - PgJsonField: 'classes/pgjsonfield.md'
   - CTEs (With): 'classes/with.md'
   - DbGrid: 'classes/dbgrid.md'
+  - Keyset: 'classes/keyset.md'
   - QueryCache: 'classes/querycache.md'
   - Pool: 'classes/poolinterface.md'
   - FieldRecord: 'classes/fieldrecord.md'

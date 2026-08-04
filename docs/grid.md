@@ -85,4 +85,3 @@ It is therefore recommended to avoid the usage of case-sensitive search with thi
 
 As an option, one can instead use COLLATE NOCASE on the creation of the required fields, and use DbGrid with case_sensitive=True.
 This way, search will be case-insensitive on the fields created with the COLLATE NOCASE option.
-

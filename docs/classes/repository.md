@@ -59,6 +59,15 @@ Returns the internal [Record](record.md) class used on repository creation.
 
 Return a [Select](select.md) query builder instance for the current table, with an optional column list, *cols*.
 
+### Repository.**seek(qry, limit, cls=None)**
+
+Fetch one cursor-pagination page without issuing a `COUNT(*)`. It fetches one
+additional record internally and returns `(rows, has_more)`, where *rows* has at
+most *limit* records. `Keyset.run()` uses this method to create its next cursor.
+
+*qry* must be a [Select](select.md) without a `LIMIT` or `OFFSET`; *limit* must
+be a positive integer. Invalid arguments raise `RepositoryError`.
+
 
 ### Repository.**fetch_pk(pk_value)**
 
@@ -390,4 +399,3 @@ with repo.transaction():
     repo.insert(Character(name='John Connor'))
     # auto-commits on success, auto-rolls back on exception
 ```
-

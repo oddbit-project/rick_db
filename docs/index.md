@@ -31,6 +31,9 @@ and a Repository pattern implementation.
 - **[DbGrid](grid.md)** — searchable, filterable, paginated data listings. Supports text search (`LIKE`/`ILIKE` with
   configurable patterns), exact-match filtering, multi-field sorting, and returns both total count and paginated results.
 
+- **[Keyset pagination](keyset.md)** — forward-only cursor pagination based on SQL row-value comparison. Supports custom
+  base queries through `qry=` or an overridable `default_query()`, without an offset scan or total-count query.
+
 - **[Connections](connection.md)** — high-level connectors for **PostgreSQL** (psycopg2, with thread-safe
   connection pooling), **SQLite3** (stdlib), and **ClickHouse** (clickhouse-connect, with thread-safe
   connection pooling). All connectors share a common interface with cursor management, transaction support,

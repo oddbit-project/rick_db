@@ -706,3 +706,21 @@ class Repository(GenericRepository):
         # fetch rows
         rows = self.fetch(qry, cls=cls)
         return total, rows
+
+    def seek(self, qry: Select, limit: int, cls=None) -> tuple[list, bool]:
+        """Fetch one keyset page without issuing a ``COUNT(*)`` query.
+
+        One additional row is fetched to determine whether another page exists.
+        The supplied query must already contain the keyset predicate and order.
+        """
+        if not isinstance(qry, Select):
+            raise RepositoryError("seek(): qry must be a Select")
+        if not isinstance(limit, int) or isinstance(limit, bool) or limit < 1:
+            raise RepositoryError("seek(): limit must be a positive integer")
+
+        qry = copy.deepcopy(qry)
+        if qry.has_limit():
+            raise RepositoryError("seek(): qry must not already have a LIMIT or OFFSET")
+        rows = self.fetch(qry.limit(limit + 1), cls=cls)
+        has_more = len(rows) > limit
+        return rows[:limit], has_more

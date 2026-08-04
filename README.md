@@ -14,6 +14,7 @@ and a Repository pattern implementation. It is **not** an ORM, and it's not mean
 - SQL query builder dialect for MySQL;
 - Pluggable SQL query profiler; 
 - Simple migration manager for SQL files;
+- Forward-only Keyset pagination using SQL row-value comparison, with custom base queries;
 
 > Note: SQLite may have different behaviour based on Python versions; notably, DDL statements in a transaction 
 > may not be affected by rollback on Python <3.12. Also, there are limitations on text search when using the Grid helper
@@ -41,7 +42,8 @@ $ pip3 install rick-db[pgsql-binary]  # prebuilt psycopg2-binary wheel
 
 ## Documentation
 
-Project documentation can be found on the [Documentation](https://oddbit-project.github.io/rick_db/) website.
+Project documentation can be found on the [Documentation](https://oddbit-project.github.io/rick_db/) website, including
+the [Keyset pagination guide](docs/keyset.md).
 
 ## TL;DR; example
 

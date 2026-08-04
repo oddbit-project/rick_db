@@ -1,4 +1,4 @@
-RICK_DB_VERSION = ["2", "2", "5"]
+RICK_DB_VERSION = ["2", "3", "0"]
 
 
 def get_version():

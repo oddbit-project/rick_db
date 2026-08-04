@@ -11,4 +11,5 @@ from .connection import (
 from .mapper import Record, fieldmapper, RecordError
 from .cache import CacheInterface, QueryCache
 from .repository import Repository, RepositoryError
+from .keyset import Keyset, KeysetError
 from .dbgrid import DbGrid
