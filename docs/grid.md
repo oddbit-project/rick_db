@@ -161,16 +161,28 @@ cannot be detected at runtime, so it has to be stated: pass `pk=` to append a
 tiebreaker, or `unique=True` to assert the fields already are. A keyset with
 neither is refused at construction.
 
-**The keyset owns the ordering.** A query passed as `qry=` must not already
-carry an `ORDER BY`: the keyset appends its terms, so a pre-existing sort would
-lead and leave the seek predicate advancing on a trailing term. That is refused
-rather than merged. For the same reason the query must not carry its own
-`LIMIT`/`OFFSET`, which paging would silently replace.
+> **`unique=True` is your assertion, not a check.** Nothing verifies it, and if
+> the fields are not in fact unique you get exactly the silent row loss the flag
+> exists to prevent. Prefer `pk=`, which appends a column the database already
+> guarantees is unique. Reach for `unique=True` only when the leading fields
+> carry a unique constraint of their own.
 
-Keyset fields must be non-nullable and orderable scalars (integer, string,
-date/time, decimal, UUID). A `NULL` key cannot be seeked past — every
-comparison against it is `NULL` — so `Keyset` refuses to build a cursor from
-one.
+**The keyset owns the ordering.** The query must not already carry an
+`ORDER BY`: the keyset appends its terms, so a pre-existing sort would lead and
+leave the seek predicate advancing on a trailing term. That is refused rather
+than merged. For the same reason the query must not carry its own
+`LIMIT`/`OFFSET`, which paging would silently replace. This applies to a query
+passed as `qry=` **and** to one returned by a `default_query()` override — the
+error names the ordering, not where it came from.
+
+**Keyset fields must be NOT NULL**, and orderable scalars (integer, string,
+date/time, decimal, UUID). This one the database has to guarantee: a `NULL` key
+cannot be seeked past, because every comparison against it is `NULL`, so such
+rows are excluded by the predicate on every page after the first and the walk
+simply ends short. `run_seek()` raises if a `NULL` key reaches a returned page,
+which catches it under orderings that surface those rows — but under an ordering
+that sorts them past the cursor they are never returned at all, and nothing can
+see them. Do not rely on the check; use NOT NULL columns.
 
 ### Cursors
 
@@ -181,12 +193,15 @@ other direction — is rejected rather than silently serving a page from the
 middle of an unrelated ordering:
 
 ```python
-cursor = grid.run_seek(limit=10, keyset=Keyset(Product.id, Keyset.ASC))[1]
-grid.run_seek(limit=10, cursor=cursor, keyset=Keyset(Product.id, Keyset.DESC))
+cursor = grid.run_seek(limit=10, keyset=Keyset(Product.id, Keyset.ASC, unique=True))[1]
+grid.run_seek(limit=10, cursor=cursor, keyset=Keyset(Product.id, Keyset.DESC, unique=True))
 # KeysetError: cursor does not belong to this ordering
 ```
 
 Treat them as tokens to hand back, not as values to construct.
+
+`KeysetError` subclasses `ValueError`, so a handler turning a bad cursor into
+a 400 can catch either.
 
 **The checksum is an integrity check against client mistakes, not a security
 boundary.** It is not keyed, and the payload is base64 rather than encrypted,
@@ -209,10 +224,16 @@ cursor = None
 while True:
     qry = repo.select().where(Product.active, "=", True)
     rows, has_more = repo.seek(ks.apply(qry, cursor), limit=20)
+    process(rows)                      # every page, including the last
     if not has_more:
         break
     cursor = ks.encode(rows[-1])
 ```
+
+Note the shape: the last page still carries rows, so process them *before*
+testing `has_more`. `DbGrid.run_seek()`'s `while cursor is not None` form does
+not have this trap, because the final page comes back with a `None` cursor
+alongside its rows.
 
 The query is rebuilt inside the loop because `Keyset.apply()` adds its terms in
 place; reusing one query object across pages would accumulate an `ORDER BY`

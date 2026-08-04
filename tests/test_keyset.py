@@ -228,3 +228,32 @@ class TestCursorEncodingLimits:
 
         row = Hidden(id=1, content="x")
         assert Keyset(["content"], pk="id_grid").values_for(row) == ["x", 1]
+
+
+class TestSelectGuards:
+
+    def test_has_order_and_has_limit_are_public(self):
+        q = qry()
+        assert q.has_order() is False
+        assert q.has_limit() is False
+        q.order("a", "ASC").limit(10, 5)
+        assert q.has_order() is True
+        assert q.has_limit() is True
+
+    def test_apply_refuses_something_that_is_not_a_select(self):
+        # the guard must fail closed rather than skip on a duck-typed object
+        class NotASelect:
+            def order(self, *a, **kw):
+                return self
+
+        with pytest.raises(KeysetError, match="must be a Select"):
+            Keyset("a", unique=True).apply(NotASelect(), None)
+
+
+class TestErrorTypes:
+
+    def test_keyset_error_is_a_value_error(self):
+        # one except clause for a bad cursor from a client
+        assert issubclass(KeysetError, ValueError)
+        with pytest.raises(ValueError):
+            Keyset(["a"], unique=True).decode("!!!!")

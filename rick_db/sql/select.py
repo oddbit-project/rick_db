@@ -337,6 +337,22 @@ class Select(SqlStatement):
 
         return self
 
+    def has_order(self) -> bool:
+        """
+        True if the query already carries an ORDER BY
+
+        :return: bool
+        """
+        return len(self._parts_order) > 0
+
+    def has_limit(self) -> bool:
+        """
+        True if the query already carries a LIMIT/OFFSET
+
+        :return: bool
+        """
+        return self._limit_offset is not None
+
     def where(self, field, operator=None, value=None):
         """
         WHERE clause
@@ -925,9 +941,9 @@ class Select(SqlStatement):
             if operator is None:
                 expression = f"{field} {self._dialect.placeholder}"
             else:
-                if (
-                    isinstance(value, (list, tuple))
-                    and operator.lower() in ("in", "not in")
+                if isinstance(value, (list, tuple)) and operator.lower() in (
+                    "in",
+                    "not in",
                 ):
                     if len(value) == 0:
                         raise SqlError("_where(): empty list for IN clause")

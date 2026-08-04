@@ -21,7 +21,7 @@ _TAG_DECIMAL = "n"
 _TAG_UUID = "u"
 
 
-class KeysetError(Exception):
+class KeysetError(ValueError):
     pass
 
 
@@ -142,12 +142,15 @@ class Keyset:
         # is the worst possible outcome for a pagination primitive, so it is
         # refused rather than merged or silently discarded: the ordering is the
         # keyset's to own.
-        if getattr(qry, "_parts_order", None):
+        if not hasattr(qry, "has_order"):
+            raise KeysetError("Keyset.apply(): qry must be a Select")
+        if qry.has_order():
             raise KeysetError(
                 "Keyset.apply(): the query already has an ORDER BY. The keyset "
                 "defines the ordering, and a sort applied ahead of it silently "
-                "breaks the seek — remove the order() call, or fold those fields "
-                "into the keyset."
+                "breaks the seek. Remove the order() call, or fold those fields "
+                "into the keyset — note the sort may come from a DbGrid subclass "
+                "overriding default_query(), not from the caller."
             )
 
         for name in self._fields:
@@ -216,6 +219,27 @@ class Keyset:
                 )
             result.append(value)
         return result
+
+    def assert_no_nulls(self, rows) -> None:
+        """
+        Raise if any row carries a NULL in a keyset field.
+
+        Nullability cannot be refused at construction — a Record does not carry
+        it — and a NULL key is not merely an encoding problem: it is excluded by
+        the seek predicate on every page after the first, so the walk ends short
+        with no error at all. Where a NULL does surface in a returned page, that
+        is proof the precondition is broken, and failing loudly beats handing
+        back rows from a traversal that is already dropping them.
+
+        Note this catches the detectable cases only. Under an ordering that
+        sorts NULLs after the cursor's position they may never be returned, and
+        nothing here can see them — which is why the fields must be NOT NULL.
+
+        :param rows: rows to check
+        :return: None
+        """
+        for row in rows:
+            self.values_for(row)
 
     def encode(self, row) -> str:
         """

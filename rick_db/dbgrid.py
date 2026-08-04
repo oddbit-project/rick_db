@@ -279,12 +279,13 @@ class DbGrid:
                 )
 
         # copy before assembling: _assemble() and Keyset.apply() both mutate the
-        # query in place, and paging a cursor is a LOOP — reusing one caller-held
-        # query across pages would otherwise accumulate a WHERE group and an
-        # ORDER BY term per page until the statement outgrows the backend's
-        # limits. Repository.seek() copies too, but only after this point.
-        if qry is not None:
-            qry = copy.deepcopy(qry)
+        # query in place, and paging a cursor is a LOOP — reusing one query
+        # across pages would otherwise accumulate a WHERE group and an ORDER BY
+        # term per page until the statement outgrows the backend's limits.
+        # This covers default_query() as well as a caller-supplied qry: an
+        # override is free to return a cached Select, and mutating that would
+        # corrupt run() too, not just the next page.
+        qry = copy.deepcopy(qry if qry is not None else self.default_query())
 
         qry = self._assemble(
             qry=qry,
@@ -296,5 +297,13 @@ class DbGrid:
         qry = keyset.apply(qry, cursor)
 
         rows, has_more = self._repo.seek(qry, limit)
+        # A NULL in a keyset column cannot be seeked past: every comparison
+        # against it is NULL, so such rows are excluded by the predicate on
+        # every page after the first and the walk simply ends short. It cannot
+        # be refused at construction — nullability is not on the Record — but
+        # any NULL that does surface is proof the precondition is broken, so
+        # say so rather than returning a page from a walk that is already
+        # losing rows.
+        keyset.assert_no_nulls(rows)
         next_cursor = keyset.encode(rows[-1]) if has_more and rows else None
         return rows, next_cursor

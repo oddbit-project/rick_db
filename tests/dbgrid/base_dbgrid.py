@@ -307,18 +307,93 @@ class BaseDbGridTest:
         assert has_more is False
 
     def test_repository_seek_issues_no_count(self, conn):
-        # the whole point of seek(): list() runs a COUNT(*) per call, seek() must not
+        # the whole point of seek(): list() runs a COUNT(*) per call, seek() must not.
+        # Spy at the CURSOR, not at fetch() — list() issues its count through
+        # self.cursor().fetchone(), so a fetch()-level spy would never see one.
         repo = Repository(conn, GridRecord)
-        seen = []
-        original = repo.fetch
+        executed = []
+        original_cursor = repo.cursor
 
-        def spy(qry, cls=None):
-            seen.append(qry.assemble()[0])
-            return original(qry, cls=cls)
+        class _Spy:
+            def __init__(self, inner):
+                self._inner = inner
 
-        repo.fetch = spy
-        rows, has_more = repo.seek(repo.select().order(GridRecord.id, "ASC"), 10)
-        repo.fetch = original
+            def __enter__(self):
+                self._c = self._inner.__enter__()
+                outer = self
+
+                class _Wrap:
+                    def __getattr__(self, name):
+                        attr = getattr(outer._c, name)
+                        if not callable(attr):
+                            return attr
+
+                        def call(*args, **kwargs):
+                            if args and isinstance(args[0], str):
+                                executed.append(args[0])
+                            return attr(*args, **kwargs)
+
+                        return call
+
+                return _Wrap()
+
+            def __exit__(self, *a):
+                return self._inner.__exit__(*a)
+
+        repo.cursor = lambda *a, **kw: _Spy(original_cursor(*a, **kw))
+        try:
+            rows, has_more = repo.seek(repo.select().order(GridRecord.id, "ASC"), 10)
+            seek_sql = list(executed)
+            executed.clear()
+            repo.list(repo.select().order(GridRecord.id, "ASC"), limit=10)
+            list_sql = list(executed)
+        finally:
+            repo.cursor = original_cursor
+
         assert len(rows) == 10
-        assert len(seen) == 1
-        assert "COUNT(*)" not in seen[0].upper()
+        assert has_more is True
+        # the control: list() DOES count, so the spy is proven to observe counts
+        assert any("COUNT(*)" in sql.upper() for sql in list_sql)
+        assert not any("COUNT(*)" in sql.upper() for sql in seek_sql)
+
+    def test_seek_refuses_a_null_keyset_value(self, conn):
+        # A NULL key is excluded by the seek predicate on every page after the
+        # first, so the walk would otherwise end short with no error at all.
+        # The page size is the whole table on purpose: where a backend sorts
+        # NULLs (last on PostgreSQL ASC, first on SQLite) decides whether the
+        # row is ever returned, and this asserts the detection, not the
+        # ordering. That is also the limitation — under an ordering that sorts
+        # them past the cursor, nothing can see them.
+        repo = Repository(conn, GridRecord)
+        with repo.cursor() as c:
+            c.exec("update grid set content = null where id_grid = 3")
+        try:
+            grid = DbGrid(repo)
+            ks = Keyset([GridRecord.content], pk=GridRecord.id)
+            with pytest.raises(KeysetError, match="NULL"):
+                grid.run_seek(limit=200, keyset=ks)
+        finally:
+            with repo.cursor() as c:
+                c.exec("update grid set content = 'mickey mouse' where id_grid = 3")
+
+    def test_seek_does_not_mutate_a_cached_default_query(self, conn):
+        # default_query() is a documented override point and may return a shared
+        # Select; mutating it would corrupt both the next page and run()
+        repo = Repository(conn, GridRecord)
+
+        class Cached(DbGrid):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self._cached = self._repo.select()
+
+            def default_query(self):
+                return self._cached
+
+        grid = Cached(repo)
+        rows, cursor = grid.run_seek(limit=5)
+        assert [r.id for r in rows] == [1, 2, 3, 4, 5]
+        rows, _ = grid.run_seek(limit=5, cursor=cursor)
+        assert [r.id for r in rows] == [6, 7, 8, 9, 10]
+        assert grid._cached.has_order() is False
+        total, _ = grid.run(limit=5)
+        assert total == 99

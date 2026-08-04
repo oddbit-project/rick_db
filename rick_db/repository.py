@@ -736,7 +736,7 @@ class Repository(GenericRepository):
         # a LIMIT/OFFSET already on the query would be replaced by the probe
         # below, so a caller who set one would silently get a different page
         # than the one they asked for; paging is this method's job, not theirs
-        if getattr(qry, "_limit_offset", None):
+        if qry.has_limit():
             raise RepositoryError(
                 "seek(): the query already has a LIMIT/OFFSET; seek() sets its own "
                 "and would silently discard it"
