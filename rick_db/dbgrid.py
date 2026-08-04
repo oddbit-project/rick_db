@@ -41,6 +41,11 @@ class DbGrid:
         record = repo.record_class()()
         self._fields = record.dbfields()
         self._field_pk = getattr(record, "_pk", None)
+        # kept so a keyset can table-qualify its fields: an unqualified name is
+        # ambiguous on a join, and ORDER BY resolves against the output columns
+        # while WHERE does not — which would pass on page 1 and fail on page 2
+        self._tablename = getattr(record, "_tablename", None)
+        self._schema = getattr(record, "_schema", None)
 
         for field in search_fields:
             if field not in self._fields:
@@ -81,7 +86,13 @@ class DbGrid:
                 "default_keyset(): Record has no primary key; pass an explicit "
                 "keyset to run_seek()"
             )
-        return Keyset(self._field_pk, Keyset.ASC, unique=True)
+        return Keyset(
+            self._field_pk,
+            Keyset.ASC,
+            unique=True,
+            table=self._tablename,
+            schema=self._schema,
+        )
 
     def _assemble(
         self,
@@ -278,6 +289,9 @@ class DbGrid:
 
         if keyset is None:
             keyset = self.default_keyset()
+
+        if keyset.table is None and self._tablename is not None:
+            keyset = keyset.qualified(self._tablename, self._schema)
 
         for name in keyset.fields:
             if name not in self._fields:

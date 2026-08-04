@@ -30,6 +30,8 @@ class TestClickHouseKeyset(BaseKeysetTest):
     predicate (rather than row-value comparison) rests on exactly this backend.
     """
 
+    supports_self_join = False
+
     @pytest.fixture
     def conn(self, ch_settings):
         try:

@@ -7,7 +7,7 @@ import json
 import uuid
 from collections.abc import Mapping
 
-from rick_db.sql import Select
+from rick_db.sql import Literal, Select
 
 # tags used to round-trip non-JSON-native values through a cursor without
 # losing their type; a cursor value is compared against a real column, so
@@ -53,12 +53,23 @@ class Keyset:
     ASC = "ASC"
     DESC = "DESC"
 
-    def __init__(self, fields, order: str = ASC, pk: str = None, unique: bool = False):
+    def __init__(
+        self,
+        fields,
+        order: str = ASC,
+        pk: str = None,
+        unique: bool = False,
+        table: str = None,
+        schema: str = None,
+    ):
         """
         :param fields: field name or list of field names, most significant first
         :param order: Keyset.ASC or Keyset.DESC, applied to every field
         :param pk: unique field appended as a tiebreaker if absent
         :param unique: assert that `fields` is already unique, in place of `pk`
+        :param table: table to qualify the fields with; required on a join, where
+            an unqualified name the joined table also carries is ambiguous
+        :param schema: optional schema for `table`
         """
         if isinstance(fields, str):
             fields = [fields]
@@ -97,6 +108,8 @@ class Keyset:
             )
 
         self._fields = fields
+        self._table = table
+        self._schema = schema
         self._order = order
         self._operator = "<" if order == self.DESC else ">"
         # binds a cursor to the ordering that produced it, so a client that
@@ -106,9 +119,36 @@ class Keyset:
             ("|".join(fields) + ":" + order).encode("utf-8")
         ).hexdigest()[:12]
 
+    def _sql_field(self, dialect, name):
+        """Field expression for SQL: table-qualified when a table is known."""
+        if self._table is None:
+            return name
+        return Literal(dialect.field(name, self._schema, self._table))
+
     @property
     def fields(self) -> list:
         return list(self._fields)
+
+    @property
+    def table(self):
+        return self._table
+
+    def qualified(self, table: str, schema: str = None) -> "Keyset":
+        """
+        A copy of this keyset with its fields bound to a table.
+
+        DbGrid applies this from the Record, so a keyset written without a table
+        still works on a joined query.
+
+        :param table: table name
+        :param schema: optional schema
+        :return: Keyset
+        """
+        ks = Keyset.__new__(Keyset)
+        ks.__dict__.update(self.__dict__)
+        ks._table = table
+        ks._schema = schema
+        return ks
 
     @property
     def order(self) -> str:
@@ -146,17 +186,6 @@ class Keyset:
             raise KeysetError(
                 "Keyset.apply(): qry must be a Select, got %s" % type(qry).__name__
             )
-        # Keyset fields are unqualified, so on a join any name the joined table
-        # also carries is ambiguous. ORDER BY resolves against the output
-        # columns and WHERE does not, which means page 1 succeeds and page 2
-        # fails — the worst shape for a pagination primitive. Refuse up front.
-        if qry.has_joins():
-            raise KeysetError(
-                "Keyset.apply(): the query joins more than one table, and keyset "
-                "fields are not table-qualified, so the seek predicate would be "
-                "ambiguous — it would succeed on the first page and fail on the "
-                "next. Seek over a single table, or pre-filter with a subquery."
-            )
         if qry.has_order():
             raise KeysetError(
                 "Keyset.apply(): the query already has an ORDER BY. The keyset "
@@ -166,8 +195,9 @@ class Keyset:
                 "overriding default_query(), not from the caller."
             )
 
+        dialect = qry.dialect()
         for name in self._fields:
-            qry.order(name, self._order)
+            qry.order(self._sql_field(dialect, name), self._order)
 
         if cursor is None:
             return qry
@@ -182,13 +212,13 @@ class Keyset:
         qry.where_and()
         for i, name in enumerate(self._fields):
             if i == 0:
-                qry.where(name, self._operator, values[0])
+                qry.where(self._sql_field(dialect, name), self._operator, values[0])
                 continue
             # each subsequent term ties the preceding keys and advances on this one
             qry.where_or()
             for j in range(i):
-                qry.where(self._fields[j], "=", values[j])
-            qry.where(name, self._operator, values[i])
+                qry.where(self._sql_field(dialect, self._fields[j]), "=", values[j])
+            qry.where(self._sql_field(dialect, name), self._operator, values[i])
             qry.where_end()
         qry.where_end()
         return qry

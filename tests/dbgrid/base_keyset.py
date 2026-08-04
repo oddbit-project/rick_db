@@ -22,6 +22,13 @@ class BaseKeysetTest:
 
     label = "this is label %s"
 
+    # A self-join is the cheapest way to guarantee the keyset column name also
+    # exists on the other side of the join, which is the ambiguity being tested.
+    # ClickHouse rejects `SELECT grid.* FROM grid JOIN grid AS grid_2` outright
+    # with AMBIGUOUS_IDENTIFIER — a limitation of the self-join, not of the
+    # keyset — so that backend opts out rather than the assertion being weakened.
+    supports_self_join = True
+
     def _repo(self, conn):
         """Repository for this backend; ClickHouse overrides it."""
         return Repository(conn, GridRecord)
@@ -268,15 +275,34 @@ class BaseKeysetTest:
         rows, _ = grid.run_seek(limit=5)
         assert [r.id for r in rows] == [1, 2, 3, 4, 5]
 
-    def test_seek_refuses_a_joined_query(self, conn):
-        # unqualified keyset fields are ambiguous on a join: ORDER BY resolves
-        # against the output columns and WHERE does not, so page 1 would succeed
-        # and page 2 would fail. Refused up front instead.
+    def test_seek_pages_a_joined_query(self, conn):
+        if not self.supports_self_join:
+            pytest.skip("backend cannot express a self-join over SELECT t.*")
+
+        # keyset fields are table-qualified from the Record, so a join whose
+        # other side carries the same column name is not ambiguous. Unqualified,
+        # this passed on page 1 and failed on page 2 — ORDER BY resolves against
+        # the output columns and WHERE does not.
         repo = self._repo(conn)
         grid = DbGrid(repo)
-        qry = repo.select().join("grid", "id_grid", "grid", "id_grid")
-        with pytest.raises(KeysetError, match="joins more than one table"):
-            grid.run_seek(limit=5, qry=qry)
+
+        def joined():
+            return repo.select().join("grid", "id_grid", "grid", "id_grid")
+
+        rows, cursor = grid.run_seek(limit=10, qry=joined())
+        assert [r.id for r in rows] == list(range(1, 11))
+        assert cursor is not None
+        # page 2 is the one that used to raise
+        rows, _ = grid.run_seek(limit=10, cursor=cursor, qry=joined())
+        assert [r.id for r in rows] == list(range(11, 21))
+
+    def test_seek_qualifies_its_fields(self, conn):
+        repo = self._repo(conn)
+        grid = DbGrid(repo)
+        keyset = grid.default_keyset()
+        assert keyset.table == "grid"
+        sql, _ = keyset.apply(repo.select(), [1]).assemble()
+        assert "grid" in sql and "id_grid" in sql
 
     def test_seek_refuses_a_non_select(self, conn):
         repo = self._repo(conn)

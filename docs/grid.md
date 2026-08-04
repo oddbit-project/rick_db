@@ -188,12 +188,21 @@ both directions, and on only one of the two directions elsewhere — so it caugh
 some cases, cost a full row scan per page, rejected legitimate projection
 queries, and offered reassurance it could not deliver. Use `NOT NULL` columns.
 
-**A keyset cannot span a join.** Keyset fields are not table-qualified, so on a
-multi-table query any name the joined table also carries is ambiguous — and
-because `ORDER BY` resolves against the output columns while `WHERE` does not,
-that shape succeeds on the first page and fails on the second. `run_seek()`
-refuses a joined query up front. Seek over a single table, or pre-filter with a
-subquery.
+**Joins work, because the fields are table-qualified.** `DbGrid` binds a keyset
+to the Record's table, so `ORDER BY "grid"."id_grid"` and the matching seek
+predicate are unambiguous even when the joined side carries the same column
+name. Unqualified they would not be — `ORDER BY` resolves against the output
+columns while `WHERE` does not, so the query would pass on the first page and
+fail on the second.
+
+Driving `Repository.seek()` directly, name the table yourself:
+
+```python
+ks = Keyset(Product.id, Keyset.ASC, unique=True, table="product")
+```
+
+or call `keyset.qualified("product")`. The keyset must name a column of the
+table being paged; joining in a column to sort by is not supported.
 
 ### Cursors
 
