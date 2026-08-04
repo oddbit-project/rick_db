@@ -241,10 +241,16 @@ class TestSelectGuards:
         assert q.has_limit() is True
 
     def test_apply_refuses_something_that_is_not_a_select(self):
-        # the guard must fail closed rather than skip on a duck-typed object
+        # fail closed on anything that is not a Select, including a duck type
         class NotASelect:
             def order(self, *a, **kw):
                 return self
+
+            def has_order(self):
+                return False
+
+            def has_joins(self):
+                return False
 
         with pytest.raises(KeysetError, match="must be a Select"):
             Keyset("a", unique=True).apply(NotASelect(), None)
@@ -257,3 +263,27 @@ class TestErrorTypes:
         assert issubclass(KeysetError, ValueError)
         with pytest.raises(ValueError):
             Keyset(["a"], unique=True).decode("!!!!")
+
+
+class TestCursorValuesMustBeScalar:
+
+    def test_a_null_in_a_minted_cursor_is_refused(self):
+        # Select._where omits the placeholder for None, assembling `("a" >)`
+        import base64 as _b64
+        import json as _json
+
+        ks = Keyset(["a"], unique=True)
+        raw = _json.dumps({"k": ks.signature, "v": [None]})
+        forged = _b64.urlsafe_b64encode(raw.encode()).decode().rstrip("=")
+        with pytest.raises(KeysetError, match="may not be NULL"):
+            ks.decode(forged)
+
+    def test_a_list_in_a_minted_cursor_is_refused(self):
+        import base64 as _b64
+        import json as _json
+
+        ks = Keyset(["a"], unique=True)
+        raw = _json.dumps({"k": ks.signature, "v": [[1, 2]]})
+        forged = _b64.urlsafe_b64encode(raw.encode()).decode().rstrip("=")
+        with pytest.raises(KeysetError):
+            ks.decode(forged)

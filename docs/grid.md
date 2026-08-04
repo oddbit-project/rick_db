@@ -176,13 +176,24 @@ passed as `qry=` **and** to one returned by a `default_query()` override — the
 error names the ordering, not where it came from.
 
 **Keyset fields must be NOT NULL**, and orderable scalars (integer, string,
-date/time, decimal, UUID). This one the database has to guarantee: a `NULL` key
-cannot be seeked past, because every comparison against it is `NULL`, so such
-rows are excluded by the predicate on every page after the first and the walk
-simply ends short. `run_seek()` raises if a `NULL` key reaches a returned page,
-which catches it under orderings that surface those rows — but under an ordering
-that sorts them past the cursor they are never returned at all, and nothing can
-see them. Do not rely on the check; use NOT NULL columns.
+date/time, decimal, UUID). This one the database has to guarantee and nothing
+here checks it: a `NULL` key cannot be seeked past, because every comparison
+against it is `NULL`, so those rows are excluded by the predicate on every page
+after the first and the walk simply ends short with no error.
+
+An earlier revision screened returned rows for NULLs. It was removed rather than
+kept, because it was worse than nothing: whether it fired depended entirely on
+where the backend sorts NULLs — never on ClickHouse, which sorts them last in
+both directions, and on only one of the two directions elsewhere — so it caught
+some cases, cost a full row scan per page, rejected legitimate projection
+queries, and offered reassurance it could not deliver. Use `NOT NULL` columns.
+
+**A keyset cannot span a join.** Keyset fields are not table-qualified, so on a
+multi-table query any name the joined table also carries is ambiguous — and
+because `ORDER BY` resolves against the output columns while `WHERE` does not,
+that shape succeeds on the first page and fails on the second. `run_seek()`
+refuses a joined query up front. Seek over a single table, or pre-filter with a
+subquery.
 
 ### Cursors
 
@@ -200,8 +211,12 @@ grid.run_seek(limit=10, cursor=cursor, keyset=Keyset(Product.id, Keyset.DESC, un
 
 Treat them as tokens to hand back, not as values to construct.
 
-`KeysetError` subclasses `ValueError`, so a handler turning a bad cursor into
-a 400 can catch either.
+`KeysetError` subclasses `ValueError`, so a handler can catch either. Note it
+is not the only thing `run_seek()` raises: a bad `limit` or an unknown field is
+a plain `ValueError` (a programmer error, not client input), `Repository.seek()`
+raises `RepositoryError`, and a forged cursor carrying a value whose type does
+not match the column surfaces as a driver exception. Catch by what you intend to
+turn into a 400 rather than by breadth.
 
 **The checksum is an integrity check against client mistakes, not a security
 boundary.** It is not keyed, and the payload is base64 rather than encrypted,

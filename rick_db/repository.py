@@ -732,6 +732,11 @@ class Repository(GenericRepository):
         if not isinstance(limit, int) or isinstance(limit, bool) or limit < 1:
             raise RepositoryError("seek(): limit must be a positive integer")
 
+        if not isinstance(qry, Select):
+            raise RepositoryError(
+                "seek(): qry must be a Select, got %s" % type(qry).__name__
+            )
+
         qry = copy.deepcopy(qry)
         # a LIMIT/OFFSET already on the query would be replaced by the probe
         # below, so a caller who set one would silently get a different page

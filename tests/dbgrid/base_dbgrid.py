@@ -356,26 +356,6 @@ class BaseDbGridTest:
         assert any("COUNT(*)" in sql.upper() for sql in list_sql)
         assert not any("COUNT(*)" in sql.upper() for sql in seek_sql)
 
-    def test_seek_refuses_a_null_keyset_value(self, conn):
-        # A NULL key is excluded by the seek predicate on every page after the
-        # first, so the walk would otherwise end short with no error at all.
-        # The page size is the whole table on purpose: where a backend sorts
-        # NULLs (last on PostgreSQL ASC, first on SQLite) decides whether the
-        # row is ever returned, and this asserts the detection, not the
-        # ordering. That is also the limitation — under an ordering that sorts
-        # them past the cursor, nothing can see them.
-        repo = Repository(conn, GridRecord)
-        with repo.cursor() as c:
-            c.exec("update grid set content = null where id_grid = 3")
-        try:
-            grid = DbGrid(repo)
-            ks = Keyset([GridRecord.content], pk=GridRecord.id)
-            with pytest.raises(KeysetError, match="NULL"):
-                grid.run_seek(limit=200, keyset=ks)
-        finally:
-            with repo.cursor() as c:
-                c.exec("update grid set content = 'mickey mouse' where id_grid = 3")
-
     def test_seek_does_not_mutate_a_cached_default_query(self, conn):
         # default_query() is a documented override point and may return a shared
         # Select; mutating it would corrupt both the next page and run()
@@ -395,5 +375,26 @@ class BaseDbGridTest:
         rows, _ = grid.run_seek(limit=5, cursor=cursor)
         assert [r.id for r in rows] == [6, 7, 8, 9, 10]
         assert grid._cached.has_order() is False
+        # run() must not poison the shared query either: it mutated it in place
+        # before, leaving an ORDER BY that made every later run_seek() refuse it
         total, _ = grid.run(limit=5)
         assert total == 99
+        grid.run(limit=5)
+        assert grid._cached.has_order() is False
+        rows, _ = grid.run_seek(limit=5)
+        assert [r.id for r in rows] == [1, 2, 3, 4, 5]
+
+    def test_seek_refuses_a_joined_query(self, conn):
+        # unqualified keyset fields are ambiguous on a join: ORDER BY resolves
+        # against the output columns and WHERE does not, so page 1 would succeed
+        # and page 2 would fail. Refused up front instead.
+        repo = Repository(conn, GridRecord)
+        grid = DbGrid(repo)
+        qry = repo.select().join("grid", "id_grid", "grid", "id_grid")
+        with pytest.raises(KeysetError, match="joins more than one table"):
+            grid.run_seek(limit=5, qry=qry)
+
+    def test_seek_refuses_a_non_select(self, conn):
+        repo = Repository(conn, GridRecord)
+        with pytest.raises(RepositoryError, match="must be a Select"):
+            repo.seek("not a select", 10)

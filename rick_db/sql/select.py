@@ -345,6 +345,14 @@ class Select(SqlStatement):
         """
         return len(self._parts_order) > 0
 
+    def has_joins(self) -> bool:
+        """
+        True if the query reads from more than one source (a join)
+
+        :return: bool
+        """
+        return len(self._parts_from) > 1
+
     def has_limit(self) -> bool:
         """
         True if the query already carries a LIMIT/OFFSET

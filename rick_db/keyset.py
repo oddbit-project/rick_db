@@ -142,8 +142,21 @@ class Keyset:
         # is the worst possible outcome for a pagination primitive, so it is
         # refused rather than merged or silently discarded: the ordering is the
         # keyset's to own.
-        if not hasattr(qry, "has_order"):
-            raise KeysetError("Keyset.apply(): qry must be a Select")
+        if not isinstance(qry, Select):
+            raise KeysetError(
+                "Keyset.apply(): qry must be a Select, got %s" % type(qry).__name__
+            )
+        # Keyset fields are unqualified, so on a join any name the joined table
+        # also carries is ambiguous. ORDER BY resolves against the output
+        # columns and WHERE does not, which means page 1 succeeds and page 2
+        # fails — the worst shape for a pagination primitive. Refuse up front.
+        if qry.has_joins():
+            raise KeysetError(
+                "Keyset.apply(): the query joins more than one table, and keyset "
+                "fields are not table-qualified, so the seek predicate would be "
+                "ambiguous — it would succeed on the first page and fail on the "
+                "next. Seek over a single table, or pre-filter with a subquery."
+            )
         if qry.has_order():
             raise KeysetError(
                 "Keyset.apply(): the query already has an ORDER BY. The keyset "
@@ -219,27 +232,6 @@ class Keyset:
                 )
             result.append(value)
         return result
-
-    def assert_no_nulls(self, rows) -> None:
-        """
-        Raise if any row carries a NULL in a keyset field.
-
-        Nullability cannot be refused at construction — a Record does not carry
-        it — and a NULL key is not merely an encoding problem: it is excluded by
-        the seek predicate on every page after the first, so the walk ends short
-        with no error at all. Where a NULL does surface in a returned page, that
-        is proof the precondition is broken, and failing loudly beats handing
-        back rows from a traversal that is already dropping them.
-
-        Note this catches the detectable cases only. Under an ordering that
-        sorts NULLs after the cursor's position they may never be returned, and
-        nothing here can see them — which is why the fields must be NOT NULL.
-
-        :param rows: rows to check
-        :return: None
-        """
-        for row in rows:
-            self.values_for(row)
 
     def encode(self, row) -> str:
         """
@@ -319,6 +311,15 @@ def _encode_value(value):
 
 
 def _decode_value(value):
+    if value is None:
+        # a NULL key cannot be seeked past; encode() refuses to build one, and
+        # a hand-minted cursor must not get further. Select._where omits the
+        # placeholder for a None value, so this would otherwise assemble as
+        # `("id" >)` — a syntax error on PostgreSQL, and an empty page that
+        # silently ends the walk on SQLite
+        raise KeysetError("Keyset.decode(): a cursor value may not be NULL")
+    if isinstance(value, (list, tuple)):
+        raise KeysetError("Keyset.decode(): malformed cursor value")
     if not isinstance(value, dict):
         return value
     tag = value.get(_TAG)
