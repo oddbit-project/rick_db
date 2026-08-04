@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- **Keyset (cursor) pagination**: new `Keyset` class, `Repository.seek()` and `DbGrid.run_seek()`. `run()` paginates with `LIMIT`/`OFFSET` and reports a total, which costs a `COUNT(*)` over the filtered set and a scan of every row up to the offset; `run_seek()` answers "the N rows after this cursor" instead, so the cost of a page does not grow with its depth and concurrent inserts cannot shift rows across a page boundary. Returns `(rows, next_cursor)`, with a `None` cursor on the last page. `search_text` and `match_fields` behave as in `run()`; there is deliberately no `sort_fields`, because the keyset is the ordering.
+
+  `Keyset` enforces the two rules that make seek predicates correct rather than leaving them to the caller: every field sorts in the same direction (a mixed-direction keyset cannot be expressed as a seek predicate, so the direction is a single parameter and the invalid case is unrepresentable), and a unique tiebreaker is required — `pk=` appends one when absent, without which a non-unique sort column silently skips or repeats rows at page boundaries. Keyset fields must be non-nullable orderable scalars; a `NULL` key cannot be seeked past.
+
+  Cursors are opaque, preserve value types (integer, string, date/time, decimal, UUID) across the round trip, and carry a signature of the ordering that issued them, so a cursor presented to a different keyset is refused instead of serving a page from the middle of an unrelated ordering.
+
+  The seek predicate is emitted as an expanded `(a > ?) OR (a = ? AND b > ?)` chain rather than the row-value form `(a, b) > (?, ?)`. Both are correct on PostgreSQL, but row-value comparison is not portable across every supported backend, and the expanded form needs nothing from the query builder that is not already public.
+
 ## [2.2.5]
 
 ### Changed

@@ -706,3 +706,36 @@ class Repository(GenericRepository):
         # fetch rows
         rows = self.fetch(qry, cls=cls)
         return total, rows
+
+    def seek(self, qry: Select, limit: int, cls=None):
+        """
+        Performs a query for a single page, without counting the result set
+
+        The sibling of list() for keyset pagination. list() always runs a
+        COUNT(*) over the filtered query to produce a total; an O(n) count next
+        to an O(1) page would defeat the point of seeking, so this does not.
+        The caller learns whether more rows exist, not how many.
+
+        One row beyond the requested limit is fetched as a probe and discarded,
+        which is what makes has_more exact rather than a guess. Callers should
+        not roll that themselves — getting the probe and the slice out of step
+        is how a page ends up silently short.
+
+        The original query object is left intact. The query is expected to
+        carry its own ordering and seek predicate, normally from Keyset.apply().
+
+        :param qry: query to use
+        :param limit: rows per page; must be a positive integer
+        :param cls: optional Record class to use for rows
+        :return: (rows, has_more)
+        """
+        if not isinstance(limit, int) or isinstance(limit, bool) or limit < 1:
+            raise RepositoryError("seek(): limit must be a positive integer")
+
+        qry = copy.deepcopy(qry)
+        qry.limit(limit + 1)
+        rows = self.fetch(qry, cls=cls)
+        has_more = len(rows) > limit
+        if has_more:
+            rows = rows[:limit]
+        return rows, has_more

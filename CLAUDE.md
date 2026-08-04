@@ -554,6 +554,27 @@ total, rows = grid.run(search_text="alice", limit=20, offset=0,
 
 Search types: `SEARCH_ANY` (default, `%text%`), `SEARCH_START` (`text%`), `SEARCH_END` (`%text`), `SEARCH_NONE`.
 
+### Keyset pagination
+
+`run()` uses `LIMIT`/`OFFSET` and returns a total, which costs a `COUNT(*)` and a scan of everything before the offset. `run_seek()` pages by cursor instead — constant cost per page, and stable while rows are inserted:
+
+```python
+from rick_db import DbGrid, Keyset
+
+grid = DbGrid(repo, search_fields=[User.name])
+
+rows, cursor = grid.run_seek(limit=20)                    # first page
+rows, cursor = grid.run_seek(limit=20, cursor=cursor)     # next; None when exhausted
+
+# explicit ordering, newest first, pk as tiebreaker
+ks = Keyset([User.created], Keyset.DESC, pk=User.id)
+rows, cursor = grid.run_seek(limit=20, keyset=ks)
+```
+
+No total row count, no jumping to an arbitrary page, and the keyset is the ordering (there is no `sort_fields`). All keyset fields sort in the same direction — a mixed-direction keyset has no seek predicate — and a unique tiebreaker is required, appended automatically via `pk=`. Cursors are opaque, type-preserving, and bound to the ordering that issued them.
+
+`Repository.seek(qry, limit)` exposes the same paging for queries built outside `DbGrid`, returning `(rows, has_more)` and issuing no `COUNT(*)`.
+
 ## Migrations
 
 Forward-only migration system (no rollbacks). Managed via CLI or Python API.

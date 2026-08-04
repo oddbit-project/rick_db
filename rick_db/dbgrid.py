@@ -1,6 +1,7 @@
 from collections.abc import Mapping
 from rick_db import Repository
 
+from rick_db.keyset import Keyset
 from rick_db.sql import Select, Literal
 
 
@@ -68,6 +69,19 @@ class DbGrid:
             return {self._field_pk: "ASC"}
         return {}
 
+    def default_keyset(self) -> "Keyset":
+        """
+        Build a default keyset. Can be overridden on descendants
+        The default keyset is the primary key, ascending
+        :return: Keyset
+        """
+        if not self._field_pk:
+            raise ValueError(
+                "default_keyset(): Record has no primary key; pass an explicit "
+                "keyset to run_seek()"
+            )
+        return Keyset(self._field_pk, Keyset.ASC)
+
     def _assemble(
         self,
         qry: Select = None,
@@ -75,6 +89,7 @@ class DbGrid:
         match_fields: dict = None,
         sort_fields: dict = None,
         search_fields: list = None,
+        apply_sort: bool = True,
     ) -> Select:
         """
         Assembles a query for a run() operation
@@ -94,7 +109,11 @@ class DbGrid:
 
         if not qry:
             qry = self.default_query()
-        if not sort_fields:
+        if not apply_sort:
+            # the caller supplies the ordering (see run_seek(), where the keyset
+            # is the ordering and a default sort would contradict it)
+            sort_fields = None
+        elif not sort_fields:
             sort_fields = self.default_sort()
 
         if match_fields:
@@ -205,3 +224,65 @@ class DbGrid:
 
         # execute query
         return self._repo.list(qry, limit=limit, offset=offset)
+
+    def run_seek(
+        self,
+        limit: int,
+        cursor: str = None,
+        keyset: Keyset = None,
+        qry: Select = None,
+        search_text: str = None,
+        match_fields: dict = None,
+        search_fields: list = None,
+    ) -> tuple:
+        """
+        Executes a query for one keyset-paginated page, and returns the rows
+        together with the cursor for the next page.
+
+        The keyset counterpart to run(). Where run() answers "N rows at offset
+        M" and reports the total, this answers "the N rows after this cursor"
+        and reports whether there is another page. The database seeks to the
+        cursor on the index instead of counting rows it will discard, so a deep
+        page costs what the first one costs, and rows do not shift across page
+        boundaries when the table is written to mid-scroll.
+
+        There is deliberately no sort_fields parameter: the keyset IS the
+        ordering. Accepting both would let a caller sort by one column and seek
+        on another, which returns wrong pages rather than an error.
+
+        Pass cursor=None for the first page; pass the returned cursor for the
+        next. A None cursor comes back when the page is the last one.
+
+        search_text and match_fields behave exactly as in run().
+
+        :param limit: rows per page; must be a positive integer
+        :param cursor: cursor from a previous call, or None for the first page
+        :param keyset: optional Keyset; defaults to default_keyset()
+        :param qry: optional Select query
+        :param search_text: optional search string
+        :param match_fields: optional field filter
+        :param search_fields: optional search fields
+        :return: tuple(rows, next_cursor)
+        """
+        if keyset is None:
+            keyset = self.default_keyset()
+
+        for name in keyset.fields:
+            if name not in self._fields:
+                raise ValueError(
+                    "run_seek(): field '%s' used in keyset does not exist on Record"
+                    % name
+                )
+
+        qry = self._assemble(
+            qry=qry,
+            search_text=search_text,
+            match_fields=match_fields,
+            search_fields=search_fields,
+            apply_sort=False,
+        )
+        qry = keyset.apply(qry, cursor)
+
+        rows, has_more = self._repo.seek(qry, limit)
+        next_cursor = keyset.encode(rows[-1]) if has_more and rows else None
+        return rows, next_cursor
